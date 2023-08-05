@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pages</title>
+    <link rel="stylesheet" type="text/css" href="pages.css">
+</head>
+
+<body>
+    <div class="container">
+        <div>
+            <div id="sidebar"> </div>
+            <!--- main --->
+            <div class="main">
+                <div id="topbar-div"></div>
+                <!---cards--->
+                <div class="cardBox">
+                    <div class="card">
+                        <div>
+                            <div class="numbers">1504</div>
+                            <!-- <div class="cardName">Daily Views</div> -->
+                        </div>
+                        <div class="iconBox">
+                            <ion-icon name="eye-outline"></ion-icon>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div>
+                            <div class="numbers">80</div>
+                            <!-- <div class="cardName">Sales</div> -->
+                        </div>
+                        <div class="iconBox">
+                            <ion-icon name="cart-outline"></ion-icon>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div>
+                            <div class="numbers">284</div>
+                            <!-- <div class="cardName">Comments</div> -->
+                        </div>
+                        <div class="iconBox">
+                            <ion-icon name="chatbubbles-outline"></ion-icon>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div>
+                            <div class="numbers">7842</div>
+                            <!-- <div class="cardName">Earning</div> -->
+                        </div>
+                        <div class="iconBox">
+                            <ion-icon name="cash-outline"></ion-icon>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+        <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+        <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+        
+        <script>
+
+            $(function(){
+                $("#sidebar").load("../../component/sidebar.html");
+                $("#topbar-div").load("../../component/topbar.html");
+              });
+
+            // Menu Toggle
+
+            let navigation = document.querySelector('.navigation');
+            let toggle = document.querySelector('.toggle');
+            let main = document.querySelector('.main');
+
+
+
+                // add hovered classn selected list item
+
+            let list = document.querySelectorAll('.navigation li');
+
+            function activeLink() {
+                list.forEach((item) =>
+                    item.classList.remove('hovered'));
+                this.classList.add('hovered');
+            }
+            list.forEach((item) =>
+                item.addEventListener('mouseover', activeLink))
+        </script>
+</body>
+
+</html>
