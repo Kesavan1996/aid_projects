@@ -119,6 +119,9 @@
         width: 300px;
         left: 0;
     }
+    .toggle{
+        display: block;
+    }
     }
 
     @media(max-width:480px){

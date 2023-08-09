@@ -14,6 +14,13 @@
         crossorigin="anonymous"
       />
 
+
+      <link
+      rel="stylesheet"
+      type="text/css"
+      href="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/css/jquery.dataTables.css"
+      />
+
 </head>
 
 <body>
@@ -52,10 +59,10 @@
                 <div class="categories">
                   <div class="categoryDetails">
                       <div class="cardHeader">
-                          <h2>categories</h2>
+                          <h2>Categories List</h2>
                           <!-- <a href="#" class="btn">View All</a> -->
                       </div>
-                      <table>
+                      <table id="categoryTable" class="table table-striped">
                           <thead>
                               <tr>
                                   <td>Name</td>
@@ -69,55 +76,55 @@
                                   <td>Bennett</td>
                                   <td>Admin</td>
                                   <td><span class="status activeuser">Active</span></td>
-                                  <td class="action"><span class="edit"><ion-icon name="create-outline"></ion-icon></span><span class="delete"><ion-icon name="trash-outline"></ion-icon></span></td>
+                                  <td class="action"><a href="#" class="edit" data-toggle="tooltip" title="Edit"><ion-icon name="create-outline"></ion-icon></a><a data-toggle="tooltip" title="Delete" class="delete"><ion-icon name="trash-outline"></ion-icon></a></td>
                               </tr>
                               <tr>
                                   <td>Garald</td>
                                   <td>User</td>
                                   <td><span class="status inactiveuser">Inactive</span></td>
-                                  <td class="action"><span class="edit"><ion-icon name="create-outline"></ion-icon></span><span class="delete"><ion-icon name="trash-outline"></ion-icon></span></td>
+                                  <td class="action"><a href="#" class="edit" data-toggle="tooltip" title="Edit"><ion-icon name="create-outline"></ion-icon></a><a data-toggle="tooltip" title="Delete" class="delete"><ion-icon name="trash-outline"></ion-icon></a></td>
                               </tr>
                               <tr>
                                   <td>Araldo</td>
                                   <td>user</td>
                                   <td><span class="status activeuser">Active</span></td>
-                                  <td class="action"><span class="edit"><ion-icon name="create-outline"></ion-icon></span><span class="delete"><ion-icon name="trash-outline"></ion-icon></span></td>
+                                  <td class="action"><a href="#" class="edit" data-toggle="tooltip" title="Edit"><ion-icon name="create-outline"></ion-icon></a><a data-toggle="tooltip" title="Delete" class="delete"><ion-icon name="trash-outline"></ion-icon></a></td>
                               </tr>
                               <tr>
                                   <td>Gamaliel</td>
                                   <td>User</td>
                                   <td><span class="status activeuser">Active</span></td>
-                                  <td class="action"><span class="edit"><ion-icon name="create-outline"></ion-icon></span><span class="delete"><ion-icon name="trash-outline"></ion-icon></span></td>
+                                  <td class="action"><a href="#" class="edit" data-toggle="tooltip" title="Edit"><ion-icon name="create-outline"></ion-icon></a><a data-toggle="tooltip" title="Delete" class="delete"><ion-icon name="trash-outline"></ion-icon></a></td>
                               </tr>
                               <tr>
                                   <td>Hortensia</td>
                                   <td>User</td>
                                   <td><span class="status inactiveuser">Inactive</span></td>
-                                  <td class="action"><span class="edit"><ion-icon name="create-outline"></ion-icon></span><span class="delete"><ion-icon name="trash-outline"></ion-icon></span></td>
+                                  <td class="action"><a href="#" class="edit" data-toggle="tooltip" title="Edit"><ion-icon name="create-outline"></ion-icon></a><a data-toggle="tooltip" title="Delete" class="delete"><ion-icon name="trash-outline"></ion-icon></a></td>
                               </tr>
                               <tr>
                                   <td>Angelika</td>
                                   <td>User</td>
                                   <td><span class="status inactiveuser">Inactive</span></td>
-                                  <td class="action"><span class="edit"><ion-icon name="create-outline"></ion-icon></span><span class="delete"><ion-icon name="trash-outline"></ion-icon></span></td>
+                                  <td class="action"><a href="#" class="edit" data-toggle="tooltip" title="Edit"><ion-icon name="create-outline"></ion-icon></a><a data-toggle="tooltip" title="Delete" class="delete"><ion-icon name="trash-outline"></ion-icon></a></td>
                               </tr>
                               <tr>
                                   <td>Burgess</td>
                                   <td>User</td>
                                   <td><span class="status activeuser">Active</span></td>
-                                  <td class="action"><span class="edit"><ion-icon name="create-outline"></ion-icon></span><span class="delete"><ion-icon name="trash-outline"></ion-icon></span></td>
+                                  <td class="action"><a href="#" class="edit" data-toggle="tooltip" title="Edit"><ion-icon name="create-outline"></ion-icon></a><a data-toggle="tooltip" title="Delete" class="delete"><ion-icon name="trash-outline"></ion-icon></a></td>
                               </tr>
                               <tr>
                                   <td>Theresita</td>
                                   <td>User</td>
                                   <td><span class="status activeuser">Active</span></td>
-                                  <td class="action"><span class="edit"><ion-icon name="create-outline"></ion-icon></span><span class="delete"><ion-icon name="trash-outline"></ion-icon></span></td>
+                                  <td class="action"><a href="#" class="edit" data-toggle="tooltip" title="Edit"><ion-icon name="create-outline"></ion-icon></a><a data-toggle="tooltip" title="Delete" class="delete"><ion-icon name="trash-outline"></ion-icon></a></td>
                               </tr>
                               <tr>
                                   <td>Bernard</td>
                                   <td>User</td>
                                   <td><span class="status activeuser">Active</span></td>
-                                  <td class="action"><span class="edit"><ion-icon name="create-outline"></ion-icon></span><span class="delete"><ion-icon name="trash-outline"></ion-icon></span></td>
+                                  <td class="action"><a href="#" class="edit" data-toggle="tooltip" title="Edit"><ion-icon name="create-outline"></ion-icon></a><a data-toggle="tooltip" title="Delete" class="delete"><ion-icon name="trash-outline"></ion-icon></a></td>
                               </tr>
                           </tbody>
                       </table>
@@ -136,8 +143,29 @@
         <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
         <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
         <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+
+        <script
+        type="text/javascript"
+        charset="utf8"
+        src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.2.min.js"
+        ></script>
+        <script
+        type="text/javascript"
+        charset="utf8"
+        src="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.min.js"></script>
+
+        <script>
+            $(function () {
+                $('[data-toggle="tooltip"]').tooltip()
+            })
+        </script>
+
+
         <script>
 
+            $(function() {
+                $("#categoryTable").dataTable();
+                });
 
             $(function(){
                 $("#sidebar").load("../../component/sidebar.html");

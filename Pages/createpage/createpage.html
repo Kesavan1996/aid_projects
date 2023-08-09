@@ -14,6 +14,7 @@
         crossorigin="anonymous"
       />
 
+
 </head>
 
 <body>
@@ -25,28 +26,53 @@
                 <div id="topbar-div"></div>
                 <div class="createPageDiv">
                     <div class="actionBtns">
-                        <button type="button" class="btn btn-primary" ><ion-icon name="add-circle-outline"></ion-icon> Animation</button>
-                        <button type="button" class="btn btn-primary" onclick="newHeading()"><ion-icon name="add-circle-outline"></ion-icon> Heading</button>
-                        <button type="button" class="btn btn-primary" onclick="newText()"><ion-icon name="add-circle-outline"></ion-icon> Text</button>
-                        <button type="button" class="btn btn-primary"><ion-icon name="add-circle-outline"></ion-icon> Quiz</button>
+                        <button type="button" class="btn btn-primary" onclick="newHeading()" id="headingBtn"><ion-icon name="add-circle-outline" ></ion-icon> Heading</button>
+                        <button type="button" class="btn btn-primary" onclick="newText()" id="textBtn"><ion-icon name="add-circle-outline" ></ion-icon> Text</button>
+                        <button type="button" class="btn btn-primary" onclick="newQuiz()"><ion-icon name="add-circle-outline"></ion-icon> Quiz</button>
                         <button type="button" class="btn btn-primary"><ion-icon name="add-circle-outline"></ion-icon>
                             <p><input type="file"  accept="image/*" name="image" id="file"  onchange="newImage(event)" style="display: none;"></p>
                             <p><label for="file" style="cursor: pointer;">Upload Image</label></p>
                         </button>
-                        <button type="button" class="btn btn-primary"><ion-icon name="add-circle-outline"></ion-icon> Video</button>
+                        
+                        <button type="button" class="btn btn-primary"><ion-icon name="add-circle-outline"></ion-icon>
+                            <input type="file" class="d-none" id="addVideosInput" accept=" video/*" onchange="newVideo(event)">
+                            <label for="addVideosInput" style="cursor: pointer;">Video</label>
+                             </button>
+                        <button type="button" class="btn btn-primary" ><ion-icon name="add-circle-outline"></ion-icon> Animation</button>
                     </div>
                     <div class="pageContainer">
                         <div id="inputDiv">
                         </div>
                         <div class="btnDiv">
-                            <button type="button" class="btn btn-secondary">Save as draft</button>
-                            <button type="button" class="btn btn-primary">Publish</button>
+                            <button type="button"  class="btn btn-secondary" onclick="clearPage()" >Clear</button>
+                            <button type="button" class="btn btn-primary" onclick="pagePreview()" data-bs-toggle="modal" data-bs-target="#exampleModal">Preview</button>
                         </div>
                     </div>
 
                 </div>
             </div>
         </div>
+
+        <!-- Modal -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="pageTitle">Page Preview</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="previewPage" class="grid-container">
+                        </div>
+                    <div class="box" id="pageText"></div>
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" >Save as Draft</button>
+                    <button type="button" class="btn btn-primary">Publish</button>
+                    </div>
+                </div>
+                </div>
+            </div>
 
 
         <script
@@ -63,53 +89,53 @@
             CKEDITOR.replace('editor');
         </script>
 
+        <script>
 
-        <script> 
-            var headingId = 0;
+
+
+            var headingId=0;
 
             function newHeading(){
+                
+              //  document.getElementById("headingBtn").disabled = true;
                 
                 var parent = document.getElementById("inputDiv")
                 var div = document.createElement("div")
                 div.className="headingDiv"
-                div.id="headDiv"+headingId
+                div.id="headDivInput"+headingId
                 var field = document.createElement("input")
                 var removeBtn = document.createElement("button")
-                removeBtn.setAttribute("onclick",`removeHeading("heading",${headingId})`)
+                removeBtn.setAttribute("onclick",`removeFields("heading",${headingId})`)
                 var removeIcon = document.createElement("ion-icon")
                 removeIcon.name="remove-circle-outline"
                 removeBtn.appendChild(removeIcon)
-                field.className = "form-control"
+                field.className = "form-control inputHeadingClass"
                 field.style = "display:block;"
-                field.id = "input" +headingId;
+                field.id = "inputField";
                 field.placeholder="Enter title"
                 div.appendChild(field)
                 div.appendChild(removeBtn)
                 parent.appendChild(div);
-                headingId =headingId+ 1;
+
+                headingId=headingId+1;
+                
             } 
-
-
-
-
-     var textId=0;
-
 
      function newText(){
 
         var parent = document.getElementById("inputDiv")
         var div = document.createElement("div")
         div.className="textDiv"
-        div.id="textDiv"+textId
+        div.id="textDivInput"
         var field = document.createElement("textarea")
         field.className = "form-control"
         field.style = "display:block;"
-        field.id = "textarea" +textId;
-        field.name = "textarea" +textId;
+        field.id = "textareaId";
+        field.name = "textareaId";
         field.placeholder="Enter text"
         field.rows=3      
         var removeBtn = document.createElement("button")
-        removeBtn.setAttribute("onclick",`removeHeading("text",${textId})`)
+        removeBtn.setAttribute("onclick",`removeFields("text",textDivInput)`)
         var removeIcon = document.createElement("ion-icon")
         removeIcon.name="remove-circle-outline"
         removeBtn.appendChild(removeIcon)
@@ -118,9 +144,63 @@
         div.appendChild(removeBtn)
         parent.appendChild(div);
 
-        CKEDITOR.replace(`textarea${textId}`);
-        textId =textId+ 1;
+        CKEDITOR.replace(`textareaId`);
 
+        document.getElementById("textBtn").disabled = true;
+
+     }
+
+     var quizId=0;
+
+     function newQuiz(){
+        
+        var parent = document.getElementById("inputDiv")
+        var div = document.createElement("div")
+        div.className="quizDiv"
+        div.id="quizDiv"+quizId
+
+        var formDiv= document.createElement("form")
+        formDiv.id="formId"+quizId
+        formDiv.className="formClass"
+
+        var qstnfieldDiv= document.createElement("div")
+        qstnfieldDiv.className="col-12"
+        var qstnfield = document.createElement("input")
+        qstnfield.className = "form-control"
+        qstnfield.style = "display:block;"
+        qstnfield.id = "quiz" +quizId;
+        qstnfield.name = "quizQstn";//
+        qstnfield.placeholder="Enter question"
+        var qstnDiv=document.createElement("div")
+        qstnDiv.className="row g-3"
+
+        qstnfieldDiv.appendChild(qstnfield)
+        qstnDiv.appendChild(qstnfieldDiv)
+
+       for(var i=1;i<5;i++){
+            var options=document.createElement("div")
+            options.className="col-6"
+
+            var input= document.createElement("input")
+            input.className="form-control"
+            input.id="option"+quizId+i
+            input.name="option"+i //
+            input.placeholder="option "+i
+            options.appendChild(input)
+            qstnDiv.appendChild(options)
+        } 
+        
+        var removeBtn = document.createElement("button")
+        removeBtn.setAttribute("onclick",`removeFields("quiz",${quizId})`)
+        var removeIcon = document.createElement("ion-icon")
+        removeIcon.name="remove-circle-outline"
+        removeBtn.appendChild(removeIcon)
+
+        formDiv.appendChild(qstnDiv)
+        div.appendChild(formDiv)
+        div.appendChild(removeBtn)
+        parent.appendChild(div);
+        quizId =quizId+ 1;
      }
 
      var imgId=0
@@ -132,24 +212,217 @@
         div.id="imgDiv"+imgId
         var field = document.createElement("img")
         field.id="img"+imgId
-        field.width=300
+        field.className="pageImage"
+
+        var removeBtn = document.createElement("button")
+        removeBtn.setAttribute("onclick",`removeFields("image",${imgId})`)
+        var removeIcon = document.createElement("ion-icon")
+        removeIcon.name="remove-circle-outline"
+        removeBtn.appendChild(removeIcon)
+
+        var imageName=document.createElement("p")
+        imageName.innerText=event.target.files[0].name
+
        div.appendChild(field)
+      // div.appendChild(imageName)
+       div.appendChild(removeBtn)
        parent.appendChild(div);
        var image = document.getElementById(`img${imgId}`);
        image.src = URL.createObjectURL(event.target.files[0]);
+
+       console.log(event.target.files[0].name,"image")
+
        imgId= imgId+1
     };
 
 
-     function  removeHeading(field,id){
+    var videoId=0;
+
+    function newVideo(event){
+        var parent = document.getElementById("inputDiv")
+        var div = document.createElement("div")
+        div.className="videoDiv"
+        div.id="videoDiv"+videoId
+        var field=document.createElement("video")
+        field.id="video"+videoId
+        field.className="pageVideo"
+
+        var removeBtn = document.createElement("button")
+        removeBtn.setAttribute("onclick",`removeFields("video",${videoId})`)
+        var removeIcon = document.createElement("ion-icon")
+        removeIcon.name="remove-circle-outline"
+        removeBtn.appendChild(removeIcon)
+
+        div.appendChild(field)
+        div.appendChild(removeBtn)
+        parent.appendChild(div);
+        var video = document.getElementById(`video${videoId}`);
+        video.controls="controls"
+        video.type="video/mp4"
+        video.src = URL.createObjectURL(event.target.files[0]);
+        videoId= videoId+1
+        
+    }
+
+
+     function  removeFields(field,id){
         if(field==="heading"){
-            document.getElementById(`headDiv${id}`).remove()
+            document.getElementById(`headDivInput${id}`).remove()
+           // document.getElementById("headingBtn").disabled = false;
         }else if(field==="text"){
-            document.getElementById(`textDiv${id}`).remove()
+            document.getElementById(`textDivInput`).remove()
+            document.getElementById("textBtn").disabled = false;
+        }else if(field==="quiz"){
+            document.getElementById(`quizDiv${id}`).remove()
+        }else if(field==="image"){
+            document.getElementById(`imgDiv${id}`).remove()
+        }else if(field==="video"){
+            document.getElementById(`videoDiv${id}`).remove()
         }
         
      }
 
+     function pagePreview(){
+
+        var rootElement=document.getElementById("previewPage")
+       rootElement.innerHTML="";
+        
+        var heading = document.getElementsByClassName("inputHeadingClass");
+
+    for (var i = 0; i < heading.length; ++i) {
+
+        var headingTagDiv = document.createElement("div")
+        headingTagDiv.className="box"
+        headingTagDiv.draggable=true
+
+        var headingTag = document.createElement("h5")
+        headingTag.style=" font-weight:600"
+
+        headingTag.innerText=heading[i].value
+        var modalPreview= document.getElementById("previewPage")
+        if (heading[i].value!==""){
+            headingTagDiv.appendChild(headingTag)
+            modalPreview.appendChild(headingTagDiv)
+        }
+        }
+
+        var ckTextValue = CKEDITOR.instances["textareaId"]?.getData() 
+        var formElem = document.getElementsByClassName("formClass");
+        var quiz = [];
+        for (var i = 0; i < formElem.length; ++i) {
+            const data = Object.fromEntries(new FormData(formElem[i]).entries());
+                quiz.push(data);
+            }
+        var quizData = quiz;
+
+        document.getElementById("pageText").innerHTML=ckTextValue ? ckTextValue:""
+
+
+        var quizQstns=[];
+
+        for(var i=0; i<quiz.length; i++){
+
+            const quizHtml='<div class="container mt-5"> '+
+                '<div class="d-flex justify-content-center row">'+
+                     '<div class="col-md-10 col-lg-10">'+
+                        '<div class="border">'+
+                             '<div class="question bg-white p-3 border-bottom">'+
+                                ' <div class="d-flex flex-row justify-content-between align-items-center mcq">'+
+                                     '<h4>MCQ Quiz</h4></div>'+
+                             '</div>'+
+                            ' <div class="question bg-white p-3 border-bottom">'+
+                                ' <div class="d-flex flex-row align-items-center question-title">'+
+                                     '<h3 class="text-danger">Q.'+(i+1)+ '</h3>'+
+                                     '<h5 class="mt-1 ml-2"> '+ quiz[i].quizQstn+'</h5>'+
+                                 '</div>'+
+                                 '<div class="row">'+
+                                    '<div class="ans ml-2 col-md-6">'+
+                                        '<label class="radio"> <input type="radio" name="brazil" value="brazil" /> <span>'+quiz[i].option1+'</span>'+
+                                        '</label>'+
+                                '</div><div class="ans ml-2 col-md-6">'+
+                                '<label class="radio"> <input type="radio" name="Germany" value="Germany" /> <span>'+quiz[i].option2+'</span>'+
+                            '</label>'+
+                        '</div><div class="ans ml-2 col-md-6">'+
+                        '<label class="radio"> <input type="radio" name="Indonesia" value="Indonesia" /> <span>'+quiz[i].option3+'</span>'+
+                        '</label>'+
+                        '</div><div class="ans ml-2 col-md-6">'+
+                        '<label class="radio"> <input type="radio" name="Russia" value="Russia" /> <span>'+quiz[i].option4+'</span>'+
+                        '</label>'+    
+                        '</div>'+
+                            '</div>'+
+                            '</div>'+
+                            '</div>'+
+                            '</div>'+
+                            '</div>';
+
+            const div= document.createElement("div")
+            div.className="box"
+            div.draggable=true
+            div.innerHTML=quizHtml
+            document.getElementById("previewPage").appendChild(div)
+        }
+
+        var imageElem = document.getElementsByClassName("pageImage");
+
+        for (var i = 0; i < imageElem.length; ++i) {
+            var imgSrc=imageElem[i].src
+            var imgFile=document.createElement("img")
+            imgFile.src=imgSrc
+            var modalPreview= document.getElementById("previewPage")
+            var div= document.createElement('div')
+            div.className="imgPreviewClass box"
+            div.appendChild(imgFile)
+            modalPreview.appendChild(div)
+            }
+
+
+        var videoElem = document.getElementsByClassName("pageVideo");
+
+        for (var i = 0; i < videoElem.length; ++i) {
+            var videoSrc=videoElem[i].src
+            var videoFile=document.createElement("video")
+            videoFile.src=videoSrc
+            var modalPreview= document.getElementById("previewPage")
+            var div= document.createElement('div')
+            div.className="videoPreviewClass"
+            div.appendChild(videoFile)
+            modalPreview.appendChild(div)
+            }
+
+    // Drag function
+
+            var sortableList= document.querySelector(".grid-container")
+            const items= document.querySelectorAll(".box")
+
+
+            items.forEach(item=>{
+                item.addEventListener("dragstart",()=>{
+                    setTimeout(()=>item.classList.add("dragging"),0)
+                })
+                item.addEventListener("dragend",()=>item.classList.remove("dragging"))
+            })
+
+            var initSortableList =(e)=>{
+                const draggingItem= sortableList.querySelector(".dragging")
+                const sibilings= [...sortableList.querySelectorAll(".box:not(.dragging)")]
+
+                let nextSibiling=sibilings.find(sibiling=>{
+                    return e.clientY <= sibiling.offsetTop + sibiling.offsetHeight/2
+                })
+
+                sortableList.insertBefore(draggingItem,nextSibiling)
+            }
+
+            sortableList.addEventListener("dragover",initSortableList)
+        
+     }
+
+     function clearPage(){
+        var rootElement=document.getElementById("inputDiv")
+        rootElement.innerHTML="";
+        document.getElementById("headingBtn").disabled = false;
+        document.getElementById("textBtn").disabled = false;
+     }
             $(function(){
                 $("#sidebar").load("../../component/sidebar.html");
                 $("#topbar-div").load("../../component/topbar.html");
@@ -185,7 +458,7 @@
                 item.addEventListener('click', activeMenu))
 
 
-    
+                // drag
 
         </script>
 </body>

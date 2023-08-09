@@ -166,6 +166,7 @@ body {
 
 .users .userDetails table tr td {
     padding: 10px;
+    text-align: center;
 }
 
 .users .userDetails table tr td:last-child {
@@ -173,13 +174,43 @@ body {
 }
 
 .users .userDetails table tr td:nth-child(2) {
-    text-align: end;
+    text-align: center;
 }
 
 .users .userDetails table tr td:nth-child(3) {
     text-align: center;
 }
 
+table.dataTable tr.odd{
+    background-color: #fff !important;
+}
+
+table.dataTable tr.odd td.sorting_1{
+    background-color: #fff !important;
+}
+
+table.dataTable tr.even td.sorting_1{
+    background-color: #fff !important;
+}
+
+.dataTables_wrapper{
+    margin-top: 20px;
+}
+
+.dataTables_filter input{
+    height: 35px;
+    border-radius: 4px;
+    border: 1px solid rgb(133, 133, 133);
+}
+
+.dataTables_info{
+    margin-top: 10px;
+    color: var(--blue);
+}
+
+.dataTables_paginate{
+    margin-top: 10px;
+}
 
 .status.activeuser {
     padding: 2px 4px;
@@ -279,8 +310,32 @@ body {
     color: var(--white);
 }
 
+.table>:not(caption)>*>*{
+  border-bottom: 0 !important;
+}
+
+ion-icon {
+    pointer-events: none;
+}
+
+.mult-select-tag .body{
+  min-height: 3rem !important;
+}
+
+.mult-select-tag .item-container{
+  background: #e6f0fe !important;
+  color: #0452c8 !important;
+  border: 1px solid #5095fb !important;
+  border-radius: 0 !important;
+}
+
+.mult-select-tag .item-label{
+  color: #0452c8 !important;
+}
+
 
 /* responsive design */
+
 
 @media(max-width:991px){
 
