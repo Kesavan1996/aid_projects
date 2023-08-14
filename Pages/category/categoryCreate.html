@@ -48,7 +48,7 @@
                       </div>
                       <div class="col-12 d-grid gap-2 d-md-flex justify-content-md-end">
                         <button type="button" class="btn btn-secondary" onclick="cancelcategoryForm()">Cancel</button>
-                        <button type="submit" class="btn btn-primary">Add</button>
+                        <button type="button" class="btn btn-primary" onclick="addCategory()">Add</button>
             
                       </div>
                     </form>
@@ -163,6 +163,15 @@
 
         <script>
 
+            // Function to display error messages
+            const showError = (field, errorText) => {
+                field.classList.add("error");
+                const errorElement = document.createElement("small");
+                errorElement.classList.add("error-text");
+                errorElement.innerText = errorText;
+                field.closest("div").appendChild(errorElement);
+            }
+
             $(function() {
                 $("#categoryTable").dataTable();
                 });
@@ -217,6 +226,39 @@
                   addFormDiv.style.display = "none";
                   addFormBtn.style.display = "block";
                  }
+
+                 
+          function addCategory(){
+
+            const categorynameInput = document.getElementById("categoryname")
+            const addressInput= document.getElementById("address")
+            const descriptionInput= document.getElementById("description")
+
+
+            const categoryname = categorynameInput.value
+            const address= addressInput.value
+            const description= descriptionInput.value
+
+            // Clearing previous error messages
+            document.querySelectorAll(".error").forEach(field => field.classList.remove("error"));
+            document.querySelectorAll(".error-text").forEach(errorText => errorText.remove());
+
+             // Performing validation checks
+             if (categoryname === "") {
+              showError(categorynameInput, "Enter category name");
+            }
+
+            if (address === "") {
+              showError(addressInput, "Enter address");
+            }
+            if (description === "") {
+              showError(descriptionInput, "Enter description");
+            }
+
+            // Checking for any remaining errors before form submission
+            const errorInputs = document.querySelectorAll(".form-group .error");
+            if (errorInputs.length > 0) return;
+          }
 
         </script>
 </body>

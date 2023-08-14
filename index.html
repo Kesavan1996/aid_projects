@@ -28,6 +28,7 @@
             class="form-control form-control-lg"
             id="exampleInputEmail1"
             aria-describedby="emailHelp"
+            required
           />
         </div>
         <div class="mb-3">
@@ -37,6 +38,7 @@
               type="password"
               class="form-control form-control-lg border-end-0"
               id="inputPassword"
+              required
             />
             <span class="input-group-append">
               <button
@@ -51,9 +53,7 @@
           </div>
         </div>
         <button type="submit" class="btn btn-primary mt-4 btn-lg">Login</button>
-        <a href="#" class="d-block mt-2 text-center "
-          ><p>Forgot password?</p></a
-        >
+        <a href="#" class="d-block mt-2 text-center"><p>Forgot password?</p></a>
         <p class="mt-3 mb-0" style="text-align: center">or</p>
 
         <button type="submit" class="btn btn-primary mt-4 btn-lg googleBtn">
@@ -68,8 +68,6 @@
       const icon = document.getElementById("toggleIcon");
 
       function passwordToggle() {
-        // toggle the type attribute
-        console.log(password, "pass");
         const type =
           password.getAttribute("type") === "password" ? "text" : "password";
         password.setAttribute("type", type);
@@ -79,6 +77,8 @@
             : "eye-off-outline";
         icon.setAttribute("name", name);
       }
+
+
     </script>
 
     <script

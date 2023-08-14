@@ -97,6 +97,22 @@ body {
     outline: none !important;
 }
 
+form input.error,
+form select.error,
+.mult-select-tag.error .body.rounded {
+  border-color: #f91919;
+  background: #f9f0f1;
+}
+
+
+form small {
+  font-size: 14px;
+  margin-top: 5px;
+  display: block;
+  color: #f91919;
+  align-self: flex-start;
+}
+
 
 
 .cardHeader {
@@ -137,6 +153,10 @@ body {
     padding: 20px;
     box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
     border-radius: 20px;
+}
+
+table.dataTable{
+    width: 100% !important;
 }
 
 .users table {
@@ -347,7 +367,13 @@ ion-icon {
      left:300px;
  }
  .cardBox{grid-template-columns: repeat(2,1fr);}
+
+ .user-form form{
+    width: 75%;
+    margin: auto;
 }
+}
+
 
 @media(max-width:768px)
 {
@@ -371,5 +397,9 @@ ion-icon {
 }
 .user{
     min-width: 40px;
+}
+.user-form form{
+    width: 100%;
+    margin: auto;
 }
 }

@@ -38,13 +38,6 @@
     pointer-events: none;
 }
 
-.navigation ul li:last-child{
-    position: absolute;
-    bottom: 20px;
-
-}
-
-
 .navigation ul li a {
     position: relative;
     display: block;

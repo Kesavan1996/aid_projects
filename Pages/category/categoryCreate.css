@@ -97,6 +97,22 @@ body {
     outline: none !important;
 }
 
+form input.error,
+form textarea.error,
+form select.error{
+  border-color: #f91919;
+  background: #f9f0f1;
+}
+
+
+form small {
+  font-size: 14px;
+  margin-top: 5px;
+  display: block;
+  color: #f91919;
+  align-self: flex-start;
+}
+
 
 
 .cardHeader {
@@ -173,11 +189,15 @@ body {
 }
 
 .categories .categoryDetails table tr td:nth-child(2) {
-    text-align: end;
+    text-align: center;
 }
 
 .categories .categoryDetails table tr td:nth-child(3) {
     text-align: center;
+}
+
+table.dataTable{
+    width: 100% !important;
 }
 
 
@@ -335,7 +355,13 @@ ion-icon {
  .main.active{
      left:300px;
  }
- .cardBox{grid-template-columns: repeat(2,1fr);}
+ .cardBox{
+    grid-template-columns: repeat(2,1fr);
+}
+.user-form form{
+    width: 75%;
+    margin: auto;
+}
 }
 
 @media(max-width:768px)
@@ -360,5 +386,9 @@ ion-icon {
 }
 .category{
     min-width: 40px;
+}
+.user-form form{
+    width: 100%;
+    margin: auto;
 }
 }

@@ -35,27 +35,27 @@
                 <div class="user-form">
                   <button id="addUserBtn" type="button" class="btn btn-primary" onclick="addFormVisible()" >+ Add User</button>
                   <div id="addUserForm"  style="display: none;">
-                    <form  class="row g-3">
+                    <form  class="row g-3 userFrom" id="userFormId">
                       <div class="col-md-6">
-                        <label for="firstname" class="form-label">First Name</label>
-                        <input type="text" class="form-control form-control-lg" id="firstname">
+                       <label for="firstname" class="form-label">First Name</label>
+                        <input type="text" class="form-control form-control-lg userInput" name="firstname" id="firstname" />
                       </div>
                       <div class="col-md-6">
                         <label for="lastname" class="form-label">Last Name</label>
-                        <input type="text" class="form-control form-control-lg" id="lastname">
+                        <input type="text" class="form-control form-control-lg userInput" name="lastname" id="lastname" />
                       </div>
 
                       <div class="col-12">
                         <label for="email" class="form-label">Email</label>
-                        <input type="email" class="form-control form-control-lg" id="email">
+                        <input type="email" class="form-control form-control-lg userInput" name="email" id="email" />
                       </div>
                       <div class="col-12">
                         <label for="password" class="form-label">Password</label>
-                        <input type="text" class="form-control form-control-lg" id="password">
+                        <input type="password" class="form-control form-control-lg userInput" name="password" id="password" />
                       </div>
                       <div class="col-md-6">
                         <label for="role" class="form-label">Role</label>
-                        <select name="" id="role" class="form-control-lg" multiple>
+                        <select name="role" id="role" class="form-control-lg" multiple>
                           <option value="1">Afghanistan</option>
                           <option value="2">Australia</option>
                           <option value="3">Germany</option>
@@ -64,13 +64,12 @@
                       </select>
                       </div>
                       <div class="col-md-6">
-                        <label for="phone" class="form-label">Phone</label>
-                        <input type="text" class="form-control form-control-lg" id="phone">
+                        <label for="phonenumber" class="form-label">Phone</label>
+                        <input type="text" class="form-control form-control-lg userInput" name="phonenumber" id="phonenumber" />
                       </div>
                       <div class="col-12 d-grid gap-2 d-md-flex justify-content-md-end">
                         <button type="button" class="btn btn-secondary" onclick="cancelUserForm()">Cancel</button>
-                        <button type="submit" class="btn btn-primary">Add</button>
-            
+                        <button type="button" class="btn btn-primary" onclick="addUser()">Add</button>
                       </div>
                     </form>
                   </div>
@@ -194,20 +193,38 @@
       })
       </script>
 
-        <script>
+        <script> 
 
+        // Function to display error messages
+        const showError = (field, errorText) => {
+          field.classList.add("error");
+          const errorElement = document.createElement("small");
+          errorElement.classList.add("error-text");
+          errorElement.innerText = errorText;
+
+          if(field=="roleInput"){
+            field.closest(".col-md-6").appendChild(errorElement);
+          }
+          
+          field.closest("div").appendChild(errorElement);
+      }
+
+          // Tooltip
           $(function() {
             $('[data-toggle="tooltip"]').tooltip();
           });
           
+          // Data tabele
           $(function() {
             $("#userTable").dataTable();
           });
           
+          // Page load
           $(function() {
             $("#sidebar").load("../../component/sidebar.html");
             $("#topbar-div").load("../../component/topbar.html");
           });
+
           // Menu Toggle
           
           let navigation = document.querySelector(".navigation");
@@ -248,6 +265,70 @@
           
             addFormDiv.style.display = "none";
             addFormBtn.style.display = "block";
+          }
+
+
+          // Selecting form and input elements
+          const form = document.querySelector("form");
+
+
+          function addUser(){
+
+            const firstnameInput = document.getElementById("firstname")
+            const lastnameInput= document.getElementById("lastname")
+            const emailInput= document.getElementById("email")
+            const passwordInput= document.getElementById("password")
+            const roleInput = $('#role')
+            const phoneInput= document.getElementById("phonenumber")
+
+            console.log(roleInput,"input")
+
+
+            const firstname = firstnameInput.value
+            const lastname= lastnameInput.value
+            const email= emailInput.value
+            const password= passwordInput.value
+            const role = roleInput.val();
+            const phonenumber= phoneInput.value
+
+            console.log(role.length,"input")
+
+
+            // Regular expression pattern for email validation
+            const emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+
+            // Clearing previous error messages
+            document.querySelectorAll(".error").forEach(field => field.classList.remove("error"));
+            document.querySelectorAll(".error-text").forEach(errorText => errorText.remove());
+
+             // Performing validation checks
+             if (phonenumber === "") {
+              showError(phoneInput, "Enter your phone number");
+            }
+
+            if (firstname === "") {
+              showError(firstnameInput, "Enter your  first name");
+            }
+            if (lastname === "") {
+              showError(lastnameInput, "Enter your last name");
+            }
+
+            if (!emailPattern.test(email)) {
+              showError(emailInput, "Enter a valid email address");
+            }
+
+            if (password === "") {
+              showError(passwordInput, "Enter your password");
+            }
+
+            if (role.length <1) {
+              var multiSelectInput=document.querySelector(".mult-select-tag")
+              showError(multiSelectInput, "Select any role");
+            }     
+
+            // Checking for any remaining errors before form submission
+            const errorInputs = document.querySelectorAll(".form-group .error");
+            if (errorInputs.length > 0) return;
           }
 
         </script>

@@ -37,8 +37,11 @@
                         <button type="button" class="btn btn-primary"><ion-icon name="add-circle-outline"></ion-icon>
                             <input type="file" class="d-none" id="addVideosInput" accept=" video/*" onchange="newVideo(event)">
                             <label for="addVideosInput" style="cursor: pointer;">Video</label>
-                             </button>
-                        <button type="button" class="btn btn-primary" ><ion-icon name="add-circle-outline"></ion-icon> Animation</button>
+                        </button>
+                        <button type="button" class="btn btn-primary" ><ion-icon name="add-circle-outline"></ion-icon>
+                            <input type="file" class="d-none" id="addAnimationInput" accept="image/*" onchange="newAnimation(event)">
+                            <label for="addAnimationInput" style="cursor: pointer;">Animation</label>
+                        </button>
                     </div>
                     <div class="pageContainer">
                         <div id="inputDiv">
@@ -64,11 +67,10 @@
                     <div class="modal-body">
                         <div id="previewPage" class="grid-container">
                         </div>
-                    <div class="box" id="pageText"></div>
                     </div>
                     <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" >Save as Draft</button>
-                    <button type="button" class="btn btn-primary">Publish</button>
+                    <button type="button" class="btn btn-primary" onclick="getElement()">Publish</button>
                     </div>
                 </div>
                 </div>
@@ -89,16 +91,10 @@
             CKEDITOR.replace('editor');
         </script>
 
-        <script>
+    <script>
+    var headingId=0;
 
-
-
-            var headingId=0;
-
-            function newHeading(){
-                
-              //  document.getElementById("headingBtn").disabled = true;
-                
+    function newHeading(){
                 var parent = document.getElementById("inputDiv")
                 var div = document.createElement("div")
                 div.className="headingDiv"
@@ -111,17 +107,20 @@
                 removeBtn.appendChild(removeIcon)
                 field.className = "form-control inputHeadingClass"
                 field.style = "display:block;"
-                field.id = "inputField";
+                field.id = "inputField"+headingId;
                 field.placeholder="Enter title"
                 div.appendChild(field)
                 div.appendChild(removeBtn)
                 parent.appendChild(div);
 
-                headingId=headingId+1;
-                
+                headingId=headingId+1;       
             } 
 
-     function newText(){
+            
+
+            
+
+    function newText(){
 
         var parent = document.getElementById("inputDiv")
         var div = document.createElement("div")
@@ -150,9 +149,9 @@
 
      }
 
-     var quizId=0;
+    var quizId=0;
 
-     function newQuiz(){
+    function newQuiz(){
         
         var parent = document.getElementById("inputDiv")
         var div = document.createElement("div")
@@ -186,6 +185,7 @@
             input.id="option"+quizId+i
             input.name="option"+i //
             input.placeholder="option "+i
+            input.required=true
             options.appendChild(input)
             qstnDiv.appendChild(options)
         } 
@@ -203,9 +203,9 @@
         quizId =quizId+ 1;
      }
 
-     var imgId=0
+    var imgId=0
 
-     function newImage(event) {
+    function newImage(event) {
         var parent = document.getElementById("inputDiv")
         var div = document.createElement("div")
         div.className="imgDiv"
@@ -230,11 +230,8 @@
        var image = document.getElementById(`img${imgId}`);
        image.src = URL.createObjectURL(event.target.files[0]);
 
-       console.log(event.target.files[0].name,"image")
-
        imgId= imgId+1
     };
-
 
     var videoId=0;
 
@@ -265,7 +262,36 @@
     }
 
 
-     function  removeFields(field,id){
+    
+    function newAnimation(event) {
+        var parent = document.getElementById("inputDiv")
+        var div = document.createElement("div")
+        div.className="animationDiv"
+        div.id="animationDiv"+imgId
+        var field = document.createElement("img")
+        field.id="animation"+imgId
+        field.className="pageAnimation"
+
+        var removeBtn = document.createElement("button")
+        removeBtn.setAttribute("onclick",`removeFields("animation",${imgId})`)
+        var removeIcon = document.createElement("ion-icon")
+        removeIcon.name="remove-circle-outline"
+        removeBtn.appendChild(removeIcon)
+
+        var imageName=document.createElement("p")
+        imageName.innerText=event.target.files[0].name
+
+       div.appendChild(field)
+      // div.appendChild(imageName)
+       div.appendChild(removeBtn)
+       parent.appendChild(div);
+       var image = document.getElementById(`animation${imgId}`);
+       image.src = URL.createObjectURL(event.target.files[0]);
+
+       imgId= imgId+1
+    };
+
+    function  removeFields(field,id){
         if(field==="heading"){
             document.getElementById(`headDivInput${id}`).remove()
            // document.getElementById("headingBtn").disabled = false;
@@ -278,18 +304,20 @@
             document.getElementById(`imgDiv${id}`).remove()
         }else if(field==="video"){
             document.getElementById(`videoDiv${id}`).remove()
+        }else if(field==="animation"){
+            document.getElementById(`animationDiv${id}`).remove()
         }
         
      }
 
-     function pagePreview(){
+    function pagePreview(){
 
         var rootElement=document.getElementById("previewPage")
        rootElement.innerHTML="";
         
         var heading = document.getElementsByClassName("inputHeadingClass");
 
-    for (var i = 0; i < heading.length; ++i) {
+        for (var i = 0; i < heading.length; ++i) {
 
         var headingTagDiv = document.createElement("div")
         headingTagDiv.className="box"
@@ -308,6 +336,7 @@
 
         var ckTextValue = CKEDITOR.instances["textareaId"]?.getData() 
         var formElem = document.getElementsByClassName("formClass");
+        console.log(formElem,"form")
         var quiz = [];
         for (var i = 0; i < formElem.length; ++i) {
             const data = Object.fromEntries(new FormData(formElem[i]).entries());
@@ -315,51 +344,73 @@
             }
         var quizData = quiz;
 
-        document.getElementById("pageText").innerHTML=ckTextValue ? ckTextValue:""
 
+
+       // document.getElementById("pageText").innerHTML=ckTextValue ? ckTextValue:""
+
+        var previewTextDiv= document.createElement("div")
+        previewTextDiv.className="box"
+        previewTextDiv.id="pageText"
+        previewTextDiv.innerHTML=ckTextValue
+
+        if(ckTextValue){
+            document.getElementById("previewPage").appendChild(previewTextDiv)
+        }
 
         var quizQstns=[];
 
         for(var i=0; i<quiz.length; i++){
 
-            const quizHtml='<div class="container mt-5"> '+
-                '<div class="d-flex justify-content-center row">'+
-                     '<div class="col-md-10 col-lg-10">'+
-                        '<div class="border">'+
-                             '<div class="question bg-white p-3 border-bottom">'+
-                                ' <div class="d-flex flex-row justify-content-between align-items-center mcq">'+
-                                     '<h4>MCQ Quiz</h4></div>'+
-                             '</div>'+
-                            ' <div class="question bg-white p-3 border-bottom">'+
-                                ' <div class="d-flex flex-row align-items-center question-title">'+
-                                     '<h3 class="text-danger">Q.'+(i+1)+ '</h3>'+
-                                     '<h5 class="mt-1 ml-2"> '+ quiz[i].quizQstn+'</h5>'+
-                                 '</div>'+
-                                 '<div class="row">'+
-                                    '<div class="ans ml-2 col-md-6">'+
-                                        '<label class="radio"> <input type="radio" name="brazil" value="brazil" /> <span>'+quiz[i].option1+'</span>'+
-                                        '</label>'+
-                                '</div><div class="ans ml-2 col-md-6">'+
-                                '<label class="radio"> <input type="radio" name="Germany" value="Germany" /> <span>'+quiz[i].option2+'</span>'+
-                            '</label>'+
-                        '</div><div class="ans ml-2 col-md-6">'+
-                        '<label class="radio"> <input type="radio" name="Indonesia" value="Indonesia" /> <span>'+quiz[i].option3+'</span>'+
-                        '</label>'+
-                        '</div><div class="ans ml-2 col-md-6">'+
-                        '<label class="radio"> <input type="radio" name="Russia" value="Russia" /> <span>'+quiz[i].option4+'</span>'+
-                        '</label>'+    
-                        '</div>'+
-                            '</div>'+
-                            '</div>'+
-                            '</div>'+
-                            '</div>'+
-                            '</div>';
+
+            const quizHtml=`<div class="container my-1">
+                <div class="question ml-sm-5 pl-sm-5 pt-2">
+                    <div class="py-2 h5"><b>Q. ${quiz[i].quizQstn}</b></div>
+                    <div class="ml-md-3 ml-sm-3 pl-md-5 pt-sm-0 pt-3" id="options">
+                        <label class="options">${quiz[i].option1}
+                            <input type="radio" name="radio${i}" value=${quiz[i].option1}/>
+                            <span class="checkmark"></span>
+                        </label>
+                        <label class="options">${quiz[i].option2}
+                            <input type="radio" name="radio${i}" value=${quiz[i].option2}/>
+                            <span class="checkmark"></span>
+                        </label>
+                        <label class="options">${quiz[i].option3}
+                            <input type="radio" name="radio${i}" value=${quiz[i].option3} />
+                            <span class="checkmark"></span>
+                        </label>
+                        <label class="options">${quiz[i].option4}
+                            <input type="radio" name="radio${i}" value=${quiz[i].option4} />
+                            <span class="checkmark"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>`
+
 
             const div= document.createElement("div")
             div.className="box"
             div.draggable=true
             div.innerHTML=quizHtml
             document.getElementById("previewPage").appendChild(div)
+        }
+
+        console.log(quiz,"khbvdfjhdvs")
+
+        if(quiz.length>0){
+            const resultDiv= document.createElement("div")
+            resultDiv.id="myresults"
+            resultDiv.className="my-2"
+            const btnDiv=document.createElement("div")
+            btnDiv.className="ml-auto mr-sm-5"
+            const resultBtn= document.createElement("button")
+            resultBtn.type="button"
+            resultBtn.className="btn btn-primary"
+            resultBtn.setAttribute("onclick",`returnScore()`)
+            resultBtn.innerText="Submit"
+
+            btnDiv.appendChild(resultBtn)
+            btnDiv.appendChild(resultDiv)
+            document.getElementById("previewPage").appendChild(btnDiv)
         }
 
         var imageElem = document.getElementsByClassName("pageImage");
@@ -382,12 +433,27 @@
             var videoSrc=videoElem[i].src
             var videoFile=document.createElement("video")
             videoFile.src=videoSrc
+            videoFile.controls="controls"
             var modalPreview= document.getElementById("previewPage")
             var div= document.createElement('div')
-            div.className="videoPreviewClass"
+            div.className="videoPreviewClass box"
             div.appendChild(videoFile)
             modalPreview.appendChild(div)
             }
+
+
+            var animationElem = document.getElementsByClassName("pageAnimation");
+
+            for (var i = 0; i < animationElem.length; ++i) {
+                var animationSrc=animationElem[i].src
+                var animationFile=document.createElement("img")
+                animationFile.src=animationSrc
+                var modalPreview= document.getElementById("previewPage")
+                var div= document.createElement('div')
+                div.className="animationPreviewClass box"
+                div.appendChild(animationFile)
+                modalPreview.appendChild(div)
+                }
 
     // Drag function
 
@@ -417,49 +483,55 @@
         
      }
 
-     function clearPage(){
+    function clearPage(){
         var rootElement=document.getElementById("inputDiv")
         rootElement.innerHTML="";
         document.getElementById("headingBtn").disabled = false;
         document.getElementById("textBtn").disabled = false;
      }
-            $(function(){
-                $("#sidebar").load("../../component/sidebar.html");
-                $("#topbar-div").load("../../component/topbar.html");
-              });
-            // Menu Toggle
+  
+    function getElement(){
+        var allElem=document.getElementById("previewPage")
+        var previewTags=allElem.innerHTML;
 
-            let navigation = document.querySelector('.navigation');
-            let toggle = document.querySelector('.toggle');
-            let main = document.querySelector('.main');
+        localStorage.setItem("previewData",previewTags)
 
-            toggle.onclick = function() {
-                    navigation.classList.toggle('active');
-                    main.classList.toggle('active');
-                }
-                // add hovered classn selected list item
+        window.location.href="/Pages/preview/preview.html"
+    }
+  
+     $(function(){
+        $("#sidebar").load("../../component/sidebar.html");
+        $("#topbar-div").load("../../component/topbar.html");
+        });
+    // Menu Toggle
 
-            let list = document.querySelectorAll('.navigation li');
+    let navigation = document.querySelector('.navigation');
+    let toggle = document.querySelector('.toggle');
+    let main = document.querySelector('.main');
 
-            function activeLink() {
-                list.forEach((item) =>
-                    item.classList.remove('hovered'));
-                this.classList.add('hovered');  
-            }
-            function activeMenu() {
-                list.forEach((item) =>
-                    item.classList.remove('active'));
-                this.classList.add('active');  
-            }
-            list.forEach((item) =>
-                item.addEventListener('mouseover', activeLink))
+    toggle.onclick = function() {
+            navigation.classList.toggle('active');
+            main.classList.toggle('active');
+        }
+        // add hovered classn selected list item
 
-            list.forEach((item) =>
-                item.addEventListener('click', activeMenu))
+    let list = document.querySelectorAll('.navigation li');
 
+    function activeLink() {
+        list.forEach((item) =>
+            item.classList.remove('hovered'));
+        this.classList.add('hovered');  
+    }
+    function activeMenu() {
+        list.forEach((item) =>
+            item.classList.remove('active'));
+        this.classList.add('active');  
+    }
+    list.forEach((item) =>
+        item.addEventListener('mouseover', activeLink))
 
-                // drag
-
+    list.forEach((item) =>
+        item.addEventListener('click', activeMenu))
         </script>
 </body>
 
