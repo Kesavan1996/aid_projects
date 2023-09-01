@@ -1,0 +1,2681 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Page Create</title>
+  <link rel="stylesheet" type="text/css" href="createpagetwo.css">
+
+  <!-- style CDN for vjs  -->
+  <!-- <link href="https://vjs.zencdn.net/7.17.0/video-js.css" rel="stylesheet" /> -->
+
+  
+  <link href="//vjs.zencdn.net/8.3.0/video-js.min.css" rel="stylesheet">
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+
+   
+
+</head>
+
+<body>
+  <div class="">
+    <div>
+      <div id="sidebar"> </div>
+      <!--- main --->
+      <div class="main">
+        <div id="topbar-div"></div>
+        <div class="createPageDiv">
+          <div class="mainContainer">
+            
+            <div class="cards">
+              <div class="card" id="contentCard">
+              </div>
+
+              <!-- edit -->
+
+              <div id="submitBtnDiv" style="display: none;">
+                <button type="button" id="submitBtn" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#submitModal">Submit</button>
+              </div>
+              
+            </div>
+            <div class="btnContainer">
+              <div class="menuToggles">
+                <button type="button" class="btn rounded-circle ">
+                  +
+              </button>
+              
+              </div>
+              
+              <div class="actionBtns">
+                <button type="button" class="btn btn-primary" id="" onclick="showModal('pageTitle')"> Page Title</button>
+                <button type="button" class="btn btn-primary" id="headingBtn" onclick="showModal('heading')"> Heading</button>
+                <button type="button" class="btn btn-primary" id="" onclick="showModal('headingDesc')">Description</button>
+                <!-- <button type="button" class="btn btn-primary" onclick="newText()" id="textBtn"><ion-icon
+                    name="add-circle-outline"></ion-icon> Text</button> -->
+                <button type="button" class="btn btn-primary" onclick="showModal('image')">Image
+                </button>
+                <button type="button" class="btn btn-primary" onclick="showModal('video')">Video
+                </button>
+                <button type="button" class="btn btn-primary" onclick="showModal('animation')">Animation
+                </button>
+                <button type="button" class="btn btn-primary" onclick="showModal('quiz')">Quiz</button>
+                <button type="button" class="btn btn-primary" onclick="showModal('button')">Button</button>
+                <button type="button" class="btn btn-primary" onclick="showModal('imageLink')">Link</button>
+                <button type="button" class="btn btn-primary" onclick="addSpace()">Empty Space</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="pageTitle">Create Page</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div id="pageContent">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" onclick="addElement()">Ok</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="EditPageTitle">Edit Page</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div id="editPageContent">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" onclick="updateElement()">Ok</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+<!-- Modal -->
+<div class="modal fade" id="submitModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Submit Page</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <!-- <div class="row mb-3">
+            <label for="inputEmail3" class="col-sm-2 col-form-label">Category</label>
+            <div class="col-sm-10">
+              <select id="inputState" class="form-select">
+                <option selected>Choose...</option>
+                <option>A</option>
+                <option>B</option>
+                <option>C</option>
+              </select>
+            </div>
+          </div>         -->
+
+          <!--  -->
+          <div class="mb-3 row">
+            <label for="url" class="col-sm-2 col-form-label">URL</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" id="urlInput">
+            </div>
+          </div>
+          <fieldset class="row mb-3">
+            <legend class="col-form-label col-sm-2 pt-0">Actions</legend>
+            <div class="col-sm-10" id="acionId">
+              <div class="form-check" >
+                <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="Draft">
+                <label class="form-check-label" for="gridRadios1">
+                  Draft
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="Publish" checked>
+                <label class="form-check-label" for="gridRadios2">
+                  Publish
+                </label>
+              </div>
+            </div>
+          </fieldset>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" onclick="submitFn()">Submit</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+    
+    <!-- <script src="https://code.jquery.com/jquery-1.10.2.js"></script> -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"></script>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+   
+    <!-- <script src="https://vjs.zencdn.net/7.17.0/video.min.js"></script> -->
+
+    <script src="//vjs.zencdn.net/8.3.0/video.min.js"></script>
+     
+    <!-- JavaScript for the vjs library  -->
+    <script src="vid.js" defer ></script>
+
+    <script src="/assets/js/ckeditor/ckeditor.js"></script>
+
+
+    <script>
+      CKEDITOR.replace('editor');
+    </script>
+
+    <script>
+
+
+      function changeToRichtext(id_list) {
+
+       var basic = [
+            {
+                name: 'standard',
+                items: ['Bold', 'Italic','NumberedList', 'BulletedList']
+            },
+            
+           { name: 'styles', items: ['Font', 'FontSize','TextColor'] }
+        ];
+        id_list.forEach(id => {
+           // CKEDITOR.plugins.addExternal('custom-list', '/assets/js/plugin/custom-list/', 'plugin.js');
+           CKEDITOR.plugins.addExternal('font', '/assets/js/plugin/font/', 'plugin.js');
+           CKEDITOR.plugins.addExternal('colorbutton', '/assets/js/plugin/colorbutton/', 'plugin.js');
+           CKEDITOR.plugins.addExternal('floatpanel', '/assets/js/plugin/floatpanel/', 'plugin.js');
+           CKEDITOR.plugins.addExternal('panelbutton', '/assets/js/plugin/panelbutton/', 'plugin.js');
+           CKEDITOR.plugins.addExternal('colordialog', '/assets/js/plugin/colordialog/', 'plugin.js');
+           CKEDITOR.plugins.addExternal('liststyle', '/assets/js/plugin/liststyle/', 'plugin.js');
+           CKEDITOR.config.extraPlugins = 'font,colorbutton,panelbutton,floatpanel,colordialog,liststyle';
+           CKEDITOR.config.colorButton_enableMore = true;
+            
+            CKEDITOR.config.enterMode = CKEDITOR.ENTER_BR;
+            CKEDITOR.replace(id, {
+                toolbar: basic,
+                height:"25vh",
+                allowedContent: true
+            });
+    
+        });
+    }
+
+
+      var parentDiv = document.getElementById('contentCard')
+      let submitBtnDiv= document.getElementById("submitBtnDiv")
+      if (parentDiv.innerText == "") {
+        parentDiv.innerHTML = '<h3 id="emptyPage" style="opacity:0.8">Add contents to create page..!</h3>'
+      }
+
+      let menuToggles = document.querySelector(".menuToggles");
+      menuToggles.onclick = function () {
+        menuToggles.classList.toggle("active");
+      };
+
+      var inputId = 0
+      var headingDescId = 0
+      var subHeadingId= 0
+      var quizId=0
+      var imageId=0
+      var animationId=0;
+      var spaceId=0;
+      var buttonId=0;
+      var imgLinkId=0;
+
+      var showImages;
+      //var showAnimations;
+     // var showVideos;
+      var showEditVideos;
+      var files;
+      
+      var descriptionId;
+      const delVideos = (index) => {
+        files.pop()
+      }
+      const delImages = (index) => {
+        files.splice(index, 1)
+        showImages()
+      }
+
+      let data=[]
+      let dataCount=0;
+
+      let headingArray={}
+
+      var imageContainerId=0;
+      let imagesContainerArrar={};
+
+      var videoContainerId=0;
+      let videoContainerArrary={};
+
+      let emptySpaceCount=0
+
+      let quizContainerArray={}
+      let animationContainerArray={}
+      let btnContainerArray={}
+      let imgLinkContainerArray={}
+      let descriptionArray={}
+      let buttonsArray={}
+      let emptyPageArray={}
+      let quizArray={}
+      let titleArray={}
+
+      //Temp Array
+
+      let tempArray={}
+
+      var tempId="";
+      var videoTempId="";
+
+      let cardbgColor=""
+
+
+      function addSpace(){
+
+
+        let menuToggles = document.querySelector(".menuToggles");
+        menuToggles.classList.remove("active");
+
+        let parentDiv=document.getElementById("contentCard")
+        let spaceDiv= document.createElement('div')
+        spaceDiv.className="spaceDiv dragDiv"
+        spaceDiv.id=`space${emptySpaceCount}`
+        spaceDiv.style="height:20px"
+        spaceDiv.draggable=true
+
+        var dropImg = document.createElement("img")
+        dropImg.height = 20
+        dropImg.width = 30
+        dropImg.src = dragImageIcon
+
+        var clickTag = document.createElement("a")
+        clickTag.href = "#"        
+
+        var editImg = document.createElement('img')
+        editImg.width = 20
+        editImg.height = 20
+        editImg.src= editImageIcon
+
+        clickTag.appendChild(editImg)
+
+        var deleteTag = document.createElement("a")
+        deleteTag.href="#"
+        //
+        deleteTag.setAttribute("onclick","deleteItem(this,'space')")
+
+        var deleteImg = document.createElement("img")
+        deleteImg.width=20
+        deleteImg.height=20
+        deleteImg.src=deleteImageIcon
+
+        deleteTag.append(deleteImg)
+        spaceDiv.appendChild(dropImg)
+        spaceDiv.appendChild(deleteTag)
+        parentDiv.appendChild(spaceDiv)
+
+        emptyPageArray[`space${emptySpaceCount}`]={"type":"10"}
+        tempArray[`space${emptySpaceCount}`]={"type":"10"}
+
+        emptySpaceCount+=1;
+
+      }
+
+
+      function showModal(element,value) {
+
+        let menuToggles = document.querySelector(".menuToggles");
+        menuToggles.classList.remove("active");
+
+        document.getElementById("pageContent").innerHTML = ""
+        if (element === "heading") {
+          $('#createModal').modal('show');
+          var modalTitle = document.getElementById("pageTitle")
+          modalTitle.innerText="Add Heading"
+          var modalBody = document.getElementById('pageContent')
+          var input = document.createElement('input')
+          input.id = "headingId" + inputId
+          input.className = "form-control headingClass"
+          let colorPick=`<div class="col-6">
+            <label for="colorPickerId" class="form-label">Choose background Color</label>
+            <input type="color" class="form-control form-control-color" id="colorPickerId" value="#fcfcfc">
+          </div>`   
+          let mainDiv=document.createElement("div")
+          mainDiv.className="row g-3 mt-2"
+
+          mainDiv.innerHTML=colorPick
+          modalBody.appendChild(input)
+          modalBody.appendChild(mainDiv)
+          changeToRichtext([`headingId${inputId}`])
+          inputId = inputId + 1
+        } 
+        else if (element === "subHeading") {
+          $('#createModal').modal('show');
+          var modalTitle = document.getElementById("pageTitle")
+          modalTitle.innerText="Add Subheading"
+          var modalBody = document.getElementById('pageContent')
+          var input = document.createElement('input')
+          input.id = "headingId" + subHeadingId
+          input.className = "form-control subHeadingClass"
+          
+          modalBody.appendChild(input)
+          subHeadingId = subHeadingId + 1
+        } 
+        else if (element === "headingDesc") {
+          $('#createModal').modal('show');
+          var modalTitle = document.getElementById("pageTitle")
+          modalTitle.innerText="Add Description"
+          var modalBody = document.getElementById('pageContent')
+          var input = document.createElement('textarea')
+          input.id = "headingDescId" + headingDescId
+          input.className = "form-control headingDescClass"
+
+
+          let colorPick=`<div class="col-6">
+            <label for="colorPickerId" class="form-label">Choose background Color</label>
+            <input type="color" class="form-control form-control-color" id="descColorPicker" value="#fcfcfc">
+          </div>`  
+
+          let mainDiv=document.createElement("div")
+          mainDiv.className="row g-3 mt-2"
+          mainDiv.innerHTML=colorPick
+
+          modalBody.appendChild(input)
+          modalBody.appendChild(mainDiv)
+
+          //CKEDITOR.replace(`headingDescId`+headingDescId,{ toolbar : 'Full', toolbarLocation : 'bottom' });
+
+          changeToRichtext([`headingDescId${headingDescId}`])
+         
+        }
+        else if (element === "image") {
+          $('#createModal').modal('show');
+          var modalTitle = document.getElementById("pageTitle")
+          modalTitle.innerText="Add Images"
+          var modalBody = document.getElementById('pageContent')
+          var cardDiv = document.createElement("div")
+          cardDiv.className = "imgCard"
+          //
+          cardDiv.id = `imgContainerDiv${imageContainerId}`
+          cardDiv.innerHTML = `<div class="top">
+                  </div>
+                  <form action="" method="post" class="dragover">
+                      <span class="inner"><span class="select">Browse</span></span>
+                      <input name="file" type="file" class="file" multiple accept="image/*"/>
+                  </form>
+                  <div class="imgContainer">
+                  </div>`
+
+          modalBody.appendChild(cardDiv)
+
+          files = [],
+            button = document.querySelector('.top button'),
+            form = document.querySelector('form'),
+            container = document.querySelector('.imgContainer')
+            container.id="imgContainer"+imageContainerId
+          text = document.querySelector('.inner')
+          browse = document.querySelector('.select')
+          input = document.querySelector('form input');
+
+          browse.addEventListener('click', () => input.click());
+
+          input.addEventListener("change", () => {
+            let file = input.files;
+            for (let i = 0; i < file.length; i++) {
+              if (files.every(e => e.name !== file[i].name)){
+                files.push(file[i])
+              }
+               
+            }
+
+            //
+
+            imagesContainerArrar[`imgContainerDiv${imageContainerId}`]=files
+            tempArray[`imgContainerDiv${imageContainerId}`]={type:"4",images:files}
+
+    
+              form.reset();
+              showImages()
+              dragFunction();
+            })
+
+          showImages = () => {
+            let images = '';
+            files.forEach((e, i) => {
+              images += `<div class="image box" draggable="true"">
+                        <img src=${URL.createObjectURL(e)} alt="img" >
+                       <span onclick="delImages(${i})"> &times;</span>
+                    </div>`
+            })
+            container.innerHTML = images
+          
+          }
+
+         // const button=<button>Upload</button>
+
+          form.addEventListener('dragover', e => {
+            e.preventDefault();
+            form.classList.add('dragover')
+            text.innerHTML = 'Drop images here'
+          })
+
+          form.addEventListener('dragleave', e => {
+            e.preventDefault();
+            form.classList.remove('dragover')
+            text.innerHTML = 'Drag & Drop image or <span class="select">Browse</span>'
+          })
+
+          form.addEventListener('drop', e => {
+            e.preventDefault()
+            form.classList.remove('dragover')
+            text.innerHTML = 'Drag & Drop image or <span class="select">Browse</span>'
+            let file = e.dataTransfer.files;
+            for (let i = 0; i < file.length; i++) {
+              if (files.every(e => e.name !== file[i].name)) files.push(file[i])
+            }
+            showImages()
+          })
+
+          button?.addEventListener('click', () => {
+            let form = new FormData();
+            files.forEach((e, i) => form.append(`file[${i}]`, e))
+          })
+
+
+          // Drag function
+
+          const dragFunction = () => {
+            var sortableList = document.querySelector(".imgContainer")
+            const items = document.querySelectorAll(".box")
+
+            items.forEach(item => {
+              item.addEventListener("dragstart", () => {
+                setTimeout(() => item.classList.add("dragging"), 0)
+              })
+              item.addEventListener("dragend", () => item.classList.remove("dragging"))
+            })
+
+            var initSortableList = (e) => {
+              const draggingItem = sortableList.querySelector(".dragging")
+              const sibilings = [...sortableList.querySelectorAll(".box:not(.dragging)")]
+
+              let nextSibiling = sibilings.find(sibiling => {
+                return e.clientY <= sibiling.offsetTop + sibiling.offsetHeight / 2
+              })
+
+              sortableList.insertBefore(draggingItem, nextSibiling)
+            }
+
+            sortableList.addEventListener("dragover", initSortableList)
+
+          }
+
+          imageId+=1
+ 
+          
+        }
+        else if (element === "quiz") {
+          $('#createModal').modal('show');
+          var modalTitle = document.getElementById("pageTitle")
+          modalTitle.innerText="Add Quiz"
+          var modalBody = document.getElementById('pageContent')
+
+          var formDiv = document.createElement('form')
+          formDiv.className = "formClass"
+          formDiv.id = "quizDiv"+quizId
+          var options = ""
+          for (let i = 0; i < 4; i++) {
+            options += `<div class="col-6 gy-3">
+                  <input class="form-control"  id="option${i}" placeholder="option ${i + 1}" required name="option${i}" />
+                </div>`
+          }
+
+          var answerDiv=`<div class="col-12 gy-3">
+            <input class="form-control"  id="answer" placeholder="Enter answer" required name="answer" />
+          </div>`
+
+          var quizDivContainer =
+            `<div class="row g-3">
+               <div class="col-12">
+                <textarea name="quizQstn" id="question"${quizId} />
+               </div>
+               ${options}
+               ${answerDiv}
+              </div>`
+
+          
+          var divOne=document.createElement("div")
+          var divTwo=document.createElement("div")
+          //divOne.className="row g-3"
+          divTwo.className="col-12"
+          divTwo.style="margin-bottom:10px"
+
+          var textarea = document.createElement("input")
+          textarea.className="form-control"
+          textarea.id="question"+quizId
+          textarea.name="question"
+          textarea.placeholder="Enter question"
+
+          divTwo.appendChild(textarea)
+          divOne.appendChild(divTwo)
+          
+              
+          var div= document.createElement("div")
+          div.className="row"
+              div.innerHTML=options
+              div.innerHTML+=answerDiv
+
+              divOne.appendChild(div)
+
+          formDiv.appendChild(divOne)
+
+         // formDiv.innerHTML = quizDivContainer
+
+          modalBody.appendChild(formDiv)
+         // CKEDITOR.replace(`question${quizId}`,{ toolbar : 'Full', toolbarLocation : 'bottom' });
+
+        
+
+        }
+        else if (element === 'video') {
+          $('#createModal').modal('show');
+          var modalTitle = document.getElementById("pageTitle")
+          modalTitle.innerText="Add Video"
+          var modalBody = document.getElementById('pageContent')
+          var cardDiv = document.createElement("div")
+          cardDiv.className = "videoCard"
+          cardDiv.id="videoContainer"+videoContainerId
+
+          //
+          cardDiv.innerHTML = `<div class="top">
+                  <p>Import videos</p>
+                </div>
+                <form action="" method="post" class="dragover">
+                    <span class="inner"><span class="select">Browse</span></span>
+                    <input name="file" type="file" class="file" accept="video/mp4"/>
+                </form>
+                <div class="videoModalContainer">
+                </div>`
+
+          modalBody.appendChild(cardDiv)
+
+          const maxAllowedSize = 10 * 1024 * 1024;
+
+          let files="",
+            button = document.querySelector('.top button'),
+            form = document.querySelector('form'),
+            container = document.querySelector('.videoModalContainer')
+            //
+          text = document.querySelector('.inner')
+          browse = document.querySelector('.select')
+          input = document.querySelector('form input');
+
+          browse.addEventListener('click', () => input.click());
+
+          input.addEventListener("change", () => {
+            files = input.files[0];
+
+            if(files.size<maxAllowedSize){
+              videoContainerArrary[`DivvideoContainer${videoContainerId}`]=files 
+            
+              // video data object
+  
+              tempArray[`DivvideoContainer${videoContainerId}`]={type:"5",video:files}
+              form.reset();
+              showVideos()
+            }else{
+              container.innerHTML='<p style="color:red">Maximum video size is 10MP</p>'
+            }
+          })
+
+          const showVideos = () => {
+            let videos = `<div class="video" id="videoId" draggable="true">
+                      <video src=${URL.createObjectURL(files)} alt="video" />
+                      <span onclick="delVideos()">&times;</span>
+                  </div>`
+            container.innerHTML = videos
+           
+          }
+
+
+          button?.addEventListener('click', () => {
+            let form = new FormData();
+            files.forEach((e, i) => form.append(`file[${i}]`, e))
+          })
+          
+           videoTempId=videoContainerId;  
+ 
+        }
+        else if(element==="animation"){
+        $('#createModal').modal('show');
+        var modalTitle = document.getElementById("pageTitle")
+        modalTitle.innerText="Add Animations"
+        var modalBody = document.getElementById('pageContent')
+        var cardDiv = document.createElement("div")
+        cardDiv.className = "animationCard"
+        cardDiv.id = "animationsDiv"+animationId
+        cardDiv.innerHTML = `<div class="top">
+                  <p>Import animations</p>
+                </div>
+                <form action="" method="post" class="dragover">
+                    <span class="inner"><span class="select">Browse</span></span>
+                    <input name="file" type="file" class="file" multiple accept="image/gif"/>
+                </form>
+                <div class="animationContainer">
+                </div>`
+
+        modalBody.appendChild(cardDiv)
+
+        let files = [],
+          button = document.querySelector('.top button'),
+          form = document.querySelector('form'),
+          container = document.querySelector('.animationContainer')
+        text = document.querySelector('.inner')
+        browse = document.querySelector('.select')
+        input = document.querySelector('form input');
+
+        browse.addEventListener('click', () => input.click());
+
+        input.addEventListener("change", () => {
+          let file = input.files;
+          for (let i = 0; i < file.length; i++) {
+            if (files.every(e => e.name !== file[i].name)) files.push(file[i])
+          }
+          animationContainerArray[`animationsDiv${animationId}`]=files
+
+          // animation data
+
+          tempArray[`animationsDiv${animationId}`]={types:"6",animations:files}
+
+          form.reset();
+          showAnimations()
+          dragFunction();
+        })
+
+        const showAnimations = () => {
+          let animations = '';
+          files.forEach((e, i) => {
+            animations += `<div class="animation box" draggable="true">
+                      <img src=${URL.createObjectURL(e)} alt="animation">
+                      <span onclick="delAnimations(${i})">&times;</span>
+                  </div>`
+          })
+          container.innerHTML = animations
+
+        }
+
+        const delAnimations = (index) => {
+          files.splice(index, 1)
+          showAnimations()
+        }
+
+        button?.addEventListener('click', () => {
+          let form = new FormData();
+          files.forEach((e, i) => form.append(`file[${i}]`, e))
+        })
+
+
+        // Drag function
+
+        const dragFunction = () => {
+          var sortableList = document.querySelector(".animationContainer")
+          const items = document.querySelectorAll(".box")
+
+          items.forEach(item => {
+            item.addEventListener("dragstart", () => {
+              setTimeout(() => item.classList.add("dragging"), 0)
+            })
+            item.addEventListener("dragend", () => item.classList.remove("dragging"))
+          })
+
+          var initSortableList = (e) => {
+            const draggingItem = sortableList.querySelector(".dragging")
+            const sibilings = [...sortableList.querySelectorAll(".box:not(.dragging)")]
+
+            let nextSibiling = sibilings.find(sibiling => {
+              return e.clientY <= sibiling.offsetTop + sibiling.offsetHeight / 2
+            })
+
+            sortableList.insertBefore(draggingItem, nextSibiling)
+          }
+
+          sortableList.addEventListener("dragover", initSortableList)
+
+        }
+      }
+        else if(element==='editHeading'){
+          $('#createModal').modal('show');
+          var modalTitle = document.getElementById("pageTitle")
+          modalTitle.innerText="Edit Heading"
+          var modalBody = document.getElementById('pageContent')
+          var div= document.createElement('div')
+          div.className="editHeading"
+          var input=document.createElement('input')
+          input.className = "form-control headingClass"
+          input.value=value.innerText ===undefined?value[0].innerText:value.innerText
+          input.id=value.id ===undefined?value[0].id:value.id
+          div.appendChild(input)
+          modalBody.appendChild(div)
+        }
+        else if(element==='editSubHeading'){
+          $('#createModal').modal('show');
+          var modalTitle = document.getElementById("pageTitle")
+          modalTitle.innerText="Edit Subheading"
+          var modalBody = document.getElementById('pageContent')
+          var div= document.createElement('div')
+          div.className="editSubHeading"
+          var input=document.createElement('input')
+          input.className = "form-control headingClass"
+          input.value=value.innerText ===undefined?value[0].innerText:value.innerText
+          input.id=value.id ===undefined?value[0].id:value.id
+          div.appendChild(input)
+          modalBody.appendChild(div)
+        }
+        else if(element==='editDescription'){
+          $('#createModal').modal('show');
+          var modalTitle = document.getElementById("pageTitle")
+          modalTitle.innerText="Edit Description"
+          var modalBody = document.getElementById('pageContent')
+          var div= document.createElement('div')
+          div.className="editDescription"
+          var input = document.createElement('textarea')
+          input.id = "DescId"
+          input.className = `${value.id}`
+          modalBody.appendChild(input)
+          CKEDITOR.replace(`DescId`,{ toolbar : 'Full', toolbarLocation : 'bottom' });
+          CKEDITOR.instances['DescId'].setData(value.innerHTML);
+         
+          div.appendChild(input)
+          modalBody.appendChild(div)
+        }
+        else if(element=== "pageTitle"){
+          $('#createModal').modal('show');
+          var modalTitle = document.getElementById("pageTitle")
+
+          modalTitle.innerText="Add Page Title"
+          var modalBody = document.getElementById('pageContent')
+          var pageTitle= ` <div class="col-md-12">
+              <input type="text" class="form-control" id="pageTitleField">
+            </div>
+            <div class="col-md-6">
+              <label for="colorId" class="form-label">Color</label>
+              <input type="text" class="form-control" id="colorId" value="#fcfcfc">
+            </div>
+            <div class="col-6">
+              <label for="colorPickerId" class="form-label">Choose Color</label>
+              <input type="color" class="form-control form-control-color" id="colorPickerId" value="#fcfcfc">
+            </div>`   
+
+          var parentDiv=document.createElement("div")
+          parentDiv.className="row g-3 pageTitle"
+          parentDiv.id="pageTitleId"
+          parentDiv.innerHTML=pageTitle
+          modalBody.appendChild(parentDiv)
+
+          var colorPickerField=document.getElementById("colorPickerId")
+          let colorInputField= document.getElementById("colorId")
+
+          colorPickerField.addEventListener("change", (event) => {
+            colorInputField.value=colorPickerField.value
+          });
+
+          changeToRichtext([`pageTitleField`])
+
+        
+        }
+        else if(element === 'button'){
+          $('#createModal').modal('show');
+          var modalTitle = document.getElementById("pageTitle")
+          modalTitle.innerText="Add Button"
+          var modalBody = document.getElementById('pageContent')
+
+            let buttonInput=`<div class="row g-3">
+            <div class="col-12">
+              <input type="text" class="form-control" id="btnName" placeholder="Name">
+            </div>
+            <div class="col-12">
+              <input type="text" class="form-control" id="btnLinkId" placeholder="Link">
+            </div>
+            <div class="col-6">
+              <label for="colorPickerId" class="form-label">Choose background Color</label>
+              <input type="color" class="form-control form-control-color" id="btnColorPicker" value="#fcfcfc">
+            </div>
+          </div>`
+
+            let buttonDiv= document.createElement("div")
+            buttonDiv.id="btnLink"
+            buttonDiv.className="row g-3"
+
+            let mainDiv= document.createElement("div")
+            mainDiv.className="linkBtnDiv"
+            mainDiv.id=`btnLinkDiv${buttonId}`
+            mainDiv.innerHTML=buttonInput
+
+
+            modalBody.appendChild(mainDiv)
+
+        }
+        else if(element === "imageLink"){
+          $('#createModal').modal('show');
+          var modalTitle = document.getElementById("pageTitle")
+          modalTitle.innerText="Add Image Link"
+          var modalBody = document.getElementById('pageContent')
+
+          let linkInput= `<input class="form-control mb-3" type="text" id="imgLinkField" placeholder="Image link">`
+
+
+          let imgLinkContainer = `<div class="container col-md-12">
+          <div class="mb-3">
+                <input class="form-control" type="file" id="formFile" accept="image/*">
+            </div>
+            <img id="linkImage" src="" class="img-fluid" /> </div>`
+
+
+          let mainContainer=document.createElement("div")
+          mainContainer.className="linkImgModalDiv"
+          mainContainer.id=`imgLink${imgLinkId}`
+
+          mainContainer.innerHTML=linkInput
+          mainContainer.innerHTML+=imgLinkContainer
+
+          modalBody.appendChild(mainContainer)
+
+          let imgInputId= document.getElementById("formFile")
+          let imgDiv = document.getElementById("linkImage")
+
+          let linkInputElem=document.getElementById("imgLinkField")
+
+          let files;
+
+          imgInputId.addEventListener("change", () => {
+           files = event.target.files[0];
+            imgDiv.src=URL.createObjectURL(files);
+            imgLinkContainerArray[`imgLink${imgLinkId}`]={link:linkInputElem.value,image:files}
+            tempArray[`imgLink${imgLinkId}`]={type:"9",link:linkInputElem.value,image:files}
+          })
+
+          linkInputElem.addEventListener("change",()=>{
+            imgLinkContainerArray[`imgLink${imgLinkId}`]={link:linkInputElem.value,image:files}
+            tempArray[`imgLink${imgLinkId}`]={type:"9",link:linkInputElem.value,image:files}
+            
+          })
+
+        }
+      }
+
+
+    var headingDivId=0;
+    var dragImageIcon="../../assets/img/sort.png"
+    var editImageIcon="../../assets/img/pen.png"
+    var deleteImageIcon="../../assets/img/close.png"
+
+// Delete elem
+
+function deleteItem(e,element){
+
+ let cardElem = document.getElementById("contentCard")
+  let parent=e.parentNode
+  let key = e.parentNode.id
+
+  if(element==="heading"){
+   delete headingArray[key]
+  }else if(element === "description"){
+    delete descriptionArray[key]
+  }
+  else if(element === "image"){
+    delete imagesContainerArrar[key]
+  }
+  else if(element === "video"){
+    delete videoContainerArrary[key]
+  }
+  else if(element === "quiz"){
+    delete quizContainerArray[key]
+  }
+  else if(element === "animation"){
+    delete animationContainerArray[key]
+  }
+  else if(element === "title"){
+    delete titleArray['title']
+  }
+  else if(element === "button"){
+    delete btnContainerArray[key]
+  }
+  else if(element === 'link'){
+    delete imgLinkContainerArray[key]
+  }else if(element === "space"){
+    delete emptyPageArray[key]
+  }
+
+  delete tempArray[key]
+  parent.remove()
+
+  // bg color remove
+
+  let contentDiv= document.getElementById("contentCard")
+
+  if (cardElem.innerText == "") {
+    cardElem.innerHTML = '<h3 id="emptyPage" style="opacity:0.8">Add contents to create page..!</h3>'
+    submitBtnDiv.style.display="none"
+    contentDiv.style.backgroundColor="#fcfcfc"
+  }
+
+}
+
+
+// Add Function
+
+      function addElement() {
+        var modalBody = document.getElementById('pageContent')
+        var children = modalBody.children[0].value
+        var contentCards = document.getElementById("contentCard")
+
+        if (modalBody.children[0].className === "form-control headingClass") {
+          var div = document.createElement('div')
+          div.className = "heading dragDiv"
+          div.draggable = true
+          div.id="headingId"+headingDivId
+          var dropImg = document.createElement("img")
+          dropImg.height = 20
+          dropImg.width = 30
+          dropImg.src = "/assets/img/sort.png"
+
+          var clickTag = document.createElement("a")
+          clickTag.href = "#"
+          arg = "page" + modalBody.children[0].id
+          clickTag.id = "tag" + modalBody.children[0].id
+          clickTag.setAttribute("onclick", `editModal("editHeading",this.previousElementSibling.id,this.parentElement.id)`)
+
+          var editImg = document.createElement('img')
+          editImg.width = 20
+          editImg.height = 20
+          editImg.src = "/assets/img/pen.png"
+
+          clickTag.appendChild(editImg)
+
+          var deleteTag = document.createElement("a")
+          deleteTag.href="#"
+          deleteTag.setAttribute("onclick","deleteItem(this,'heading')")
+
+          var deleteImg = document.createElement("img")
+          deleteImg.width=20
+          deleteImg.height=20
+          deleteImg.src='/assets/img/close.png'
+
+          deleteTag.append(deleteImg)
+
+          var elem = document.createElement("h2")
+          elem.id = "page" + modalBody.children[0].id
+          elem.contentEditable=false
+          elem.innerText = children
+          var ckTextValue = CKEDITOR.instances[modalBody.children[0].id]?.getData() 
+
+          let bgColor=document.getElementById(`colorPickerId`).value 
+          
+          let paraDiv= document.createElement("div")
+          paraDiv.className="headingDiv"
+
+          let paraTag=document.createElement("p")
+          paraTag.id="heading"+headingDivId
+          paraTag.innerHTML=ckTextValue
+
+          paraDiv.appendChild(paraTag)
+
+          div.appendChild(dropImg)
+          div.appendChild(paraDiv)
+          div.appendChild(clickTag)
+          div.appendChild(deleteTag)
+
+
+            if(ckTextValue !==""){
+
+            //  
+            $('#createModal').modal('hide');
+            document.getElementById("emptyPage")?.remove()
+            contentCards.appendChild(div)
+              
+            headingArray[`headingId${headingDivId}`]={"type":"2",heading:ckTextValue,bgColor:bgColor}
+            // heading Data
+
+            tempArray[`headingId${headingDivId}`]={"type":"2",heading:ckTextValue,bgColor:bgColor}
+
+            let headingDiv=document.getElementById(`headingId${headingDivId}`)
+            headingDiv.style.backgroundColor=`${bgColor}`
+            //
+            submitBtnDiv.style.display="block"
+            headingDivId+=1
+            
+            }
+         
+        } 
+        else if (modalBody.children[0].className === "form-control headingDescClass") {
+          var div = document.createElement('div')
+          div.className = "headingDesc dragDiv"
+          div.id=`descriptionDiv${headingDescId}`
+          div.draggable = true
+          var dropImg = document.createElement("img")
+          dropImg.height = 20
+          dropImg.width = 20
+          dropImg.src = "/assets/img/sort.png"
+
+          var clickTag = document.createElement("a")
+          clickTag.href = "#"
+          arg = "pageHeadDesc" + modalBody.children[0].id
+          clickTag.id = "headDesctag" + modalBody.children[0].id
+          
+
+          var editImg = document.createElement('img')
+          editImg.width = 20
+          editImg.height = 20
+          editImg.src = "/assets/img/pen.png"
+
+          clickTag.appendChild(editImg)
+
+          var deleteTag = document.createElement("a")
+          deleteTag.href="#"
+          deleteTag.setAttribute("onclick","deleteItem(this,'description')")
+
+          var deleteImg = document.createElement("img")
+          deleteImg.width=20
+          deleteImg.height=20
+          deleteImg.src='/assets/img/close.png'
+
+          deleteTag.append(deleteImg)
+
+          let elemId="descriptionDiv" + headingDescId
+
+          clickTag.setAttribute("onclick", `editModal("editDescription",this.previousElementSibling.id,this.parentElement.id)`)
+
+          var ckTextValue = CKEDITOR.instances[modalBody.children[0].id]?.getData() 
+          var elem = document.createElement("p")
+          elem.id = "Description" + headingDescId
+          elem.innerHTML = ckTextValue
+          div.appendChild(dropImg)
+          div.appendChild(elem)
+          div.appendChild(clickTag)
+          div.appendChild(deleteTag)
+
+
+          let elemBgColor=document.getElementById("descColorPicker").value
+
+          if (CKEDITOR.instances[modalBody.children[0].id]?.getData() !== "") {
+
+            //
+            $('#createModal').modal('hide');
+            document.getElementById("emptyPage")?.remove()
+            contentCards.appendChild(div)
+            descriptionArray[`${elemId}`]={text:ckTextValue,bgColor:elemBgColor}
+            tempArray[`${elemId}`]={type:"3",text:ckTextValue,bgColor:elemBgColor}
+
+
+
+            //
+            let parentElem= document.getElementById(elemId)
+            parentElem.style.backgroundColor=elemBgColor
+
+            //
+            submitBtnDiv.style.display="block"
+          
+            headingDescId = headingDescId + 1
+          }
+
+
+        }
+        else if (modalBody.children[0].className === "imgCard") {
+
+
+          let ParentId;
+
+
+          var div = document.createElement('div')
+          div.className = "imageContainer dragDiv"
+
+          //
+          div.id = modalBody.children[0].id
+          div.draggable = true
+          var dropImg = document.createElement("img")
+          dropImg.height = 20
+          dropImg.width = 20
+          dropImg.src = "/assets/img/sort.png"
+
+          var clickTag = document.createElement("a")
+          clickTag.href = "#"
+          arg = "pageHeadDesc" + modalBody.children[0].id
+          clickTag.id = "headDesctag" + modalBody.children[0].id
+          
+
+          var editImg = document.createElement('img')
+          editImg.width = 20
+          editImg.height = 20
+          editImg.src = "/assets/img/pen.png"
+
+          clickTag.appendChild(editImg)
+
+          var imgArry = [];
+          var imgSrc = document.getElementsByClassName("image")
+          var parentContainer= document.getElementsByClassName("imgContainer")
+          ParentId=parentContainer[0].id
+          for (let i = 0; i < imgSrc.length; i++) {
+            imgArry.push(imgSrc[i].children[0].src)
+          }
+
+          var imgContainer = document.createElement("div")
+          imgContainer.className = "imagesDiv"
+          imgContainer.id=parentContainer[0].id
+          imgContainer.draggable = true
+       //
+          clickTag.setAttribute("onclick", `editModal("editImages",this.previousElementSibling.id,this.parentElement.id)`)
+
+          let images = '';
+          imgArry.forEach((e, i) => {
+            images += `
+                    <img src=${e} alt="img">
+                </div>`
+          })
+
+
+          imgContainer.innerHTML = images
+         
+          var deleteTag = document.createElement("a")
+          deleteTag.href="#"
+          deleteTag.setAttribute("onclick","deleteItem(this,'image')")
+
+          var deleteImg = document.createElement("img")
+          deleteImg.width=20
+          deleteImg.height=20
+          deleteImg.src='/assets/img/close.png'
+
+          deleteTag.append(deleteImg)
+          var existingElement= document.getElementById(tempId)
+
+//
+
+
+            tempId=parentContainer[0].id;
+
+          if (imgContainer.innerHTML !== "") {
+            //
+            $('#createModal').modal('hide');
+            document.getElementById("emptyPage")?.remove()
+
+            div.appendChild(dropImg)
+            div.appendChild(imgContainer)
+            div.appendChild(clickTag)
+            div.appendChild(deleteTag)
+            contentCards.appendChild(div)
+
+            //
+            submitBtnDiv.style.display="block"
+            imageContainerId+=1
+          }
+
+
+        }
+        else if (modalBody.children[0].className === "videoCard") {
+
+          let keyId=modalBody.children[0].id
+
+          var div = document.createElement('div')
+          div.className = "videoContainer dragDiv"
+          div.id = `Div${keyId}`
+          div.draggable = true
+          var dropImg = document.createElement("img")
+          dropImg.height = 20
+          dropImg.width = 20
+          dropImg.src = "/assets/img/sort.png"
+
+
+          var clickTag = document.createElement("a")
+          clickTag.href = "#"
+          arg = "page" + modalBody.children[0].id
+          clickTag.id = "tag" + modalBody.children[0].id
+
+          var editImg = document.createElement('img')
+          editImg.width = 20  
+          editImg.height = 20
+          editImg.src = "/assets/img/pen.png"
+
+          clickTag.appendChild(editImg)
+
+          var parentContainerVideo= document.getElementsByClassName("videoCard")
+          var videoArry = [];
+          var videoDIv = document.getElementById("videoId")
+          var videoSrc = videoDIv.children[0].src
+
+          var videoLocalSrc=videoContainerArrary[`Div${parentContainerVideo[0].id}`]
+          var videoName= videoLocalSrc.name
+          var videoType=videoLocalSrc.type
+
+          var videoContainer = document.createElement("div")
+          videoContainer.className = "videosDiv"
+          videoContainer.id=parentContainerVideo[0].id
+          videoContainer.draggable = true    
+         clickTag.setAttribute("onclick", "editModal('editVideo',this.previousElementSibling.id,this.parentElement.id)")
+
+          var deleteTag = document.createElement("a")
+          deleteTag.href="#"
+          deleteTag.setAttribute("onclick","deleteItem(this,'video')")
+
+          var deleteImg = document.createElement("img")
+          deleteImg.width=20
+          deleteImg.height=20
+          deleteImg.src='/assets/img/close.png'
+
+          deleteTag.append(deleteImg)
+
+         // deleteTag.setAttribute("onclick","return this.parentNode.remove()")
+
+          var existingElement= document.getElementById(videoTempId)
+
+          let videos = '';
+
+            videos =`<video class="video-js vjs-big-play-centered vjs-show-big-play-button-on-pause" controls  preload="auto" alt="video">
+                <source src=${videoSrc} type=${videoType} />
+            </video>`
+          videoContainer.innerHTML = videos
+
+          //
+          videoTempId=parentContainerVideo[0].id;
+          if (videoContainer.innerHTML !== "") {
+
+            //
+            $('#createModal').modal('hide');
+            document.getElementById("emptyPage")?.remove()
+            div.appendChild(dropImg)
+            div.appendChild(videoContainer)
+            div.appendChild(clickTag)
+            div.appendChild(deleteTag)
+            contentCards.appendChild(div)
+            //
+            submitBtnDiv.style.display="block"
+            videoContainerId+=1
+          }
+        }
+        else if (modalBody.children[0].className === "formClass") {
+
+          let animationKey=modalBody.children[0].id
+          var quizDiv = document.createElement('div')
+          quizDiv.className = "quizContainer dragDiv"
+          quizDiv.id =animationKey
+          quizDiv.draggable = true
+          var dropImg = document.createElement("img")
+          dropImg.height = 20
+          dropImg.width = 20
+          dropImg.src = "/assets/img/sort.png"
+
+          var formElem = document.getElementsByClassName("formClass");
+          var quiz = [];
+          for (var i = 0; i < formElem.length; ++i) {
+            const data = Object.fromEntries(new FormData(formElem[i]).entries());
+            quiz.push(data);
+          }
+          var quizData = quiz;
+
+         quizContainerArray[`quiz${quizId}`]=quiz[0]
+
+
+         // var qstnValue= CKEDITOR.instances[`question${quizId}`]?.getData() 
+
+         // quiz[i][`question${quizId}`]=qstnValue
+
+        //  quiz[0].question0=qstnValue
+
+          const { question, answer, ...rest } = quiz[0];
+
+          var optionsList = []
+          for (var key in rest) {
+            var value = rest[key];
+            if (value !== "") {
+              optionsList.push(value)
+            }
+          }
+          const { option0, option1, option2, option3 } = quiz[0];
+
+          var options = ""
+          for (let i = 0; i < optionsList.length; i++) {
+            options += `<label class="options">${optionsList[i]}
+              <input type="radio" name="radio" value=${optionsList[i]}/>
+              <span class="checkmark"></span>
+          </label>`
+          }
+
+          for (var i = 0; i < quiz.length; i++) {
+            const quizHtml = `<div class="container my-1">
+                <div class="question ml-sm-5 pl-sm-5 pt-2 text-start">
+                    <div class="py-2 h5"><b>Q. ${quiz[i].question}</b></div>
+                    <div class="ml-md-3 ml-sm-3 pl-md-5 pt-sm-0 pt-3" id="options">
+                       ${options}
+                    </div>
+                </div>
+            </div>`
+
+
+            const submitBtn = `<button type="button" class="btn btn-primary" onclick="answerSubmit()">Submit</button>`
+
+            const div = document.createElement("div")
+            div.style = "text-align:start"
+            div.style="width:90%"
+            div.id=`quiz${quizId}`
+            div.className="quizClass"
+            div.innerHTML = quizHtml
+
+            var clickTag = document.createElement("a")
+          clickTag.href = "#"
+          arg = "page" + modalBody.children[0].id
+          clickTag.id = "tag" + quizId
+
+          var editImg = document.createElement('img')
+          editImg.width = 20
+          editImg.height = 20
+          editImg.src = "/assets/img/pen.png"
+
+          clickTag.appendChild(editImg)
+
+
+          clickTag.setAttribute("onclick","editModal('editQuiz',this.previousElementSibling.id,this.parentElement.id)")
+
+         // quizContainerArray[`${quizArray}`]=quiz[0]
+          var deleteTag = document.createElement("a")
+          deleteTag.href="#"
+          deleteTag.setAttribute("onclick","deleteItem(this,'quiz')")
+
+          var deleteImg = document.createElement("img")
+          deleteImg.width=20
+          deleteImg.height=20
+          deleteImg.src='/assets/img/close.png'
+
+          deleteTag.append(deleteImg)
+
+            quizDiv.appendChild(dropImg)
+            quizDiv.appendChild(div)
+            quizDiv.appendChild(clickTag)
+            quizDiv.appendChild(deleteTag)
+
+              //
+            if (quiz[0].quizQstn !== "" && optionsList.length >=2 && answer) {
+              //
+              $('#createModal').modal('hide');
+              document.getElementById("emptyPage")?.remove()
+              contentCards.appendChild(quizDiv)
+              tempArray[`quizDiv${quizId}`]={type:"7",quiz:quiz[0]}
+              //
+              submitBtnDiv.style.display="block"
+             quizId+=1;
+
+            }
+          }
+          
+        }
+        else if (modalBody.children[0].className === "animationCard") {
+
+          var div = document.createElement('div')
+          div.className = "animationParentContainer dragDiv"
+          div.id = modalBody.children[0].id
+          div.draggable = true
+          var dropAnimation = document.createElement("img")
+          dropAnimation.height = 20
+          dropAnimation.width = 20
+          dropAnimation.src = "/assets/img/sort.png"
+
+          var animationArry = [];
+          var animationSrc = document.getElementsByClassName("animation")
+          for (let i = 0; i < animationSrc.length; i++) {
+            animationArry.push(animationSrc[i].children[0].src)
+          }
+
+          var animationContainer = document.createElement("div")
+          animationContainer.className = "animationsDiv"
+          animationContainer.id = `animations${animationId}`
+          animationContainer.draggable = true
+          for (let i = 0; i < animationArry.length; i++) {
+            animationContainer.innerHTML = `<img src=${animationArry[i]} alt="">`
+          }
+
+          let animations = '';
+          animationArry.forEach((e, i) => {
+            animations += `
+                    <img src=${e} alt="img">
+                </div>`
+          })
+          animationContainer.innerHTML = animations
+
+
+          var clickTag = document.createElement("a")
+          clickTag.href = "#"
+          arg = "page" + modalBody.children[0].id
+          clickTag.id = "tag" + modalBody.children[0].id
+
+          clickTag.setAttribute("onclick", "editModal('editAnimation',this.previousElementSibling.id,this.parentElement.id)")
+        //  clickTag.setAttribute("onclick", `showModal("editQuiz",${parentQuizContainer[0].id})`)
+
+          var editImg = document.createElement('img')
+          editImg.width = 20
+          editImg.height = 20
+          editImg.src = "/assets/img/pen.png"
+
+          clickTag.appendChild(editImg)
+
+          
+          var deleteTag = document.createElement("a")
+          deleteTag.href="#"
+          deleteTag.setAttribute("onclick","deleteItem(this,'animation')")
+
+          var deleteImg = document.createElement("img")
+          deleteImg.width=20
+          deleteImg.height=20
+          deleteImg.src='/assets/img/close.png'
+
+          deleteTag.append(deleteImg)
+
+
+          div.appendChild(dropAnimation)
+          div.appendChild(animationContainer)
+          div.appendChild(clickTag)
+          div.appendChild(deleteTag)
+
+          if (animationContainer.innerHTML !== "") {
+            //
+            $('#createModal').modal('hide');
+            document.getElementById("emptyPage")?.remove()
+            contentCards.appendChild(div)
+            //
+            submitBtnDiv.style.display="block"
+            //
+            animationId+=1
+          }
+          
+
+        }
+        else if (modalBody.children[0].id === "pageTitleId"){
+          let pageTitle=document.getElementById("pageTitleField").value
+          let colorPick=document.getElementById("colorId").value
+          contentCards.style.backgroundColor=colorPick
+
+          cardbgColor=colorPick
+
+          var dropImg = document.createElement("img")
+          dropImg.height = 20
+          dropImg.width = 30
+          dropImg.src = dragImageIcon
+
+          var clickTag = document.createElement("a")
+          clickTag.href = "#"
+          arg = "page" + modalBody.children[0].id
+          clickTag.id = "tag" + modalBody.children[0].id
+          
+
+          var editImg = document.createElement('img')
+          editImg.width = 20
+          editImg.height = 20
+          editImg.src= editImageIcon
+
+          clickTag.appendChild(editImg)
+
+          var deleteTag = document.createElement("a")
+          deleteTag.href="#"
+          deleteTag.setAttribute("onclick","deleteItem(this,'title')")
+
+          var deleteImg = document.createElement("img")
+          deleteImg.width=20
+          deleteImg.height=20
+          deleteImg.src=deleteImageIcon
+
+          deleteTag.append(deleteImg)
+
+
+          var ckTextValue = CKEDITOR.instances['pageTitleField']?.getData() 
+
+          let titleDiv=document.createElement("div")
+          titleDiv.className="titleDiv"
+          titleDiv.id="title"
+          let heading= document.createElement("p")
+          heading.id="pageHeadingId"
+          heading.style.fontWeight="bold"
+          heading.innerHTML=ckTextValue
+
+        
+        
+          titleDiv.appendChild(dropImg)
+          titleDiv.appendChild(heading)
+          titleDiv.appendChild(clickTag)
+          titleDiv.appendChild(deleteTag)
+
+          clickTag.setAttribute("onclick", `editModal("editTitle","pageHeadingId")`)
+
+          if (ckTextValue !== "") {
+
+            
+            //
+            $('#createModal').modal('hide');
+            document.getElementById("emptyPage")?.remove()
+            contentCards.appendChild(titleDiv)
+            titleArray["title"]={"type":"1",title:ckTextValue,bgColor:cardbgColor}
+            tempArray["title"]={"type":"1",title:ckTextValue,bgColor:cardbgColor}
+            //
+            submitBtnDiv.style.display="block"
+          }else{
+            let inputElem=document.getElementById("cke_pageTitleField")
+            inputElem.insertAdjacentHTML('afterend', '<p class="error">Please enter the field..!</p>');
+          }
+          
+        }
+        else if (modalBody.children[0].className === "linkBtnDiv"){
+          let btnName=document.getElementById("btnName").value
+          let btnLink=document.getElementById("btnLinkId").value
+
+          let parentId=modalBody.children[0].id
+
+          var dropImg = document.createElement("img")
+          dropImg.height = 20
+          dropImg.width = 30
+          dropImg.src = dragImageIcon
+
+          var clickTag = document.createElement("a")
+          clickTag.href = "#"
+          arg = "page" + modalBody.children[0].id
+          clickTag.id = "tag" + modalBody.children[0].id
+          
+
+          var editImg = document.createElement('img')
+          editImg.width = 20
+          editImg.height = 20
+          editImg.src= editImageIcon
+
+          clickTag.appendChild(editImg)
+          var deleteTag = document.createElement("a")
+          deleteTag.href="#"
+          deleteTag.setAttribute("onclick","deleteItem(this,'button')")
+
+          var deleteImg = document.createElement("img")
+          deleteImg.width=20
+          deleteImg.height=20
+          deleteImg.src=deleteImageIcon
+
+          deleteTag.append(deleteImg)
+
+          let btnDiv= document.createElement("div")
+          btnDiv.className="btnDiv dragDiv"
+          btnDiv.id=parentId
+
+          let linkDiv=document.createElement("div")
+          linkDiv.className="linkDiv"
+          linkDiv.id="btnLink"+buttonId
+
+          clickTag.setAttribute("onclick", `editModal("editButton",this.previousElementSibling.id,this.parentElement.id)`)
+
+          //
+
+          let btnTag=`<a href=${btnLink} id="linkTag${buttonId}" target="_blank" class="linkBtn">${btnName}</a>`
+
+          linkDiv.innerHTML=btnTag
+
+          let btnColor=document.getElementById("btnColorPicker").value
+
+          if(btnName !=="" && btnLink !==""){
+            //
+            $('#createModal').modal('hide');
+            btnDiv.appendChild(dropImg)
+            btnDiv.appendChild(linkDiv)
+            btnDiv.appendChild(clickTag)
+            btnDiv.appendChild(deleteTag)
+            contentCards.appendChild(btnDiv)
+            
+            btnContainerArray[`${parentId}`]={name:btnName,link:btnLink,bgColor:btnColor}
+
+            // Button data
+            tempArray[`${parentId}`]={type:"8",name:btnName,link:btnLink,bgColor:btnColor}
+
+            let childElem = document.getElementById(`linkTag${buttonId}`)
+
+            childElem.style.backgroundColor=btnColor
+
+            //
+            submitBtnDiv.style.display="block"
+            buttonId+=1;
+          }
+          
+          
+
+
+        }
+        else if(modalBody.children[0].className === "linkImgModalDiv"){
+
+          let imgId=modalBody.children[0].id
+          var div = document.createElement('div')
+          div.className = "imgLink dragDiv"
+          div.id = imgId
+          div.draggable = true
+          
+          var dropImg = document.createElement("img")
+          dropImg.height = 20
+          dropImg.width = 30
+          dropImg.src = dragImageIcon
+
+          var clickTag = document.createElement("a")
+          clickTag.href = "#"
+          arg = "page" + modalBody.children[0].id
+          clickTag.id = "tag" + modalBody.children[0].id
+
+          
+          
+
+          var editImg = document.createElement('img')
+          editImg.width = 20
+          editImg.height = 20
+          editImg.src= editImageIcon
+
+          clickTag.appendChild(editImg)
+
+          var deleteTag = document.createElement("a")
+          deleteTag.href="#"
+          deleteTag.setAttribute("onclick","deleteItem(this,'link')")
+
+          var deleteImg = document.createElement("img")
+          deleteImg.width=20
+          deleteImg.height=20
+          deleteImg.src=deleteImageIcon
+
+          deleteTag.append(deleteImg)
+
+          const {link,image}=imgLinkContainerArray[`${imgId}`]
+
+          //
+
+          let imgLinkDiv= `<a href="${link}" target="_blank"><img src="${URL.createObjectURL(image)}" alt=""/></a>`
+
+          let imgDiv=document.createElement("div")
+          imgDiv.className="linkImgClass"
+          imgDiv.id="img"+imgId
+
+          imgDiv.innerHTML=imgLinkDiv
+
+          div.appendChild(dropImg)
+          div.appendChild(imgDiv)
+          div.appendChild(clickTag)
+          div.appendChild(deleteTag)
+
+          if (link !== "" && image !=="") {
+            //
+            $('#createModal').modal('hide');
+            document.getElementById("emptyPage")?.remove()
+            contentCards.appendChild(div)
+
+            //
+            submitBtnDiv.style.display="block"
+              buttonId+=1;
+            imgLinkId+=1;
+          }
+
+          clickTag.setAttribute("onclick", `editModal("editImgLink",this.previousElementSibling.id,this.parentElement.id)`)
+        }
+        // Drag function
+
+        var sortableList = document.querySelector(".card")
+        const items = document.querySelectorAll(".dragDiv")
+
+        items.forEach(item => {
+          item.addEventListener("dragstart", () => {
+            setTimeout(() => item.classList.add("dragging"), 0)
+          })
+          item.addEventListener("dragend", () => item.classList.remove("dragging"))
+        })
+
+        var initSortableList = (e) => {
+          const draggingItem = sortableList.querySelector(".dragging")
+          const sibilings = [...sortableList.querySelectorAll(".dragDiv:not(.dragging)")]
+
+          let nextSibiling = sibilings.find(sibiling => {
+            return e.clientY <= sibiling.offsetTop + sibiling.offsetHeight / 2
+          })
+
+          sortableList.insertBefore(draggingItem, nextSibiling)
+        }
+
+        sortableList.addEventListener("dragover", initSortableList)
+
+       
+        //
+
+       
+
+      }
+
+// Edit Funtion
+
+      function editModal(element,id,parentId){
+
+         document.getElementById("editPageContent").innerHTML=""
+
+         let parentContentCard=document.getElementById("contentCard")
+
+        if(element==="editQuiz"){
+
+          $('#editModal').modal('show');
+          const quizObject=quizContainerArray[`${id}`]
+          var modalTitle = document.getElementById("EditPageTitle")
+          modalTitle.innerText="Edit Quiz"
+          var modalBody = document.getElementById('editPageContent')
+
+          var formDiv = document.createElement('form')
+          formDiv.className = "formClassEdit"
+          formDiv.id=parentId
+
+       
+
+          var options = ""
+
+            options += `<div class="col-6 gy-3">
+                  <input class="form-control"  id="option0" placeholder="option 1" required name="option0" value=${quizObject['option0']} >
+                </div>`
+            options += `<div class="col-6 gy-3">
+                  <input class="form-control"  id="option1" placeholder="option 2" required name="option1" value=${quizObject['option1']} >
+                </div>`
+            options += `<div class="col-6 gy-3">
+                  <input class="form-control"  id="option2" placeholder="option 3" required name="option2" value=${quizObject['option2']} >
+                </div>`
+            options += `<div class="col-6 gy-3">
+                  <input class="form-control"  id="option3" placeholder="option 4" required name="option3" value=${quizObject['option3']} >
+                </div>`
+
+
+          var answerDiv=`<div class="col-12 gy-3">
+            <input class="form-control"  id="answer" placeholder="Enter answer" required name="answer" value=${quizObject['answer']} >
+          </div>`
+          
+          var divOne=document.createElement("div")
+          divOne.id=id
+          var divTwo=document.createElement("div")
+          //divOne.className="row g-3"
+          divTwo.className="col-12"
+          divTwo.style="margin-bottom:10px"
+
+          var textarea = document.createElement("input")
+          textarea.className="form-control"
+          textarea.id="question"+quizId
+          textarea.name="question"
+          textarea.value=quizObject['question']
+          textarea.placeholder="Enter question"
+
+          divTwo.appendChild(textarea)
+          divOne.appendChild(divTwo)
+          
+              
+          var div= document.createElement("div")
+          div.className="row"
+          div.innerHTML=options
+          div.innerHTML+=answerDiv
+
+          divOne.appendChild(div)
+
+          formDiv.appendChild(divOne)
+
+          modalBody.appendChild(formDiv)
+
+        }            
+        else if(element==="editVideo"){
+          $('#editModal').modal('show');
+          var paramId=id
+          let videosList=videoContainerArrary[`${parentId}`]    
+
+          
+
+          var modalTitle = document.getElementById("EditPageTitle")
+          modalTitle.innerText="Edit Video"
+          var modalBody = document.getElementById('editPageContent')
+          var cardDiv = document.createElement("div")
+          cardDiv.className = "videoCard"
+          //
+          cardDiv.id = parentId
+          cardDiv.innerHTML = `<div class="top">
+                  <p>Import videos</p>
+                </div>
+                <form action="" method="post" class="dragover">
+                    <span class="inner"><span class="select">Browse</span></span>
+                    <input name="file" type="file" class="file" id="videoInputEditId" accept="video/mp4"/>
+                </form>
+                <div class="videoModalContainerEdit" id=${paramId}>
+                </div>`
+
+          modalBody.appendChild(cardDiv)
+
+          //
+          const maxVideoSize = 10 * 1024 * 1024;
+          //
+         
+           let button = document.querySelector('.top button'),
+            form = document.querySelector('form'),
+            container = document.querySelector('.videoModalContainerEdit')
+            text = document.querySelector('.inner')
+            browse = document.querySelector('.select')
+           var inputFile = document.querySelector('form input');
+
+            browse.addEventListener('click', () => inputFile.click());
+
+            var videoFile=[]
+
+            videoFile=videoContainerArrary[`${parentId}`]
+
+            let files=[]
+
+            var inputId=document.getElementById("videoInputEditId")
+            inputId.onchange=e=>{
+              videoFile = e.target.files[0];
+
+              if(videoFile.size<maxVideoSize){
+                videoContainerArrary[`${parentId}`]=videoFile
+                tempArray[`${parentId}`]={type:"5",video:videoFile}
+                form.reset();
+                container.innerHTML=""
+                showEditVideos()
+              }else{
+                container.innerHTML=`<p style="color:red">Maximum video size is 10MP </p>`
+              }
+              //
+            } 
+
+          let showEditVideos = () => {
+            videoFile=videoContainerArrary[`${parentId}`]
+            console.log(videoFile,"video")
+            let videos = `<div class="video" id="videoEditId" draggable="true">
+                      <video src=${URL.createObjectURL(videoFile)} alt="video">
+                      <span onclick="delVideos()">&times;</span>
+                  </div>`
+
+            var imgDiv=  document.createElement("div")
+            imgDiv.innerHTML=videos
+
+            container.appendChild(imgDiv)
+
+          }
+
+          const delImages = (index) => {
+            files.splice(index, 1)
+            showEditVideos()
+          }
+
+          showEditVideos()
+
+        }
+        else if(element==="editAnimation"){
+          var paramId=id
+          $('#editModal').modal('show');
+
+          
+
+          var modalTitle = document.getElementById("EditPageTitle")
+          modalTitle.innerText="Add Animations"
+          var modalBody = document.getElementById('editPageContent')
+
+
+          var animationList=animationContainerArray[`${parentId}`]
+
+          var cardDiv = document.createElement("div")
+          cardDiv.className = "animationCard"
+          cardDiv.id = parentId
+          cardDiv.innerHTML = `<div class="top">
+                    <p>Import animations</p>
+                  </div>
+                  <form action="" method="post" class="dragover">
+                      <span class="inner"><span class="select">Browse</span></span>
+                      <input name="file" type="file" class="file" id="animationInputId" multiple accept="image/gif"/>
+                  </form>
+                  <div class="animationEditContainer" id=${paramId}> 
+                  </div>`
+  
+          modalBody.appendChild(cardDiv)
+
+          
+          var animationfiles = []
+          //
+          animationfiles=imagesContainerArrar[`${parentId}`]
+  
+          let files=[];
+           let button = document.querySelector('.top button'),
+            form = document.querySelector('form'),
+            container = document.querySelector('.animationEditContainer')
+            container.id=paramId
+          text = document.querySelector('.inner')
+          browse = document.querySelector('.select')
+          input = document.querySelector('form input');
+  
+          browse.addEventListener('click', () => input.click());
+
+
+          var input=document.getElementById("animationInputId")
+  
+          input.addEventListener("change", () => {
+            let file = input.files;
+            for (let i = 0; i < file.length; i++) {
+              if (animationfiles.every(e => e.name !== file[i].name)) animationfiles.push(file[i])
+            }
+            animationContainerArray[`${paramId}`]=animationfiles
+            tempArray[`${parentId}`]=animationfiles
+
+            form.reset();
+            showAnimations()
+            dragFunction();
+          })
+  
+         let showAnimations = () => {
+            animationfiles=animationContainerArray[`${parentId}`]
+            let animations = '';
+            animationfiles.forEach((e, i) => {
+              animations += `<div class="animation box" draggable="true">
+                        <img src=${URL.createObjectURL(e)} alt="animation">
+                        <span onclick="delAnimations(${i})">&times;</span>
+                    </div>`
+            })
+            container.innerHTML = animations
+  
+          }
+  
+          const delAnimations = (index) => {
+            files.splice(index, 1)
+            showAnimations()
+          }
+
+          showAnimations()
+  
+  
+          // Drag function
+  
+          const dragFunction = () => {
+            var sortableList = document.querySelector(".animationContainer")
+            const items = document.querySelectorAll(".box")
+  
+            items.forEach(item => {
+              item.addEventListener("dragstart", () => {
+                setTimeout(() => item.classList.add("dragging"), 0)
+              })
+              item.addEventListener("dragend", () => item.classList.remove("dragging"))
+            })
+  
+            var initSortableList = (e) => {
+              const draggingItem = sortableList.querySelector(".dragging")
+              const sibilings = [...sortableList.querySelectorAll(".box:not(.dragging)")]
+  
+              let nextSibiling = sibilings.find(sibiling => {
+                return e.clientY <= sibiling.offsetTop + sibiling.offsetHeight / 2
+              })
+  
+              sortableList.insertBefore(draggingItem, nextSibiling)
+            }
+  
+            sortableList.addEventListener("dragover", initSortableList)
+  
+          }
+
+        }
+        else if(element==="editTitle"){
+          $('#editModal').modal('show');
+          var modalTitle = document.getElementById("EditPageTitle")
+          modalTitle.innerText="Edit Page Title"
+          var modalBody = document.getElementById('editPageContent')
+
+          let titleText=document.getElementById(id).innerText
+
+         let bgColor= cardbgColor
+
+         
+
+
+          var pageTitle= ` <div class="col-md-12">
+              <label for="pageTitle" class="form-label">Title</label>
+              <input type="text" class="form-control inputField" id="pageTitleFieldEdit">
+            </div>
+            <div class="col-md-6">
+              <label for="colorId" class="form-label">Color</label>
+              <input type="text" class="form-control" id="colorEditId" value=${bgColor}>
+            </div>
+            <div class="col-6">
+              <label for="colorPickerId" class="form-label">Choose Color</label>
+              <input type="color" class="form-control form-control-color" id="colorPickerEditId" value=${bgColor}>
+            </div>` 
+
+
+          var parentDiv=document.createElement("div")
+          parentDiv.className="row g-3 pageTitle"
+          parentDiv.id="pageTitleId"
+          parentDiv.innerHTML=pageTitle
+
+          let elemValue=document.getElementById(id)
+          modalBody.appendChild(parentDiv)
+
+          changeToRichtext([`pageTitleFieldEdit`])
+
+          CKEDITOR.instances[`pageTitleFieldEdit`].setData(elemValue.innerHTML);
+
+          var colorPickerField=document.getElementById("colorPickerEditId")
+          let colorInputField= document.getElementById("colorEditId")
+
+          colorPickerField.addEventListener("change", (event) => {
+            colorInputField.value=colorPickerField.value
+            cardbgColor=colorPickerField.value
+          });
+        }
+        else if(element==="editButton"){
+          $('#editModal').modal('show');
+          var modalTitle = document.getElementById("EditPageTitle")
+          modalTitle.innerText="Edit Button"
+          var modalBody = document.getElementById('editPageContent')
+
+          const {name,link,bgColor}= btnContainerArray[parentId]
+          let btnName=document.getElementById(`${id}`).children[0].innerText
+          let btnLink=document.getElementById(`${id}`).children[0].getAttribute("href")
+
+          let rowDiv=document.createElement("div")
+          rowDiv.className="row g-3"
+
+          let nameInput=document.createElement("input")
+          nameInput.className="form-control col-12"
+          nameInput.id="btnNameEdit"
+          nameInput.value=btnName
+
+          let linkInput= document.createElement("input")
+          linkInput.className="form-control col-12"
+          linkInput.id="btnLinkEdit"
+          linkInput.value=btnLink
+
+          let buttonLink= `<div class="col-6">
+            <label for="colorPickerId" class="form-label">Choose background Color</label>
+            <input type="color" class="form-control form-control-color" id="btnEditColor" value="${bgColor}">
+          </div>`
+
+          let btnDiv = document.createElement('div')
+          btnDiv.innerHTML=buttonLink
+
+          rowDiv.appendChild(nameInput)
+          rowDiv.appendChild(linkInput)
+
+          let buttonDiv= document.createElement("div")
+          buttonDiv.id="btnLink"
+          buttonDiv.className="row g-3"
+
+          let mainDiv= document.createElement("div")
+          mainDiv.className="linkBtnDiv"
+          mainDiv.id=parentId
+          mainDiv.appendChild(rowDiv)
+          mainDiv.appendChild(btnDiv)
+          modalBody.appendChild(mainDiv)
+
+
+        }
+        else if(element==="editHeading"){
+          $('#editModal').modal('show');
+          var modalTitle = document.getElementById("EditPageTitle")
+          modalTitle.innerText="Edit Heading"
+          var modalBody = document.getElementById('editPageContent')
+          var div= document.createElement('div')
+          div.className="editHeading"
+          div.id=parentId
+          var input=document.createElement('input')
+
+         // let parentElem= document.getElementById(id).parentElement
+
+          let {bgColor, heading} = headingArray[`${parentId}`]
+
+          let colorPick=`<div class="col-6">
+            <label for="colorPickerId" class="form-label">Choose background Color</label>
+            <input type="color" class="form-control form-control-color" id="headingColorPickerId" value="${bgColor}">
+          </div>` 
+
+          let colorDiv=document.createElement("div")
+          colorDiv.className="row g-3 mt-2"
+          colorDiv.innerHTML=colorPick
+          //input.className = "form-control headingClass"
+          input.id="editInput"
+          
+          let elemValue=document.getElementById(id)
+          div.appendChild(input)
+          modalBody.appendChild(div)
+          modalBody.appendChild(colorDiv)
+          changeToRichtext([`editInput`])
+          CKEDITOR.instances[`editInput`].setData(heading);
+
+          let colorInput=document.getElementById(`headingColorPickerId`)
+        }
+        else if(element === "editImgLink"){
+
+          $('#editModal').modal('show');
+          var modalTitle = document.getElementById("EditPageTitle")
+          modalTitle.innerText="Edit Image Link"
+          var modalBody = document.getElementById('editPageContent')
+
+          const {link,image}=imgLinkContainerArray[`${parentId}`]
+
+          let linkInput= `<input class="form-control mb-3" type="text" id="imgLinkEditField" placeholder="Image link" value=${link}>`
+
+          let imgLinkContainer = `<div class="container col-md-12">
+          <div class="mb-3">
+                <input class="form-control" type="file" id="formFileEdit" accept="image/*">
+            </div>
+            <img id="linkFormEdit" src=${URL.createObjectURL(image)} class="img-fluid" /> </div>`
+
+
+          let mainContainer=document.createElement("div")
+          mainContainer.className="linkImgModalDiv"
+          mainContainer.id=`${parentId}`
+
+
+          mainContainer.innerHTML=linkInput
+          mainContainer.innerHTML+=imgLinkContainer
+
+          modalBody.appendChild(mainContainer)
+
+          let imgInputIdEdit= document.getElementById("formFileEdit")
+          let imgDivEdit = document.getElementById("linkFormEdit")
+
+          let linkInputElemEdit=document.getElementById("imgLinkEditField")
+          let files;
+
+          imgInputIdEdit.addEventListener("change", () => {
+            files = event.target.files[0];
+            imgDivEdit.src=URL.createObjectURL(files);
+            imgLinkContainerArray[`${parentId}`]={link:linkInputElemEdit.value,image:files}
+            tempArray[`${parentId}`]={type:"9",link:linkInputElemEdit.value,image:files}
+          })
+
+        }
+        else if(element ==="editDescription"){
+
+          $('#editModal').modal('show');
+          var modalTitle = document.getElementById("EditPageTitle")
+          modalTitle.innerText="Edit Description"
+          var modalBody = document.getElementById('editPageContent')
+
+          let mainContainer= document.createElement("div")
+          mainContainer.id=parentId
+          mainContainer.className="DescClass"
+
+          var input = document.createElement('textarea')
+          input.id = "descEditId"
+
+          let descDiv= document.createElement('div')
+          descDiv.id=id
+          let colorPick=`<div class="col-6">
+            <label for="colorPickerId" class="form-label">Choose background Color</label>
+            <input type="color" class="form-control form-control-color" id="descEditColorPicker" value="#fcfcfc">
+          </div>`  
+
+          let colorDiv=document.createElement("div")
+          colorDiv.className="row g-3 mt-2"
+          colorDiv.innerHTML=colorPick
+
+          descDiv.appendChild(input)
+
+          mainContainer.appendChild(descDiv)
+          mainContainer.appendChild(colorDiv)
+
+          modalBody.appendChild(mainContainer)
+
+          const {text,bgColor}=descriptionArray[`${parentId}`]
+
+          changeToRichtext([`descEditId`])
+
+          CKEDITOR.instances[`descEditId`].setData(text);
+
+          let colorInputElem= document.getElementById("descEditColorPicker")
+          colorInputElem.value=bgColor
+
+        }
+        else if(element==='editImages'){
+
+          $('#editModal').modal('show');
+
+          //
+
+          var imagesList=imagesContainerArrar[`${parentId}`]
+          showImages()
+          var paramId=id
+           var modalTitle = document.getElementById("EditPageTitle")
+          modalTitle.innerText="Edit Images"
+          var modalBody = document.getElementById('editPageContent')
+          var cardDiv = document.createElement("div")
+          cardDiv.className = "imgEditCard"
+          //
+          cardDiv.id = parentId
+          cardDiv.innerHTML = `<div class="top">
+                  </div>
+                  <form action="" method="post" class="dragover">
+                      <span class="inner"><span class="select">Browse</span></span>
+                      <input name="file" type="file" class="file" id="imgInputEdit" multiple accept="image/*"/>
+                  </form>
+                  <div class="imgContainerEdit">
+                  </div>`
+
+          modalBody.appendChild(cardDiv)
+           var button = document.querySelector('.top button'),
+            form = document.querySelector('form'),
+            container = document.querySelector('.imgContainerEdit')
+            container.id=paramId
+          text = document.querySelector('.inner')
+          browse = document.querySelector('.select')
+          input = document.querySelector('form input');
+
+          browse.addEventListener('click', () => input.click());
+
+          var imgfiles = []
+          //
+          imgfiles=imagesContainerArrar[`${parentId}`]
+
+          let files=[]
+          var inputId=document.getElementById("imgInputEdit")
+
+          inputId.onchange=e=>{
+            let file = inputId.files;
+            for (let i = 0; i < file.length; i++) { 
+              if (imgfiles.every(e => e.name !== file[i].name)){
+                imgfiles.push(file[i])
+              }
+              
+            }
+
+            //
+
+             imagesContainerArrar[`${parentId}`]=imgfiles
+             tempArray[`${parentId}`]={type:"5",images:imgfiles}
+              form.reset();
+              showImages()
+              dragFunction();
+           
+          }
+          showImages = () => {
+
+            imgfiles=imagesContainerArrar[`${parentId}`]
+            let images = '';
+            imgfiles.forEach((e, i) => {
+              images += `<div class="image box" draggable="true"">
+                        <img src=${URL.createObjectURL(e)} alt="img" >
+                       <span onclick="delImages(${i})"> &times;</span>
+                    </div>`
+            })
+
+           
+            container.innerHTML = images
+          }
+
+          button?.addEventListener('click', () => {
+            let form = new FormData();
+            imgfiles.forEach((e, i) => form.append(`file[${i}]`, e))
+          })
+          // Drag function
+
+          const dragFunction = () => {
+            var sortableList = document.querySelector(".imgContainerEdit")
+            const items = document.querySelectorAll(".box")
+
+            items.forEach(item => {
+              item.addEventListener("dragstart", () => {
+                setTimeout(() => item.classList.add("dragging"), 0)
+              })
+              item.addEventListener("dragend", () => item.classList.remove("dragging"))
+            })
+
+            var initSortableList = (e) => {
+              const draggingItem = sortableList.querySelector(".dragging")
+              const sibilings = [...sortableList.querySelectorAll(".box:not(.dragging)")]
+
+              let nextSibiling = sibilings.find(sibiling => {
+                return e.clientY <= sibiling.offsetTop + sibiling.offsetHeight / 2
+              })
+
+              sortableList.insertBefore(draggingItem, nextSibiling)
+            }
+
+            sortableList.addEventListener("dragover", initSortableList)
+
+          }
+
+          imageId+=1
+
+          showImages()
+ 
+        }
+      }
+
+// Update Function
+
+     function updateElement(){  
+         var modalBody = document.getElementById('editPageContent')
+        if(modalBody.children[0].className === "formClassEdit"){
+          var formDivClass= document.getElementsByClassName("formClassEdit")[0]
+          var quizArraykey=modalBody.children[0].id
+
+          var updatedElement=document.getElementById(quizArraykey)          
+          var formElem = document.getElementById("formId");
+          const data = Object.fromEntries(new FormData(formDivClass).entries());
+
+          quizContainerArray[`${quizArraykey}`]=data
+
+          let quizObject = quizContainerArray[`${quizArraykey}`]
+
+          tempArray[`${quizArraykey}`]={type:"7",quiz:quizObject}
+
+
+          const {question,answer,...rest}=quizObject
+
+
+          //
+
+          var options = ""
+
+          let value=[];
+          for (var property in rest) {
+            if(rest[property]!==""){
+              options += `<label class="options">${rest[property]}
+                <input type="radio" name="radio" value=${rest[property]}/>
+                <span class="checkmark"></span>
+            </label>`
+
+            value.push(rest[property])
+              }
+          }
+
+          var answerDiv=`<div class="col-12 gy-3">
+            <input class="form-control"  id="answer" placeholder="Enter answer" required name="answer" value=${quizObject['answer']} />
+          </div>`
+
+
+              const quizHtml = `<div class="container my-1">
+                <div class="question ml-sm-5 pl-sm-5 pt-2 text-start">
+                    <div class="py-2 h5"><b>Q. ${question}</b></div>
+                    <div class="ml-md-3 ml-sm-3 pl-md-5 pt-sm-0 pt-3" id="options">
+                       ${options}
+                    </div>
+                </div>
+            </div>`
+
+            //
+
+            if(answer!=="" && value.length>=2 && question !==""){
+              $('#editModal').modal('hide');
+              updatedElement.innerHTML=quizHtml
+            }
+
+        }
+        else if(modalBody.children[0].className==="videoCard"){
+          //
+          var updatedElement = modalBody.children[0].id
+          var editedElement = document.querySelector(".videoModalContainerEdit")
+          var videoSrc = videoContainerArrary[updatedElement]
+          document.getElementById(editedElement.id).innerHTML=`<video src=${URL.createObjectURL(videoSrc)} alt="" controls>`
+        }
+        else if(modalBody.children[0].className==="animationCard"){
+
+          let parentDivId= modalBody.children[0].id
+          var updatedAnimation= document.querySelector(".animationEditContainer").id
+          var animationSrc=animationContainerArray[updatedAnimation.id]
+
+          let animationsImg=animationContainerArray[`${parentDivId}`]
+
+          let animations=''
+
+          for(let animation of animationsImg){
+            animations+=`<img src=${URL.createObjectURL(animation)} alt="img">`
+          }
+
+          if(animationsImg.length>0){
+            $('#editModal').modal('hide');
+            document.getElementById(updatedAnimation).innerHTML = animations
+          }  
+          
+        }
+        else if (modalBody.children[0].id === "pageTitleId"){
+          let parentContentCard=document.querySelector("#contentCard")
+          var ckTextValue = CKEDITOR.instances['pageTitleFieldEdit']?.getData() 
+          let updatedElement= document.getElementById("pageHeadingId")
+          let inputValue=document.querySelector(".inputField").value
+
+          if(ckTextValue!==""){
+            //
+            $('#editModal').modal('hide');
+            parentContentCard.style.backgroundColor=`${cardbgColor}`
+            updatedElement.innerHTML=ckTextValue
+            titleArray["title"]={"type":"1",title:ckTextValue,bgColor:cardbgColor}
+            tempArray["title"]={"type":"1",title:ckTextValue,bgColor:cardbgColor}
+          }
+
+        }
+        else if(modalBody.children[0].className === "linkBtnDiv"){
+
+          let elemId=modalBody.children[0].id
+          let btnName=document.getElementById("btnNameEdit").value
+          let btnLink=document.getElementById("btnLinkEdit").value
+          let btnColor=document.getElementById("btnEditColor")
+
+          let updatedElement=document.getElementById(elemId).children[1]
+
+          //
+          let btnTag=`<a href="${btnLink}" target="_blank" class="linkBtn">${btnName}</a>`
+
+          var color =  $("#btnEditColor").val();
+
+          if(btnName!=="" && btnLink !==""){
+            //
+            $('#editModal').modal('hide');
+            updatedElement.innerHTML=btnTag
+            updatedElement.children[0].style.backgroundColor=color
+            btnContainerArray[`${elemId}`]={name:btnName,link:btnLink,bgColor:btnColor.value}
+            tempArray[`${elemId}`]={type:"8",name:btnName,link:btnLink,bgColor:btnColor.value}
+          }
+          
+        }
+        else if(modalBody.children[0].className === "editHeading"){
+         
+          let id=modalBody.children[0].id
+          let updatedElement= document.getElementById(id).children[1]
+          let editValue=CKEDITOR.instances['editInput']?.getData()
+
+          let colorInput=document.getElementById("headingColorPickerId").value
+          if (CKEDITOR.instances['editInput']?.getData() !== "") {
+
+            //
+            $('#editModal').modal('hide');
+            document.getElementById("emptyPage")?.remove()
+            updatedElement.innerHTML=editValue
+
+            headingArray[`${id}`]={"type":"2",heading:editValue,bgColor:colorInput}
+
+            // heading Data 
+   
+            tempArray[`${id}`]={"type":"2",heading:editValue,bgColor:colorInput}
+   
+          }
+          
+         updatedElement.parentElement.style.backgroundColor=colorInput
+
+       
+
+        }
+        else if(modalBody.children[0].className === "DescClass"){
+          var ckTextValue = CKEDITOR.instances['descEditId']?.getData() 
+          let bgColor =document.getElementById("descEditColorPicker").value
+          let elemId=modalBody.children[0].id
+          let parentElem=document.getElementById(elemId)
+          let updatedElement=parentElem.children[1]
+
+
+
+         if(ckTextValue !==""){
+          //
+          $('#editModal').modal('hide');
+         updatedElement.innerHTML=ckTextValue
+         parentElem.style.backgroundColor=bgColor
+         descriptionArray[`${elemId}`]={text:ckTextValue,bgColor:bgColor}
+         tempArray[`${elemId}`]={type:"3",text:ckTextValue,bgColor:bgColor}
+         }
+        }
+        else if(modalBody.children[0].className === "linkImgModalDiv"){
+          let imgId=modalBody.children[0].id
+          let updatedElement = document.getElementById(imgId).children[1]
+          const {link, image} = imgLinkContainerArray[imgId]
+          let imgLinkDiv= `<a href="${link}" target="_blank"><img src="${URL.createObjectURL(image)}" alt=""/></a>`
+          let linkInputElemEdit=document.getElementById("imgLinkEditField")
+
+          if(linkInputElemEdit.value!==""){
+            //
+            $('#editModal').modal('hide');
+            updatedElement.innerHTML=imgLinkDiv
+            imgLinkContainerArray[`${imgId}`]={link:linkInputElemEdit.value,image:image}
+            tempArray[`${imageId}`]={type:"9",link:linkInputElemEdit.value,image:image}
+          }
+
+        }
+        else if (modalBody.children[0].className === "editDescription"){
+        
+          var ckTextValue = CKEDITOR.instances['DescId']?.getData() 
+          var id = modalBody.children[0].children[0].className
+          var heading = document.getElementById(id)
+
+          console.log(ckTextValue,"value")
+          if( ckTextValue!==""){
+            $('#editModal').modal('hide');
+            heading.innerHTML=ckTextValue
+          }
+         
+         
+        }
+        else if (modalBody.children[0].className === "editHeading"){
+          var id = modalBody.children[0].children[0].id
+          var heading = document.getElementById(id)
+          heading.innerText=modalBody.children[0].children[0].value
+         
+        }
+        else if (modalBody.children[0].className === "imgEditCard"){
+
+          //
+
+          let parentDivId= modalBody.children[0].id
+
+
+          let keyId=document.getElementsByClassName("imgContainerEdit")[0].id
+
+          //
+         let images= imagesContainerArrar[`${parentDivId}`]
+
+
+         let updatedElement=document.getElementById(keyId)
+
+
+         let editedImages = '';
+         images.forEach((e, i) => {
+         editedImages += `<img src=${URL.createObjectURL(e)} alt="img">`
+           })
+
+           //
+        if(images.length>0){
+          $('#editModal').modal('hide');
+          updatedElement.innerHTML=editedImages
+        }   
+       
+          
+        }
+
+      
+    }
+
+
+     /* $(function () {
+        $("#sidebar").load("../../component/sidebar.html");
+        $("#topbar-div").load("../../component/topbar.html");
+      });
+      */
+      // Menu Toggle
+
+      let navigation = document.querySelector('.navigation');
+      let toggle = document.querySelector('.toggle');
+      let main = document.querySelector('.main');
+
+      toggle.onclick = function () {
+        navigation.classList.toggle('active');
+        main.classList.toggle('active');
+      }
+      // add hovered classn selected list item
+
+      let list = document.querySelectorAll('.navigation li');
+
+      function activeLink() {
+        list.forEach((item) =>
+          item.classList.remove('hovered'));
+        this.classList.add('hovered');
+      }
+      function activeMenu() {
+        list.forEach((item) =>
+          item.classList.remove('active'));
+        this.classList.add('active');
+      }
+      list.forEach((item) =>
+        item.addEventListener('mouseover', activeLink))
+
+      list.forEach((item) =>
+        item.addEventListener('click', activeMenu))
+
+
+
+       function submitFn(){
+
+        data=[];
+
+        let mainDiv = document.getElementById("contentCard")
+
+        let childElem= mainDiv.childNodes
+
+        let keysArray=[]
+
+        for(let i=0; i<childElem.length;i++){
+          keysArray.push(childElem[i].id)
+        }
+
+
+        keysArray.forEach((e)=>{
+          data.push(tempArray[e])
+        })
+
+        var action = $('#acionId input:radio:checked').val();
+
+       let urlInput= document.getElementById("urlInput")
+
+       // var e = document.getElementById("inputState");
+       // var category = e.options[e.selectedIndex].text ; 
+
+       // window.location.reload();
+        
+       // console.log(category,"selval")
+        console.log(action,"submit")
+        console.log(data,"data")
+
+        if(urlInput.value!==""){
+          $('#submitModal').modal('hide');
+        }
+        
+       }
+
+    </script>
+
+</body>
+
+</html>
