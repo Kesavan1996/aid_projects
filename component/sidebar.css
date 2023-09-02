@@ -9,7 +9,8 @@
 }
 
 .navigation.active {
-    width: 80px;
+    /* width: 80px; */
+    width: 300px;
 }
 
 .navigation ul {

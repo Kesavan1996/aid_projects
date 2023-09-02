@@ -37,8 +37,10 @@ body {
 }
 
 .main.active {
-    width: calc(100% - 80px);
-    left: 80px;
+    width: calc(100% - 300px);
+    left: 300px;
+    /* width: calc(100% - 80px);
+    left: 80px; */
 }
 
 
