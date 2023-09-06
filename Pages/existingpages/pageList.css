@@ -89,40 +89,61 @@ body {
     cursor: pointer;
 }
 
+.sucessDiv{
+    padding-left: 20px;
+}
+
+.sucessDiv p{
+    margin-bottom: 0;
+    font-weight: bold;
+    color:#05a054;
+}
+
 .cardBox {
     position: relative;
     width: 100%;
     padding: 20px;
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-gap: 30px;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 20px;
 }
 
-.cardBox .card {
+.cardBox .cardDiv{
     position: relative;
     background: var(--white);
-    padding: 30px;
-    border-radius: 20px;
+    padding: 10px;
+    border-radius: 5px;
     display: flex;
     justify-content: space-between;
-    cursor: pointer;
+    gap: 10px;
     box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
 }
 
-.cardBox .card .numbers {
+.cardBox .cardDiv .numbers {
     position: relative;
     font-size: 2.5em;
     font-weight: 500;
     color: var(--blue);
 }
 
-.cardBox .card .cardName {
+.cardBox .cardDiv .imgDiv {
+    flex: 2;
+}
+.cardBox .cardDiv .imgDiv img {
+    width: 100%;
+    height: 100%;
+}
+.cardBox .cardDiv .detailBox{
+   flex: 4;
+}
+
+.cardBox .cardDiv .cardName {
     color: var(--black2);
     font-size: 1.1em;
     margin-top: 5px;
 }
 
-.cardBox .card .iconBox {
+.cardBox .cardDiv .iconBox {
     font-size: 3.5em;
     color: var(--black2);
 }

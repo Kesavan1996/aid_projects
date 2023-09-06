@@ -1305,6 +1305,9 @@ label.radio {
     .status.progress{
         white-space: nowrap;
     }
+    #submitBtnDiv{
+        width: 100%;
+    }
 }
 
 @media(max-width:480px){
@@ -1316,5 +1319,8 @@ label.radio {
 }
 .user{
     min-width: 40px;
+}
+#pageContent .col-6{
+    width: 100%;
 }
 }

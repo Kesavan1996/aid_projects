@@ -2,7 +2,9 @@
 <html>
 
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
   <title>Page Create</title>
   <link rel="stylesheet" type="text/css" href="createpagetwo.css">
 
@@ -16,7 +18,16 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
 
+    
+    <script src="http://code.jquery.com/jquery.min.js"></script>
+    <script src="http://code.jquery.com/ui/1.8.17/jquery-ui.min.js"></script>
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script> -->
+    <!-- <script src="jquery.ui.touch-punch.min.js"></script> -->
 
+
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.10.2/Sortable.min.js" integrity="sha512-ELgdXEUQM5x+vB2mycmnSCsiDZWQYXKwlzh9+p+Hff4f5LA+uf0w2pOp3j7UAuSAajxfEzmYZNOOLQuiotrt9Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js" integrity="sha512-Eezs+g9Lq4TCCq0wae01s9PuNWzHYoCMkE97e2qdkYthpI0pzC3UGB03lgEHn2XM85hDOUF6qgqqszs+iXU4UA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 </head>
 
@@ -174,21 +185,11 @@
 
 
 
-    <!-- <script src="https://code.jquery.com/jquery-1.10.2.js"></script> -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
       crossorigin="anonymous"></script>
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
-
-    <!-- <script src="https://vjs.zencdn.net/7.17.0/video.min.js"></script> -->
-
-    <script src="//vjs.zencdn.net/8.3.0/video.min.js"></script>
-
-    <!-- JavaScript for the vjs library  -->
-    <script src="vid.js" defer></script>
 
     <script src="/assets/js/ckeditor/ckeditor.js"></script>
 
@@ -302,6 +303,17 @@
       var videoTempId = "";
 
       let cardbgColor = ""
+
+
+      const dragArea = document.querySelector('.card')
+        
+      new Sortable(dragArea,{
+          filter:'.titleDiv',
+          Animation:350
+        })
+
+      
+
 
 
       function addSpace() {
@@ -643,7 +655,7 @@
               form.reset();
               showVideos()
             } else {
-              container.innerHTML = '<p style="color:red">Maximum video size is 10MP</p>'
+              container.insertAdjacentHTML('afterend', '<p style="color:red">Maximum video size is 10MP</p>');
             }
           })
 
@@ -920,6 +932,12 @@
           })
 
         }
+      
+        const errorsModal = document.querySelectorAll('.error');
+
+        errorsModal.forEach(error => {
+          error.remove();
+        });
       }
 
 
@@ -984,6 +1002,7 @@
       // Add Function
 
       function addElement() {
+
         var modalBody = document.getElementById('pageContent')
         var children = modalBody.children[0].value
         var contentCards = document.getElementById("contentCard")
@@ -991,7 +1010,7 @@
         if (modalBody.children[0].className === "form-control headingClass") {
           var div = document.createElement('div')
           div.className = "heading dragDiv"
-          div.draggable = true
+         // div.draggable = true
           div.id = "headingId" + headingDivId
           var dropImg = document.createElement("img")
           dropImg.height = 20
@@ -1044,7 +1063,6 @@
           div.appendChild(clickTag)
           div.appendChild(deleteTag)
 
-
           if (ckTextValue !== "") {
 
             //  
@@ -1063,11 +1081,10 @@
             submitBtnDiv.style.display = "block"
             headingDivId += 1
 
-          } else {
-
-            console.log(headingDivId, "id")
+          } else {           
             let inputElem = document.getElementById(`cke_headingId${headingDivId}`)
             let errorElem = document.querySelector(".error")
+            let errorAll= document.querySelectorAll(".error")
             if (!errorElem) {
               inputElem.insertAdjacentHTML('afterend', '<p class="error">Please enter the field...!</p>');
             }
@@ -1326,7 +1343,7 @@
           } else {
             let errorElem = document.querySelector(".error")
             if (!errorElem) {
-              inputElem.insertAdjacentHTML('afterend', '<p class="error">Please insert image...!</p>');
+              inputElem.insertAdjacentHTML('afterend', '<p class="error">Please insert video...!</p>');
             }
           }
         }
@@ -1616,12 +1633,8 @@
           titleDiv.id = "title"
           let heading = document.createElement("p")
           heading.id = "pageHeadingId"
-          heading.style.fontWeight = "bold"
           heading.innerHTML = ckTextValue
 
-
-
-          titleDiv.appendChild(dropImg)
           titleDiv.appendChild(heading)
           titleDiv.appendChild(clickTag)
           titleDiv.appendChild(deleteTag)
@@ -1841,7 +1854,7 @@
         }
         // Drag function
 
-        var sortableList = document.querySelector(".card")
+       /* var sortableList = document.querySelector(".card")
         const items = document.querySelectorAll(".dragDiv")
 
         items.forEach(item => {
@@ -1864,9 +1877,10 @@
 
         sortableList.addEventListener("dragover", initSortableList)
 
-
+        */
         //
 
+        
 
 
       }
@@ -2463,6 +2477,12 @@
           showImages()
 
         }
+      
+        const errors = document.querySelectorAll('.error');
+
+        errors.forEach(error => {
+          error.remove();
+        });
       }
 
       // Update Function
@@ -2525,8 +2545,6 @@
             $('#editModal').modal('hide');
             updatedElement.innerHTML = quizHtml
           } else {
-
-            console.log("flase")
             let qstnElem = document.querySelector(`.formClassEdit #question${quizId}`)
             let optionOneElem = document.querySelector(`.formClassEdit #option0`)
             let optionTwoElem = document.querySelector(`.formClassEdit #option3`)
@@ -2826,6 +2844,10 @@
 
 
 
+
+
+
+
       function submitFn() {
 
         data = [];
@@ -2854,17 +2876,21 @@
 
         // window.location.reload();
 
-        // console.log(category,"selval")
+        // console.log(category,"selval"f)
         console.log(action, "submit")
         console.log(data, "data")
 
         if (urlInput.value !== "") {
           $('#submitModal').modal('hide');
+          return false;
         }
 
       }
 
     </script>
+
+ 
+   
 
 </body>
 
