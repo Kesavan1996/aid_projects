@@ -848,6 +848,10 @@ box-shadow: inset 2px 2px 9px -6px rgba(0,0,0,0.75);
     gap: 10px;
 }
 
+#contentCard .titleDiv p{
+    margin-bottom: 0;
+}
+
 #contentCard .btnDiv{
     display: flex;
     align-items: center;
@@ -1265,6 +1269,9 @@ label.radio {
     padding: 5px 25px;
     background-color: #21bf73;
 }
+
+
+
 @media(max-width:576px){
     .question{
         width: 100%;
@@ -1322,5 +1329,9 @@ label.radio {
 }
 #pageContent .col-6{
     width: 100%;
+}
+.linkInputDiv .linkText,
+.linkInputDiv .linkInput{
+    flex: 5 !important;
 }
 }

@@ -889,10 +889,10 @@
         else if (element === "imageLink") {
           $('#createModal').modal('show');
           var modalTitle = document.getElementById("pageTitle")
-          modalTitle.innerText = "Add Image Link"
+          modalTitle.innerText = "Add Link"
           var modalBody = document.getElementById('pageContent')
 
-          let linkInput = `<input class="form-control mb-3" type="text" id="imgLinkField" placeholder="Image link">`
+          let linkInput =`<div class="d-flex mb-3 align-items-center linkInputDiv"> <span style="flex:3" class="linkText">URL: https://#/#/</span><input class="form-control linkInput" style="flex:6" type="text" id="imgLinkField" placeholder="Enter link"><span style="flex:1">&nbsp;.html</span></div>`
 
 
           let imgLinkContainer = `<div class="container col-md-12">
@@ -2284,12 +2284,14 @@
 
           $('#editModal').modal('show');
           var modalTitle = document.getElementById("EditPageTitle")
-          modalTitle.innerText = "Edit Image Link"
+          modalTitle.innerText = "Edit Link"
           var modalBody = document.getElementById('editPageContent')
 
           const { link, image } = imgLinkContainerArray[`${parentId}`]
 
-          let linkInput = `<input class="form-control mb-3" type="text" id="imgLinkEditField" placeholder="Image link" value=${link}>`
+          let linkInput =`<div class="d-flex mb-3 align-items-center linkInputDiv"> <span style="flex:3" class="linkText">URL: https://#/#/</span><input class="form-control linkInput" id="imgLinkEditField" style="flex:6" type="text" id="imgLinkField" placeholder="Enter link" value=${link}><span style="flex:1">&nbsp;.html</span></div>`
+
+          //let linkInput = `<input class="form-control mb-3" type="text" id="imgLinkEditField" placeholder="Image link" value=${link}>`
 
           let imgLinkContainer = `<div class="container col-md-12">
           <div class="mb-3">
@@ -2753,6 +2755,9 @@
           let imgId = modalBody.children[0].id
           let updatedElement = document.getElementById(imgId).children[1]
           const { link, image } = imgLinkContainerArray[imgId]
+
+    
+
           let imgLinkDiv = `<a href="${link}" target="_blank"><img src="${URL.createObjectURL(image)}" alt=""/></a>`
           let linkInputElemEdit = document.getElementById("imgLinkEditField")
 
