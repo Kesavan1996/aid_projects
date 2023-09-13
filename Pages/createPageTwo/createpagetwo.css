@@ -72,9 +72,9 @@ body {
 
 .main {
     position: absolute;
-   /* /width: calc(100% - 300px); */
-     width: 100% !important;
-    /* left: 300px; */
+    width: calc(100% - 300px);
+     /* width: 100% !important; */
+    left: 300px;
     min-height: 100vh;
     background: var(--white);
     transition: 0.5s;
@@ -915,9 +915,6 @@ box-shadow: inset 2px 2px 9px -6px rgba(0,0,0,0.75);
     width: 90%;
     padding: 5px;
     margin-bottom: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
 .card .subHeading h5{
     width: 90%;
@@ -1002,21 +999,24 @@ ion-icon {
     overflow: auto;
 }
 
+.urlTextClass{
+    color: darkorange;
+}
+
 .pageContainer{
     display: flex;
     flex-direction: column;
     gap: 20px;
 }
 
-.headingDiv{
-    display: flex;
-    gap: 10px;
-}
 
 .headingDiv button{
     background: none;
     border: none;
-    outline: none;
+    outline: none;  
+}
+.headingDiv p{
+    margin-bottom: 0;
 }
 
 .textDiv{

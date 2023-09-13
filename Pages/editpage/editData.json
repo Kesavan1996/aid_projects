@@ -1,0 +1,59 @@
+{
+  "data": [
+    { "type": "1", "title": "<h2>Page Title</h2>\n", "bgColor": "#fcfcfc" },
+    { "type": "2", "heading": "<h2>Heading</h2>", "bgColor": "#fcfcfc" },
+    {
+      "type": "3",
+      "text": "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using &#39;Content here, content here&#39;, making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for &#39;lorem ipsum&#39; will uncover many web sites still in their infancy.",
+      "bgColor": "#fcfcfc"
+    },
+    {
+      "type": "4",
+      "images": [
+        "1693743120_93f089763934d227dd18.jpg",
+        "1693743120_d1a46cdb43b08d6de3e5.jpg",
+        "1693743120_a297a712ea014579dcd1.gif"
+      ]
+    },
+    { "type": "5", "video": ["1693743120_9e766cc621e84d17df6b.mp4"] },
+    {
+      "type": "6",
+      "animations": [
+        "1693743120_4fc74d501099034c93da.gif",
+        "1693743120_742e7283eb91c57f6421.gif",
+        "1693743120_8835bda2d0c08e2a7135.gif"
+      ]
+    },
+    {
+      "type": "7",
+      "quiz": {
+        "question": "What is the capital of France?",
+        "option0": "Paris",
+        "option1": " London",
+        "option2": "Berlin",
+        "option3": "Madrid",
+        "answer": "1"
+      }
+    },
+    { "type": "10" },
+    {
+      "type": "8",
+      "name": "Donate",
+      "link": "aidindia.in",
+      "bgColor": "#8d0707"
+    },
+    {
+      "type": "9",
+      "link": "https://aidindia.in",
+      "image": ["1693743120_23895c04e8c137365e7a.jpg"]
+    }
+  ],
+  "main": {
+    "foder": 1693743120,
+    "file": "3-ahaguru.html",
+    "json": "3.json",
+    "status": 1
+  }
+}
+
+
