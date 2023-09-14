@@ -2368,7 +2368,10 @@
         }
         else if (element === "editDescription") {
 
+
           $('#editModal').modal('show');
+
+          console.log(id,parentId,"ids")
           var modalTitle = document.getElementById("EditPageTitle")
           modalTitle.innerText = "Edit Description"
           var modalBody = document.getElementById('editPageContent')
@@ -2777,6 +2780,8 @@
           let elemId = modalBody.children[0].id
           let parentElem = document.getElementById(elemId)
           let updatedElement = parentElem.children[1]
+
+          console.log(updatedElement,"updated")
 
           if (ckTextValue !== "") {
             //

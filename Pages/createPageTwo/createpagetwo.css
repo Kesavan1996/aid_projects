@@ -350,6 +350,7 @@ body {
     background-color: #fcfcfc;
     width: 100%;
     gap: 10px;
+    margin-bottom: 70px;
 }
 .createPageDiv .mainContainer .btnContainer{
     display: flex;
@@ -368,7 +369,7 @@ body {
     /* box-shadow: 0 15px 25px rgba(0,0,0,0.15); */
     /* top:50% */
     position: fixed;
-    bottom: 70px;
+    bottom: 30px;
 
 }
 
@@ -407,31 +408,12 @@ box-shadow: inset 2px 2px 9px -6px rgba(0,0,0,0.75);
     display: none;
   }
 
-/* .menuToggles::before
-{
-    content: '+';
-    position: absolute;
-    font-size: 3em;
-    font-weight: 200;
-    color: #ff216d;
-    transition: 1.5s;  
-} */
-.menuToggles.active::before
-{
-    /* transform: rotate(225deg); */
-}
 
 .actionBtns
 {
     position: fixed;
-    /* width:100%; */
-    /* height: 30px; */
-    /* background: #fff; */
     border-radius: 70px;
     z-index: -1;
-    /* transition: transform 0.5s, width 0.5s, height 0.5s;
-    transition-delay: 1s, 0.5s, 0.5s;
-    transition-timing-function: cubic-bezier(0.075,0.82, 0.165, 1); */
     transition: .2s;
     display: flex;
     flex-direction: column;
@@ -443,41 +425,17 @@ box-shadow: inset 2px 2px 9px -6px rgba(0,0,0,0.75);
     /* width: 240px;
     height: 70px; */
     z-index: 1;
-    transform: translateY(-30px);
     transition-delay: 0s, 0.5s, 0.5s;
     display: flex;
     flex-direction: column;
     gap: 10px;
-    /* box-shadow: 0 15px 25px rgba(0,0,0,0.1); */
 }
-/* 
-.actionBtns::before
-{
-    content: '';
-    position: absolute;
-    width: 16px;
-    height: 16px;
-    background: #fff;
-    left: calc(50% - 8px);
-    bottom: 4px;
-    transform: rotate(45deg);
-    border-radius: 2px;
-    transition: 0.5s;
-} */
+
 .menuToggles.active ~ .actionBtns::before
 {
     transition-delay: 0.5s;
     bottom: -6px;
 }
-
-
-/* .createPageDiv .actionBtns{
-    position: relative;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-} */
 
 
     .upload__box {
