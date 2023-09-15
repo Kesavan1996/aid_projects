@@ -3,7 +3,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
+    font-family:sans-serif;
 }
 
  :root {
@@ -351,6 +351,8 @@ body {
     width: 100%;
     gap: 10px;
     margin-bottom: 70px;
+    height: 80vh;
+    overflow-y: scroll;
 }
 .createPageDiv .mainContainer .btnContainer{
     display: flex;
@@ -361,15 +363,12 @@ body {
 .menuToggles
 {
     width: 70px;
-    height: 70px;
     cursor: pointer;
     display: flex;
-    justify-content: center;
+    justify-content: center;    
     align-items: center;
-    /* box-shadow: 0 15px 25px rgba(0,0,0,0.15); */
-    /* top:50% */
     position: fixed;
-    bottom: 30px;
+    bottom: 20px;
 
 }
 
@@ -418,7 +417,7 @@ box-shadow: inset 2px 2px 9px -6px rgba(0,0,0,0.75);
     display: flex;
     flex-direction: column;
     gap: 10px;
-    bottom: 100px;
+    bottom: 90px;
 }
 .menuToggles.active ~ .actionBtns
 {
@@ -553,7 +552,6 @@ box-shadow: inset 2px 2px 9px -6px rgba(0,0,0,0.75);
 /* Image upload */
 
  .imgCard, .videCard,.animationCard{
-     width: 400px;
      height: auto;
      padding: 15px;
      box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
@@ -814,6 +812,7 @@ box-shadow: inset 2px 2px 9px -6px rgba(0,0,0,0.75);
     display: flex;
     align-items: center;
     gap: 10px;
+    padding: 10px 0px;
 }
 #contentCard .imgLink{
     display: flex;
@@ -838,6 +837,8 @@ box-shadow: inset 2px 2px 9px -6px rgba(0,0,0,0.75);
 #contentCard .btnDiv .linkDiv a{
     padding: 7px 35px;
     border-radius: 25px;
+    font-size: 20px;
+    font-weight: bold;
 }
 
 
@@ -926,15 +927,16 @@ box-shadow: inset 2px 2px 9px -6px rgba(0,0,0,0.75);
 
 #submitBtnDiv{
     position: fixed;
-    bottom: 30px;
+    bottom: 20px;
     width: 700px;
     text-align: center;
 
 }
 
 #submitBtnDiv button{
-    width: 20%;
+    /* width: 20%; */
     font-weight: bold;
+    padding: 7px 35px;
 }
 
 /*  */
@@ -1244,6 +1246,12 @@ label.radio {
 
 @media(max-width:991px){
 
+.main.active {
+    width: calc(100% - 300px);
+    /* width: 100%; */
+    left: 300px;
+}
+
 .main{
     width: 100%;
     left: 0;
@@ -1291,5 +1299,8 @@ label.radio {
 .linkInputDiv .linkText,
 .linkInputDiv .linkInput{
     flex: 5 !important;
+}
+.imagesDiv img, .animationsDiv img{
+    height: 200px;
 }
 }

@@ -344,6 +344,8 @@
 
       let cardbgColor = ""
 
+      let pageBgColor="#fcfcfc";
+
 
       const dragArea = document.querySelector('.card')
         
@@ -423,7 +425,7 @@
           input.className = "form-control headingClass"
           let colorPick = `<div class="col-6">
             <label for="colorPickerId" class="form-label">Choose background Color</label>
-            <input type="color" class="form-control form-control-color" id="colorPickerId" value="#fcfcfc">
+            <input type="color" class="form-control form-control-color" id="colorPickerId" value="${pageBgColor}">
           </div>`
           let mainDiv = document.createElement("div")
           mainDiv.className = "row g-3 mt-2"
@@ -445,7 +447,7 @@
 
           let colorPick = `<div class="col-6">
             <label for="colorPickerId" class="form-label">Choose background Color</label>
-            <input type="color" class="form-control form-control-color" id="descColorPicker" value="#fcfcfc">
+            <input type="color" class="form-control form-control-color" id="descColorPicker" value="${pageBgColor}">
           </div>`
 
           let mainDiv = document.createElement("div")
@@ -1086,6 +1088,8 @@
           elem.innerText = children
           var ckTextValue = CKEDITOR.instances[modalBody.children[0].id]?.getData()
 
+
+
           let bgColor = document.getElementById(`colorPickerId`).value
 
           let paraDiv = document.createElement("div")
@@ -1693,6 +1697,7 @@
             document.getElementById("emptyPage")?.remove()
             //contentCards.appendChild(titleDiv)
             contentCards.insertBefore(titleDiv, contentCards.firstChild);
+            pageBgColor=cardbgColor
             titleArray["title"] = { "type": "1", title: ckTextValue, bgColor: cardbgColor }
             tempArray["title"] = { "type": "1", title: ckTextValue, bgColor: cardbgColor }
             //
@@ -2675,6 +2680,7 @@
           if (ckTextValue !== "") {
             //
             $('#editModal').modal('hide');
+            pageBgColor=cardbgColor
             parentContentCard.style.backgroundColor = `${cardbgColor}`
             updatedElement.innerHTML = ckTextValue
             titleArray["title"] = { "type": "1", title: ckTextValue, bgColor: cardbgColor }
