@@ -3,7 +3,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
+    font-family:sans-serif;
 }
 
  :root {
@@ -80,6 +80,22 @@ body {
     font-size: 1.2em;
 }
 
+.gobackDiv{
+    padding-left: 20px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+.gobackDiv ion-icon{
+    font-size: 2.5em;
+    color: #000;
+}
+.gobackDiv p{
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 0;
+}
+
 .user {
     position: relative;
     min-width: 40px;
@@ -117,7 +133,7 @@ body {
     justify-content: space-between;
     gap: 10px;
     box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
-    height: 100px;
+    height: 130px;
 }
 
 .cardBox .cardDiv .numbers {
@@ -140,9 +156,24 @@ body {
    flex-direction: column;
    justify-content: space-between;
 }
-.cardBox .cardDiv .detailBox h5{
+.cardBox .cardDiv .detailBox h5 *{
    font-size: 1.25rem !important;
    color: #212529 !important;
+   text-decoration: none !important;
+   margin-bottom: 0 !important;
+}
+.cardBox .cardDiv .detailBox h5 {
+   margin-bottom: 0 !important;
+}
+.cardBox .cardDiv .detailBox .status-div{
+   display: flex;
+   justify-content: space-between;
+}
+.cardBox .cardDiv .detailBox .status-div p{
+   margin-bottom: 0;
+}
+.cardBox .cardDiv .detailBox .status-div .status{
+   color:#05a054;
 }
 
 .cardBox .cardDiv .cardName {
@@ -341,6 +372,12 @@ body {
      left:300px;
  }
  .cardBox{grid-template-columns: repeat(2,1fr);}
+}
+
+@media(max-width:1300px) {
+.cardBox{
+    grid-template-columns: repeat(2,1fr);
+}
 }
 
 @media(max-width:768px)
