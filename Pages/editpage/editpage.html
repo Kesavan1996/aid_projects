@@ -296,6 +296,8 @@
       var buttonId = 0;
       var imgLinkId = 0;
 
+      var delImagesEdit;
+
       var showImages;
       //var showAnimations;
       // var showVideos;
@@ -307,6 +309,8 @@
         files.pop()
       }
       const delImages = (index) => {
+
+        console.log(files,"files")
         files.splice(index, 1)
         showImages()
       }
@@ -345,6 +349,9 @@
       var videoTempId = "";
 
       let cardbgColor = ""
+
+      // pagetitle color needs to be changed
+      let pageBgColor="#fcfcfc";
 
 
       const dragArea = document.querySelector('.card')
@@ -548,7 +555,7 @@
             submitBtnDiv.style.display = "block"
             headingDescId = headingDescId + 1
           }
-         /* else if(data.type==="4"){
+         else if(data.type==="4"){
             let ParentId;
             var div = document.createElement('div')
             div.className = "imageContainer dragDiv"
@@ -582,9 +589,15 @@
             clickTag.setAttribute("onclick", `editModal("editImages",this.previousElementSibling.id,this.parentElement.id)`)
   
             let images = '';
-            imgArry.forEach((e, i) => {
+           /* imgArry.forEach((e, i) => {
               images += `
                       <img src=${URL.createObjectURL(e)} alt="img">
+                  </div>`
+            })
+            */
+            imgArry.forEach((e, i) => {
+              images += `
+                      <img src=${e} alt="img">
                   </div>`
             })
 
@@ -611,7 +624,6 @@
               submitBtnDiv.style.display = "block"
               imageContainerId += 1
           }
-       */
           else if(data.type==="5"){
 
             var div = document.createElement('div')
@@ -710,7 +722,7 @@
 
             animationContainerArray[`animationsDiv${animationId}`] = animationArry
 
-            tempArray[`animationsDiv${animationId}`] = { types: "6", animations: animationArry }
+            tempArray[`animationsDiv${animationId}`] = { type: "6", animations: animationArry }
   
   
             var clickTag = document.createElement("a")
@@ -1041,7 +1053,7 @@
           input.className = "form-control headingClass"
           let colorPick = `<div class="col-6">
             <label for="colorPickerId" class="form-label">Choose background Color</label>
-            <input type="color" class="form-control form-control-color" id="colorPickerId" value="#fcfcfc">
+            <input type="color" class="form-control form-control-color" id="colorPickerId" value="${pageBgColor}">
           </div>`
           let mainDiv = document.createElement("div")
           mainDiv.className = "row g-3 mt-2"
@@ -1063,7 +1075,7 @@
 
           let colorPick = `<div class="col-6">
             <label for="colorPickerId" class="form-label">Choose background Color</label>
-            <input type="color" class="form-control form-control-color" id="descColorPicker" value="#fcfcfc">
+            <input type="color" class="form-control form-control-color" id="descColorPicker" value="${pageBgColor}">
           </div>`
 
           let mainDiv = document.createElement("div")
@@ -1374,7 +1386,7 @@
 
             // animation data
 
-            tempArray[`animationsDiv${animationId}`] = { types: "6", animations: files }
+            tempArray[`animationsDiv${animationId}`] = { type: "6", animations: files }
 
             form.reset();
             showAnimations()
@@ -2302,13 +2314,12 @@
           clickTag.setAttribute("onclick", `editModal("editTitle","pageHeadingId")`)
 
           if (ckTextValue !== "") {
-
-
             //
             $('#createModal').modal('hide');
             document.getElementById("emptyPage")?.remove()
             //contentCards.appendChild(titleDiv)
             contentCards.insertBefore(titleDiv, contentCards.firstChild);
+            pageBgColor=cardbgColor
             titleArray["title"] = { "type": "1", title: ckTextValue, bgColor: cardbgColor }
             tempArray["title"] = { "type": "1", title: ckTextValue, bgColor: cardbgColor }
             //
@@ -2752,7 +2763,7 @@
               if (animationfiles.every(e => e.name !== file[i].name)) animationfiles.push(file[i])
             }
             animationContainerArray[`${paramId}`] = animationfiles
-            tempArray[`${parentId}`] = animationfiles
+            tempArray[`${parentId}`] =  { type: "6", animations: animationfiles }
 
             form.reset();
             showAnimations()
@@ -2779,34 +2790,6 @@
 
           showAnimations()
 
-
-          // Drag function
-
-          const dragFunction = () => {
-            var sortableList = document.querySelector(".animationContainer")
-            const items = document.querySelectorAll(".box")
-
-            items.forEach(item => {
-              item.addEventListener("dragstart", () => {
-                setTimeout(() => item.classList.add("dragging"), 0)
-              })
-              item.addEventListener("dragend", () => item.classList.remove("dragging"))
-            })
-
-            var initSortableList = (e) => {
-              const draggingItem = sortableList.querySelector(".dragging")
-              const sibilings = [...sortableList.querySelectorAll(".box:not(.dragging)")]
-
-              let nextSibiling = sibilings.find(sibiling => {
-                return e.clientY <= sibiling.offsetTop + sibiling.offsetHeight / 2
-              })
-
-              sortableList.insertBefore(draggingItem, nextSibiling)
-            }
-
-            sortableList.addEventListener("dragover", initSortableList)
-
-          }
 
         }
         else if (element === "editTitle") {
@@ -3028,7 +3011,7 @@
           //
 
           var imagesList = imagesContainerArrar[`${parentId}`]
-          showImages()
+
           var paramId = id
           var modalTitle = document.getElementById("EditPageTitle")
           modalTitle.innerText = "Edit Images"
@@ -3057,6 +3040,40 @@
 
           browse.addEventListener('click', () => input.click());
 
+          var  showImage = () => {
+            imgfiles = imagesContainerArrar[`${parentId}`]
+            let images = '';
+           /* imgfiles.forEach((e, i) => {
+              images += `<div class="image box" draggable="true"">
+                        <img src=${URL.createObjectURL(e)} alt="img" >
+                       <span onclick="delImages(${i})"> &times;</span>
+                    </div>`
+            })
+
+            */
+
+
+            imgfiles.forEach((e, i) => {
+              images += `<div class="image box" draggable="true"">
+                        <img src=${e} alt="img" >
+                       <span onclick="delImagesEdit(${i})"> &times;</span>
+                    </div>`
+            })
+
+        
+
+            container.innerHTML = images
+          }
+
+
+          delImagesEdit=(index)=>{
+          imagesContainerArrar[`${parentId}`].splice(index,1)
+            showImage()
+          }
+          
+          showImage()
+
+
           var imgfiles = []
           //
           imgfiles = imagesContainerArrar[`${parentId}`]
@@ -3078,60 +3095,15 @@
             imagesContainerArrar[`${parentId}`] = imgfiles
             tempArray[`${parentId}`] = { type: "5", images: imgfiles }
             form.reset();
-            showImages()
+            showImage()
             dragFunction();
 
           }
-          showImages = () => {
 
-            imgfiles = imagesContainerArrar[`${parentId}`]
-            let images = '';
-            imgfiles.forEach((e, i) => {
-              images += `<div class="image box" draggable="true"">
-                        <img src=${URL.createObjectURL(e)} alt="img" >
-                       <span onclick="delImages(${i})"> &times;</span>
-                    </div>`
-            })
-
-
-            container.innerHTML = images
-          }
-
-          button?.addEventListener('click', () => {
-            let form = new FormData();
-            imgfiles.forEach((e, i) => form.append(`file[${i}]`, e))
-          })
-          // Drag function
-
-          const dragFunction = () => {
-            var sortableList = document.querySelector(".imgContainerEdit")
-            const items = document.querySelectorAll(".box")
-
-            items.forEach(item => {
-              item.addEventListener("dragstart", () => {
-                setTimeout(() => item.classList.add("dragging"), 0)
-              })
-              item.addEventListener("dragend", () => item.classList.remove("dragging"))
-            })
-
-            var initSortableList = (e) => {
-              const draggingItem = sortableList.querySelector(".dragging")
-              const sibilings = [...sortableList.querySelectorAll(".box:not(.dragging)")]
-
-              let nextSibiling = sibilings.find(sibiling => {
-                return e.clientY <= sibiling.offsetTop + sibiling.offsetHeight / 2
-              })
-
-              sortableList.insertBefore(draggingItem, nextSibiling)
-            }
-
-            sortableList.addEventListener("dragover", initSortableList)
-
-          }
 
           imageId += 1
 
-          showImages()
+          showImage()
 
         }
       
@@ -3249,6 +3221,7 @@
           var editedElement = document.querySelector(".videoModalContainerEdit")
           var videoSrc = videoContainerArrary[updatedElement]
           document.getElementById(editedElement.id).innerHTML = `<video src=${URL.createObjectURL(videoSrc)} alt="" controls>`
+            $('#editModal').modal('hide');
         }
         else if (modalBody.children[0].className === "animationCard") {
 
@@ -3285,6 +3258,7 @@
           if (ckTextValue !== "") {
             //
             $('#editModal').modal('hide');
+            pageBgColor=cardbgColor
             parentContentCard.style.backgroundColor = `${cardbgColor}`
             updatedElement.innerHTML = ckTextValue
             titleArray["title"] = { "type": "1", title: ckTextValue, bgColor: cardbgColor }

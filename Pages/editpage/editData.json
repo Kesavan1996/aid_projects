@@ -10,9 +10,9 @@
     {
       "type": "4",
       "images": [
-        "1693743120_93f089763934d227dd18.jpg",
-        "1693743120_d1a46cdb43b08d6de3e5.jpg",
-        "1693743120_a297a712ea014579dcd1.gif"
+        "../../assets/img/img1.jpg",
+        "../../assets/img/img2.jpg",
+        "../../assets/img/img3.jpg"
       ]
     },
     { "type": "5", "video": ["1693743120_9e766cc621e84d17df6b.mp4"] },
@@ -55,5 +55,3 @@
     "status": 1
   }
 }
-
-

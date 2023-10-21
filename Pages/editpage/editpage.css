@@ -3,7 +3,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
+    font-family:sans-serif;
 }
 
  :root {
@@ -354,6 +354,8 @@ body {
     background-color: #fcfcfc;
     width: 100%;
     gap: 10px;
+    height: 80vh;
+    overflow-y: scroll;
 }
 .createPageDiv .mainContainer .btnContainer{
     display: flex;
@@ -364,15 +366,12 @@ body {
 .menuToggles
 {
     width: 70px;
-    height: 70px;
     cursor: pointer;
     display: flex;
     justify-content: center;
     align-items: center;
-    /* box-shadow: 0 15px 25px rgba(0,0,0,0.15); */
-    /* top:50% */
     position: fixed;
-    bottom: 70px;
+    bottom: 20px;
 
 }
 
@@ -411,77 +410,32 @@ box-shadow: inset 2px 2px 9px -6px rgba(0,0,0,0.75);
     display: none;
   }
 
-/* .menuToggles::before
-{
-    content: '+';
-    position: absolute;
-    font-size: 3em;
-    font-weight: 200;
-    color: #ff216d;
-    transition: 1.5s;  
-} */
-.menuToggles.active::before
-{
-    /* transform: rotate(225deg); */
-}
-
 .actionBtns
 {
     position: fixed;
-    /* width:100%; */
-    /* height: 30px; */
-    /* background: #fff; */
     border-radius: 70px;
     z-index: -1;
-    /* transition: transform 0.5s, width 0.5s, height 0.5s;
-    transition-delay: 1s, 0.5s, 0.5s;
-    transition-timing-function: cubic-bezier(0.075,0.82, 0.165, 1); */
     transition: .2s;
     display: flex;
     flex-direction: column;
     gap: 10px;
-    bottom: 100px;
+    bottom: 90px;
 }
 .menuToggles.active ~ .actionBtns
 {
-    /* width: 240px;
-    height: 70px; */
     z-index: 1;
     transform: translateY(-30px);
     transition-delay: 0s, 0.5s, 0.5s;
     display: flex;
     flex-direction: column;
     gap: 10px;
-    /* box-shadow: 0 15px 25px rgba(0,0,0,0.1); */
 }
-/* 
-.actionBtns::before
-{
-    content: '';
-    position: absolute;
-    width: 16px;
-    height: 16px;
-    background: #fff;
-    left: calc(50% - 8px);
-    bottom: 4px;
-    transform: rotate(45deg);
-    border-radius: 2px;
-    transition: 0.5s;
-} */
 .menuToggles.active ~ .actionBtns::before
 {
     transition-delay: 0.5s;
     bottom: -6px;
 }
 
-
-/* .createPageDiv .actionBtns{
-    position: relative;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-} */
 
 
     .upload__box {
@@ -860,6 +814,7 @@ box-shadow: inset 2px 2px 9px -6px rgba(0,0,0,0.75);
     display: flex;
     align-items: center;
     gap: 10px;
+    padding: 10px 0px;
 }
 #contentCard .imgLink{
     display: flex;
@@ -884,6 +839,8 @@ box-shadow: inset 2px 2px 9px -6px rgba(0,0,0,0.75);
 #contentCard .btnDiv .linkDiv a{
     padding: 7px 35px;
     border-radius: 25px;
+    font-size: 20px;
+    font-weight: bold;
 }
 
 
@@ -972,15 +929,15 @@ box-shadow: inset 2px 2px 9px -6px rgba(0,0,0,0.75);
 
 #submitBtnDiv{
     position: fixed;
-    bottom: 30px;
+    bottom: 20px;
     width: 700px;
     text-align: center;
 
 }
 
 #submitBtnDiv button{
-    width: 20%;
     font-weight: bold;
+    padding: 7px 35px;
 }
 
 /*  */
@@ -1285,6 +1242,12 @@ label.radio {
 /* responsive design */
 
 @media(max-width:991px){
+
+.main.active {
+    width: calc(100% - 300px);
+    /* width: 100%; */
+    left: 300px;
+}
 
 .main{
     width: 100%;
