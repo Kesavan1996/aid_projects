@@ -231,6 +231,8 @@
             items: ['Bold', 'Italic', 'NumberedList', 'BulletedList']
           },
 
+          { name: 'paragraph', items: ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'] },
+
           { name: 'styles', items: ['Font', 'FontSize', 'TextColor'] }
         ];
         id_list.forEach(id => {
@@ -241,7 +243,8 @@
           CKEDITOR.plugins.addExternal('panelbutton', '/assets/js/plugin/panelbutton/', 'plugin.js');
           CKEDITOR.plugins.addExternal('colordialog', '/assets/js/plugin/colordialog/', 'plugin.js');
           CKEDITOR.plugins.addExternal('liststyle', '/assets/js/plugin/liststyle/', 'plugin.js');
-          CKEDITOR.config.extraPlugins = 'font,colorbutton,panelbutton,floatpanel,colordialog,liststyle';
+          CKEDITOR.plugins.addExternal('justify', '/assets/js/plugin/justify/', 'plugin.js');
+          CKEDITOR.config.extraPlugins = 'font,colorbutton,panelbutton,floatpanel,colordialog,liststyle,justify';
           CKEDITOR.config.colorButton_enableMore = true;
 
           CKEDITOR.config.enterMode = CKEDITOR.ENTER_BR;
@@ -1766,7 +1769,7 @@
           var dropImg = document.createElement("img")
           dropImg.height = 20
           dropImg.width = 20
-          dropImg.src = ""
+          dropImg.src = sort
 
           var clickTag = document.createElement("a")
           clickTag.href = "#"
@@ -1860,13 +1863,13 @@
 
           clickTag.appendChild(editImg)
 
-          var imgArry = [];
+
+          var imgId=modalBody.children[0].id
+          var imgArry = imagesContainerArrar[`${imgId}`] ;
           var imgSrc = document.getElementsByClassName("image")
           var parentContainer = document.getElementsByClassName("imgContainer")
           ParentId = parentContainer[0].id
-          for (let i = 0; i < imgSrc.length; i++) {
-            imgArry.push(imgSrc[i].children[0].src)
-          }
+
 
           var imgContainer = document.createElement("div")
           imgContainer.className = "imagesDiv"
@@ -1878,7 +1881,7 @@
           let images = '';
           imgArry.forEach((e, i) => {
             images += `
-                    <img src=${e} alt="img">
+                    <img src=${URL.createObjectURL(e)} alt="img">
                 </div>`
           })
 
@@ -2181,7 +2184,8 @@
           dropAnimation.width = 20
           dropAnimation.src = sort
 
-          var animationArry = [];
+          var animationArrayId=modalBody.children[0].id
+          var animationArry =animationContainerArray[`${animationArrayId}`]
           var animationSrc = document.getElementsByClassName("animation")
           for (let i = 0; i < animationSrc.length; i++) {
             animationArry.push(animationSrc[i].children[0].src)
@@ -3054,7 +3058,7 @@
 
 
             imgfiles.forEach((e, i) => {
-              images += `<div class="image box" draggable="true"">
+              images += `<div class="image box" draggable="true">
                         <img src=${e} alt="img" >
                        <span onclick="delImagesEdit(${i})"> &times;</span>
                     </div>`

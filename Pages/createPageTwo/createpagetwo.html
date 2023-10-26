@@ -495,6 +495,7 @@
 
           input.addEventListener("change", () => {
             let file = input.files;
+            console.log(file,"file add")
             for (let i = 0; i < file.length; i++) {
               if (files.every(e => e.name !== file[i].name)) {
                 files.push(file[i])
@@ -505,6 +506,7 @@
             //
 
             imagesContainerArrar[`imgContainerDiv${imageContainerId}`] = files
+
             tempArray[`imgContainerDiv${imageContainerId}`] = { type: "4", images: files }
 
 
@@ -514,6 +516,7 @@
           })
 
           showImages = () => {
+
             let images = '';
             files.forEach((e, i) => {
               images += `<div class="image box" draggable="true"">
@@ -1207,13 +1210,18 @@
 
           clickTag.appendChild(editImg)
 
-          var imgArry = [];
+              
+          var imgId=modalBody.children[0].id
+          var imgArry = imagesContainerArrar[`${imgId}`] ;
           var imgSrc = document.getElementsByClassName("image")
           var parentContainer = document.getElementsByClassName("imgContainer")
           ParentId = parentContainer[0].id
-          for (let i = 0; i < imgSrc.length; i++) {
+
+
+      /*    for (let i = 0; i < imgSrc.length; i++) {
             imgArry.push(imgSrc[i].children[0].src)
           }
+      */
 
           var imgContainer = document.createElement("div")
           imgContainer.className = "imagesDiv"
@@ -1225,7 +1233,7 @@
           let images = '';
           imgArry.forEach((e, i) => {
             images += `
-                    <img src=${e} alt="img">
+                    <img src=${URL.createObjectURL(e)} alt="img">
                 </div>`
           })
 
@@ -2365,6 +2373,7 @@
           //
 
           var imagesList = imagesContainerArrar[`${parentId}`]
+
           showImages()
           var paramId = id
           var modalTitle = document.getElementById("EditPageTitle")
@@ -2761,9 +2770,17 @@
 
 
           let editedImages = '';
+
+          let url="";
           images.forEach((e, i) => {
-            editedImages += `<img src=${URL.createObjectURL(e)} alt="img">`
+            if(typeof e === "string"){
+              url=e
+            }else{
+              url=URL.createObjectURL(e)
+            }
+            editedImages += `<img src=${url} alt="img">`
           })
+
 
           //
           if (images.length > 0) {
