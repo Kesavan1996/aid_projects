@@ -360,6 +360,22 @@ body {
     color: var(--white);
 }
 
+.pageLinkDiv{
+    display: flex;
+    justify-content: space-between;
+}
+
+.pageLinkDiv .copyLink{
+    height: 25px;
+    width: 25px;
+    cursor: pointer;
+}
+
+.pageLinkDiv .copyLink img{
+    height: 100%;
+    width: 100%;
+}
+
 
 /* responsive design */
 

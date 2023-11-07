@@ -368,7 +368,7 @@
 
         // Page onload function
 
-      let fetchData=fetch('./editData.json')
+      let fetchData=fetch('./Data.json')
       .then((response) => response.json())
       .then((json) => {return json.data});
 
@@ -376,9 +376,11 @@
 
         window.onload=async()=> {
 
-          let someData= await fetchData
+          let pageData= await fetchData
     
-          someData.map((data,i)=>{
+          pageData.map((data,i)=>{
+
+            console.log(data,"data")
 
           if(data.type==="1"){
             parentContentCards.style.backgroundColor = data.bgColor

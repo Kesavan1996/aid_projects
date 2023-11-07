@@ -1,0 +1,99 @@
+{
+  "goto": {
+    "gotoselect": "0",
+    "gotoselectname": "dfsdfs sdfsd",
+    "gotoselectbg": "#53bcf5"
+  },
+  "data": [
+    {
+      "type": "1",
+      "title": "Page Title 1",
+      "bgColor": "#fcfcfc"
+    },
+    {
+      "type": "2",
+      "heading": "Heading 1",
+      "bgColor": "#fcfcfc"
+    },
+    {
+      "type": "3",
+      "text": "Desc",
+      "bgColor": "#fcfcfc"
+    },
+    {
+      "type": "4",
+      "images": ["../../assets/img/img1.jpg"]
+    },
+    {
+      "type": "12",
+      "heading": "Update 1",
+      "bgcolor": "#f2f2f2",
+      "show": "false",
+      "updates": [
+        {
+          "type": "2",
+          "heading": "Heading",
+          "bgColor": "#fcfcfc",
+          "updates": "updates0"
+        },
+        {
+          "type": "3",
+          "text": "Desc",
+          "bgColor": "#fcfcfc",
+          "updates": "updates0"
+        },
+        {
+          "type": "4",
+          "images": ["../../assets/img/img1.jpg"]
+        },
+        {
+          "type": "5",
+          "video": ["1699341013_85d8bee50f2d0ba9a7e1.mp4"]
+        },
+        {
+          "type": "6",
+          "animations": ["../../assets/img/img1.jpg"]
+        },
+        {
+          "type": "7",
+          "quiz": {
+            "question": "11",
+            "option0": "1",
+            "option1": "2",
+            "option2": "3",
+            "option3": "4",
+            "answer": "1"
+          },
+          "updates": "updates0"
+        },
+        {
+          "type": "9",
+          "link": "https://ventunotech.com",
+          "image": ["1699341013_1fc5712ddeb75abc58e2.jpg"]
+        },
+        {
+          "type": "8",
+          "name": "Donate",
+          "link": "aidindia.in",
+          "bgColor": "#9b5050",
+          "updates": "updates0"
+        },
+        {
+          "type": "11",
+          "hyperlink": [
+            {
+              "type": "11",
+              "link": "https//aid.com",
+              "caption": "fwwwerwer werw",
+              "image": ["1699341013_1b6330a69d01d066b525.jpg"]
+            }
+          ]
+        },
+        {
+          "type": "10",
+          "updates": "updates0"
+        }
+      ]
+    }
+  ]
+}

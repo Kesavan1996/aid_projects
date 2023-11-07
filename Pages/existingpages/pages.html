@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pages</title>
     <link rel="stylesheet" type="text/css" href="pageList.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
 
 <body>
@@ -27,7 +28,12 @@
                         </div>
                         <div class="detailBox">
                             <h5>Page Name</h5>
-                            <a href="#" target="_blank">Page Link</a>
+                            <div class="pageLinkDiv">
+                                <a href="#" target="_blank">Page Link</a>
+                                <a class="copyLink" onclick="copyUrl(this)" data-bs-toggle="tooltip" data-bs-placement="top" title="Copy Link">
+                                    <img src="../../assets/img/copy.png"/>
+                                </a>
+                            </div>
                             <div class="status-div">
                                 <p class="date">11 Aug 2023</p>
                                 <p class="status">Published</p>
@@ -41,7 +47,12 @@
                         </div>
                         <div class="detailBox">
                             <h5>Page Name</h5>
-                            <a href="#" target="_blank">Page Link</a>
+                            <div class="pageLinkDiv">
+                                <a href="#" target="_blank">Page Link</a>
+                                <a class="copyLink" onclick="copyUrl(this)" data-bs-toggle="tooltip" data-bs-placement="top" title="Copy Link">
+                                    <img src="../../assets/img/copy.png"/>
+                                </a>
+                            </div>
                             <div class="status-div">
                                 <p class="date">11 Aug 2023</p>
                                 <p class="status">Published</p>
@@ -55,7 +66,12 @@
                         </div>
                         <div class="detailBox">
                             <h5>Page Name</h5>
-                            <a href="#" target="_blank">Page Link</a>
+                            <div class="pageLinkDiv">
+                                <a href="#" target="_blank">Page Link</a>
+                                <a class="copyLink" onclick="copyUrl(this)" data-bs-toggle="tooltip" data-bs-placement="top" title="Copy Link">
+                                    <img src="../../assets/img/copy.png"/>
+                                </a>
+                            </div>
                             <div class="status-div">
                                 <p class="date">11 Aug 2023</p>
                                 <p class="status">Published</p>
@@ -69,7 +85,12 @@
                         </div>
                         <div class="detailBox">
                             <h5>Page Name</h5>
-                            <a href="#" target="_blank">Page Link</a>
+                            <div class="pageLinkDiv">
+                                <a href="#" target="_blank">Page Link</a>
+                                <a class="copyLink" onclick="copyUrl(this)">
+                                    <img src="../../assets/img/copy.png"/>
+                                </a>
+                            </div>
                             <div class="status-div">
                                 <p class="date">11 Aug 2023</p>
                                 <p class="status">Published</p>
@@ -83,6 +104,8 @@
         <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
         <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
         <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
         
         <script>
 
@@ -97,8 +120,6 @@
             let toggle = document.querySelector('.toggle');
             let main = document.querySelector('.main');
 
-
-
                 // add hovered classn selected list item
 
             let list = document.querySelectorAll('.navigation li');
@@ -110,6 +131,19 @@
             }
             list.forEach((item) =>
                 item.addEventListener('mouseover', activeLink))
+
+
+            function copyUrl(e){
+                let copyText=e.previousElementSibling.innerText
+                navigator.clipboard.writeText(copyText);
+
+                let image=e.children[0]
+                image.src="../../assets/img/check.png"
+
+                setInterval(function(){
+                    image.src="../../assets/img/copy.png"
+                },3000)
+            }
         </script>
 </body>
 

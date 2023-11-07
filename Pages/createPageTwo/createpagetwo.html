@@ -45,9 +45,7 @@
                 <!-- edit -->
 
                 <div id="submitBtnDiv" style="display: none;">
-                  <button type="button" id="submitBtn" class="btn btn-primary"
-                    data-bs-toggle="modal"
-                    data-bs-target="#submitModal">Submit</button>
+                  <button type="button" id="submitBtn" class="btn btn-primary" onclick="submitModal()">Submit</button>
                 </div>
 
               </div>
@@ -194,6 +192,25 @@
                     </div>
                   </div>
                 </fieldset>
+                <div class="row mb-3 align-items-center" id="goToSelectDiv" style="display:none">
+                  <label for="goToSelect" class="col-sm-2 col-form-label">Go to update</label>
+                  <div class="col-sm-10">
+                    <select id="goToSelect" class="form-select" onchange="goToFn()">
+                    </select>
+                  </div>
+                </div>
+                <div class="mb-3 row align-items-center" id="updateNameDiv" style="display:none">
+                  <label for="updateName" class="col-sm-2 col-form-label">Update display name</label>
+                  <div class="col-sm-10 ">
+                    <input type="text" class="form-control" id="updateName" />
+                  </div>
+                </div>
+                <div class="mb-3 row align-items-center" id="updateColorDiv" style="display:none">
+                  <label for="updateBgColor" class="col-sm-2 col-form-label">Update button color</label>
+                  <div class="col-sm-10 ">
+                    <input type="color" class="form-control form-control-color" id="updateBgColor" value="#53bcf5" />
+                  </div>
+                </div>
               </form>
             </div>
             <div class="modal-footer">
@@ -259,6 +276,11 @@
 
         });
       }
+
+
+      
+
+      changeToRichtext([`updateName`])
 
       // Submit Modal Text
 
@@ -540,16 +562,12 @@
 
           input.addEventListener("change", () => {
             let file = input.files;
-            console.log(file,"file add")
             for (let i = 0; i < file.length; i++) {
               if (files.every(e => e.name !== file[i].name)) {
                 files.push(file[i])
               }
 
             }
-
-            //
-
             imagesContainerArrar[`imgContainerDiv${imageContainerId}`] = files
 
             tempArray[`imgContainerDiv${imageContainerId}`] = { type: "4", images: files }
@@ -1210,7 +1228,6 @@
 
           input.addEventListener("change", () => {
             let file = input.files;
-            console.log(file,"file add")
             for (let i = 0; i < file.length; i++) {
               if (files.every(e => e.name !== file[i].name)) {
                 files.push(file[i])
@@ -1417,11 +1434,8 @@
 
             tempArray[`animationsDiv${animationId}`] = { type: "6", animations: files,updates:`updates${updatesIdCount}` }
 
-            console.log(tempArray,"updates")
-
             form.reset();
             showAnimations()
-            dragFunction();
           })
 
           const showAnimations = () => {
@@ -1895,6 +1909,7 @@
           div.id = `descriptionDiv${headingDescId}`
           div.draggable = true
           var dropImg = document.createElement("img")
+          dropImg.className="dragImg"
           dropImg.height = 20
           dropImg.width = 20
           dropImg.src = "/assets/img/sort.png"
@@ -1979,7 +1994,6 @@
             parentElem.style.backgroundColor = elemBgColor
             submitBtnDiv.style.display = "block"
             headingDescId = headingDescId + 1
-            console.log(descriptionArray,"array updates")
             }
 
           } else {
@@ -2005,6 +2019,7 @@
           div.id =modalBody.children[0].id
           div.draggable = true
           var dropImg = document.createElement("img")
+          dropImg.className="dragImg"
           dropImg.height = 20
           dropImg.width = 20
           dropImg.src = "/assets/img/sort.png"
@@ -2129,6 +2144,7 @@
           div.id = `Div${keyId}`
           div.draggable = true
           var dropImg = document.createElement("img")
+          dropImg.className="dragImg"
           dropImg.height = 20
           dropImg.width = 20
           dropImg.src = "/assets/img/sort.png"
@@ -2243,6 +2259,7 @@
           quizDiv.id = animationKey
           quizDiv.draggable = true
           var dropImg = document.createElement("img")
+          dropImg.className="dragImg"
           dropImg.height = 20
           dropImg.width = 20
           dropImg.src = "/assets/img/sort.png"
@@ -2358,8 +2375,6 @@
             submitBtnDiv.style.display = "block"
             quizId += 1;
 
-            console.log(quizContainerArray,"array")
-
           } else {
             let qstnElem = document.querySelector(`#question${quizId}`)
             let optionOneElem = document.querySelector(`#option0`)
@@ -2409,6 +2424,7 @@
           div.id = modalBody.children[0].id
           div.draggable = true
           var dropAnimation = document.createElement("img")
+          dropAnimation.className="dragImg"
           dropAnimation.height = 20
           dropAnimation.width = 20
           dropAnimation.src = "/assets/img/sort.png"
@@ -2593,6 +2609,7 @@
           let parentId = modalBody.children[0].id
 
           var dropImg = document.createElement("img")
+          dropImg.className="dragImg"
           dropImg.height = 20
           dropImg.width = 30
           dropImg.src = dragImageIcon
@@ -2720,6 +2737,7 @@
           div.draggable = true
 
           var dropImg = document.createElement("img")
+          dropImg.className="dragImg"
           dropImg.height = 20
           dropImg.width = 30
           dropImg.src = dragImageIcon
@@ -2870,6 +2888,7 @@
           div.draggable = true
 
           var dropImg = document.createElement("img")
+          dropImg.className="dragImg"
           dropImg.height = 20
           dropImg.width = 30
           dropImg.src = dragImageIcon
@@ -3039,16 +3058,20 @@
             updatesId+=1;
             contentCards.appendChild(div)
 
-            const dragAreaUpdates = document.querySelector('.updatesItems')
+            const updatesElemClassSort=document.querySelectorAll('.updatesDivContainer')
 
-            if(dragAreaUpdates){
-              new Sortable(dragAreaUpdates,{
-                filter:'.titleDiv',
-                handle:".dragImg",
-                Animation:350
-              })
-            }
-
+              for (var i = 0; i < updatesElemClassSort?.length; i++) {
+                let ParentId=updatesElemClassSort[i].id
+                let idCount= ParentId.split("").pop()
+                let dragAreaUpdates=document.getElementById(`updatesItems${idCount}`)  
+                if(dragAreaUpdates){
+                  new Sortable(dragAreaUpdates,{
+                    filter:'.titleDiv',
+                    handle:".dragImg",
+                    Animation:350
+                  })
+                }
+              }
             
           }
 
@@ -3709,9 +3732,6 @@
 
           let {hyperLinkCards}=hyperLinkArray[`${parentId}`]
 
-          console.log()
-
-
           let editFormContent=
           `<form class="editForm" id="hyperLinkEdit_form0">
             <div class="d-flex gap-2 mb-2">
@@ -4114,7 +4134,6 @@
             if(updatesClass==="updatesItems"){
               headingArray[`${id}`] = { "type": "2", heading: editValue, bgColor: colorInput,updates:`updates${updatesId}` }
               tempArray[`${id}`] = { "type": "2", heading: editValue, bgColor: colorInput,updates:`updates${updatesId}` }
-              console.log(headingArray,"array")
             }else{
               headingArray[`${id}`] = { "type": "2", heading: editValue, bgColor: colorInput }
               tempArray[`${id}`] = { "type": "2", heading: editValue, bgColor: colorInput }
@@ -4346,7 +4365,50 @@
           }
 
         }
-      console.log(tempArray,"temp Arry")
+      }
+
+      function submitModal(){
+        let updatesElemClass=document.querySelectorAll('.updatesDivContainer')
+
+        let selectOption = document.getElementById('goToSelect')
+        let gotoDiv = document.getElementById("goToSelectDiv")
+
+        if(updatesElemClass.length===0){
+          gotoDiv.style.display="none"
+        }else{
+          gotoDiv.style.display="flex"
+        } 
+
+        selectOption.innerHTML="";
+
+        var nullOpt = document.createElement('option');
+        nullOpt.value = null;
+        nullOpt.innerHTML = "Choose Update...";
+        selectOption.appendChild(nullOpt);
+        for (let i=0;i<updatesElemClass.length; i++){
+          let updatesElementsId=updatesElemClass[i].id
+          let updatesElement=tempArray[`${updatesElementsId}`]['heading']
+
+          var opt = document.createElement('option');
+          opt.value = i;
+          opt.innerHTML = updatesElement;
+          selectOption.appendChild(opt);
+        }
+        $('#submitModal').modal('show');
+      }
+
+      function goToFn(){
+       let selectedValue=document.getElementById("goToSelect").value
+       let update_name_elem = document.getElementById("updateNameDiv")
+       let update_color_elem = document.getElementById("updateColorDiv")
+
+       if(selectedValue === "null"){
+        update_name_elem.style.display="none"
+        update_color_elem.style.display="none"
+       }else{
+        update_name_elem.style.display="flex"
+        update_color_elem.style.display="flex"
+       }
       }
 
 
@@ -4407,13 +4469,25 @@
 
         let updatesValue=[]
 
-        for(property in tempArray)
-         {
-           let updatesObj=tempArray[property]['updates']
-           if(updatesObj!==undefined){
-             updatesValue.push(tempArray[property])
-           }
-         }
+        let updatesKey=[]
+
+        const updatesElemClass=document.querySelectorAll('.updatesDivContainer')
+        
+        console.log(updatesElemClass,"goToSelect")
+
+        for(let i=0;i<updatesElemClass.length;i++){
+          let ParentId=updatesElemClass[i].id
+          let idCount= ParentId.split("").pop()
+          let childElem=document.getElementById(`updatesItems${idCount}`).childNodes
+          childElem.forEach((e,i)=>{
+            updatesKey.push(e.id)
+         })
+        }
+
+
+         updatesKey.forEach((e)=>{
+          updatesValue.push(tempArray[e])
+         })
 
         let updatesElemObj = Object.groupBy(updatesValue, ({ updates }) => updates);
 
@@ -4429,12 +4503,31 @@
           }
         })
 
+
+
         console.log(data,"data")
 
         var action = $('#acionId input:radio:checked').val();
         let urlInput = $("#urlInput").val()
         var selectCatText=  $('#inputState option').filter(':selected').text();
         var selectCatValue=  $('#inputState').val()
+        
+        var goToSelect =  $('#goToSelect').val()
+        var updateName = CKEDITOR.instances['updateName'].getData()
+        var updateBtnColor=$('#updateBgColor').val()
+
+        let updatesElemCheck=null;
+
+        if(updatesElemClass.length !==0){
+          if(goToSelect !=="null" && updateName !==""){
+            updatesElemCheck=true
+          }else{
+            updatesElemCheck=false
+          }
+        }else{
+          updatesElemCheck=null;
+        }
+        
 
         if (urlInput !== "" && selectCatValue !== "null") {
           $('#submitModal').modal('hide');
