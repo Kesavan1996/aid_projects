@@ -426,6 +426,7 @@
         spaceDiv.draggable = true
 
         var dropImg = document.createElement("img")
+        dropImg.className="dragImg"
         dropImg.height = 20
         dropImg.width = 30
         dropImg.src = dragImageIcon
@@ -823,35 +824,6 @@
             let form = new FormData();
             files.forEach((e, i) => form.append(`file[${i}]`, e))
           })
-
-
-          // Drag function
-
-          const dragFunction = () => {
-            var sortableList = document.querySelector(".animationContainer")
-            const items = document.querySelectorAll(".box")
-
-            items.forEach(item => {
-              item.addEventListener("dragstart", () => {
-                setTimeout(() => item.classList.add("dragging"), 0)
-              })
-              item.addEventListener("dragend", () => item.classList.remove("dragging"))
-            })
-
-            var initSortableList = (e) => {
-              const draggingItem = sortableList.querySelector(".dragging")
-              const sibilings = [...sortableList.querySelectorAll(".box:not(.dragging)")]
-
-              let nextSibiling = sibilings.find(sibiling => {
-                return e.clientY <= sibiling.offsetTop + sibiling.offsetHeight / 2
-              })
-
-              sortableList.insertBefore(draggingItem, nextSibiling)
-            }
-
-            sortableList.addEventListener("dragover", initSortableList)
-
-          }
         }
         else if (element === 'editHeading') {
           $('#createModal').modal('show');

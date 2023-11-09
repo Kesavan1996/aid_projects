@@ -45,9 +45,7 @@
                 <!-- edit -->
 
                 <div id="submitBtnDiv" style="display: none;">
-                  <button type="button" id="submitBtn" class="btn btn-primary"
-                    data-bs-toggle="modal"
-                    data-bs-target="#submitModal">Submit</button>
+                  <button type="button" id="submitBtn" class="btn btn-primary" onclick="submitModal()">Submit</button>
                 </div>
 
               </div>
@@ -85,6 +83,10 @@
                     onclick="showModal('button')">Button</button>
                   <button type="button" class="btn btn-primary"
                     onclick="showModal('imageLink')">Link</button>
+                    <button type="button" class="btn btn-primary"
+                    onclick="showModal('hyperLink')">Hyperlink</button>
+                  <button type="button" class="btn btn-primary"
+                    onclick="showModal('updates')">Updates</button>
                   <button type="button" class="btn btn-primary"
                     onclick="addSpace()">Empty Space</button>
                 </div>
@@ -191,6 +193,25 @@
                     </div>
                   </div>
                 </fieldset>
+                <div class="row mb-3 align-items-center" id="goToSelectDiv" style="display:none">
+                  <label for="goToSelect" class="col-sm-2 col-form-label">Go to update</label>
+                  <div class="col-sm-10">
+                    <select id="goToSelect" class="form-select" onchange="goToFn()">
+                    </select>
+                  </div>
+                </div>
+                <div class="mb-3 row align-items-center" id="updateNameDiv" style="display:none">
+                  <label for="updateName" class="col-sm-2 col-form-label">Update display name</label>
+                  <div class="col-sm-10 ">
+                    <input type="text" class="form-control" id="updateName" />
+                  </div>
+                </div>
+                <div class="mb-3 row align-items-center" id="updateColorDiv" style="display:none">
+                  <label for="updateBgColor" class="col-sm-2 col-form-label">Update button color</label>
+                  <div class="col-sm-10 ">
+                    <input type="color" class="form-control form-control-color" id="updateBgColor" value="#53bcf5" />
+                  </div>
+                </div>
               </form>
             </div>
             <div class="modal-footer">
@@ -261,6 +282,13 @@
       var pen="../../assets/img/pen.png"
       var close="../../assets/img/close.png"
 
+      var headingDivId = 0;
+      var dragImageIcon = "../../assets/img/sort.png"
+      var editImageIcon = "../../assets/img/pen.png"
+      var deleteImageIcon = "../../assets/img/close.png"
+
+      changeToRichtext([`updateName`])
+
       // Submit Modal Text
 
       let inputLinkText=$("#urlName")
@@ -298,22 +326,32 @@
       var spaceId = 0;
       var buttonId = 0;
       var imgLinkId = 0;
+      var hyperLinkId = 0;
+      var updatesId = 0;
+
 
       var delImagesEdit;
 
       var showImages;
+      var showEditImages;
       //var showAnimations;
       // var showVideos;
       var showEditVideos;
       var files;
+      var addInputs;
+      var removeInputs;
+      var imgOnchangeFn;
+      var imgEditOnchangeFn;
+      var addEditInputs;
+      var updatesBtnsFn;
+      var removeEditInputs;
+      var delEditImages;
 
       var descriptionId;
       const delVideos = (index) => {
         files.pop()
       }
       const delImages = (index) => {
-
-        console.log(files,"files")
         files.splice(index, 1)
         showImages()
       }
@@ -343,6 +381,8 @@
       let emptyPageArray = {}
       let quizArray = {}
       let titleArray = {}
+      let hyperLinkArray= {}
+      let updatesArray= {}
 
       //Temp Array
 
@@ -360,9 +400,10 @@
       const dragArea = document.querySelector('.card')
         
       new Sortable(dragArea,{
-          filter:'.titleDiv',
-          Animation:350
-        })
+        filter:'.titleDiv',
+        handle:".dragImg",
+        Animation:350
+      })
 
       
 
@@ -372,79 +413,217 @@
       .then((response) => response.json())
       .then((json) => {return json.data});
 
-        var parentContentCards = document.getElementById("contentCard")
+      let fetchGotoData=fetch('./Data.json')
+      .then((response) => response.json())
+      .then((json) => {return json.goto});
 
-        window.onload=async()=> {
-
-          let pageData= await fetchData
-    
-          pageData.map((data,i)=>{
-
-            console.log(data,"data")
-
-          if(data.type==="1"){
-            parentContentCards.style.backgroundColor = data.bgColor
-            cardbgColor = data.bgColor
-
-            var dropImg = document.createElement("img")
-            dropImg.height = 20
-            dropImg.width = 20
-            dropImg.src = sort
-
-            var emptyDiv=document.createElement("div")
-            emptyDiv.style="width:20px"
-
-            var clickTag = document.createElement("a")
-            clickTag.href = "#"
-
-            var editImg = document.createElement('img')
-            editImg.width = 20
-            editImg.height = 20
-            editImg.src = pen
-
-            clickTag.appendChild(editImg)
-
-            var deleteTag = document.createElement("a")
-            deleteTag.href = "#"
-            deleteTag.setAttribute("onclick", "deleteItem(this,'title')")
-
-            var deleteImg = document.createElement("img")
-            deleteImg.width = 20
-            deleteImg.height = 20
-            deleteImg.src = close
-
-            deleteTag.append(deleteImg)
-
-            var ckTextValue = data.title
-
-            let titleDiv = document.createElement("div")
-            titleDiv.className = "titleDiv"
-            titleDiv.id = "title"
-            let heading = document.createElement("p")
-            heading.id = "pageHeadingId"
-            heading.innerHTML = ckTextValue
-
-            titleDiv.appendChild(emptyDiv)
-            titleDiv.appendChild(heading)
-            titleDiv.appendChild(clickTag)
-            titleDiv.appendChild(deleteTag)
-
-            clickTag.setAttribute("onclick", `editModal("editTitle","pageHeadingId")`)
-
-            document.getElementById("emptyPage")?.remove()
-            //contentCards.appendChild(titleDiv)
-            parentContentCards.insertBefore(titleDiv, parentContentCards.firstChild);
-            titleArray["title"] = { "type": "1", title: ckTextValue, bgColor: cardbgColor }
-            tempArray["title"] = { "type": "1", title: ckTextValue, bgColor: cardbgColor }
-            //
-            submitBtnDiv.style.display = "block"
-
+        const fetchElem=(pageData,updatesElemId)=>{
+          var parentContentCards
+          if(updatesElemId){
+            parentContentCards = document.getElementById(`${updatesElemId}`)
+          }else{
+            parentContentCards = document.getElementById("contentCard")
           }
-          else if (data.type === "2") {
+
+          var idCount=updatesElemId?.split("").pop()
+
+          pageData.map((data,i)=>{  
+
+            if(data.type==="1"){
+              parentContentCards.style.backgroundColor = data.bgColor
+              cardbgColor = data.bgColor
+  
+              var dropImg = document.createElement("img")
+              dropImg.height = 20
+              dropImg.width = 20
+              dropImg.src = sort
+  
+              var emptyDiv=document.createElement("div")
+              emptyDiv.style="width:20px"
+  
+              var clickTag = document.createElement("a")
+              clickTag.href = "#"
+  
+              var editImg = document.createElement('img')
+              editImg.width = 20
+              editImg.height = 20
+              editImg.src = pen
+  
+              clickTag.appendChild(editImg)
+  
+              var deleteTag = document.createElement("a")
+              deleteTag.href = "#"
+              deleteTag.setAttribute("onclick", "deleteItem(this,'title')")
+  
+              var deleteImg = document.createElement("img")
+              deleteImg.width = 20
+              deleteImg.height = 20
+              deleteImg.src = close
+  
+              deleteTag.append(deleteImg)
+  
+              var ckTextValue = data.title
+  
+              let titleDiv = document.createElement("div")
+              titleDiv.className = "titleDiv"
+              titleDiv.id = "title"
+              let heading = document.createElement("p")
+              heading.id = "pageHeadingId"
+              heading.innerHTML = ckTextValue
+  
+              titleDiv.appendChild(emptyDiv)
+              titleDiv.appendChild(heading)
+              titleDiv.appendChild(clickTag)
+              titleDiv.appendChild(deleteTag)
+  
+              clickTag.setAttribute("onclick", `editModal("editTitle","pageHeadingId")`)
+  
+              document.getElementById("emptyPage")?.remove()
+              //contentCards.appendChild(titleDiv)
+              parentContentCards.insertBefore(titleDiv, parentContentCards.firstChild);
+              titleArray["title"] = { "type": "1", title: ckTextValue, bgColor: cardbgColor }
+              tempArray["title"] = { "type": "1", title: ckTextValue, bgColor: cardbgColor }
+              //
+              submitBtnDiv.style.display = "block"
+  
+            }
+            else if (data.type === "2") {
+                var div = document.createElement('div')
+                div.className = "heading dragDiv"
+               // div.draggable = true
+                div.id = "headingId" + headingDivId
+                var dropImg = document.createElement("img")
+                dropImg.height = 20
+                dropImg.width = 20
+                dropImg.src = sort
+      
+                var clickTag = document.createElement("a")
+                clickTag.href = "#"
+                clickTag.setAttribute("onclick", `editModal("editHeading",this.previousElementSibling.id,this.parentElement.id)`)
+      
+                var editImg = document.createElement('img')
+                editImg.width = 20
+                editImg.height = 20
+                editImg.src = pen
+      
+                clickTag.appendChild(editImg)
+      
+                var deleteTag = document.createElement("a")
+                deleteTag.href = "#"
+                deleteTag.setAttribute("onclick", "deleteItem(this,'heading')")
+      
+                var deleteImg = document.createElement("img")
+                deleteImg.width = 20
+                deleteImg.height = 20
+                deleteImg.src = close
+      
+                deleteTag.append(deleteImg)
+                var ckTextValue = data.heading
+      
+                let bgColor = data.bgColor
+      
+                let paraDiv = document.createElement("div")
+                paraDiv.className = "headingDiv"
+      
+                let paraTag = document.createElement("p")
+                paraTag.className="mb-0"
+                paraTag.id = "heading" + headingDivId
+                paraTag.innerHTML = ckTextValue
+      
+                paraDiv.appendChild(paraTag)
+      
+                div.appendChild(dropImg)
+                div.appendChild(paraDiv)
+                div.appendChild(clickTag)
+                div.appendChild(deleteTag)
+      
+                  // 
+                  document.getElementById("emptyPage")?.remove()
+                  parentContentCards.appendChild(div)
+
+                  if(updatesElemId){
+                    headingArray[`headingId${headingDivId}`] = { "type": "2", heading: ckTextValue, bgColor: bgColor,updates:`updates${idCount}` }
+                    tempArray[`headingId${headingDivId}`] = { "type": "2", heading: ckTextValue, bgColor: bgColor,updates:`updates${idCount}` }
+                  }else{
+                    headingArray[`headingId${headingDivId}`] = { "type": "2", heading: ckTextValue, bgColor: bgColor }
+                    tempArray[`headingId${headingDivId}`] = { "type": "2", heading: ckTextValue, bgColor: bgColor }
+                  }
+      
+                  let headingDiv = document.getElementById(`headingId${headingDivId}`)
+                  headingDiv.style.backgroundColor = `${bgColor}`
+                  //
+                  submitBtnDiv.style.display = "block"
+                  headingDivId += 1
+      
+              }
+            else if(data.type==="3"){
               var div = document.createElement('div')
-              div.className = "heading dragDiv"
-             // div.draggable = true
-              div.id = "headingId" + headingDivId
+              div.className = "headingDesc dragDiv"
+              div.id = `descriptionDiv${headingDescId}`
+              div.draggable = true
+              var dropImg = document.createElement("img")
+              dropImg.height = 20
+              dropImg.width = 20
+              dropImg.src = sort
+    
+              var clickTag = document.createElement("a")
+              clickTag.href = "#"  
+              var editImg = document.createElement('img')
+              editImg.width = 20
+              editImg.height = 20
+              editImg.src = pen
+    
+              clickTag.appendChild(editImg)
+    
+              var deleteTag = document.createElement("a")
+              deleteTag.href = "#"
+              deleteTag.setAttribute("onclick", "deleteItem(this,'description')")
+    
+              var deleteImg = document.createElement("img")
+              deleteImg.width = 20
+              deleteImg.height = 20
+              deleteImg.src = close
+    
+              deleteTag.append(deleteImg)
+    
+              let elemId = "descriptionDiv" + headingDescId
+    
+              clickTag.setAttribute("onclick", `editModal("editDescription",this.previousElementSibling.id,this.parentElement.id)`)
+    
+              var ckTextValue = data.text
+              var elem = document.createElement("p")
+              elem.id = "Description" + headingDescId
+              elem.innerHTML = ckTextValue
+              div.appendChild(dropImg)
+              div.appendChild(elem)
+              div.appendChild(clickTag)
+              div.appendChild(deleteTag)
+  
+              let elemBgColor = data.bgColor
+  
+              document.getElementById("emptyPage")?.remove()
+              parentContentCards.appendChild(div)
+              if(updatesElemId){
+                descriptionArray[`${elemId}`] = { text: ckTextValue, bgColor: elemBgColor,updates:`updates${idCount}` }
+                tempArray[`${elemId}`] = { type: "3", text: ckTextValue, bgColor: elemBgColor,updates:`updates${idCount}` }
+              }else{
+                descriptionArray[`${elemId}`] = { text: ckTextValue, bgColor: elemBgColor }
+                tempArray[`${elemId}`] = { type: "3", text: ckTextValue, bgColor: elemBgColor }
+              }
+
+              let parentElem = document.getElementById(elemId)
+              parentElem.style.backgroundColor = elemBgColor
+              submitBtnDiv.style.display = "block"
+              headingDescId = headingDescId + 1
+            }
+           else if(data.type==="4"){
+              let ParentId;
+              var div = document.createElement('div')
+              div.className = "imageContainer dragDiv"
+    
+              //
+              div.id = `imgContainerDiv${imageContainerId}`
+              div.draggable = true
               var dropImg = document.createElement("img")
               dropImg.height = 20
               dropImg.width = 20
@@ -452,7 +631,397 @@
     
               var clickTag = document.createElement("a")
               clickTag.href = "#"
-              clickTag.setAttribute("onclick", `editModal("editHeading",this.previousElementSibling.id,this.parentElement.id)`)
+              var editImg = document.createElement('img')
+              editImg.width = 20
+              editImg.height = 20
+              editImg.src = pen
+    
+              clickTag.appendChild(editImg)
+    
+              var imgArry = data.images
+
+              if(updatesElemId){   
+                imagesContainerArrar[`imgContainerDiv${imageContainerId}`] = {images:imgArry,updates:`updates${idCount}`}
+                tempArray[`imgContainerDiv${imageContainerId}`] = { type: "4", images: imgArry,updates:`updates${idCount}`} 
+              }else{    
+                imagesContainerArrar[`imgContainerDiv${imageContainerId}`] = imgArry
+                tempArray[`imgContainerDiv${imageContainerId}`] = { type: "4", images: imgArry } 
+              }
+ 
+              var imgContainer = document.createElement("div")
+              imgContainer.className = "imagesDiv"
+              imgContainer.id = "imgContainer" + imageContainerId
+              imgContainer.draggable = true
+              //
+              clickTag.setAttribute("onclick", `editModal("editImages",this.previousElementSibling.id,this.parentElement.id)`)
+    
+              let images = '';
+
+              imgArry.forEach((e, i) => {
+                images += `
+                        <img src=${e} alt="img">
+                    </div>`
+              })
+  
+              imgContainer.innerHTML = images
+    
+              var deleteTag = document.createElement("a")
+              deleteTag.href = "#"
+              deleteTag.setAttribute("onclick", "deleteItem(this,'image')")
+    
+              var deleteImg = document.createElement("img")
+              deleteImg.width = 20
+              deleteImg.height = 20
+              deleteImg.src = close
+    
+              deleteTag.append(deleteImg)
+                $('#createModal').modal('hide');
+                document.getElementById("emptyPage")?.remove()
+    
+                div.appendChild(dropImg)
+                div.appendChild(imgContainer)
+                div.appendChild(clickTag)
+                div.appendChild(deleteTag)
+                parentContentCards.appendChild(div)
+                submitBtnDiv.style.display = "block"
+                imageContainerId += 1
+            }
+            else if(data.type==="5"){
+  
+              var div = document.createElement('div')
+              div.className = "videoContainer dragDiv"
+              div.id = "DivvideoContainer" + videoContainerId
+              div.draggable = true
+              var dropImg = document.createElement("img")
+              dropImg.height = 20
+              dropImg.width = 20
+              dropImg.src = sort
+    
+    
+              var clickTag = document.createElement("a")
+              clickTag.href = "#"  
+              var editImg = document.createElement('img')
+              editImg.width = 20
+              editImg.height = 20
+              editImg.src = pen
+    
+              clickTag.appendChild(editImg)
+  
+              var videoArry = data.video
+              var videoSrc = data.video
+
+              if(updatesElemId){   
+              videoContainerArrary[`DivvideoContainer${videoContainerId}`] ={video:videoArry ,updates:`updates${idCount}`} 
+              tempArray[`DivvideoContainer${videoContainerId}`] = { type: "5", video: videoArry,updates:`updates${idCount}` }
+              }else{
+                  
+                videoContainerArrary[`DivvideoContainer${videoContainerId}`] = videoArry 
+                tempArray[`DivvideoContainer${videoContainerId}`] = { type: "5", video: videoArry }
+              }
+
+              var videoContainer = document.createElement("div")
+              videoContainer.className = "videosDiv"
+              videoContainer.id = "videoContainer" + videoContainerId
+              videoContainer.draggable = true
+              clickTag.setAttribute("onclick", "editModal('editVideo',this.previousElementSibling.id,this.parentElement.id)")
+    
+              var deleteTag = document.createElement("a")
+              deleteTag.href = "#"
+              deleteTag.setAttribute("onclick", "deleteItem(this,'video')")
+    
+              var deleteImg = document.createElement("img")
+              deleteImg.width = 20
+              deleteImg.height = 20
+              deleteImg.src = close
+    
+              deleteTag.append(deleteImg)
+    
+              // deleteTag.setAttribute("onclick","return this.parentNode.remove()")
+    
+              var existingElement = document.getElementById(videoTempId)
+    
+              let videos = '';
+    
+              videos = `<video class="" controls  preload="auto" alt="video">
+                    <source src=${videoSrc} />
+                </video>`
+              videoContainer.innerHTML = videos
+  
+    
+    
+              let inputElem = document.querySelector(".videoModalContainer")
+                //
+                $('#createModal').modal('hide');
+                document.getElementById("emptyPage")?.remove()
+                div.appendChild(dropImg)
+                div.appendChild(videoContainer)
+                div.appendChild(clickTag)
+                div.appendChild(deleteTag)
+                parentContentCards.appendChild(div)
+                //
+                submitBtnDiv.style.display = "block"
+                videoContainerId += 1
+            }
+           /* else if(data.type==="6"){
+              var div = document.createElement('div')
+              div.className = "animationParentContainer dragDiv"
+              div.id = "animationsDiv" + animationId
+              div.draggable = true
+              var dropAnimation = document.createElement("img")
+              dropAnimation.height = 20
+              dropAnimation.width = 20
+              dropAnimation.src = sort
+    
+              var animationArry = data.animations;  
+  
+  
+              var animationContainer = document.createElement("div")
+              animationContainer.className = "animationsDiv"
+              animationContainer.id = `animations${animationId}`
+              animationContainer.draggable = true
+  
+    
+              let animations = '';
+              animationArry.forEach((e, i) => {
+                animations += `
+                        <img src=${URL.createObjectURL(e)} alt="img">
+                    </div>`
+              })
+              animationContainer.innerHTML = animations
+
+               if(updatesElemId){ 
+                  
+                  animationContainerArray[`animationsDiv${animationId}`] = {animations:animationArry,updates:`updates${idCount}`}
+      
+                  tempArray[`animationsDiv${animationId}`] = { type: "6", animations: animationArry,updates:`updates${idCount}` }  
+              }else{
+               animationContainerArray[`animationsDiv${animationId}`] = animationArry
+  
+              tempArray[`animationsDiv${animationId}`] = { type: "6", animations: animationArry }
+              }
+  
+
+    
+    
+              var clickTag = document.createElement("a")
+              clickTag.href = "#"
+    
+              clickTag.setAttribute("onclick", "editModal('editAnimation',this.previousElementSibling.id,this.parentElement.id)")
+    
+              var editImg = document.createElement('img')
+              editImg.width = 20
+              editImg.height = 20
+              editImg.src = pen
+    
+              clickTag.appendChild(editImg)
+    
+    
+              var deleteTag = document.createElement("a")
+              deleteTag.href = "#"
+              deleteTag.setAttribute("onclick", "deleteItem(this,'animation')")
+    
+              var deleteImg = document.createElement("img")
+              deleteImg.width = 20
+              deleteImg.height = 20
+              deleteImg.src = close
+    
+              deleteTag.append(deleteImg)
+    
+    
+              div.appendChild(dropAnimation)
+              div.appendChild(animationContainer)
+              div.appendChild(clickTag)
+              div.appendChild(deleteTag)
+  
+              $('#createModal').modal('hide');
+              document.getElementById("emptyPage")?.remove()
+              parentContentCards.appendChild(div)
+              submitBtnDiv.style.display = "block"
+              animationId += 1
+            }
+            */
+            else if(data.type==="7"){
+              var quizDiv = document.createElement('div')
+              quizDiv.className = "quizContainer dragDiv"
+              quizDiv.id = "quizDiv" + quizId
+              quizDiv.draggable = true
+              var dropImg = document.createElement("img")
+              dropImg.height = 20
+              dropImg.width = 20
+              dropImg.src = sort
+    
+              var formElem = document.getElementsByClassName("formClass");
+              var quiz = data.quiz
+              var quizData = quiz;
+    
+              quizContainerArray[`quiz${quizId}`] = quiz;
+    
+              const { question, answer, ...rest } = quiz;
+    
+              var optionsList = []
+              for (var key in rest) {
+                var value = rest[key];
+                if (value !== "") {
+                  optionsList.push(value)
+                }
+              }
+              const { option0, option1, option2, option3 } = quiz;
+    
+              var options = ""
+              for (let i = 0; i < optionsList.length; i++) {
+                options += `<label class="options">${optionsList[i]}
+                  <input type="radio" name="radio" value=${optionsList[i]}/>
+                  <span class="checkmark"></span>
+              </label>`
+              }
+    
+              const div = document.createElement("div")
+    
+  
+                const quizHtml = `<div class="container my-1">
+                    <div class="question ml-sm-5 pl-sm-5 pt-2 text-start">
+                        <div class="py-2 h5"><b>Q. ${question}</b></div>
+                        <div class="ml-md-3 ml-sm-3 pl-md-5 pt-sm-0 pt-3" id="options">
+                           ${options}
+                        </div>
+                    </div>
+                </div>`
+    
+    
+                const submitBtn = `<button type="button" class="btn btn-primary" onclick="answerSubmit()">Submit</button>`
+    
+               
+                div.style = "text-align:start"
+                div.style = "width:90%"
+                div.id = `quiz${quizId}`
+                div.className = "quizClass"
+                div.innerHTML = quizHtml
+    
+              var clickTag = document.createElement("a")
+              clickTag.href = "#"
+    
+              var editImg = document.createElement('img')
+              editImg.width = 20
+              editImg.height = 20
+              editImg.src = pen
+    
+              clickTag.appendChild(editImg)
+    
+    
+              clickTag.setAttribute("onclick", "editModal('editQuiz',this.previousElementSibling.id,this.parentElement.id)")
+    
+              // quizContainerArray[`${quizArray}`]=quiz[0]
+              var deleteTag = document.createElement("a")
+              deleteTag.href = "#"
+              deleteTag.setAttribute("onclick", "deleteItem(this,'quiz')")
+    
+              var deleteImg = document.createElement("img")
+              deleteImg.width = 20
+              deleteImg.height = 20
+              deleteImg.src = close
+    
+              deleteTag.append(deleteImg)
+    
+              quizDiv.appendChild(dropImg)
+              quizDiv.appendChild(div)
+              quizDiv.appendChild(clickTag)
+              quizDiv.appendChild(deleteTag)
+  
+              $('#createModal').modal('hide');
+              document.getElementById("emptyPage")?.remove()
+              parentContentCards.appendChild(quizDiv)
+              if(updatesElemId){
+              quizContainerArray[`quizDiv${quizId}`] = {quiz:quiz[0],updates:`updates${idCount}`}
+              tempArray[`quizDiv${quizId}`] = {type:"7",quiz:quiz[0],updates:`updates${idCount}`}
+              }else{
+                quizContainerArray[`quizDiv${quizId}`] = {quiz:quiz[0]}
+                 tempArray[`quizDiv${quizId}`] = {type:"7",quiz:quiz[0]}
+              }
+
+              submitBtnDiv.style.display = "block"
+              quizId += 1;
+    
+            }
+            else if(data.type==="8"){
+              let btnName = data.name
+              let btnLink = data.link
+    
+              var dropImg = document.createElement("img")
+              dropImg.height = 20
+              dropImg.width = 20
+              dropImg.src = sort
+    
+              var clickTag = document.createElement("a")
+              clickTag.href = "#"
+    
+              var editImg = document.createElement('img')
+              editImg.width = 20
+              editImg.height = 20
+              editImg.src = pen
+    
+              clickTag.appendChild(editImg)
+              var deleteTag = document.createElement("a")
+              deleteTag.href = "#"
+              deleteTag.setAttribute("onclick", "deleteItem(this,'button')")
+    
+              var deleteImg = document.createElement("img")
+              deleteImg.width = 20
+              deleteImg.height = 20
+              deleteImg.src = close
+    
+              deleteTag.append(deleteImg)
+    
+              let btnDiv = document.createElement("div")
+              btnDiv.className = "btnDiv dragDiv"
+              btnDiv.id = `btnLinkDiv${buttonId}`
+    
+              let linkDiv = document.createElement("div")
+              linkDiv.className = "linkDiv"
+              linkDiv.id = "btnLink" + buttonId
+    
+              clickTag.setAttribute("onclick", `editModal("editButton",this.previousElementSibling.id,this.parentElement.id)`)
+  
+              let btnTag = `<a href=${btnLink} id="linkTag${buttonId}" target="_blank" class="linkBtn">${btnName}</a>`
+    
+              linkDiv.innerHTML = btnTag
+    
+              let btnColor = data.bgColor
+    
+              $('#createModal').modal('hide');
+              btnDiv.appendChild(dropImg)
+              btnDiv.appendChild(linkDiv)
+              btnDiv.appendChild(clickTag)
+              btnDiv.appendChild(deleteTag)
+              parentContentCards.appendChild(btnDiv)
+
+              if(updatesElemId){
+                btnContainerArray[`btnLinkDiv${buttonId}`] = { name: btnName, link: btnLink, bgColor: btnColor,updates:`updates${idCount}` }
+                tempArray[`btnLinkDiv${buttonId}`] = { type: "8", name: btnName, link: btnLink, bgColor: btnColor,updates:`updates${idCount}` }
+              }else{
+                btnContainerArray[`btnLinkDiv${buttonId}`] = { name: btnName, link: btnLink, bgColor: btnColor }
+                tempArray[`btnLinkDiv${buttonId}`] = { type: "8", name: btnName, link: btnLink, bgColor: btnColor }
+              }
+
+              let childElem = document.getElementById(`linkTag${buttonId}`)
+  
+              childElem.style.backgroundColor = btnColor
+              submitBtnDiv.style.display = "block"
+              buttonId += 1;
+            }
+           /* else if(data.type==="9"){
+              let imgId = `imgLink${imgLinkId}`
+              var div = document.createElement('div')
+              div.className = "imgLink dragDiv"
+              div.id = imgId
+              div.draggable = true
+    
+              var dropImg = document.createElement("img")
+              dropImg.height = 20
+              dropImg.width = 20
+              dropImg.src = sort
+    
+              var clickTag = document.createElement("a")
+              clickTag.href = "#"  
     
               var editImg = document.createElement('img')
               editImg.width = 20
@@ -463,7 +1032,7 @@
     
               var deleteTag = document.createElement("a")
               deleteTag.href = "#"
-              deleteTag.setAttribute("onclick", "deleteItem(this,'heading')")
+              deleteTag.setAttribute("onclick", "deleteItem(this,'link')")
     
               var deleteImg = document.createElement("img")
               deleteImg.width = 20
@@ -471,533 +1040,267 @@
               deleteImg.src = close
     
               deleteTag.append(deleteImg)
-              var ckTextValue = data.heading
     
-              let bgColor = data.bgColor
     
-              let paraDiv = document.createElement("div")
-              paraDiv.className = "headingDiv"
-    
-              let paraTag = document.createElement("p")
-              paraTag.className="mb-0"
-              paraTag.id = "heading" + headingDivId
-              paraTag.innerHTML = ckTextValue
-    
-              paraDiv.appendChild(paraTag)
-    
-              div.appendChild(dropImg)
-              div.appendChild(paraDiv)
-              div.appendChild(clickTag)
-              div.appendChild(deleteTag)
-    
-                // 
-                document.getElementById("emptyPage")?.remove()
-                parentContentCards.appendChild(div)
-    
-                headingArray[`headingId${headingDivId}`] = { "type": "2", heading: ckTextValue, bgColor: bgColor }
-                // heading Data
-    
-                tempArray[`headingId${headingDivId}`] = { "type": "2", heading: ckTextValue, bgColor: bgColor }
-    
-                let headingDiv = document.getElementById(`headingId${headingDivId}`)
-                headingDiv.style.backgroundColor = `${bgColor}`
-                //
-                submitBtnDiv.style.display = "block"
-                headingDivId += 1
-    
-            }
-          else if(data.type==="3"){
-            var div = document.createElement('div')
-            div.className = "headingDesc dragDiv"
-            div.id = `descriptionDiv${headingDescId}`
-            div.draggable = true
-            var dropImg = document.createElement("img")
-            dropImg.height = 20
-            dropImg.width = 20
-            dropImg.src = sort
-  
-            var clickTag = document.createElement("a")
-            clickTag.href = "#"  
-            var editImg = document.createElement('img')
-            editImg.width = 20
-            editImg.height = 20
-            editImg.src = pen
-  
-            clickTag.appendChild(editImg)
-  
-            var deleteTag = document.createElement("a")
-            deleteTag.href = "#"
-            deleteTag.setAttribute("onclick", "deleteItem(this,'description')")
-  
-            var deleteImg = document.createElement("img")
-            deleteImg.width = 20
-            deleteImg.height = 20
-            deleteImg.src = close
-  
-            deleteTag.append(deleteImg)
-  
-            let elemId = "descriptionDiv" + headingDescId
-  
-            clickTag.setAttribute("onclick", `editModal("editDescription",this.previousElementSibling.id,this.parentElement.id)`)
-  
-            var ckTextValue = data.text
-            var elem = document.createElement("p")
-            elem.id = "Description" + headingDescId
-            elem.innerHTML = ckTextValue
-            div.appendChild(dropImg)
-            div.appendChild(elem)
-            div.appendChild(clickTag)
-            div.appendChild(deleteTag)
-
-            let elemBgColor = data.bgColor
-
-            document.getElementById("emptyPage")?.remove()
-            parentContentCards.appendChild(div)
-            descriptionArray[`${elemId}`] = { text: ckTextValue, bgColor: elemBgColor }
-            tempArray[`${elemId}`] = { type: "3", text: ckTextValue, bgColor: elemBgColor }
-            let parentElem = document.getElementById(elemId)
-            parentElem.style.backgroundColor = elemBgColor
-            submitBtnDiv.style.display = "block"
-            headingDescId = headingDescId + 1
-          }
-         else if(data.type==="4"){
-            let ParentId;
-            var div = document.createElement('div')
-            div.className = "imageContainer dragDiv"
-  
-            //
-            div.id = `imgContainerDiv${imageContainerId}`
-            div.draggable = true
-            var dropImg = document.createElement("img")
-            dropImg.height = 20
-            dropImg.width = 20
-            dropImg.src = sort
-  
-            var clickTag = document.createElement("a")
-            clickTag.href = "#"
-            var editImg = document.createElement('img')
-            editImg.width = 20
-            editImg.height = 20
-            editImg.src = pen
-  
-            clickTag.appendChild(editImg)
-  
-            var imgArry = data.images
-
-            imagesContainerArrar[`imgContainerDiv${imageContainerId}`] = imgArry
-            tempArray[`imgContainerDiv${imageContainerId}`] = { type: "4", images: imgArry }  
-            var imgContainer = document.createElement("div")
-            imgContainer.className = "imagesDiv"
-            imgContainer.id = "imgContainer" + imageContainerId
-            imgContainer.draggable = true
-            //
-            clickTag.setAttribute("onclick", `editModal("editImages",this.previousElementSibling.id,this.parentElement.id)`)
-  
-            let images = '';
-           /* imgArry.forEach((e, i) => {
-              images += `
-                      <img src=${URL.createObjectURL(e)} alt="img">
-                  </div>`
-            })
-            */
-            imgArry.forEach((e, i) => {
-              images += `
-                      <img src=${e} alt="img">
-                  </div>`
-            })
-
-            imgContainer.innerHTML = images
-  
-            var deleteTag = document.createElement("a")
-            deleteTag.href = "#"
-            deleteTag.setAttribute("onclick", "deleteItem(this,'image')")
-  
-            var deleteImg = document.createElement("img")
-            deleteImg.width = 20
-            deleteImg.height = 20
-            deleteImg.src = close
-  
-            deleteTag.append(deleteImg)
-              $('#createModal').modal('hide');
-              document.getElementById("emptyPage")?.remove()
-  
-              div.appendChild(dropImg)
-              div.appendChild(imgContainer)
-              div.appendChild(clickTag)
-              div.appendChild(deleteTag)
-              parentContentCards.appendChild(div)
-              submitBtnDiv.style.display = "block"
-              imageContainerId += 1
-          }
-          else if(data.type==="5"){
-
-            var div = document.createElement('div')
-            div.className = "videoContainer dragDiv"
-            div.id = "DivvideoContainer" + videoContainerId
-            div.draggable = true
-            var dropImg = document.createElement("img")
-            dropImg.height = 20
-            dropImg.width = 20
-            dropImg.src = sort
-  
-  
-            var clickTag = document.createElement("a")
-            clickTag.href = "#"  
-            var editImg = document.createElement('img')
-            editImg.width = 20
-            editImg.height = 20
-            editImg.src = pen
-  
-            clickTag.appendChild(editImg)
-
-            var videoArry = data.video
-            var videoSrc = data.video
-
-            videoContainerArrary[`DivvideoContainer${videoContainerId}`] = videoArry 
-            tempArray[`DivvideoContainer${videoContainerId}`] = { type: "5", video: videoArry }
-            var videoContainer = document.createElement("div")
-            videoContainer.className = "videosDiv"
-            videoContainer.id = "videoContainer" + videoContainerId
-            videoContainer.draggable = true
-            clickTag.setAttribute("onclick", "editModal('editVideo',this.previousElementSibling.id,this.parentElement.id)")
-  
-            var deleteTag = document.createElement("a")
-            deleteTag.href = "#"
-            deleteTag.setAttribute("onclick", "deleteItem(this,'video')")
-  
-            var deleteImg = document.createElement("img")
-            deleteImg.width = 20
-            deleteImg.height = 20
-            deleteImg.src = close
-  
-            deleteTag.append(deleteImg)
-  
-            // deleteTag.setAttribute("onclick","return this.parentNode.remove()")
-  
-            var existingElement = document.getElementById(videoTempId)
-  
-            let videos = '';
-  
-            videos = `<video class="" controls  preload="auto" alt="video">
-                  <source src=${videoSrc} />
-              </video>`
-            videoContainer.innerHTML = videos
-
-  
-  
-            let inputElem = document.querySelector(".videoModalContainer")
-              //
-              $('#createModal').modal('hide');
-              document.getElementById("emptyPage")?.remove()
-              div.appendChild(dropImg)
-              div.appendChild(videoContainer)
-              div.appendChild(clickTag)
-              div.appendChild(deleteTag)
-              parentContentCards.appendChild(div)
-              //
-              submitBtnDiv.style.display = "block"
-              videoContainerId += 1
-          }
-         /* else if(data.type==="6"){
-            var div = document.createElement('div')
-            div.className = "animationParentContainer dragDiv"
-            div.id = "animationsDiv" + animationId
-            div.draggable = true
-            var dropAnimation = document.createElement("img")
-            dropAnimation.height = 20
-            dropAnimation.width = 20
-            dropAnimation.src = sort
-  
-            var animationArry = data.animations;  
-
-
-            var animationContainer = document.createElement("div")
-            animationContainer.className = "animationsDiv"
-            animationContainer.id = `animations${animationId}`
-            animationContainer.draggable = true
-
-  
-            let animations = '';
-            animationArry.forEach((e, i) => {
-              animations += `
-                      <img src=${URL.createObjectURL(e)} alt="img">
-                  </div>`
-            })
-            animationContainer.innerHTML = animations
-
-            animationContainerArray[`animationsDiv${animationId}`] = animationArry
-
-            tempArray[`animationsDiv${animationId}`] = { type: "6", animations: animationArry }
-  
-  
-            var clickTag = document.createElement("a")
-            clickTag.href = "#"
-  
-            clickTag.setAttribute("onclick", "editModal('editAnimation',this.previousElementSibling.id,this.parentElement.id)")
-  
-            var editImg = document.createElement('img')
-            editImg.width = 20
-            editImg.height = 20
-            editImg.src = pen
-  
-            clickTag.appendChild(editImg)
-  
-  
-            var deleteTag = document.createElement("a")
-            deleteTag.href = "#"
-            deleteTag.setAttribute("onclick", "deleteItem(this,'animation')")
-  
-            var deleteImg = document.createElement("img")
-            deleteImg.width = 20
-            deleteImg.height = 20
-            deleteImg.src = close
-  
-            deleteTag.append(deleteImg)
-  
-  
-            div.appendChild(dropAnimation)
-            div.appendChild(animationContainer)
-            div.appendChild(clickTag)
-            div.appendChild(deleteTag)
-
-            $('#createModal').modal('hide');
-            document.getElementById("emptyPage")?.remove()
-            parentContentCards.appendChild(div)
-            submitBtnDiv.style.display = "block"
-            animationId += 1
-          }
-          */
-          else if(data.type==="7"){
-            var quizDiv = document.createElement('div')
-            quizDiv.className = "quizContainer dragDiv"
-            quizDiv.id = "quizDiv" + quizId
-            quizDiv.draggable = true
-            var dropImg = document.createElement("img")
-            dropImg.height = 20
-            dropImg.width = 20
-            dropImg.src = sort
-  
-            var formElem = document.getElementsByClassName("formClass");
-            var quiz = data.quiz
-            var quizData = quiz;
-  
-            quizContainerArray[`quiz${quizId}`] = quiz;
-  
-            const { question, answer, ...rest } = quiz;
-  
-            var optionsList = []
-            for (var key in rest) {
-              var value = rest[key];
-              if (value !== "") {
-                optionsList.push(value)
+              const { link, image } = data
+              if(updatesElemId){
+                imgLinkContainerArray[`imgLink${imgLinkId}`] = { link:link, image: image,updates:`updates${idCount}` }
+                tempArray[`imgLink${imgLinkId}`] = { type: "9", link: link, image: image,updates:`updates${idCount}` }
+              }else{
+               imgLinkContainerArray[`imgLink${imgLinkId}`] = { link:link, image: image }
+              tempArray[`imgLink${imgLinkId}`] = { type: "9", link: link, image: image }
               }
-            }
-            const { option0, option1, option2, option3 } = quiz;
-  
-            var options = ""
-            for (let i = 0; i < optionsList.length; i++) {
-              options += `<label class="options">${optionsList[i]}
-                <input type="radio" name="radio" value=${optionsList[i]}/>
-                <span class="checkmark"></span>
-            </label>`
-            }
-  
-            const div = document.createElement("div")
-  
 
-              const quizHtml = `<div class="container my-1">
-                  <div class="question ml-sm-5 pl-sm-5 pt-2 text-start">
-                      <div class="py-2 h5"><b>Q. ${question}</b></div>
-                      <div class="ml-md-3 ml-sm-3 pl-md-5 pt-sm-0 pt-3" id="options">
-                         ${options}
-                      </div>
-                  </div>
-              </div>`
   
-  
-              const submitBtn = `<button type="button" class="btn btn-primary" onclick="answerSubmit()">Submit</button>`
-  
+              console.log(tempArray,"temp")
+    
+              let imgLinkDiv = `<a href="${link}" target="_blank"><img src="${URL.createObjectURL(image[0])}" alt=""/></a>`
+    
+              let imgDiv = document.createElement("div")
+              imgDiv.className = "linkImgClass"
+              imgDiv.id = "img" + imgId
+    
+              imgDiv.innerHTML = imgLinkDiv
+    
+              div.appendChild(dropImg)
+              div.appendChild(imgDiv)
+              div.appendChild(clickTag)
+              div.appendChild(deleteTag)
+    
+              $('#createModal').modal('hide');
+              document.getElementById("emptyPage")?.remove()
+              parentContentCards.appendChild(div)
+              submitBtnDiv.style.display = "block"
+              buttonId += 1;
+              imgLinkId += 1;
+              clickTag.setAttribute("onclick", `editModal("editImgLink",this.previousElementSibling.id,this.parentElement.id)`)
+            }
+            */
+            else if(data.type==="10"){
+              if(updatesElemId){
+                 addUpdateSpace(parentContentCards,`updates${idCount}`)
+              }else{
+                 addSpace()
+              }
              
-              div.style = "text-align:start"
-              div.style = "width:90%"
-              div.id = `quiz${quizId}`
-              div.className = "quizClass"
-              div.innerHTML = quizHtml
-  
-            var clickTag = document.createElement("a")
-            clickTag.href = "#"
-  
-            var editImg = document.createElement('img')
-            editImg.width = 20
-            editImg.height = 20
-            editImg.src = pen
-  
-            clickTag.appendChild(editImg)
-  
-  
-            clickTag.setAttribute("onclick", "editModal('editQuiz',this.previousElementSibling.id,this.parentElement.id)")
-  
-            // quizContainerArray[`${quizArray}`]=quiz[0]
-            var deleteTag = document.createElement("a")
-            deleteTag.href = "#"
-            deleteTag.setAttribute("onclick", "deleteItem(this,'quiz')")
-  
-            var deleteImg = document.createElement("img")
-            deleteImg.width = 20
-            deleteImg.height = 20
-            deleteImg.src = close
-  
-            deleteTag.append(deleteImg)
-  
-            quizDiv.appendChild(dropImg)
-            quizDiv.appendChild(div)
-            quizDiv.appendChild(clickTag)
-            quizDiv.appendChild(deleteTag)
+            }
+            else if(data.type==="11"){
 
-            $('#createModal').modal('hide');
-            document.getElementById("emptyPage")?.remove()
-            parentContentCards.appendChild(quizDiv)
-            tempArray[`quizDiv${quizId}`] = { type: "7", quiz: quiz }
-            submitBtnDiv.style.display = "block"
-            quizId += 1;
+            
   
-          }
-          else if(data.type==="8"){
-            let btnName = data.name
-            let btnLink = data.link
+                let hyperLinks =[]
+                hyperLinks=data.hyperlink
+      
+                let hyperDivId=`hyperLink${hyperLinkId}`
+      
+                var div = document.createElement('div')
+                div.className = "hyperLinksContainer"
+                div.id = hyperDivId
+                div.draggable = true
+      
+                var dropImg = document.createElement("img")
+                dropImg.className="dragImg"
+                dropImg.height = 20
+                dropImg.width = 30
+                dropImg.src = dragImageIcon
+      
+                var clickTag = document.createElement("a")
+                clickTag.href = "#"
+      
+                var editImg = document.createElement('img')
+                editImg.width = 20
+                editImg.height = 20
+                editImg.src = editImageIcon
   
-            var dropImg = document.createElement("img")
-            dropImg.height = 20
-            dropImg.width = 20
-            dropImg.src = sort
-  
-            var clickTag = document.createElement("a")
-            clickTag.href = "#"
-  
-            var editImg = document.createElement('img')
-            editImg.width = 20
-            editImg.height = 20
-            editImg.src = pen
-  
-            clickTag.appendChild(editImg)
-            var deleteTag = document.createElement("a")
-            deleteTag.href = "#"
-            deleteTag.setAttribute("onclick", "deleteItem(this,'button')")
-  
-            var deleteImg = document.createElement("img")
-            deleteImg.width = 20
-            deleteImg.height = 20
-            deleteImg.src = close
-  
-            deleteTag.append(deleteImg)
-  
-            let btnDiv = document.createElement("div")
-            btnDiv.className = "btnDiv dragDiv"
-            btnDiv.id = `btnLinkDiv${buttonId}`
-  
-            let linkDiv = document.createElement("div")
-            linkDiv.className = "linkDiv"
-            linkDiv.id = "btnLink" + buttonId
-  
-            clickTag.setAttribute("onclick", `editModal("editButton",this.previousElementSibling.id,this.parentElement.id)`)
+                clickTag.appendChild(editImg)
+      
+                clickTag.setAttribute("onclick", `editModal("editHyperLink",this.previousElementSibling.id,this.parentElement.id)`)
+      
+                var deleteTag = document.createElement("a")
+                deleteTag.href = "#"
+                deleteTag.setAttribute("onclick", "deleteItem(this,'hyperLink')")
+      
+                var deleteImg = document.createElement("img")
+                deleteImg.width = 20
+                deleteImg.height = 20
+                deleteImg.src = deleteImageIcon
+      
+                deleteTag.append(deleteImg)
+      
+                let hyperLinkContainer=document.createElement("div")
+                hyperLinkContainer.className="hyperLinksDiv"
+                hyperLinkContainer.id=`linksDiv${hyperLinkId}`
+      
+                let hyperLinkTag="";
+                hyperLinks.forEach((e,i)=>{
+                  hyperLinkTag+=
+                  `<div class="hyperLink">
+                    <div class="linkDiv">
+                        <a href="${e.link}" target="_blank">
+                            <img src="${e.image[0]}" alt="">
+                        </a>
+                    </div>
+                    <div class="captionDiv">
+                        ${e.caption}
+                    </div>
+                </div>`
+                })
+      
+                hyperLinkContainer.innerHTML=hyperLinkTag
+                div.appendChild(dropImg)
+                div.appendChild(hyperLinkContainer)
+                div.appendChild(clickTag)
+                div.appendChild(deleteTag)
+      
+                let updatesContent;
+                let updatesContentId;
+                let parentDivId;
+      
+      
+                if (pageTitle !==""){
+                //  updatesContentId= pageTitle.split("_")[0]
+               //  updatesContent=document.getElementById(updatesContentId)
+               //   parentDivId= updatesContentId.split("").pop()
+                }
+      
+                  $('#createModal').modal('hide');
+                  document.getElementById("emptyPage")?.remove()
+                  if(updatesElemId){
+                    parentContentCards.appendChild(div)
+                    hyperLinkArray[`${hyperDivId}`] = {hyperLinkCards:hyperLinks,updates:`updates${idCount}` }
+                    tempArray[`${hyperDivId}`] = { type: "11", hyperLinkCards:hyperLinks,updates:`updates${idCount}` }
+                  }else{
+                    parentContentCards.appendChild(div)
+                    hyperLinkArray[`${hyperDivId}`] = {hyperLinkCards:hyperLinks }
+                    tempArray[`${hyperDivId}`] = { type: "11", hyperLinkCards:hyperLinks }
+                  }
+      
+                  hyperLinkId+=1;
+            
+            }
+            else if(data.type==="12"){
 
-            let btnTag = `<a href=${btnLink} id="linkTag${buttonId}" target="_blank" class="linkBtn">${btnName}</a>`
-  
-            linkDiv.innerHTML = btnTag
-  
-            let btnColor = data.bgColor
-  
-            $('#createModal').modal('hide');
-            btnDiv.appendChild(dropImg)
-            btnDiv.appendChild(linkDiv)
-            btnDiv.appendChild(clickTag)
-            btnDiv.appendChild(deleteTag)
-            parentContentCards.appendChild(btnDiv)
+              const {heading,bgcolor,show,updates}=data
+             // let updateDivId=modalBody.children[0].id.split("_")[0]
 
-            btnContainerArray[`btnLinkDiv${buttonId}`] = { name: btnName, link: btnLink, bgColor: btnColor }
-            tempArray[`btnLinkDiv${buttonId}`] = { type: "8", name: btnName, link: btnLink, bgColor: btnColor }
+              var div = document.createElement('div')
+              div.className = "updatesDivContainer"
+              div.id = `updatesDivContainer${updatesId}`
+              div.draggable = true
+              var dropImg = document.createElement("img")
+              dropImg.className="dragImg"
+              dropImg.height = 20
+              dropImg.width = 20
+              dropImg.src = dragImageIcon
+    
+              var clickTag = document.createElement("a")
+              clickTag.href = "#"
+    
+    
+              var editImg = document.createElement('img')
+              editImg.width = 20
+              editImg.height = 20
+              editImg.src = editImageIcon
+    
+              clickTag.appendChild(editImg)
+    
+              var deleteTag = document.createElement("a")
+              deleteTag.href = "#"
+              deleteTag.setAttribute("onclick", "deleteItem(this,'updates')")
+    
+              var deleteImg = document.createElement("img")
+              deleteImg.width = 20
+              deleteImg.height = 20
+              deleteImg.src = deleteImageIcon
+    
+              deleteTag.append(deleteImg)
+    
+              clickTag.setAttribute("onclick", `editModal("editUpdates",this.previousElementSibling.id,this.parentElement.id)`)
+    
+              let updaesContainer=document.createElement("div")
+              updaesContainer.className="updatesDivBox"
+              updaesContainer.id=`updatesDiv${updatesId}`
 
-            let childElem = document.getElementById(`linkTag${buttonId}`)
+    
+              let updatesTag=`<div class="headingDiv" style="background-color:${bgcolor}" id="updatesHeadingDiv${updatesId}">${heading}</div>
+              <div class="updatesItems" id="updatesItems${updatesId}"></div>
+              <div class="addButton">
+                <div class="updatesBtns">
+                  <button type="button" class="btn updatesItems${updatesId}_btn" onclick="showUpdatesModal('heading',this)">Heading</button>
+                  <button type="button" class="btn updatesItems${updatesId}_btn" onclick="showUpdatesModal('description',this)">Description</button>
+                  <button type="button" class="btn updatesItems${updatesId}_btn" onclick="showUpdatesModal('image',this)">Image</button>
+                  <button type="button" class="btn updatesItems${updatesId}_btn" onclick="showUpdatesModal('video',this)">Video</button>
+                  <button type="button" class="btn updatesItems${updatesId}_btn" onclick="showUpdatesModal('animation',this)">Animation</button>
+                  <button type="button" class="btn updatesItems${updatesId}_btn" onclick="showUpdatesModal('quiz',this)">Quiz</button>
+                  <button type="button" class="btn updatesItems${updatesId}_btn" onclick="showUpdatesModal('link',this)">Link</button>
+                  <button type="button" class="btn updatesItems${updatesId}_btn" onclick="showUpdatesModal('button',this)">Button</button>
+                  <button type="button" class="btn updatesItems${updatesId}_btn" onclick="showUpdatesModal('hyperLink',this)">Hyperlink</button>
+                  <button type="button" class="btn updatesItems${updatesId}_btn" onclick="addSpace('updates',this)">Space</button>
+                </div>
+                <div>
+                  <button type="button" onclick="updatesBtnsFn(this)" id="updatesDiv${updatesId}_btn" class="updatesAddBtn rounded-circle">+</button>
+                </div>
+              </div>`
 
-            childElem.style.backgroundColor = btnColor
-            submitBtnDiv.style.display = "block"
-            buttonId += 1;
-          }
-         /* else if(data.type==="9"){
-            let imgId = `imgLink${imgLinkId}`
-            var div = document.createElement('div')
-            div.className = "imgLink dragDiv"
-            div.id = imgId
-            div.draggable = true
+   
+              
+              updaesContainer.innerHTML=updatesTag
+              div.appendChild(dropImg)
+              div.appendChild(updaesContainer)
+              div.appendChild(clickTag)
+              div.appendChild(deleteTag)
   
-            var dropImg = document.createElement("img")
-            dropImg.height = 20
-            dropImg.width = 20
-            dropImg.src = sort
-  
-            var clickTag = document.createElement("a")
-            clickTag.href = "#"  
-  
-            var editImg = document.createElement('img')
-            editImg.width = 20
-            editImg.height = 20
-            editImg.src = pen
-  
-            clickTag.appendChild(editImg)
-  
-            var deleteTag = document.createElement("a")
-            deleteTag.href = "#"
-            deleteTag.setAttribute("onclick", "deleteItem(this,'link')")
-  
-            var deleteImg = document.createElement("img")
-            deleteImg.width = 20
-            deleteImg.height = 20
-            deleteImg.src = close
-  
-            deleteTag.append(deleteImg)
-  
-  
-            const { link, image } = data
-            imgLinkContainerArray[`imgLink${imgLinkId}`] = { link:link, image: image }
-            tempArray[`imgLink${imgLinkId}`] = { type: "9", link: link, image: image }
+                $('#createModal').modal('hide');
+                document.getElementById("emptyPage")?.remove()
+                updatesArray[`updatesDivContainer${updatesId}`] = {heading:heading,show:show,bgColor:bgcolor,updates:updates }
+                tempArray[`updatesDivContainer${updatesId}`] = { type: "12", heading:heading,show:show,bgColor:bgcolor,updates:updates }
+              
+                parentContentCards.appendChild(div)
 
-            console.log(tempArray,"temp")
-  
-            let imgLinkDiv = `<a href="${link}" target="_blank"><img src="${URL.createObjectURL(image[0])}" alt=""/></a>`
-  
-            let imgDiv = document.createElement("div")
-            imgDiv.className = "linkImgClass"
-            imgDiv.id = "img" + imgId
-  
-            imgDiv.innerHTML = imgLinkDiv
-  
-            div.appendChild(dropImg)
-            div.appendChild(imgDiv)
-            div.appendChild(clickTag)
-            div.appendChild(deleteTag)
-  
-            $('#createModal').modal('hide');
-            document.getElementById("emptyPage")?.remove()
-            parentContentCards.appendChild(div)
-            submitBtnDiv.style.display = "block"
-            buttonId += 1;
-            imgLinkId += 1;
-            clickTag.setAttribute("onclick", `editModal("editImgLink",this.previousElementSibling.id,this.parentElement.id)`)
-          }
-          */
-          else if(data.type==="10"){
-            addSpace()
-          }
-        })
-       }
+                fetchElem(updates,`updatesItems${updatesId}`)
+                updatesId+=1;
+    
+                const updatesElemClassSort=document.querySelectorAll('.updatesDivContainer')
+    
+                for (var i = 0; i < updatesElemClassSort?.length; i++) {
+                    let ParentId=updatesElemClassSort[i].id
+                    let idCount= ParentId.split("").pop()
+                    let dragAreaUpdates=document.getElementById(`updatesItems${idCount}`)  
+                    if(dragAreaUpdates){
+                      new Sortable(dragAreaUpdates,{
+                        filter:'.titleDiv',
+                        handle:".dragImg",
+                        Animation:350
+                      })
+                    }
+                  }
+              
+    
+               updatesBtnsFn=(event)=>{
+                  let btnDiv=event.id.split("_")[0]
+                  $(`#${btnDiv} .updatesBtns`).toggleClass("active");
+              }
+    
+            }
+          })
+        }
+
+        let gotoData;
+
+        window.onload=async()=> {
+          let pageData= await fetchData
+          gotoData= await fetchGotoData
+          fetchElem(pageData)
+      }
     
 
 
-      function addSpace() {
+      function addUpdateSpace(element,updates) {
+        let updatesDivId=element.id
         let menuToggles = document.querySelector(".menuToggles");
         menuToggles.classList.remove("active");
 
-        let parentDiv = document.getElementById("contentCard")
+        let parentDiv = document.getElementById(`${updatesDivId}`)
         let spaceDiv = document.createElement('div')
         spaceDiv.className = "spaceDiv dragDiv"
         spaceDiv.id = `space${emptySpaceCount}`
@@ -1005,6 +1308,7 @@
         spaceDiv.draggable = true
 
         var dropImg = document.createElement("img")
+        dropImg.className="dragImg"
         dropImg.height = 20
         dropImg.width = 20
         dropImg.src = sort
@@ -1034,9 +1338,66 @@
         spaceDiv.appendChild(deleteTag)
         parentDiv.appendChild(spaceDiv)
 
-        emptyPageArray[`space${emptySpaceCount}`] = { "type": "10" }
-        tempArray[`space${emptySpaceCount}`] = { "type": "10" }
+        emptyPageArray[`space${emptySpaceCount}`] = { "type": "10",updates:`${updates}`}
+        tempArray[`space${emptySpaceCount}`] = { "type": "10",updates:`${updates}`}
+         
+        emptySpaceCount += 1;
 
+      }
+
+      function addSpace(element,updates) {
+        let updatesSpace=updates?.className?.split(" ")[1].split("_")[0]
+        let menuToggles = document.querySelector(".menuToggles");
+        menuToggles.classList.remove("active");
+
+        let parentDiv = document.getElementById("contentCard")
+        let spaceDiv = document.createElement('div')
+        spaceDiv.className = "spaceDiv dragDiv"
+        spaceDiv.id = `space${emptySpaceCount}`
+        spaceDiv.style = "height:20px"
+        spaceDiv.draggable = true
+
+        var dropImg = document.createElement("img")
+        dropImg.className="dragImg"
+        dropImg.height = 20
+        dropImg.width = 20
+        dropImg.src = sort
+
+        var clickTag = document.createElement("a")
+        clickTag.href = "#"
+
+        var editImg = document.createElement('img')
+        editImg.width = 20
+        editImg.height = 20
+        editImg.src = pen
+
+        clickTag.appendChild(editImg)
+
+        var deleteTag = document.createElement("a")
+        deleteTag.href = "#"
+        //
+        deleteTag.setAttribute("onclick", "deleteItem(this,'space')")
+
+        var deleteImg = document.createElement("img")
+        deleteImg.width = 20
+        deleteImg.height = 20
+        deleteImg.src = close
+
+        deleteTag.append(deleteImg)
+        spaceDiv.appendChild(dropImg)
+        spaceDiv.appendChild(deleteTag)
+        parentDiv.appendChild(spaceDiv)
+        if(updatesSpace){
+          let updatesDiv= document.getElementById(updatesSpace)
+          let updatesCount=updatesSpace.split("").pop()
+          updatesDiv.appendChild(spaceDiv)
+          emptyPageArray[`space${emptySpaceCount}`] = { "type": "10",updates:`updates${updatesCount}`}
+          tempArray[`space${emptySpaceCount}`] = { "type": "10",updates:`updates${updatesCount}`}
+         }else{
+           parentDiv.appendChild(spaceDiv)
+           emptyPageArray[`space${emptySpaceCount}`] = { "type": "10" }
+           tempArray[`space${emptySpaceCount}`] = { "type": "10" }
+         }
         emptySpaceCount += 1;
 
       }
@@ -1052,6 +1413,8 @@
           $('#createModal').modal('show');
           var modalTitle = document.getElementById("pageTitle")
           modalTitle.innerText = "Add Heading"
+          modalTitle.className=""
+
           var modalBody = document.getElementById('pageContent')
           var input = document.createElement('input')
           input.id = "headingId" + headingDivId
@@ -1072,6 +1435,8 @@
           $('#createModal').modal('show');
           var modalTitle = document.getElementById("pageTitle")
           modalTitle.innerText = "Add Description"
+          modalTitle.className=""
+
           var modalBody = document.getElementById('pageContent')
           var input = document.createElement('textarea')
           input.id = "headingDescId" + headingDescId
@@ -1099,6 +1464,8 @@
           $('#createModal').modal('show');
           var modalTitle = document.getElementById("pageTitle")
           modalTitle.innerText = "Add Images"
+          modalTitle.className=""
+
           var modalBody = document.getElementById('pageContent')
           var cardDiv = document.createElement("div")
           cardDiv.className = "imgCard"
@@ -1143,7 +1510,6 @@
 
             form.reset();
             showImages()
-            dragFunction();
           })
 
           showImages = () => {
@@ -1158,64 +1524,10 @@
 
           }
 
-          // const button=<button>Upload</button>
-
-          form.addEventListener('dragover', e => {
-            e.preventDefault();
-            form.classList.add('dragover')
-            text.innerHTML = 'Drop images here'
-          })
-
-          form.addEventListener('dragleave', e => {
-            e.preventDefault();
-            form.classList.remove('dragover')
-            text.innerHTML = 'Drag & Drop image or <span class="select">Browse</span>'
-          })
-
-          form.addEventListener('drop', e => {
-            e.preventDefault()
-            form.classList.remove('dragover')
-            text.innerHTML = 'Drag & Drop image or <span class="select">Browse</span>'
-            let file = e.dataTransfer.files;
-            for (let i = 0; i < file.length; i++) {
-              if (files.every(e => e.name !== file[i].name)) files.push(file[i])
-            }
-            showImages()
-          })
-
           button?.addEventListener('click', () => {
             let form = new FormData();
             files.forEach((e, i) => form.append(`file[${i}]`, e))
           })
-
-
-          // Drag function
-
-          const dragFunction = () => {
-            var sortableList = document.querySelector(".imgContainer")
-            const items = document.querySelectorAll(".box")
-
-            items.forEach(item => {
-              item.addEventListener("dragstart", () => {
-                setTimeout(() => item.classList.add("dragging"), 0)
-              })
-              item.addEventListener("dragend", () => item.classList.remove("dragging"))
-            })
-
-            var initSortableList = (e) => {
-              const draggingItem = sortableList.querySelector(".dragging")
-              const sibilings = [...sortableList.querySelectorAll(".box:not(.dragging)")]
-
-              let nextSibiling = sibilings.find(sibiling => {
-                return e.clientY <= sibiling.offsetTop + sibiling.offsetHeight / 2
-              })
-
-              sortableList.insertBefore(draggingItem, nextSibiling)
-            }
-
-            sortableList.addEventListener("dragover", initSortableList)
-
-          }
 
           imageId += 1
 
@@ -1225,6 +1537,7 @@
           $('#createModal').modal('show');
           var modalTitle = document.getElementById("pageTitle")
           modalTitle.innerText = "Add Quiz"
+          modalTitle.className=""
           var modalBody = document.getElementById('pageContent')
 
           var formDiv = document.createElement('form')
@@ -1288,6 +1601,7 @@
           $('#createModal').modal('show');
           var modalTitle = document.getElementById("pageTitle")
           modalTitle.innerText = "Add Video"
+          modalTitle.className=""
           var modalBody = document.getElementById('pageContent')
           var cardDiv = document.createElement("div")
           cardDiv.className = "videoCard"
@@ -1323,9 +1637,6 @@
 
             if (files.size < maxAllowedSize) {
               videoContainerArrary[`DivvideoContainer${videoContainerId}`] = files
-
-              // video data object
-
               tempArray[`DivvideoContainer${videoContainerId}`] = { type: "5", video: files }
               form.reset();
               showVideos()
@@ -1356,6 +1667,7 @@
           $('#createModal').modal('show');
           var modalTitle = document.getElementById("pageTitle")
           modalTitle.innerText = "Add Animations"
+          modalTitle.className=""
           var modalBody = document.getElementById('pageContent')
           var cardDiv = document.createElement("div")
           cardDiv.className = "animationCard"
@@ -1395,7 +1707,6 @@
 
             form.reset();
             showAnimations()
-            dragFunction();
           })
 
           const showAnimations = () => {
@@ -1421,78 +1732,6 @@
           })
 
 
-          // Drag function
-
-          const dragFunction = () => {
-            var sortableList = document.querySelector(".animationContainer")
-            const items = document.querySelectorAll(".box")
-
-            items.forEach(item => {
-              item.addEventListener("dragstart", () => {
-                setTimeout(() => item.classList.add("dragging"), 0)
-              })
-              item.addEventListener("dragend", () => item.classList.remove("dragging"))
-            })
-
-            var initSortableList = (e) => {
-              const draggingItem = sortableList.querySelector(".dragging")
-              const sibilings = [...sortableList.querySelectorAll(".box:not(.dragging)")]
-
-              let nextSibiling = sibilings.find(sibiling => {
-                return e.clientY <= sibiling.offsetTop + sibiling.offsetHeight / 2
-              })
-
-              sortableList.insertBefore(draggingItem, nextSibiling)
-            }
-
-            sortableList.addEventListener("dragover", initSortableList)
-
-          }
-        }
-        else if (element === 'editHeading') {
-          $('#createModal').modal('show');
-          var modalTitle = document.getElementById("pageTitle")
-          modalTitle.innerText = "Edit Heading"
-          var modalBody = document.getElementById('pageContent')
-          var div = document.createElement('div')
-          div.className = "editHeading"
-          var input = document.createElement('input')
-          input.className = "form-control headingClass"
-          input.value = value.innerText === undefined ? value[0].innerText : value.innerText
-          input.id = value.id === undefined ? value[0].id : value.id
-          div.appendChild(input)
-          modalBody.appendChild(div)
-        }
-        else if (element === 'editSubHeading') {
-          $('#createModal').modal('show');
-          var modalTitle = document.getElementById("pageTitle")
-          modalTitle.innerText = "Edit Subheading"
-          var modalBody = document.getElementById('pageContent')
-          var div = document.createElement('div')
-          div.className = "editSubHeading"
-          var input = document.createElement('input')
-          input.className = "form-control headingClass"
-          input.value = value.innerText === undefined ? value[0].innerText : value.innerText
-          input.id = value.id === undefined ? value[0].id : value.id
-          div.appendChild(input)
-          modalBody.appendChild(div)
-        }
-        else if (element === 'editDescription') {
-          $('#createModal').modal('show');
-          var modalTitle = document.getElementById("pageTitle")
-          modalTitle.innerText = "Edit Description"
-          var modalBody = document.getElementById('pageContent')
-          var div = document.createElement('div')
-          div.className = "editDescription"
-          var input = document.createElement('textarea')
-          input.id = "DescId"
-          input.className = `${value.id}`
-          modalBody.appendChild(input)
-          CKEDITOR.replace(`DescId`, { toolbar: 'Full', toolbarLocation: 'bottom' });
-          CKEDITOR.instances['DescId'].setData(value.innerHTML);
-
-          div.appendChild(input)
-          modalBody.appendChild(div)
         }
         else if (element === "pageTitle") {
           $('#createModal').modal('show');
@@ -1533,6 +1772,7 @@
           $('#createModal').modal('show');
           var modalTitle = document.getElementById("pageTitle")
           modalTitle.innerText = "Add Button"
+          modalTitle.className=""
           var modalBody = document.getElementById('pageContent')
 
           let buttonInput = `<div class="row g-3">
@@ -1565,6 +1805,7 @@
           $('#createModal').modal('show');
           var modalTitle = document.getElementById("pageTitle")
           modalTitle.innerText = "Add Link"
+          modalTitle.className=""
           var modalBody = document.getElementById('pageContent')
 
           let linkInput = `<input class="form-control mb-3 linkInput" type="text" id="imgLinkField" placeholder="Enter link">`
@@ -1607,6 +1848,115 @@
           })
 
         }
+        else if(element === "hyperLink"){
+          $('#createModal').modal('show');
+          var modalTitle = document.getElementById("pageTitle")
+          modalTitle.innerText = "Add Hyperlink"
+          modalTitle.className=""
+          var modalBody = $("#pageContent")
+
+          var formContent=
+          `<form class="hyperLinkForm" id="hyperLink_form0">
+            <div class="d-flex gap-2 mb-2">
+              <div class="formDiv">
+                <input class="inputItem form-control" type="text" name="link" />
+                <div class="hyperLinkModalDivs">
+                  <div>
+                    <input class="inputItem form-control hyperImgClass" type="file" name="file" accept="image/*"/ id="hyperImgInput0_id" onchange="imgOnchangeFn(event)">
+                  </div>
+                  <div class="hyperImgContainer" id="hyperImgInput0">
+                    
+                  </div>
+                </div>
+                <input class="inputItem form-control" type="text" id="captionInput0" name="caption" />
+              </div>
+              <div class="addMore">
+                <button type="button" class="btn btn-primary" name="add" id="add" onClick="addInputs()">+</button>
+              </div> 
+            </div>
+
+          </form>`
+
+
+          let mainContainer = document.createElement("div")
+          mainContainer.className ='hyperLinkModalDiv'
+          mainContainer.id=`modal_hyperLink${hyperLinkId}`
+          mainContainer.innerHTML=formContent
+
+          modalBody.append(mainContainer)
+
+          var i =0;
+          var length;
+
+         addInputs=()=>{
+          
+          i++;
+            
+          let  addContent= `<form  class="hyperLinkForm"id="hyperLink_form${i}"> <div class="d-flex gap-2 mb-2" id="fieldDiv${i}">
+              <div class="formDiv">
+                <input class="inputItem form-control" type="text" name="link" />
+                <div class="hyperLinkModalDivs">
+                  <div>
+                    <input class="inputItem form-control hyperImgClass" type="file" name="file" accept="image/*"/ id="hyperImgInput${i}_id" onchange="imgOnchangeFn(event)">
+                  </div>
+                  <div class="hyperImgContainer" id="hyperImgInput${i}">
+                    
+                  </div>
+                </div>
+                <input class="inputItem form-control" type="text" name="caption" id="captionInput${i}" />
+              </div>
+              <div>
+                <button type="button" class="btn btn-danger" name="remove" id="${i}" onClick="removeInputs(this)">X</button>
+              </div> 
+            </div> </form>`
+
+            $(".hyperLinkModalDiv").append(addContent)
+
+            changeToRichtext([`captionInput${i}`])
+
+          }
+
+          removeInputs=(e)=>{
+            
+            var button_id = e.id     
+           $('#hyperLink_form'+button_id).remove();
+          }
+
+          changeToRichtext([`captionInput0`])
+
+          imgOnchangeFn=(event)=>{
+            let linkid=event.target.id
+            let linkDivId=linkid.split("_")[0]
+            let imgDiv=document.getElementById(linkDivId)
+
+            let images = `<img src=${URL.createObjectURL(event.target.files[0])} alt="img" />`
+            imgDiv.innerHTML = images
+          }
+        }
+        else if(element === "updates"){
+          $('#createModal').modal('show');
+          $("#pageTitle").html("Add Updates")
+          var modalBody = $("#pageContent")
+
+          let updatesElem= `
+            <input type="text" class="form-control" placeholder="Enter title" id="updatesHeading" />
+            <div class="bgDiv">
+              <input type="color" id="bgColor" class="updatesBgColor form-control form-control-color" value="#f2f2f2" />
+              <label for="bgColor" class="form-check-label">Background Color</label>
+            </div>
+            
+            <div class="mb-3 form-check">
+              <label for="show" class="form-check-label">Show</label>
+              <input type="checkbox" class="form-check-input" id="show" name="show" value="show" />
+            </div>
+          `
+          let mainContainer = document.createElement("div")
+          mainContainer.className ='updatesDiv'
+          mainContainer.id=`updatesDivContainer${updatesId}_modal`
+          mainContainer.innerHTML=updatesElem
+
+          modalBody.append(mainContainer)
+        }
       
         const errorsModal = document.querySelectorAll('.error');
 
@@ -1616,7 +1966,544 @@
       }
 
 
+      function showUpdatesModal(element,updatesDivBox) {
+
+        let menuToggles = document.querySelector(".menuToggles");
+        menuToggles.classList.remove("active");
+
+        let updatesDivClass=updatesDivBox.className.split(" ")[1].split("_")[0]
+
+        let updatesIdCount=updatesDivClass.split("").pop()
+
+        document.getElementById("pageContent").innerHTML = ""
+        if (element === "heading") {
+
+          $('#createModal').modal('show');
+          var modalTitle = document.getElementById("pageTitle")
+            modalTitle.innerText = "Add Updates Heading"
+            modalTitle.className=`${updatesDivClass}_modal`
+          
+          var modalBody = document.getElementById('pageContent')
+          var input = document.createElement('input')
+          input.id = "headingId" + headingDivId
+          input.className = "form-control headingClass"
+          let colorPick = `<div class="col-6">
+            <label for="colorPickerId" class="form-label">Choose background Color</label>
+            <input type="color" class="form-control form-control-color" id="colorPickerId" value="${pageBgColor}">
+          </div>`
+          let mainDiv = document.createElement("div")
+          mainDiv.className = "row g-3 mt-2"
+
+          mainDiv.innerHTML = colorPick
+          modalBody.appendChild(input)
+          modalBody.appendChild(mainDiv)
+          changeToRichtext([`headingId${headingDivId}`])
+        }
+        else if (element === "description") {
+          $('#createModal').modal('show');
+          var modalTitle = document.getElementById("pageTitle")
+          modalTitle.innerText = "Add Updates Description"
+          modalTitle.className=`${updatesDivClass}_modal`
+
+          var modalBody = document.getElementById('pageContent')
+          var input = document.createElement('textarea')
+          input.id = "headingDescId" + headingDescId
+          input.className = "form-control headingDescClass"
+
+
+          let colorPick = `<div class="col-6">
+            <label for="colorPickerId" class="form-label">Choose background Color</label>
+            <input type="color" class="form-control form-control-color" id="descColorPicker" value="${pageBgColor}">
+          </div>`
+
+          let mainDiv = document.createElement("div")
+          mainDiv.className = "row g-3 mt-2"
+          mainDiv.innerHTML = colorPick
+
+          modalBody.appendChild(input)
+          modalBody.appendChild(mainDiv)
+
+          changeToRichtext([`headingDescId${headingDescId}`])
+
+        }
+        else if (element === "image") {
+          $('#createModal').modal('show');
+          var modalTitle = document.getElementById("pageTitle")
+          modalTitle.innerText = "Add Updates Images"
+          modalTitle.className=`${updatesDivClass}_modal`
+
+
+          var modalBody = document.getElementById('pageContent')
+          var cardDiv = document.createElement("div")
+          cardDiv.className = "imgCard"
+          //
+          cardDiv.id = `imgContainerDiv${imageContainerId}`
+          cardDiv.innerHTML = `<div class="top">
+                  </div>
+                  <form action="" method="post" class="dragover">
+                      <span class="inner"><span class="select">Browse</span></span>
+                      <input name="file" type="file" class="file" multiple accept="image/*"/>
+                  </form>
+                  <div class="imgContainer">
+                  </div>`
+
+          modalBody.appendChild(cardDiv)
+
+          files = [],
+            button = document.querySelector('.top button'),
+            form = document.querySelector('form'),
+            container = document.querySelector('.imgContainer')
+          container.id = "imgContainer" + imageContainerId
+          text = document.querySelector('.inner')
+          browse = document.querySelector('.select')
+          input = document.querySelector('form input');
+
+          browse.addEventListener('click', () => input.click());
+
+          input.addEventListener("change", () => {
+            let file = input.files;
+            for (let i = 0; i < file.length; i++) {
+              if (files.every(e => e.name !== file[i].name)) {
+                files.push(file[i])
+              }
+
+            }
+
+            imagesContainerArrar[`imgContainerDiv${imageContainerId}`] = {files,updates:`updates${updatesIdCount}`}
+
+            tempArray[`imgContainerDiv${imageContainerId}`] = { type: "4", images: files,updates:`updates${updatesIdCount}` }
+
+            form.reset();
+            showImages()
+            dragFunction();
+          })
+
+          showImages = () => {
+
+            let images = '';
+            files.forEach((e, i) => {
+              images += `<div class="image box" draggable="true"">
+                        <img src=${URL.createObjectURL(e)} alt="img" >
+                       <span onclick="delImages(${i})"> &times;</span>
+                    </div>`
+            })
+            container.innerHTML = images
+
+          }
+
+        }
+        else if (element === "quiz") {
+          $('#createModal').modal('show');
+          var modalTitle = document.getElementById("pageTitle")
+          modalTitle.innerText = "Add Updates Quiz"
+          modalTitle.className=`${updatesDivClass}_modal`
+
+          var modalBody = document.getElementById('pageContent')
+
+          var formDiv = document.createElement('form')
+          formDiv.className = "formClass"
+          formDiv.id = "quizDiv" + quizId
+          var options = ""
+          for (let i = 0; i < 4; i++) {
+            options += `<div class="col-6 gy-3">
+                  <input class="form-control"  id="option${i}" placeholder="option ${i + 1}" required name="option${i}" />
+                </div>`
+          }
+
+          var answerDiv = `<div class="col-12 gy-3">
+            <input class="form-control"  id="answer" placeholder="Enter answer" required name="answer" />
+          </div>`
+
+          var quizDivContainer =
+            `<div class="row g-3">
+               <div class="col-12">
+                <textarea name="quizQstn" id="question"${quizId} />
+               </div>
+               ${options}
+               ${answerDiv}
+              </div>`
+
+
+          var divOne = document.createElement("div")
+          var divTwo = document.createElement("div")
+          //divOne.className="row g-3"
+          divTwo.className = "col-12"
+          divTwo.style = "margin-bottom:10px"
+
+          var textarea = document.createElement("input")
+          textarea.className = "form-control"
+          textarea.id = "question" + quizId
+          textarea.name = "question"
+          textarea.placeholder = "Enter question"
+
+          divTwo.appendChild(textarea)
+          divOne.appendChild(divTwo)
+
+
+          var div = document.createElement("div")
+          div.className = "row"
+          div.innerHTML = options
+          div.innerHTML += answerDiv
+
+          divOne.appendChild(div)
+
+          formDiv.appendChild(divOne)
+
+          // formDiv.innerHTML = quizDivContainer
+
+          modalBody.appendChild(formDiv)
+          // CKEDITOR.replace(`question${quizId}`,{ toolbar : 'Full', toolbarLocation : 'bottom' });
+
+
+
+        }
+        else if (element === 'video') {
+          $('#createModal').modal('show');
+          var modalTitle = document.getElementById("pageTitle")
+          modalTitle.innerText = "Add Updates Images"
+          modalTitle.className=`${updatesDivClass}_modal`
+
+          var modalBody = document.getElementById('pageContent')
+          var cardDiv = document.createElement("div")
+          cardDiv.className = "videoCard"
+          cardDiv.id = "videoContainer" + videoContainerId
+
+          //
+          cardDiv.innerHTML = `<div class="top">
+                  <p>Import videos</p>
+                </div>
+                <form action="" method="post" class="dragover">
+                    <span class="inner"><span class="select">Browse</span></span>
+                    <input name="file" type="file" class="file" accept="video/mp4"/>
+                </form>
+                <div class="videoModalContainer"></div>`
+
+          modalBody.appendChild(cardDiv)
+
+          const maxAllowedSize = 10 * 1024 * 1024;
+
+          let files = "",
+            button = document.querySelector('.top button'),
+            form = document.querySelector('form'),
+            container = document.querySelector('.videoModalContainer')
+          //
+          text = document.querySelector('.inner')
+          browse = document.querySelector('.select')
+          input = document.querySelector('form input');
+
+          browse.addEventListener('click', () => input.click());
+
+          input.addEventListener("change", () => {
+            files = input.files[0];
+
+            if (files.size < maxAllowedSize) {
+
+              videoContainerArrary[`DivvideoContainer${videoContainerId}`] = {files,updates:`updates${updatesIdCount}`}
+              tempArray[`DivvideoContainer${videoContainerId}`] = { type: "5", video: files,updates:`updates${updatesIdCount}` }
+              form.reset();
+              showVideos()
+            } else {
+              container.insertAdjacentHTML('afterend', '<p style="color:red">Maximum video size is 10MP</p>');
+            }
+          })
+
+          const showVideos = () => {
+            let videos = `<div class="video" id="videoId" draggable="true">
+                      <video src=${URL.createObjectURL(files)} alt="video" />
+                      <span onclick="delVideos()">&times;</span>
+                  </div>`
+            container.innerHTML = videos
+
+          }
+
+
+          button?.addEventListener('click', () => {
+            let form = new FormData();
+            files.forEach((e, i) => form.append(`file[${i}]`, e))
+          })
+
+          videoTempId = videoContainerId;
+
+        }
+        else if (element === "animation") {
+          $('#createModal').modal('show');
+          var modalTitle = document.getElementById("pageTitle")
+          modalTitle.innerText = "Add Updates Animations"
+          modalTitle.className=`${updatesDivClass}_modal`
+
+          var modalBody = document.getElementById('pageContent')
+          var cardDiv = document.createElement("div")
+          cardDiv.className = "animationCard"
+          cardDiv.id = "animationsDiv" + animationId
+          cardDiv.innerHTML = `<div class="top">
+                  <p>Import animations</p>
+                </div>
+                <form action="" method="post" class="dragover">
+                    <span class="inner"><span class="select">Browse</span></span>
+                    <input name="file" type="file" class="file" multiple accept="image/gif"/>
+                </form>
+                <div class="animationContainer">
+                </div>`
+
+          modalBody.appendChild(cardDiv)
+
+          let files = [],
+            button = document.querySelector('.top button'),
+            form = document.querySelector('form'),
+            container = document.querySelector('.animationContainer')
+          text = document.querySelector('.inner')
+          browse = document.querySelector('.select')
+          input = document.querySelector('form input');
+
+          browse.addEventListener('click', () => input.click());
+
+          input.addEventListener("change", () => {
+            let file = input.files;
+            for (let i = 0; i < file.length; i++) {
+              if (files.every(e => e.name !== file[i].name)) files.push(file[i])
+            }
+            animationContainerArray[`animationsDiv${animationId}`] = {files,updates:`updates${updatesIdCount}`}
+
+            // animation data
+
+            tempArray[`animationsDiv${animationId}`] = { type: "6", animations: files,updates:`updates${updatesIdCount}` }
+
+            form.reset();
+            showAnimations()
+          })
+
+          const showAnimations = () => {
+            let animations = '';
+            files.forEach((e, i) => {
+              animations += `<div class="animation box" draggable="true">
+                      <img src=${URL.createObjectURL(e)} alt="animation">
+                      <span onclick="delAnimations(${i})">&times;</span>
+                  </div>`
+            })
+            container.innerHTML = animations
+
+          }
+
+          delAnimations = (index) => {
+            files.splice(index, 1)
+            showAnimations()
+          }
+
+        }
+        else if (element === "pageTitle") {
+          $('#createModal').modal('show');
+          var modalTitle = document.getElementById("pageTitle")
+
+          modalTitle.innerText = "Add Page Title"
+          var modalBody = document.getElementById('pageContent')
+          var pageTitle = ` <div class="col-md-12">
+              <input type="text" class="form-control" id="pageTitleField">
+            </div>
+            <div class="col-md-6">
+              <label for="colorId" class="form-label">Color</label>
+              <input type="text" class="form-control" id="colorId" value="#fcfcfc">
+            </div>
+            <div class="col-6">
+              <label for="colorPickerId" class="form-label">Choose Color</label>
+              <input type="color" class="form-control form-control-color" id="colorPickerId" value="#fcfcfc">
+            </div>`
+
+          var parentDiv = document.createElement("div")
+          parentDiv.className = "row g-3 pageTitle"
+          parentDiv.id = "pageTitleId"
+          parentDiv.innerHTML = pageTitle
+          modalBody.appendChild(parentDiv)
+
+          var colorPickerField = document.getElementById("colorPickerId")
+          let colorInputField = document.getElementById("colorId")
+
+          colorPickerField.addEventListener("change", (event) => {
+            colorInputField.value = colorPickerField.value
+          });
+
+          changeToRichtext([`pageTitleField`])
+
+
+        }
+        else if (element === 'button') {
+          $('#createModal').modal('show');
+          var modalTitle = document.getElementById("pageTitle")
+          modalTitle.innerText = "Add Updates Button"
+          modalTitle.className=`${updatesDivClass}_modal`
+          var modalBody = document.getElementById('pageContent')
+
+          let buttonInput = `<div class="row g-3">
+            <div class="col-12">
+              <input type="text" class="form-control" id="btnName" placeholder="Name">
+            </div>
+            <div class="col-12">
+              <input type="text" class="form-control" id="btnLinkId" placeholder="Link">
+            </div>
+            <div class="col-6">
+              <label for="colorPickerId" class="form-label">Choose background Color</label>
+              <input type="color" class="form-control form-control-color" id="btnColorPicker" value="#fcfcfc">
+            </div>
+          </div>`
+
+          let buttonDiv = document.createElement("div")
+          buttonDiv.id = "btnLink"
+          buttonDiv.className = "row g-3"
+
+          let mainDiv = document.createElement("div")
+          mainDiv.className = "linkBtnDiv"
+          mainDiv.id = `btnLinkDiv${buttonId}`
+          mainDiv.innerHTML = buttonInput
+
+
+          modalBody.appendChild(mainDiv)
+
+        }
+        else if (element === "link") {
+          $('#createModal').modal('show');
+          var modalTitle = document.getElementById("pageTitle")
+          modalTitle.innerText = "Add Updates Link"
+          modalTitle.className=`${updatesDivClass}_modal`
+
+          var modalBody = document.getElementById('pageContent')
+
+          let linkInput = `<input class="form-control mb-3 linkInput" type="text" id="imgLinkField" placeholder="Enter link">`
+          
+          let imgLinkContainer = `<div class="container col-md-12">
+          <div class="mb-3">
+                <input class="form-control" type="file" id="formFileUpdates" accept="image/*">
+            </div>
+            <img id="linkImage" src="" class="img-fluid" /> </div>`
+
+
+          let mainContainer = document.createElement("div")
+          mainContainer.className = "linkImgModalDiv"
+          mainContainer.id = `imgLink${imgLinkId}`
+
+          mainContainer.innerHTML = linkInput
+          mainContainer.innerHTML += imgLinkContainer
+
+          modalBody.appendChild(mainContainer)
+
+          let imgInputId = document.getElementById("formFileUpdates")
+          let imgDiv = document.getElementById("linkImage")
+
+          let linkInputElem = document.getElementById("imgLinkField")
+
+          let files;
+
+          imgInputId.addEventListener("change", () => {
+
+            files = event.target.files[0];
+            imgDiv.src = URL.createObjectURL(files);
+              imgLinkContainerArray[`imgLink${imgLinkId}`] = { link: linkInputElem.value, image: files,updates:`updates${updatesIdCount}` }
+              tempArray[`imgLink${imgLinkId}`] = { type: "9", link: linkInputElem.value, image: files,updates:`updates${updatesIdCount}` }
+          
+          })
+
+          linkInputElem.addEventListener("change", () => {
+              imgLinkContainerArray[`imgLink${imgLinkId}`] = { link: linkInputElem.value, image: files,updates:`updates${updatesIdCount}` }
+              tempArray[`imgLink${imgLinkId}`] = { type: "9", link: linkInputElem.value, image: files,updates:`updates${updatesIdCount}` }
+          })
+
+        }
+        else if(element === "hyperLink"){
+          $('#createModal').modal('show');
+          var modalTitle = document.getElementById("pageTitle")
+          modalTitle.innerText = "Add Updates HyperLink"
+          modalTitle.className=`${updatesDivClass}_modal`
+
+          var modalBody = $("#pageContent")
+
+          var formContent=
+          `<form class="hyperLinkForm" id="hyperLink_form0">
+            <div class="d-flex gap-2 mb-2">
+              <div class="formDiv">
+                <input class="inputItem form-control" type="text" name="link" />
+                <div class="hyperLinkModalDivs">
+                  <div>
+                    <input class="inputItem form-control hyperImgClass" type="file" name="file" accept="image/*"/ id="hyperImgInput0_id" onchange="imgOnchangeFn(event)">
+                  </div>
+                  <div class="hyperImgContainer" id="hyperImgInput0">
+                    
+                  </div>
+                </div>
+                <input class="inputItem form-control" type="text" id="captionInput0" name="caption" />
+              </div>
+              <div classs="addMore">
+                <button type="button" class="btn btn-primary" name="add" id="add" onClick="addInputs()">+</button>
+              </div> 
+            </div>
+
+          </form>`
+
+
+          let mainContainer = document.createElement("div")
+          mainContainer.className ='hyperLinkModalDiv'
+          mainContainer.id=`modal_hyperLink${hyperLinkId}`
+          mainContainer.innerHTML=formContent
+
+          modalBody.append(mainContainer)
+
+          var i =0;
+          var length;
+
+         addInputs=()=>{
+          
+          i++;
+            
+          let  addContent= `<form class="hyperLinkForm" id="hyperLink_form${i}"> <div class="d-flex gap-2 mb-2" id="fieldDiv${i}">
+              <div class="formDiv">
+                <input class="inputItem form-control" type="text" name="link" />
+                <div class="hyperLinkModalDivs">
+                  <div>
+                    <input class="inputItem form-control hyperImgClass" type="file" name="file" accept="image/*"/ id="hyperImgInput${i}_id" onchange="imgOnchangeFn(event)">
+                  </div>
+                  <div class="hyperImgContainer" id="hyperImgInput${i}">
+                    
+                  </div>
+                </div>
+                <input class="inputItem form-control" type="text" name="caption" id="captionInput${i}" />
+              </div>
+              <div>
+                <button type="button" class="btn btn-danger" name="remove" id="${i}" onClick="removeInputs(this)">X</button>
+              </div> 
+            </div> </form>`
+
+            $(".hyperLinkModalDiv").append(addContent)
+
+            changeToRichtext([`captionInput${i}`])
+
+          }
+
+          removeInputs=(e)=>{
+            
+            var button_id = e.id     
+           $('#hyperLink_form'+button_id).remove();
+          }
+
+          changeToRichtext([`captionInput0`])
+
+          imgOnchangeFn=(event)=>{
+            let linkid=event.target.id
+            let linkDivId=linkid.split("_")[0]
+            let imgDiv=document.getElementById(linkDivId)
+
+            let images = `<img src=${URL.createObjectURL(event.target.files[0])} alt="img" />`
+            imgDiv.innerHTML = images
+          }
+        }
+        const errorsModal = document.querySelectorAll('.error');
+
+        errorsModal.forEach(error => {
+          error.remove();
+        });
+      }
+
+
+
+
       var headingDivId = 0;
+
 
       // Delete elem
 
@@ -1653,6 +2540,10 @@
           delete imgLinkContainerArray[key]
         } else if (element === "space") {
           delete emptyPageArray[key]
+        }else if(element === "hyperLink"){
+          delete hyperLinkArray[key]
+        }else if(element === "updates"){
+          delete updatesArray[key]
         }
 
         delete tempArray[key]
@@ -1675,19 +2566,24 @@
 
       function addElement() {
 
+        let pageTitle=document.getElementById('pageTitle').className
+
         var modalBody = document.getElementById('pageContent')
         var children = modalBody.children[0].value
         var contentCards = document.getElementById("contentCard")
 
         if (modalBody.children[0].className === "form-control headingClass") {
+
+
           var div = document.createElement('div')
           div.className = "heading dragDiv"
-         // div.draggable = true
-          div.id = "headingId" + headingDivId
+         div.draggable = true
+          div.id = "headingId" + headingDivId 
           var dropImg = document.createElement("img")
+          dropImg.className="dragImg"
           dropImg.height = 20
           dropImg.width = 30
-          dropImg.src = sort
+          dropImg.src = "/assets/img/sort.png"
 
           var clickTag = document.createElement("a")
           clickTag.href = "#"
@@ -1698,7 +2594,7 @@
           var editImg = document.createElement('img')
           editImg.width = 20
           editImg.height = 20
-          editImg.src = pen
+          editImg.src = "/assets/img/pen.png"
 
           clickTag.appendChild(editImg)
 
@@ -1709,7 +2605,7 @@
           var deleteImg = document.createElement("img")
           deleteImg.width = 20
           deleteImg.height = 20
-          deleteImg.src = close
+          deleteImg.src = '/assets/img/close.png'
 
           deleteTag.append(deleteImg)
 
@@ -1719,10 +2615,14 @@
           elem.innerText = children
           var ckTextValue = CKEDITOR.instances[modalBody.children[0].id]?.getData()
 
+
+
           let bgColor = document.getElementById(`colorPickerId`).value
 
           let paraDiv = document.createElement("div")
           paraDiv.className = "headingDiv"
+
+          pageTitle !== ""?paraDiv.id=`heading${headingDivId}`:paraDiv.id=""
 
           let paraTag = document.createElement("p")
           paraTag.id = "heading" + headingDivId
@@ -1735,23 +2635,48 @@
           div.appendChild(clickTag)
           div.appendChild(deleteTag)
 
+          let updatesContent;
+          let updatesContentId;
+          let parentDivId;
+
+
+          if (pageTitle !==""){
+            updatesContentId= pageTitle.split("_")[0]
+           updatesContent=document.getElementById(updatesContentId)
+          parentDivId= updatesContentId.split("").pop()
+           updatesDivContainer0
+          }
+
           if (ckTextValue !== "") {
 
             //  
             $('#createModal').modal('hide');
             document.getElementById("emptyPage")?.remove()
-            contentCards.appendChild(div)
 
-            headingArray[`headingId${headingDivId}`] = { "type": "2", heading: ckTextValue, bgColor: bgColor }
+            if(pageTitle !==""){  
+              updatesContent.appendChild(div)
+              let idCount=updatesContentId.split("").pop()
+        
+              headingArray[`headingId${headingDivId}`] = { "type": "2", heading: ckTextValue, bgColor: bgColor,updates:`updates${idCount}` }
+              tempArray[`headingId${headingDivId}`] = { "type": "2", heading: ckTextValue, bgColor: bgColor,updates:`updates${idCount}` }
+              let headingDiv = document.getElementById(`headingId${headingDivId}`)
+              headingDiv.style.backgroundColor = `${bgColor}`
+              headingDivId=headingDivId+1;
+            }
+            else{
+              contentCards.appendChild(div)
+              headingArray[`headingId${headingDivId}`] = { "type": "2", heading: ckTextValue, bgColor: bgColor }
+              tempArray[`headingId${headingDivId}`] = { "type": "2", heading: ckTextValue, bgColor: bgColor }
+              let headingDiv = document.getElementById(`headingId${headingDivId}`)
+              headingDiv.style.backgroundColor = `${bgColor}`
+              headingDivId += 1
+            }
+            
             // heading Data
 
-            tempArray[`headingId${headingDivId}`] = { "type": "2", heading: ckTextValue, bgColor: bgColor }
-
-            let headingDiv = document.getElementById(`headingId${headingDivId}`)
-            headingDiv.style.backgroundColor = `${bgColor}`
+            
             //
             submitBtnDiv.style.display = "block"
-            headingDivId += 1
 
           } else {           
             let inputElem = document.getElementById(`cke_headingId${headingDivId}`)
@@ -1763,15 +2688,17 @@
           }
 
         }
+
         else if (modalBody.children[0].className === "form-control headingDescClass") {
           var div = document.createElement('div')
           div.className = "headingDesc dragDiv"
           div.id = `descriptionDiv${headingDescId}`
           div.draggable = true
           var dropImg = document.createElement("img")
+          dropImg.className="dragImg"
           dropImg.height = 20
           dropImg.width = 20
-          dropImg.src = sort
+          dropImg.src = "/assets/img/sort.png"
 
           var clickTag = document.createElement("a")
           clickTag.href = "#"
@@ -1782,7 +2709,7 @@
           var editImg = document.createElement('img')
           editImg.width = 20
           editImg.height = 20
-          editImg.src = pen
+          editImg.src = "/assets/img/pen.png"
 
           clickTag.appendChild(editImg)
 
@@ -1793,11 +2720,12 @@
           var deleteImg = document.createElement("img")
           deleteImg.width = 20
           deleteImg.height = 20
-          deleteImg.src = close
+          deleteImg.src = '/assets/img/close.png'
 
           deleteTag.append(deleteImg)
 
-          let elemId = "descriptionDiv" + headingDescId
+          let elemId;
+          elemId=`descriptionDiv${headingDescId}`
 
           clickTag.setAttribute("onclick", `editModal("editDescription",this.previousElementSibling.id,this.parentElement.id)`)
 
@@ -1813,9 +2741,36 @@
 
           let elemBgColor = document.getElementById("descColorPicker").value
 
+          let updatesContent;
+          let updatesContentId;
+          let parentDivId;
+          
+          if (pageTitle !==""){
+            updatesContentId= pageTitle.split("_")[0]
+           updatesContent=document.getElementById(updatesContentId)
+          parentDivId= updatesContentId.split("").pop()
+          }
+
           if (CKEDITOR.instances[modalBody.children[0].id]?.getData() !== "") {
 
-            //
+
+            if(pageTitle !==""){
+
+              $('#createModal').modal('hide');
+
+              updatesContent.appendChild(div)
+              let idCount=updatesContentId.split("").pop()
+        
+              document.getElementById("emptyPage")?.remove()
+              descriptionArray[`${elemId}`] = { text: ckTextValue, bgColor: elemBgColor,updates:`updates${idCount}` }
+              tempArray[`${elemId}`] = { type: "3", text: ckTextValue, bgColor: elemBgColor,updates:`updates${idCount}` }
+              let parentElem = document.getElementById(elemId)
+              parentElem.style.backgroundColor = elemBgColor
+              submitBtnDiv.style.display = "block"
+              headingDescId = headingDescId + 1
+
+            }else{
+
             $('#createModal').modal('hide');
             document.getElementById("emptyPage")?.remove()
             contentCards.appendChild(div)
@@ -1825,6 +2780,8 @@
             parentElem.style.backgroundColor = elemBgColor
             submitBtnDiv.style.display = "block"
             headingDescId = headingDescId + 1
+            }
+
           } else {
             let inputElem = document.getElementById(`cke_headingDescId${headingDescId}`)
             let errorElem = document.querySelector(".error")
@@ -1845,33 +2802,43 @@
           div.className = "imageContainer dragDiv"
 
           //
-          div.id = modalBody.children[0].id
+          div.id =modalBody.children[0].id
           div.draggable = true
           var dropImg = document.createElement("img")
+          dropImg.className="dragImg"
           dropImg.height = 20
           dropImg.width = 20
-          dropImg.src = sort
+          dropImg.src = "/assets/img/sort.png"
 
           var clickTag = document.createElement("a")
           clickTag.href = "#"
-          arg = "pageHeadDesc" + modalBody.children[0].id
-          clickTag.id = "headDesctag" + modalBody.children[0].id
 
 
           var editImg = document.createElement('img')
           editImg.width = 20
           editImg.height = 20
-          editImg.src = pen
+          editImg.src = "/assets/img/pen.png"
 
           clickTag.appendChild(editImg)
 
-
+          var imgArry;
+              
           var imgId=modalBody.children[0].id
-          var imgArry = imagesContainerArrar[`${imgId}`] ;
+          if(pageTitle ==""){
+            imgArry = imagesContainerArrar[`${imgId}`]
+          } else{
+            imgArry = imagesContainerArrar[`${imgId}`]["files"] ;
+          }
+         
           var imgSrc = document.getElementsByClassName("image")
           var parentContainer = document.getElementsByClassName("imgContainer")
           ParentId = parentContainer[0].id
 
+
+      /*    for (let i = 0; i < imgSrc.length; i++) {
+            imgArry.push(imgSrc[i].children[0].src)
+          }
+      */
 
           var imgContainer = document.createElement("div")
           imgContainer.className = "imagesDiv"
@@ -1897,7 +2864,7 @@
           var deleteImg = document.createElement("img")
           deleteImg.width = 20
           deleteImg.height = 20
-          deleteImg.src = close
+          deleteImg.src = '/assets/img/close.png'
 
           deleteTag.append(deleteImg)
           var existingElement = document.getElementById(tempId)
@@ -1907,20 +2874,43 @@
 
           tempId = parentContainer[0].id;
 
+          
+          let updatesContent;
+          let updatesContentId;
+          let parentDivId;
+
+
+          if (pageTitle !==""){
+            updatesContentId= pageTitle.split("_")[0]
+            updatesContent=document.getElementById(updatesContentId)
+            parentDivId= updatesContentId.split("").pop()
+          }
+
           if (imgContainer.innerHTML !== "") {
-            //
-            $('#createModal').modal('hide');
-            document.getElementById("emptyPage")?.remove()
 
-            div.appendChild(dropImg)
-            div.appendChild(imgContainer)
-            div.appendChild(clickTag)
-            div.appendChild(deleteTag)
-            contentCards.appendChild(div)
+            if(pageTitle !==""){
+              $('#createModal').modal('hide');
+              document.getElementById("emptyPage")?.remove()
+              div.appendChild(dropImg)
+              div.appendChild(imgContainer)
+              div.appendChild(clickTag)
+              div.appendChild(deleteTag)
+              updatesContent.appendChild(div)
+              submitBtnDiv.style.display = "block"
+              imageContainerId += 1
+            }else{
+              $('#createModal').modal('hide');
+              document.getElementById("emptyPage")?.remove()
+  
+              div.appendChild(dropImg)
+              div.appendChild(imgContainer)
+              div.appendChild(clickTag)
+              div.appendChild(deleteTag)
+              contentCards.appendChild(div)
+              submitBtnDiv.style.display = "block"
+              imageContainerId += 1
+            }
 
-            //
-            submitBtnDiv.style.display = "block"
-            imageContainerId += 1
           } else {
             let inputElem = document.querySelector(".imgContainer")
             let errorElem = document.querySelector(".error")
@@ -1940,9 +2930,10 @@
           div.id = `Div${keyId}`
           div.draggable = true
           var dropImg = document.createElement("img")
+          dropImg.className="dragImg"
           dropImg.height = 20
           dropImg.width = 20
-          dropImg.src = sort
+          dropImg.src = "/assets/img/sort.png"
 
 
           var clickTag = document.createElement("a")
@@ -1953,7 +2944,7 @@
           var editImg = document.createElement('img')
           editImg.width = 20
           editImg.height = 20
-          editImg.src = pen
+          editImg.src = "/assets/img/pen.png"
 
           clickTag.appendChild(editImg)
 
@@ -1962,9 +2953,16 @@
           var videoDIv = document.getElementById("videoId")
           var videoSrc = videoDIv?.children[0].src
 
-          var videoLocalSrc = videoContainerArrary[`Div${parentContainerVideo[0].id}`]
+          var videoLocalSrc;
+
+          if(pageTitle !==""){
+            videoLocalSrc = videoContainerArrary[`Div${parentContainerVideo[0].id}`]["files"]
+          } else{
+            videoLocalSrc = videoContainerArrary[`Div${parentContainerVideo[0].id}`]
+          }
+          
           var videoName = videoLocalSrc?.name
-          var videoType = videoLocalSrc?.type
+          var videoType = videoLocalSrc?.type 
 
           var videoContainer = document.createElement("div")
           videoContainer.className = "videosDiv"
@@ -1979,7 +2977,7 @@
           var deleteImg = document.createElement("img")
           deleteImg.width = 20
           deleteImg.height = 20
-          deleteImg.src = close
+          deleteImg.src = '/assets/img/close.png'
 
           deleteTag.append(deleteImg)
 
@@ -1997,19 +2995,39 @@
           //
           videoTempId = parentContainerVideo[0].id;
 
+          let updatesContent;
+          let updatesContentId;
+          let parentDivId;
+
+
+          if (pageTitle !==""){
+            updatesContentId= pageTitle.split("_")[0]
+            updatesContent=document.getElementById(updatesContentId)
+            parentDivId= updatesContentId.split("").pop()
+          }
+
 
           let inputElem = document.querySelector(".videoModalContainer")
 
           if (inputElem.innerHTML !== "") {
-            //
-            $('#createModal').modal('hide');
-            document.getElementById("emptyPage")?.remove()
-            div.appendChild(dropImg)
-            div.appendChild(videoContainer)
-            div.appendChild(clickTag)
-            div.appendChild(deleteTag)
-            contentCards.appendChild(div)
-            //
+
+            if(pageTitle !==""){
+              $('#createModal').modal('hide');
+              document.getElementById("emptyPage")?.remove()
+              div.appendChild(dropImg)
+              div.appendChild(videoContainer)
+              div.appendChild(clickTag)
+              div.appendChild(deleteTag)
+              updatesContent.appendChild(div)
+            }else{
+              $('#createModal').modal('hide');
+              document.getElementById("emptyPage")?.remove()
+              div.appendChild(dropImg)
+              div.appendChild(videoContainer)
+              div.appendChild(clickTag)
+              div.appendChild(deleteTag)
+              contentCards.appendChild(div)
+            }
             submitBtnDiv.style.display = "block"
             videoContainerId += 1
           } else {
@@ -2027,9 +3045,10 @@
           quizDiv.id = animationKey
           quizDiv.draggable = true
           var dropImg = document.createElement("img")
+          dropImg.className="dragImg"
           dropImg.height = 20
           dropImg.width = 20
-          dropImg.src = sort
+          dropImg.src = "/assets/img/sort.png"
 
           var formElem = document.getElementsByClassName("formClass");
           var quiz = [];
@@ -2038,15 +3057,6 @@
             quiz.push(data);
           }
           var quizData = quiz;
-
-          quizContainerArray[`quiz${quizId}`] = quiz[0]
-
-
-          // var qstnValue= CKEDITOR.instances[`question${quizId}`]?.getData() 
-
-          // quiz[i][`question${quizId}`]=qstnValue
-
-          //  quiz[0].question0=qstnValue
 
           const { question, answer, ...rest } = quiz[0];
 
@@ -2098,7 +3108,7 @@
           var editImg = document.createElement('img')
           editImg.width = 20
           editImg.height = 20
-          editImg.src = pen
+          editImg.src = "/assets/img/pen.png"
 
           clickTag.appendChild(editImg)
 
@@ -2113,7 +3123,7 @@
           var deleteImg = document.createElement("img")
           deleteImg.width = 20
           deleteImg.height = 20
-          deleteImg.src = close
+          deleteImg.src = '/assets/img/close.png'
 
           deleteTag.append(deleteImg)
 
@@ -2122,14 +3132,32 @@
           quizDiv.appendChild(clickTag)
           quizDiv.appendChild(deleteTag)
 
-          //
+          let updatesContent;
+          let updatesContentId;
+          let parentDivId;
+
+
+          if (pageTitle !==""){
+            updatesContentId= pageTitle?.split("_")[0]
+            updatesContent=document.getElementById(updatesContentId)
+            parentDivId= updatesContentId.split("").pop()
+          }
+
           if (quiz[0].quizQstn !== "" && optionsList.length >= 2 && answer) {
-            //
+
             $('#createModal').modal('hide');
             document.getElementById("emptyPage")?.remove()
-            contentCards.appendChild(quizDiv)
-            tempArray[`quizDiv${quizId}`] = { type: "7", quiz: quiz[0] }
-            //
+
+            if(pageTitle !==""){
+              let idCount=updatesContentId.split("").pop()
+              quizContainerArray[`quizDiv${quizId}`] = {quiz:quiz[0],updates:`updates${idCount}`}
+              tempArray[`quizDiv${quizId}`] = {type:"7",quiz:quiz[0],updates:`updates${idCount}`}
+              updatesContent.appendChild(quizDiv)
+            }else{
+              quizContainerArray[`quizDiv${quizId}`] = {quiz:quiz[0]}
+              tempArray[`quizDiv${quizId}`] = {type:"7",quiz:quiz[0]}
+              contentCards.appendChild(quizDiv)
+            }
             submitBtnDiv.style.display = "block"
             quizId += 1;
 
@@ -2182,15 +3210,19 @@
           div.id = modalBody.children[0].id
           div.draggable = true
           var dropAnimation = document.createElement("img")
+          dropAnimation.className="dragImg"
           dropAnimation.height = 20
           dropAnimation.width = 20
-          dropAnimation.src = sort
+          dropAnimation.src = "/assets/img/sort.png"
 
-          var animationArrayId=modalBody.children[0].id
-          var animationArry =animationContainerArray[`${animationArrayId}`]
-          var animationSrc = document.getElementsByClassName("animation")
-          for (let i = 0; i < animationSrc.length; i++) {
-            animationArry.push(animationSrc[i].children[0].src)
+
+          var imgId=modalBody.children[0].id
+
+          var animationArry
+          if(pageTitle ==""){
+            animationArry = animationContainerArray[`${imgId}`]
+          } else{
+            animationArry = animationContainerArray[`${imgId}`]["files"] ;
           }
 
           var animationContainer = document.createElement("div")
@@ -2204,7 +3236,7 @@
           let animations = '';
           animationArry.forEach((e, i) => {
             animations += `
-                    <img src=${e} alt="img">
+                    <img src=${URL.createObjectURL(e)} alt="img">
                 </div>`
           })
           animationContainer.innerHTML = animations
@@ -2221,7 +3253,7 @@
           var editImg = document.createElement('img')
           editImg.width = 20
           editImg.height = 20
-          editImg.src = pen
+          editImg.src = "/assets/img/pen.png"
 
           clickTag.appendChild(editImg)
 
@@ -2233,7 +3265,7 @@
           var deleteImg = document.createElement("img")
           deleteImg.width = 20
           deleteImg.height = 20
-          deleteImg.src = close
+          deleteImg.src = '/assets/img/close.png'
 
           deleteTag.append(deleteImg)
 
@@ -2243,14 +3275,29 @@
           div.appendChild(clickTag)
           div.appendChild(deleteTag)
 
+          let updatesContent;
+          let updatesContentId;
+          let parentDivId;
+
+
+          if (pageTitle !==""){
+            updatesContentId= pageTitle.split("_")[0]
+            updatesContent=document.getElementById(updatesContentId)
+            parentDivId= updatesContentId.split("").pop()
+          }
+
           if (animationContainer.innerHTML !== "") {
-            //
+
             $('#createModal').modal('hide');
+
+            if(pageTitle !==""){
+              updatesContent.appendChild(div)
+            }else{
+              contentCards.appendChild(div)
+            }
             document.getElementById("emptyPage")?.remove()
-            contentCards.appendChild(div)
-            //
             submitBtnDiv.style.display = "block"
-            //
+
             animationId += 1
           } else {
             let inputElem = document.querySelector(".animationContainer")
@@ -2259,7 +3306,6 @@
               inputElem.insertAdjacentHTML('afterend', '<p class="error">Please insert animation...!</p>');
             }
           }
-
 
         }
         else if (modalBody.children[0].id === "pageTitleId") {
@@ -2272,7 +3318,7 @@
           var dropImg = document.createElement("img")
           dropImg.height = 20
           dropImg.width = 30
-          dropImg.src = sort
+          dropImg.src = dragImageIcon
 
           var emptyDiv=document.createElement("div")
           emptyDiv.style="height,20px"
@@ -2287,7 +3333,7 @@
           var editImg = document.createElement('img')
           editImg.width = 20
           editImg.height = 20
-          editImg.src = pen
+          editImg.src = editImageIcon
 
           clickTag.appendChild(editImg)
 
@@ -2298,7 +3344,7 @@
           var deleteImg = document.createElement("img")
           deleteImg.width = 20
           deleteImg.height = 20
-          deleteImg.src = close
+          deleteImg.src = deleteImageIcon
 
           deleteTag.append(deleteImg)
 
@@ -2320,6 +3366,8 @@
           clickTag.setAttribute("onclick", `editModal("editTitle","pageHeadingId")`)
 
           if (ckTextValue !== "") {
+
+
             //
             $('#createModal').modal('hide');
             document.getElementById("emptyPage")?.remove()
@@ -2346,9 +3394,10 @@
           let parentId = modalBody.children[0].id
 
           var dropImg = document.createElement("img")
+          dropImg.className="dragImg"
           dropImg.height = 20
           dropImg.width = 30
-          dropImg.src = sort
+          dropImg.src = dragImageIcon
 
           var clickTag = document.createElement("a")
           clickTag.href = "#"
@@ -2359,7 +3408,7 @@
           var editImg = document.createElement('img')
           editImg.width = 20
           editImg.height = 20
-          editImg.src = pen
+          editImg.src = editImageIcon
 
           clickTag.appendChild(editImg)
           var deleteTag = document.createElement("a")
@@ -2369,7 +3418,7 @@
           var deleteImg = document.createElement("img")
           deleteImg.width = 20
           deleteImg.height = 20
-          deleteImg.src = close
+          deleteImg.src = deleteImageIcon
 
           deleteTag.append(deleteImg)
 
@@ -2383,33 +3432,54 @@
 
           clickTag.setAttribute("onclick", `editModal("editButton",this.previousElementSibling.id,this.parentElement.id)`)
 
-          //
-
           let btnTag = `<a href=${btnLink} id="linkTag${buttonId}" target="_blank" class="linkBtn">${btnName}</a>`
 
           linkDiv.innerHTML = btnTag
 
           let btnColor = document.getElementById("btnColorPicker").value
 
+          let updatesContent;
+          let updatesContentId;
+          let parentDivId;
+
+
+          if (pageTitle !==""){
+            updatesContentId= pageTitle.split("_")[0]
+           updatesContent=document.getElementById(updatesContentId)
+          parentDivId= updatesContentId.split("").pop()
+          }
+
           if (btnName !== "" && btnLink !== "") {
+
+           
             //
             $('#createModal').modal('hide');
-            btnDiv.appendChild(dropImg)
-            btnDiv.appendChild(linkDiv)
-            btnDiv.appendChild(clickTag)
-            btnDiv.appendChild(deleteTag)
-            contentCards.appendChild(btnDiv)
 
-            btnContainerArray[`${parentId}`] = { name: btnName, link: btnLink, bgColor: btnColor }
+            if(pageTitle !==""){
 
-            // Button data
-            tempArray[`${parentId}`] = { type: "8", name: btnName, link: btnLink, bgColor: btnColor }
+              let idCount=updatesContentId.split("").pop()
+              btnDiv.appendChild(dropImg)
+              btnDiv.appendChild(linkDiv)
+              btnDiv.appendChild(clickTag)
+              btnDiv.appendChild(deleteTag)
+              updatesContent.appendChild(btnDiv)
+              
+              btnContainerArray[`${parentId}`] = { name: btnName, link: btnLink, bgColor: btnColor,updates:`updates${idCount}` }
+              tempArray[`${parentId}`] = { type: "8", name: btnName, link: btnLink, bgColor: btnColor,updates:`updates${idCount}` }
+            }else{
+              btnDiv.appendChild(dropImg)
+              btnDiv.appendChild(linkDiv)
+              btnDiv.appendChild(clickTag)
+              btnDiv.appendChild(deleteTag)
+              contentCards.appendChild(btnDiv)
+              
+              btnContainerArray[`${parentId}`] = { name: btnName, link: btnLink, bgColor: btnColor }
+              tempArray[`${parentId}`] = { type: "8", name: btnName, link: btnLink, bgColor: btnColor }
+            }
 
             let childElem = document.getElementById(`linkTag${buttonId}`)
 
             childElem.style.backgroundColor = btnColor
-
-            //
             submitBtnDiv.style.display = "block"
             buttonId += 1;
           } else {
@@ -2452,9 +3522,10 @@
           div.draggable = true
 
           var dropImg = document.createElement("img")
+          dropImg.className="dragImg"
           dropImg.height = 20
           dropImg.width = 30
-          dropImg.src = sort
+          dropImg.src = dragImageIcon
 
           var clickTag = document.createElement("a")
           clickTag.href = "#"
@@ -2464,7 +3535,7 @@
           var editImg = document.createElement('img')
           editImg.width = 20
           editImg.height = 20
-          editImg.src = pen
+          editImg.src = editImageIcon
 
           clickTag.appendChild(editImg)
 
@@ -2475,12 +3546,23 @@
           var deleteImg = document.createElement("img")
           deleteImg.width = 20
           deleteImg.height = 20
-          deleteImg.src = close
+          deleteImg.src = deleteImageIcon
 
           deleteTag.append(deleteImg)
 
 
           let linkData = imgLinkContainerArray[`${imgId}`]
+          
+          let updatesContent;
+          let updatesContentId;
+          let parentDivId;
+
+
+          if (pageTitle !==""){
+            updatesContentId= pageTitle.split("_")[0]
+           updatesContent=document.getElementById(updatesContentId)
+            parentDivId= updatesContentId.split("").pop()
+          }
 
           if (linkData === undefined) {
             let imageLink = document.querySelector("#formFile")
@@ -2494,7 +3576,6 @@
               errorLink.remove()
             }
           }
-
 
           const { link, image } = imgLinkContainerArray[`${imgId}`]
 
@@ -2514,11 +3595,14 @@
           div.appendChild(deleteTag)
 
           if (link !== "" && image !== "") {
-            //
+
+            if(pageTitle !==""){
+              updatesContent.appendChild(div)
+            }else{
+              contentCards.appendChild(div)
+            }
             $('#createModal').modal('hide');
             document.getElementById("emptyPage")?.remove()
-            contentCards.appendChild(div)
-
             //
             submitBtnDiv.style.display = "block"
             buttonId += 1;
@@ -2526,37 +3610,261 @@
           }
           clickTag.setAttribute("onclick", `editModal("editImgLink",this.previousElementSibling.id,this.parentElement.id)`)
         }
-        // Drag function
+        else if(modalBody.children[0].className === "hyperLinkModalDiv"){
 
-       /* var sortableList = document.querySelector(".card")
-        const items = document.querySelectorAll(".dragDiv")
+          let hyperLinks =[]
 
-        items.forEach(item => {
-          item.addEventListener("dragstart", () => {
-            setTimeout(() => item.classList.add("dragging"), 0)
+          let hyperLinkForms=document.getElementsByClassName("hyperLinkForm")
+
+          for (let h=0;h<hyperLinkForms.length;h++){
+            let form = hyperLinkForms[h];
+            let data = new FormData(form);
+            data = data.entries();              
+            var obj = data.next();
+            var retrieved = {}; 
+                
+            while(undefined !== obj.value) {  
+              retrieved["caption"]=CKEDITOR.instances[`captionInput${h}`]?.getData()
+              if(obj.value[0]==="file"){
+                retrieved['image']=[obj.value[1]];
+              }else{
+                retrieved[obj.value[0]] = obj.value[1];
+              }
+              obj = data.next();   
+              retrieved["caption"]=CKEDITOR.instances[`captionInput${h}`]?.getData()           
+            }
+
+            var formElem = document.getElementById(`hyperLink_form${h}`);
+            const inputFields=formElem.querySelectorAll(`input`)
+
+            let isEmpty=false;
+
+            for(let i = 0; i < inputFields.length; i++){
+              let inputType = inputFields[i].type
+              let inputName = inputFields[i].name
+              if(inputName === "link" && inputFields[i].value===""){
+                isEmpty=true
+              }else if(inputType==="file" && inputFields[i].files.length===0){
+               isEmpty=true
+              }
+              else if(CKEDITOR.instances[`captionInput${h}`]?.getData()===""){
+                isEmpty=true
+              }
+            }
+
+            if(isEmpty===true){
+              if($(`.formError${h}`).length==0){
+                $(`#hyperLink_form${h}`).after(`<span class="formError${h} error">Please enter the field..!</span>`)
+              }   
+            }else{
+              $(`.formError${h}`).remove()
+              hyperLinks.push(retrieved)
+            }
+          }
+
+          let modalId = modalBody.children[0].id
+
+          let hyperDivId=modalId.split("_")[1]
+
+          var div = document.createElement('div')
+          div.className = "hyperLinksContainer"
+          div.id = hyperDivId
+          div.draggable = true
+
+          var dropImg = document.createElement("img")
+          dropImg.className="dragImg"
+          dropImg.height = 20
+          dropImg.width = 30
+          dropImg.src = dragImageIcon
+
+          var clickTag = document.createElement("a")
+          clickTag.href = "#"
+          arg = "page" + modalBody.children[0].id
+          clickTag.id = "tag" + modalBody.children[0].id
+
+
+
+          var editImg = document.createElement('img')
+          editImg.width = 20
+          editImg.height = 20
+          editImg.src = editImageIcon
+
+          
+          clickTag.appendChild(editImg)
+
+          clickTag.setAttribute("onclick", `editModal("editHyperLink",this.previousElementSibling.id,this.parentElement.id)`)
+
+          var deleteTag = document.createElement("a")
+          deleteTag.href = "#"
+          deleteTag.setAttribute("onclick", "deleteItem(this,'hyperLink')")
+
+          var deleteImg = document.createElement("img")
+          deleteImg.width = 20
+          deleteImg.height = 20
+          deleteImg.src = deleteImageIcon
+
+          deleteTag.append(deleteImg)
+
+          let hyperLinkContainer=document.createElement("div")
+          hyperLinkContainer.className="hyperLinksDiv"
+          hyperLinkContainer.id=`linksDiv${hyperLinkId}`
+
+          let hyperLinkTag="";
+          hyperLinks.forEach((e,i)=>{
+            console.log(e,"e")
+            hyperLinkTag+=
+            `<div class="hyperLink">
+              <div class="linkDiv">
+                  <a href="${e.link}" target="_blank">
+                      <img src="${URL.createObjectURL(e.image[0])}" alt="">
+                  </a>
+              </div>
+              <div class="captionDiv">  
+                  ${e.caption}
+              </div>
+          </div>`
           })
-          item.addEventListener("dragend", () => item.classList.remove("dragging"))
-        })
 
-        var initSortableList = (e) => {
-          const draggingItem = sortableList.querySelector(".dragging")
-          const sibilings = [...sortableList.querySelectorAll(".dragDiv:not(.dragging)")]
+          hyperLinkContainer.innerHTML=hyperLinkTag
+          div.appendChild(dropImg)
+          div.appendChild(hyperLinkContainer)
+          div.appendChild(clickTag)
+          div.appendChild(deleteTag)
 
-          let nextSibiling = sibilings.find(sibiling => {
-            return e.clientY <= sibiling.offsetTop + sibiling.offsetHeight / 2
-          })
+          let updatesContent;
+          let updatesContentId;
+          let parentDivId;
 
-          sortableList.insertBefore(draggingItem, nextSibiling)
+
+          if (pageTitle !==""){
+            updatesContentId= pageTitle.split("_")[0]
+           updatesContent=document.getElementById(updatesContentId)
+            parentDivId= updatesContentId.split("").pop()
+          }
+
+          if(hyperLinks.length>0){
+            $('#createModal').modal('hide');
+            document.getElementById("emptyPage")?.remove()
+            if(pageTitle !==""){
+              updatesContent.appendChild(div)
+              hyperLinkArray[`${hyperDivId}`] = {hyperLinkCards:hyperLinks,updates:`updates${parentDivId}` }
+              tempArray[`${hyperDivId}`] = { type: "11", hyperLinkCards:hyperLinks,updates:`updates${parentDivId}` }
+            }else{
+              contentCards.appendChild(div)
+              hyperLinkArray[`${hyperDivId}`] = {hyperLinkCards:hyperLinks }
+              tempArray[`${hyperDivId}`] = { type: "11", hyperLinkCards:hyperLinks }
+            }
+
+            hyperLinkId+=1;
+          }
+
+        } 
+        else if(modalBody.children[0].className === "updatesDiv"){
+
+          let updateDivId=modalBody.children[0].id.split("_")[0]
+
+          var div = document.createElement('div')
+          div.className = "updatesDivContainer"
+          div.id = `${updateDivId}`
+          div.draggable = true
+          var dropImg = document.createElement("img")
+          dropImg.className="dragImg"
+          dropImg.height = 20
+          dropImg.width = 20
+          dropImg.src = dragImageIcon
+
+          var clickTag = document.createElement("a")
+          clickTag.href = "#"
+
+
+          var editImg = document.createElement('img')
+          editImg.width = 20
+          editImg.height = 20
+          editImg.src = editImageIcon
+
+          clickTag.appendChild(editImg)
+
+          var deleteTag = document.createElement("a")
+          deleteTag.href = "#"
+          deleteTag.setAttribute("onclick", "deleteItem(this,'updates')")
+
+          var deleteImg = document.createElement("img")
+          deleteImg.width = 20
+          deleteImg.height = 20
+          deleteImg.src = deleteImageIcon
+
+          deleteTag.append(deleteImg)
+
+          clickTag.setAttribute("onclick", `editModal("editUpdates",this.previousElementSibling.id,this.parentElement.id)`)
+
+          let updaesContainer=document.createElement("div")
+          updaesContainer.className="updatesDivBox"
+          updaesContainer.id=`updatesDiv${updatesId}`
+
+          let elemBgColor = $(".updatesBgColor").val()
+          let updatesHeading=$("#updatesHeading").val()
+          let accordionInput = $('#show:checked').val();
+
+          let accordionShow = accordionInput===undefined?false:true
+
+          let updatesTag=`<div class="headingDiv" style="background-color:${elemBgColor}" id="updatesHeadingDiv${updatesId}">${updatesHeading}</div>
+          <div class="updatesItems" id="updatesItems${updatesId}"></div>
+          <div class="addButton">
+            <div class="updatesBtns">
+              <button type="button" class="btn updatesItems${updatesId}_btn" onclick="showUpdatesModal('heading',this)">Heading</button>
+              <button type="button" class="btn updatesItems${updatesId}_btn" onclick="showUpdatesModal('description',this)">Description</button>
+              <button type="button" class="btn updatesItems${updatesId}_btn" onclick="showUpdatesModal('image',this)">Image</button>
+              <button type="button" class="btn updatesItems${updatesId}_btn" onclick="showUpdatesModal('video',this)">Video</button>
+              <button type="button" class="btn updatesItems${updatesId}_btn" onclick="showUpdatesModal('animation',this)">Animation</button>
+              <button type="button" class="btn updatesItems${updatesId}_btn" onclick="showUpdatesModal('quiz',this)">Quiz</button>
+              <button type="button" class="btn updatesItems${updatesId}_btn" onclick="showUpdatesModal('link',this)">Link</button>
+              <button type="button" class="btn updatesItems${updatesId}_btn" onclick="showUpdatesModal('button',this)">Button</button>
+              <button type="button" class="btn updatesItems${updatesId}_btn" onclick="showUpdatesModal('hyperLink',this)">Hyperlink</button>
+              <button type="button" class="btn updatesItems${updatesId}_btn" onclick="addSpace('updates',this)">Space</button>
+            </div>
+            <div>
+              <button type="button" onclick="updatesBtnsFn(this)" id="updatesDiv${updatesId}_btn" class="updatesAddBtn rounded-circle">+</button>
+            </div>
+          </div>`
+          
+          updaesContainer.innerHTML=updatesTag
+          div.appendChild(dropImg)
+          div.appendChild(updaesContainer)
+          div.appendChild(clickTag)
+          div.appendChild(deleteTag)
+
+          if(updatesHeading !== ""){
+            $('#createModal').modal('hide');
+            document.getElementById("emptyPage")?.remove()
+            updatesArray[`${updateDivId}`] = {heading:updatesHeading,show:accordionShow,bgColor:elemBgColor }
+            tempArray[`${updateDivId}`] = { type: "12", heading:updatesHeading,show:accordionShow,bgColor:elemBgColor }
+            updatesId+=1;
+            contentCards.appendChild(div)
+
+            const updatesElemClassSort=document.querySelectorAll('.updatesDivContainer')
+
+              for (var i = 0; i < updatesElemClassSort?.length; i++) {
+                let ParentId=updatesElemClassSort[i].id
+                let idCount= ParentId.split("").pop()
+                let dragAreaUpdates=document.getElementById(`updatesItems${idCount}`)  
+                if(dragAreaUpdates){
+                  new Sortable(dragAreaUpdates,{
+                    filter:'.titleDiv',
+                    handle:".dragImg",
+                    Animation:350
+                  })
+                }
+              }
+            
+          }
+
+           updatesBtnsFn=(event)=>{
+              let btnDiv=event.id.split("_")[0]
+              $(`#${btnDiv} .updatesBtns`).toggleClass("active");
+          }
+          
         }
-
-        sortableList.addEventListener("dragover", initSortableList)
-
-        */
-        //
-
-        
-
-
+        console.log(tempArray,"array")
       }
 
       // Edit Funtion
@@ -2565,21 +3873,29 @@
 
         document.getElementById("editPageContent").innerHTML = ""
 
+        let updatesClass = document.getElementById(`${parentId}`).parentNode.className
+        let updatesDivId = document.getElementById(`${parentId}`).parentNode.id
+        let updatesId=document.getElementById(`${parentId}`).parentNode.id.split("").pop()
+
         let parentContentCard = document.getElementById("contentCard")
 
         if (element === "editQuiz") {
 
           $('#editModal').modal('show');
-          const quizObject = quizContainerArray[`${id}`]
+          const quizObject = quizContainerArray[`${parentId}`]['quiz']
           var modalTitle = document.getElementById("EditPageTitle")
           modalTitle.innerText = "Edit Quiz"
+          if(updatesClass==="updatesItems"){
+            modalTitle.className = `${updatesDivId}_editModal`
+          }else{
+            modalTitle.className = ""
+          }
+
           var modalBody = document.getElementById('editPageContent')
 
           var formDiv = document.createElement('form')
           formDiv.className = "formClassEdit"
           formDiv.id = parentId
-
-
 
           var options = ""
 
@@ -2636,11 +3952,15 @@
           $('#editModal').modal('show');
           var paramId = id
           let videosList = videoContainerArrary[`${parentId}`]
-
-
-
           var modalTitle = document.getElementById("EditPageTitle")
           modalTitle.innerText = "Edit Video"
+
+          if(updatesClass==="updatesItems"){
+            modalTitle.className = `${updatesDivId}_editModal`
+          }else{
+            modalTitle.className = ""
+          }
+
           var modalBody = document.getElementById('editPageContent')
           var cardDiv = document.createElement("div")
           cardDiv.className = "videoCard"
@@ -2673,7 +3993,11 @@
 
           var videoFile = []
 
-          videoFile = videoContainerArrary[`${parentId}`]
+          if(updatesClass==="updatesItems"){
+            videoFile = videoContainerArrary[`${parentId}`]['files']
+          }else{
+            videoFile = videoContainerArrary[`${parentId}`]
+          }
 
           let files = []
 
@@ -2682,8 +4006,16 @@
             videoFile = e.target.files[0];
 
             if (videoFile.size < maxVideoSize) {
-              videoContainerArrary[`${parentId}`] = videoFile
-              tempArray[`${parentId}`] = { type: "5", video: videoFile }
+
+              if(updatesClass==="updatesItems"){
+                videoContainerArrary[`${parentId}`] = {files:videoFile,updates:`updates${updatesId}`}
+                tempArray[`${parentId}`] = { type: "5", video: videoFile ,updates:`updates${updatesId}`}
+              }else{
+                videoContainerArrary[`${parentId}`] = videoFile
+                tempArray[`${parentId}`] = { type: "5", video: videoFile }
+              }
+
+             
               form.reset();
               container.innerHTML = ""
               showEditVideos()
@@ -2694,8 +4026,11 @@
           }
 
           let showEditVideos = () => {
-            videoFile = videoContainerArrary[`${parentId}`]
-            console.log(videoFile, "video")
+            if(updatesClass==="updatesItems"){
+              videoFile = videoContainerArrary[`${parentId}`]['files']
+            }else{
+              videoFile = videoContainerArrary[`${parentId}`]
+            }
             let videos = `<div class="video" id="videoEditId" draggable="true">
                       <video src=${URL.createObjectURL(videoFile)} alt="video">
                       <span onclick="delVideos()">&times;</span>
@@ -2718,12 +4053,15 @@
         }
         else if (element === "editAnimation") {
           var paramId = id
-          $('#editModal').modal('show');
-
-
-
+          $('#editModal').modal('show');  
           var modalTitle = document.getElementById("EditPageTitle")
           modalTitle.innerText = "Add Animations"
+          if(updatesClass==="updatesItems"){
+            modalTitle.className = `${updatesDivId}_editModal`
+          }else{
+            modalTitle.className = ""
+          }
+
           var modalBody = document.getElementById('editPageContent')
 
 
@@ -2746,8 +4084,12 @@
 
 
           var animationfiles = []
-          //
-          animationfiles = imagesContainerArrar[`${parentId}`]
+
+          if(updatesClass==="updatesItems"){
+            animationfiles = animationContainerArray[`${parentId}`]['files']
+          }else{
+            animationfiles = animationContainerArray[`${parentId}`]
+          }
 
           let files = [];
           let button = document.querySelector('.top button'),
@@ -2768,16 +4110,25 @@
             for (let i = 0; i < file.length; i++) {
               if (animationfiles.every(e => e.name !== file[i].name)) animationfiles.push(file[i])
             }
-            animationContainerArray[`${paramId}`] = animationfiles
-            tempArray[`${parentId}`] =  { type: "6", animations: animationfiles }
 
+            if(updatesClass==="updatesItems"){
+              animationContainerArray[`${paramId}`] = {files:animationfiles,updates:`updates${updatesId}`}
+              tempArray[`${parentId}`] = { type: "6", animations: files,updates:`updates${updatesId}` }
+            }else{
+              animationContainerArray[`${paramId}`] = animationfiles
+              tempArray[`${parentId}`] = { type: "6", animations: files }
+            }
             form.reset();
             showAnimations()
-            dragFunction();
           })
 
           let showAnimations = () => {
-            animationfiles = animationContainerArray[`${parentId}`]
+            if(updatesClass==="updatesItems"){
+              animationfiles = animationContainerArray[`${parentId}`]['files']
+            }else{
+              animationfiles = animationContainerArray[`${parentId}`]
+            }
+            
             let animations = '';
             animationfiles.forEach((e, i) => {
               animations += `<div class="animation box" draggable="true">
@@ -2795,7 +4146,6 @@
           }
 
           showAnimations()
-
 
         }
         else if (element === "editTitle") {
@@ -2849,6 +4199,13 @@
           $('#editModal').modal('show');
           var modalTitle = document.getElementById("EditPageTitle")
           modalTitle.innerText = "Edit Button"
+
+          if(updatesClass==="updatesItems"){
+            modalTitle.className = `${updatesDivId}_editModal`
+          }else{
+            modalTitle.className = ""
+          }
+
           var modalBody = document.getElementById('editPageContent')
 
           const { name, link, bgColor } = btnContainerArray[parentId]
@@ -2896,6 +4253,13 @@
           $('#editModal').modal('show');
           var modalTitle = document.getElementById("EditPageTitle")
           modalTitle.innerText = "Edit Heading"
+
+          if(updatesClass==="updatesItems"){
+            modalTitle.className = `${updatesDivId}_editModal`
+          }else{
+            modalTitle.className = ""
+          }
+
           var modalBody = document.getElementById('editPageContent')
           var div = document.createElement('div')
           div.className = "editHeading"
@@ -2931,7 +4295,17 @@
           $('#editModal').modal('show');
           var modalTitle = document.getElementById("EditPageTitle")
           modalTitle.innerText = "Edit Link"
+
+          
+          if(updatesClass==="updatesItems"){
+            modalTitle.className = `${updatesDivId}_editModal`
+          }else{
+            modalTitle.className = ""
+          }
+
+
           var modalBody = document.getElementById('editPageContent')
+
 
           const { link, image } = imgLinkContainerArray[`${parentId}`]
 
@@ -2963,16 +4337,29 @@
           imgInputIdEdit.addEventListener("change", () => {
             files = event.target.files[0];
             imgDivEdit.src = URL.createObjectURL(files);
-            imgLinkContainerArray[`${parentId}`] = { link: linkInputElemEdit.value, image: files }
-            tempArray[`${parentId}`] = { type: "9", link: linkInputElemEdit.value, image: files }
+            if(updatesClass==="updatesItems"){
+              imgLinkContainerArray[`${parentId}`] = { link: linkInputElemEdit.value, image: files,updates:`updates${updatesId}` }
+              tempArray[`${parentId}`] = { type: "9", link: linkInputElemEdit.value, image: files,updates:`updates${updatesId}` }
+            }else{
+              imgLinkContainerArray[`${parentId}`] = { link: linkInputElemEdit.value, image: files }
+              tempArray[`${parentId}`] = { type: "9", link: linkInputElemEdit.value, image: files }
+            }
+            
           })
 
         }
         else if (element === "editDescription") {
 
+
           $('#editModal').modal('show');
+
           var modalTitle = document.getElementById("EditPageTitle")
           modalTitle.innerText = "Edit Description"
+          if(updatesClass==="updatesItems"){
+            modalTitle.className = `${updatesDivId}_editModal`
+          }else{
+            modalTitle.className = ""
+          }
           var modalBody = document.getElementById('editPageContent')
 
           let mainContainer = document.createElement("div")
@@ -3018,9 +4405,28 @@
 
           var imagesList = imagesContainerArrar[`${parentId}`]
 
+          var imgfiles;
+
+          if(updatesClass==="updatesItems"){
+            imgfiles=imagesList['images']
+          }else{
+            imgfiles=imagesList
+          }          
+
+          console.log(imgfiles,"img")
+          console.log(imagesList,"List")
+          
           var paramId = id
           var modalTitle = document.getElementById("EditPageTitle")
           modalTitle.innerText = "Edit Images"
+          if(updatesClass==="updatesItems"){
+            modalTitle.className = `${updatesClass}_editModal`
+          }else{
+            modalTitle.className = ""
+          }
+
+         
+          
           var modalBody = document.getElementById('editPageContent')
           var cardDiv = document.createElement("div")
           cardDiv.className = "imgEditCard"
@@ -3036,53 +4442,49 @@
                   </div>`
 
           modalBody.appendChild(cardDiv)
+
+         var container = document.querySelector('.imgContainerEdit')
+          container.id = paramId
+
+          showEditImages = () => {
+            let images = '';
+            imgfiles.forEach((e, i) => {
+
+              console.log(e,"e")
+              let imgUrl=""
+              if(typeof e ==="object"){
+                imgUrl=URL.createObjectURL(e)
+              }else{
+                imgUrl=e
+              }
+
+              images += `<div class="image box" draggable="true"">
+                        <img src=${imgUrl} alt="img" >
+                       <span onclick="delEditImages(${i})"> &times;</span>
+                    </div>`
+            })
+
+
+            container.innerHTML = images
+          }
+
+          delEditImages = (index) => {
+            imgfiles.splice(index, 1)
+            showEditImages()
+          }
+
+          showEditImages()
+
           var button = document.querySelector('.top button'),
             form = document.querySelector('form'),
-            container = document.querySelector('.imgContainerEdit')
-          container.id = paramId
+
           text = document.querySelector('.inner')
           browse = document.querySelector('.select')
           input = document.querySelector('form input');
 
           browse.addEventListener('click', () => input.click());
 
-          var  showImage = () => {
-            imgfiles = imagesContainerArrar[`${parentId}`]
-            let images = '';
-           /* imgfiles.forEach((e, i) => {
-              images += `<div class="image box" draggable="true"">
-                        <img src=${URL.createObjectURL(e)} alt="img" >
-                       <span onclick="delImages(${i})"> &times;</span>
-                    </div>`
-            })
-
-            */
-
-
-            imgfiles.forEach((e, i) => {
-              images += `<div class="image box" draggable="true">
-                        <img src=${e} alt="img" >
-                       <span onclick="delImagesEdit(${i})"> &times;</span>
-                    </div>`
-            })
-
-        
-
-            container.innerHTML = images
-          }
-
-
-          delImagesEdit=(index)=>{
-          imagesContainerArrar[`${parentId}`].splice(index,1)
-            showImage()
-          }
           
-          showImage()
-
-
-          var imgfiles = []
-          //
-          imgfiles = imagesContainerArrar[`${parentId}`]
 
           let files = []
           var inputId = document.getElementById("imgInputEdit")
@@ -3098,21 +4500,206 @@
 
             //
 
-            imagesContainerArrar[`${parentId}`] = imgfiles
-            tempArray[`${parentId}`] = { type: "5", images: imgfiles }
+            if(updatesClass == "updatesItems"){
+              imagesContainerArrar[`${parentId}`] = {images:imgfiles,updates:`updates${updatesId}`}
+              tempArray[`${parentId}`] = { type: "5", images: imgfiles,updates:`updates${updatesId}` }
+            }else{
+              imagesContainerArrar[`${parentId}`] = imgfiles
+              tempArray[`${parentId}`] = { type: "5", images: imgfiles }
+            }
             form.reset();
-            showImage()
-            dragFunction();
+            showEditImages()
 
           }
 
 
           imageId += 1
 
-          showImage()
+          showEditImages()
 
         }
-      
+        else if(element==="editHyperLink"){
+          $('#editModal').modal('show');
+          var modalTitle = document.getElementById("EditPageTitle")
+          modalTitle.innerText = "Edit HyperLink"
+          if(updatesClass==="updatesItems"){
+            modalTitle.className = `${updatesDivId}_editModal`
+          }else{
+            modalTitle.className = ""
+          }
+          var modalBody = document.getElementById('editPageContent')
+          var cardDiv = document.createElement("div")
+          cardDiv.className = "hyperLinkEdit"
+          cardDiv.id = `${parentId}_editModal`
+
+          let {hyperLinkCards}=hyperLinkArray[`${parentId}`]
+
+          let imgUrl=""
+
+          //console.log(hyperLinkArray,"Array")
+
+          if(typeof hyperLinkCards[0].image[0]==="object"){
+            imgUrl=URL.createObjectURL(hyperLinkCards[0].image[0])
+          }else{
+            imgUrl=hyperLinkCards[0].image[0]
+          }
+
+          let editFormContent=
+
+
+          `<form class="editForm" id="hyperLinkEdit_form0">
+            <div class="d-flex gap-2 mb-2">
+              <div class="formDiv">
+                <input class="inputItem form-control" type="text" name="link" value="${hyperLinkCards[0].link}" />
+
+                <div class="hyperLinkModalDivs">
+                  <div>
+                    <input class="inputItem form-control hyperImgClass" type="file" name="file" accept="image/*"/ id="hyperImgEditInput0_id" onchange="imgEditOnchangeFn(event)">
+                  </div>
+                  <div class="hyperImgEditContainer" id="hyperImgEditInput0">
+                    <img src=${imgUrl} alt="img" />
+                  </div>
+                </div>
+                <input class="inputItem form-control" type="text" id="captionInputEdit0" name="caption" />
+              </div>
+              <div class="addMore">
+                <button type="button" class="btn btn-primary" name="add" id="add" onClick="addEditInputs()">+</button>
+              </div> 
+            </div>
+          </form>`
+          
+
+          cardDiv.innerHTML=editFormContent
+
+          let editRestContent=""
+
+          if(hyperLinkCards.length>1){
+              for(let j=1;j<hyperLinkCards.length;j++){
+                  let hyperImgUrl=""
+
+                  if(typeof hyperLinkCards[j].image[0]==="object"){
+                    hyperImgUrl=URL.createObjectURL(hyperLinkCards[j].image[0])
+                  }else{
+                    hyperImgUrl=hyperLinkCards[j].image[0]
+                  }
+                  editRestContent+= `<form class="editForm" id="hyperLinkEdit_form${j}"> <div class="d-flex gap-2 mb-2" id="fieldDiv${j}">
+                  <div class="formDiv">
+                    <input class="inputItem form-control" type="text" name="link" value="${hyperLinkCards[j].link}" />
+                    <div class="hyperLinkModalDivs">
+                      <div>
+                        <input class="inputItem form-control hyperImgClass" type="file" name="file" accept="image/*"/ id="hyperImgEditInput${j}_id" onchange="imgEditOnchangeFn(event)">
+                      </div>
+                      <div class="hyperImgEditContainer" id="hyperImgEditInput${j}">
+                        <img src=${hyperImgUrl} alt="img" />
+                      </div>
+                    </div>
+
+                    <input class="inputItem form-control" type="text" name="caption" id="captionInputEdit${j}" value="${hyperLinkCards[j].caption}" />
+                  </div>
+                  <div>
+                    <button type="button" class="btn btn-danger" name="remove" id="${j}" onClick="removeEditInputs(this,${j})">X</button>
+                  </div> 
+                </div></form>`
+              }
+          }
+
+          cardDiv.innerHTML+=editRestContent
+
+          modalBody.appendChild(cardDiv)
+
+            changeToRichtext([`captionInputEdit0`])
+
+          for(let k=1;k<hyperLinkCards.length;k++){
+            changeToRichtext([`captionInputEdit${k}`])
+            CKEDITOR.instances[`captionInputEdit${k}`].setData(hyperLinkCards[k].caption);
+          }
+          CKEDITOR.instances[`captionInputEdit0`].setData(hyperLinkCards[0].caption);
+
+          var l = hyperLinkCards.length-1;
+          var length;
+
+          addEditInputs=()=>{
+            
+            l++;  
+            let  addContent= `<form class="editForm" id="hyperLinkEdit_form${l}"> <div class="d-flex gap-2 mb-2" id="fieldDiv${l}">
+                <div class="formDiv">
+                  <input class="inputItem form-control" type="text" name="link" />
+                  <div class="hyperLinkModalDivs">
+                    <div>
+                      <input class="inputItem form-control hyperImgClass" type="file" name="file" accept="image/*"/ id="hyperImgEditInput${l}_id" onchange="imgEditOnchangeFn(event)">
+                    </div>
+                    <div class="hyperImgEditContainer" id="hyperImgEditInput${l}">
+                      
+                    </div>
+                  </div>
+                  <input class="inputItem form-control" type="text" name="caption" id="captionInputEdit${l}" />
+                </div>
+                <div>
+                  <button type="button" class="btn btn-danger" name="remove" id="${l}" onClick="removeEditInputs(this,${l})">X</button>
+                </div> 
+              </div> <p class="error" style="display:none">Please fill the value..!</p> </form>`
+
+              $(".hyperLinkEdit").append(addContent)
+
+             changeToRichtext([`captionInputEdit${l}`])
+
+          }
+
+          removeEditInputs=(e,index)=>{
+            hyperLinkArray[`${parentId}`]['hyperLinkCards'].splice(index,1)
+            var button_id = e.id     
+           $('#hyperLinkEdit_form'+button_id).remove();
+          }
+
+          imgEditOnchangeFn=(event)=>{
+            let linkid=event.target.id
+            let linkDivId=linkid.split("_")[0]
+            let imgDiv=document.getElementById(linkDivId)
+            let count=linkDivId.split("").pop()
+
+            if(hyperLinkArray[`${parentId}`]['hyperLinkCards'][`${count}`] !==undefined){
+              hyperLinkArray[`${parentId}`]['hyperLinkCards'][`${count}`].image=[event.target.files[0]]
+            }
+
+            let images = `<img src=${URL.createObjectURL(event.target.files[0])} alt="img" />`
+            imgDiv.innerHTML = images
+          }
+
+        }
+        else if(element === "editUpdates"){
+
+          let updatesDivID=parentId.split("").pop()
+
+          $('#editModal').modal('show');
+          var modalTitle = document.getElementById("EditPageTitle")
+          modalTitle.innerText = "Edit Updates"
+
+          var modalBody = document.getElementById('editPageContent')
+
+          const {heading,bgColor,show}=updatesArray[`${parentId}`]
+
+          let updatesElem= `
+            <input type="text" class="form-control" placeholder="Enter title" id="updatesHeadingEdit" value="${heading}" />
+            <div class="bgDiv">
+              <input type="color" id="bgColorEdit" class="updatesBgColor form-control form-control-color" value="${bgColor}" />
+              <label for="bgColor" class="form-check-label">Background Color</label>
+            </div>
+            
+            <div class="mb-3 form-check">
+              <label for="show" class="form-check-label">Show</label>
+              <input type="checkbox" class="form-check-input" id="showEdit" name="show" value="show" />
+            </div>
+          `
+          let mainContainer = document.createElement("div")
+          mainContainer.className ='updatesDiv'
+          mainContainer.id=`updatesDivContainer${updatesDivID}_modal`
+          mainContainer.innerHTML=updatesElem
+
+          modalBody.append(mainContainer)
+
+          document.getElementById("showEdit").checked = show;
+
+        }
         const errors = document.querySelectorAll('.error');
 
         errors.forEach(error => {
@@ -3121,9 +4708,12 @@
       }
 
       // Update Function
-
       function updateElement() {
         var modalBody = document.getElementById('editPageContent')
+        let updatesClassName=document.getElementById("EditPageTitle").className.split("_")[0]
+        let updatesClass=updatesClassName.slice(0, -1);
+        let updatesId=updatesClassName.split("").pop()
+
         if (modalBody.children[0].className === "formClassEdit") {
           var formDivClass = document.getElementsByClassName("formClassEdit")[0]
           var quizArraykey = modalBody.children[0].id
@@ -3134,17 +4724,22 @@
           var formElem = document.getElementById("formId");
           const data = Object.fromEntries(new FormData(formDivClass).entries());
 
-          quizContainerArray[`${quizArraykey}`] = data
+          let quizObject;
+          let quiz=data
+          if(updatesClass==="updatesItems"){
+            quizContainerArray[`${quizArraykey}`] = {quiz,updates:`updates${updatesId}`}
+            quizObject=quizContainerArray[`${quizArraykey}`]['quiz']
+            tempArray[`${quizArraykey}`] = { type: "7", quiz: quizObject,updates:`updates${updatesId}` }
 
-          let quizObject = quizContainerArray[`${quizArraykey}`]
+          }else{
+            quizContainerArray[`${quizArraykey}`] = data
 
-          tempArray[`${quizArraykey}`] = { type: "7", quiz: quizObject }
+            quizObject = quizContainerArray[`${quizArraykey}`]
 
+            tempArray[`${quizArraykey}`] = { type: "7", quiz: quizObject }
+          }
 
           const { question, answer, ...rest } = quizObject
-
-
-          //
 
           var options = ""
 
@@ -3222,10 +4817,19 @@
 
         }
         else if (modalBody.children[0].className === "videoCard") {
+
+          
           //
           var updatedElement = modalBody.children[0].id
           var editedElement = document.querySelector(".videoModalContainerEdit")
-          var videoSrc = videoContainerArrary[updatedElement]
+
+          var videoSrc
+
+          if(updatesClass ==="updatesItems"){
+            videoSrc = videoContainerArrary[updatedElement]['files']
+          }else{
+            videoSrc = videoContainerArrary[updatedElement]
+          }
           document.getElementById(editedElement.id).innerHTML = `<video src=${URL.createObjectURL(videoSrc)} alt="" controls>`
             $('#editModal').modal('hide');
         }
@@ -3235,7 +4839,12 @@
           var updatedAnimation = document.querySelector(".animationEditContainer").id
           var animationSrc = animationContainerArray[updatedAnimation.id]
 
-          let animationsImg = animationContainerArray[`${parentDivId}`]
+          let animationsImg;
+          if(updatesClass ==="updatesItems"){
+            animationsImg = animationContainerArray[`${parentDivId}`]['files']
+          }else{
+            animationsImg = animationContainerArray[`${parentDivId}`]
+          }
 
           let animations = ''
 
@@ -3298,8 +4907,13 @@
             $('#editModal').modal('hide');
             updatedElement.innerHTML = btnTag
             updatedElement.children[0].style.backgroundColor = color
-            btnContainerArray[`${elemId}`] = { name: btnName, link: btnLink, bgColor: btnColor.value }
-            tempArray[`${elemId}`] = { type: "8", name: btnName, link: btnLink, bgColor: btnColor.value }
+            if(updatesClass==="updatesItems"){
+              btnContainerArray[`${elemId}`] = { name: btnName, link: btnLink, bgColor: btnColor.value,updates:`updates${updatesId}` }
+              tempArray[`${elemId}`] = { type: "8", name: btnName, link: btnLink, bgColor: btnColor.value,updates:`updates${updatesId}` }
+            }else{
+              btnContainerArray[`${elemId}`] = { name: btnName, link: btnLink, bgColor: btnColor.value }
+              tempArray[`${elemId}`] = { type: "8", name: btnName, link: btnLink, bgColor: btnColor.value }
+            }
           } else {
 
             let inputName = document.querySelector("#btnNameEdit")
@@ -3345,11 +4959,13 @@
             document.getElementById("emptyPage")?.remove()
             updatedElement.innerHTML = editValue
 
-            headingArray[`${id}`] = { "type": "2", heading: editValue, bgColor: colorInput }
-
-            // heading Data 
-
-            tempArray[`${id}`] = { "type": "2", heading: editValue, bgColor: colorInput }
+            if(updatesClass==="updatesItems"){
+              headingArray[`${id}`] = { "type": "2", heading: editValue, bgColor: colorInput,updates:`updates${updatesId}` }
+              tempArray[`${id}`] = { "type": "2", heading: editValue, bgColor: colorInput,updates:`updates${updatesId}` }
+            }else{
+              headingArray[`${id}`] = { "type": "2", heading: editValue, bgColor: colorInput }
+              tempArray[`${id}`] = { "type": "2", heading: editValue, bgColor: colorInput }
+            }
 
           } else {
             let inputElem = document.getElementById(`cke_editInput`)
@@ -3371,13 +4987,20 @@
           let parentElem = document.getElementById(elemId)
           let updatedElement = parentElem.children[1]
 
+
           if (ckTextValue !== "") {
             //
             $('#editModal').modal('hide');
             updatedElement.innerHTML = ckTextValue
             parentElem.style.backgroundColor = bgColor
-            descriptionArray[`${elemId}`] = { text: ckTextValue, bgColor: bgColor }
+            if(updatesClass ==="updatesItems"){
+              descriptionArray[`${elemId}`] = { text: ckTextValue, bgColor: bgColor,updates:`updates${updatesId}` }
+            tempArray[`${elemId}`] = { type: "3", text: ckTextValue, bgColor: bgColor,updates:`updates${updatesId}` }
+            }else{
+              descriptionArray[`${elemId}`] = { text: ckTextValue, bgColor: bgColor }
             tempArray[`${elemId}`] = { type: "3", text: ckTextValue, bgColor: bgColor }
+            }
+            
           } else {
             let inputElem = document.getElementById(`cke_descEditId`)
             let errorElem = document.querySelector(".error")
@@ -3400,8 +5023,14 @@
             //
             $('#editModal').modal('hide');
             updatedElement.innerHTML = imgLinkDiv
-            imgLinkContainerArray[`${imgId}`] = { link: linkInputElemEdit.value, image: image }
-            tempArray[`${imageId}`] = { type: "9", link: linkInputElemEdit.value, image: image }
+            if(updatesClass ==="updatesItems"){
+              imgLinkContainerArray[`${imgId}`] = { link: linkInputElemEdit.value, image: image,updates:`updates${updatesId}` }
+              tempArray[`${imageId}`] = { type: "9", link: linkInputElemEdit.value, image: image,updates:`updates${updatesId}`  }
+            }else{
+              imgLinkContainerArray[`${imgId}`] = { link: linkInputElemEdit.value, image: image }
+              tempArray[`${imageId}`] = { type: "9", link: linkInputElemEdit.value, image: image }
+            }
+            
           } else {
             let errorElem = document.querySelector(".error")
             if (!errorElem) {
@@ -3417,20 +5046,37 @@
 
           let parentDivId = modalBody.children[0].id
 
+          let updatesClass=document.getElementById("EditPageTitle").className.split("_")[0]
+
 
           let keyId = document.getElementsByClassName("imgContainerEdit")[0].id
 
-          //
-          let images = imagesContainerArrar[`${parentDivId}`]
+          let images
 
+          
+
+          if(updatesClass ==="updatesItems"){
+            images = imagesContainerArrar[`${parentDivId}`]['images']
+          }else{
+            images = imagesContainerArrar[`${parentDivId}`]
+          }
 
           let updatedElement = document.getElementById(keyId)
 
 
           let editedImages = '';
+
+          let url="";
           images.forEach((e, i) => {
-            editedImages += `<img src=${URL.createObjectURL(e)} alt="img">`
+            
+            if(typeof e === "string"){
+              url=e
+            }else{
+              url=URL.createObjectURL(e)
+            }
+            editedImages += `<img src=${url} alt="img">`
           })
+
 
           //
           if (images.length > 0) {
@@ -3444,7 +5090,198 @@
             }
           }
         }
+        else if(modalBody.children[0].className === "hyperLinkEdit"){
+          let hyperLinksUpdate =[]; 
+          
+          let parentId=modalBody.children[0].id.split("_")[0]
+          
+          let {hyperLinkCards}=hyperLinkArray[`${parentId}`]
+
+          let editForms=document.getElementsByClassName("editForm")
+
+          for (let h=0;h<editForms.length;h++){
+            let form = editForms[h];
+            let data = new FormData(form);
+            data = data.entries();              
+            var obj = data.next();
+            var retrieved = {}; 
+
+            
+            while(undefined !== obj.value) {  
+              retrieved[obj.value[0]] = obj.value[1];
+
+              if(obj.value[0]=="file"){
+                console.log(hyperLinkCards[h],"card")
+                if(hyperLinkCards[h]){
+                  retrieved["image"]=[hyperLinkCards[h].image[0]]
+                  retrieved["file"]=[hyperLinkCards[h].image[0]]
+                }else{
+                  retrieved["image"]=[obj.value[1]]
+                  retrieved["file"]=[obj.value[1]]
+                }
+              }
+              obj = data.next();   
+              retrieved["caption"]=CKEDITOR.instances[`captionInputEdit${h}`]?.getData();
+            }
+
+            let inputFields = $(`#hyperLinkEdit_form${h} input`);
+
+            let isEmpty=false;
+
+            for(let i = 0; i < inputFields.length; i++){
+              let inputType = inputFields[i].type
+              let inputName = inputFields[i].name
+              if(inputName === "link" && inputFields[i].value===""){
+                isEmpty=true
+              }
+              else if(CKEDITOR.instances[`captionInputEdit${h}`]?.getData()===""){
+                isEmpty=true
+              }
+            }
+
+            if(isEmpty===true){
+              if($(`.formError${h}`).length==0){
+                $(`#hyperLinkEdit_form${h}`).after(`<span class="formError${h} error">Please enter the field..!</span>`)
+              }   
+            }else{
+              $(`.formError${h}`).remove()
+              hyperLinksUpdate.push(retrieved)
+            }
+          }
+
+          let parentElem = document.getElementById(parentId)
+          let updatedElement = parentElem.children[1]
+
+
+          let hyperLinkTag="";
+          hyperLinksUpdate.forEach((e,i)=>{
+            let hyperUrl=""
+            console.log(e,"e")
+            if(typeof e.file[0] ==="object"){
+              hyperUrl=URL.createObjectURL(e.file[0])
+            }else{
+              hyperUrl=e.file[0]
+            }
+            hyperLinkTag+=
+            `<div class="hyperLink">
+              <div class="linkDiv">
+                  <a href="${e.link}" target="_blank">
+                      <img src="${hyperUrl}" alt="">
+                  </a>
+              </div>
+              <div class="captionDiv">
+                  ${e.caption}
+              </div>
+          </div>`
+          })
+          
+
+          if(hyperLinksUpdate.length>0){
+            if(updatesClass ==="updatesItems"){
+              hyperLinkArray[`${parentId}`] = {hyperLinkCards:hyperLinksUpdate,updates:`updates${updatesId}` };
+              tempArray[`${parentId}`] = { type: "11", hyperLinkCards:hyperLinksUpdate,updates:`updates${updatesId}` };
+            }else{
+              hyperLinkArray[`${parentId}`] = {hyperLinkCards:hyperLinksUpdate };
+              tempArray[`${parentId}`] = { type: "11", hyperLinkCards:hyperLinksUpdate };
+            }
+            $('#editModal').modal('hide');
+            updatedElement.innerHTML=hyperLinkTag;
+          }
+
+        }
+        else if(modalBody.children[0].className ==="updatesDiv"){
+          let elemId = modalBody.children[0].id.split("_")[0]
+          let elemCount=elemId.split("").pop()
+          let updatedElemId=`updatesHeadingDiv${elemCount}`
+
+          let updatedElem=document.getElementById(`${updatedElemId}`)
+
+          let heading = document.getElementById("updatesHeadingEdit").value
+          let bgColor = document.getElementById("bgColorEdit").value
+          let accordionInput = $('#showEdit:checked').val();
+
+          let showAccordion= accordionInput===undefined?false:true
+
+          if (heading !== "") {
+            $('#editModal').modal('hide');
+            updatedElem.innerText=heading
+            updatedElem.style.backgroundColor=bgColor
+            updatesArray[`${elemId}`] = {heading:heading,show:showAccordion,bgColor:bgColor }
+            tempArray[`${elemId}`] = { type: "12", heading:heading,show:showAccordion,bgColor:bgColor }
+          }
+
+        }
       }
+
+      function submitModal(){
+
+
+        let updatesElemClass=document.querySelectorAll('.updatesDivContainer')
+        let gotoBtnDiv = document.getElementById("updateColorDiv")
+        let update_name_elem = document.getElementById("updateNameDiv")
+        let goto_select_div = document.getElementById("goToSelectDiv")
+
+        let selectOption = document.getElementById('goToSelect')
+        let gotoColor = document.getElementById("updateBgColor")
+
+        if(updatesElemClass.length>0){
+          gotoBtnDiv.style.display="flex"
+          update_name_elem.style.display="flex"
+          goto_select_div.style.display="flex"
+        }else{
+          gotoBtnDiv.style.display="none"
+          update_name_elem.style.display="none"
+          goto_select_div.style.display="none"
+        }
+ 
+        const {gotoselect,gotoselectbg,gotoselectname}=gotoData;
+       
+        if(updatesElemClass.length===0){
+          goto_select_div.style.display="none"
+        }else{
+          goto_select_div.style.display="flex"
+        } 
+
+        selectOption.innerHTML="";
+
+        var nullOpt = document.createElement('option');
+        nullOpt.value = null;
+        nullOpt.innerHTML = "Choose Update...";
+        selectOption.appendChild(nullOpt);
+        for (let i=0;i<updatesElemClass.length; i++){
+          let updatesElementsId=updatesElemClass[i].id
+          let updatesElement=tempArray[`${updatesElementsId}`]['heading']
+
+          var opt = document.createElement('option');
+          opt.value = i;
+          opt.innerHTML = updatesElement;
+          selectOption.appendChild(opt);
+        }
+
+        CKEDITOR.instances[`updateName`].setData(gotoselectname);
+        selectOption.value=gotoselect;
+        gotoColor.value=gotoselectbg
+
+
+        $('#submitModal').modal('show');
+      }
+
+      function goToFn(){
+       let selectedValue=document.getElementById("goToSelect").value
+       let update_name_elem = document.getElementById("updateNameDiv")
+       let update_color_elem = document.getElementById("updateColorDiv")
+
+       console.log(selectedValue,"select")
+
+       if(selectedValue === "null"){
+        update_name_elem.style.display="none"
+        update_color_elem.style.display="none"
+       }else{
+        update_name_elem.style.display="flex"
+        update_color_elem.style.display="flex"
+       }
+      }
+
 
 
      $(function () {
@@ -3490,22 +5327,7 @@
 
       function submitFn() {
 
-        data = [];
-
-       // $("#urlInput").val("")
-       // $('#inputState').val("null")
-        
-      /* $("#inputState option").prop("selected", function () {
-        return this.defaultSelected;
-        });
-      */
-
-        var action = $('#acionId input:radio:checked').val();
-        let urlInput = $("#urlInput").val()
-        var selectCatText=  $('#inputState option').filter(':selected').text();
-        var selectCatValue=  $('#inputState').val()
-
-      
+         data = [];
 
         let mainDiv = document.getElementById("contentCard")
 
@@ -3517,17 +5339,61 @@
           keysArray.push(childElem[i].id)
         }
 
+        let updatesValue=[]
+
+        let updatesKey=[]
+
+        const updatesElemClass=document.querySelectorAll('.updatesDivContainer')
+        
+        console.log(updatesElemClass,"goToSelect")
+
+        for(let i=0;i<updatesElemClass.length;i++){
+          let ParentId=updatesElemClass[i].id
+          let idCount= ParentId.split("").pop()
+          let childElem=document.getElementById(`updatesItems${idCount}`).childNodes
+          childElem.forEach((e,i)=>{
+            updatesKey.push(e.id)
+         })
+        }
+
+
+         updatesKey.forEach((e)=>{
+          updatesValue.push(tempArray[e])
+         })
+
+        let updatesElemObj = Object.groupBy(updatesValue, ({ updates }) => updates);
 
         keysArray.forEach((e) => {
-          data.push(tempArray[e])
+          if(e.includes('updates')){
+            let objId=`updates${e.split("").pop()}`
+            let updates=updatesElemObj[`${objId}`]
+           let element=tempArray[e]
+           element={...element,updates}
+            data.push(element)
+          }else{
+            data.push(tempArray[e])
+          }
         })
 
+        var action = $('#acionId input:radio:checked').val();
+        let urlInput = $("#urlInput").val()
+        var selectCatText=  $('#inputState option').filter(':selected').text();
+        var selectCatValue=  $('#inputState').val()
+        var goToSelect =  $('#goToSelect').val()
+        var updateName = CKEDITOR.instances['updateName'].getData()
+        var updateBtnColor=$('#updateBgColor').val()
 
+        let updatesElemCheck=null;
 
-        console.log(urlInput,"Value","category")
-        console.log(action, "submit")
-        console.log(selectCatValue, "select value")
-        console.log(data, "data")
+        if(updatesElemClass.length !==0){
+          if(goToSelect !=="null" && updateName !==""){
+            updatesElemCheck=true
+          }else{
+            updatesElemCheck=false
+          }
+        }else{
+          updatesElemCheck=null;
+        }
 
 
         if (urlInput !== "" && selectCatValue !== "null") {
