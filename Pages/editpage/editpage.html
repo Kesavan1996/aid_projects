@@ -346,6 +346,7 @@
       var updatesBtnsFn;
       var removeEditInputs;
       var delEditImages;
+      var delEditVideos;
 
       var descriptionId;
       const delVideos = (index) => {
@@ -2068,7 +2069,7 @@
 
             }
 
-            imagesContainerArrar[`imgContainerDiv${imageContainerId}`] = {files,updates:`updates${updatesIdCount}`}
+            imagesContainerArrar[`imgContainerDiv${imageContainerId}`] = {images:files,updates:`updates${updatesIdCount}`}
 
             tempArray[`imgContainerDiv${imageContainerId}`] = { type: "4", images: files,updates:`updates${updatesIdCount}` }
 
@@ -2826,7 +2827,7 @@
           if(pageTitle ==""){
             imgArry = imagesContainerArrar[`${imgId}`]
           } else{
-            imgArry = imagesContainerArrar[`${imgId}`]["files"] ;
+            imgArry = imagesContainerArrar[`${imgId}`]["images"] ;
           }
          
           var imgSrc = document.getElementsByClassName("image")
@@ -4032,7 +4033,7 @@
            
             let videos = `<div class="video" id="videoEditId" draggable="true">
                       <video src=${videoUrl} alt="video">
-                      <span onclick="delVideos()">&times;</span>
+                      <span onclick="delEditVideos()">&times;</span>
                   </div>`
 
             var imgDiv = document.createElement("div")
@@ -4042,7 +4043,7 @@
 
           }
 
-          const delImages = (index) => {
+          delEditVideos = (index) => {
             files.splice(index, 1)
             showEditVideos()
           }
@@ -4410,7 +4411,9 @@
             imgfiles=imagesList['images']
           }else{
             imgfiles=imagesList
-          }          
+          }   
+          
+          console.log(imagesList,"list")
           
           var paramId = id
           var modalTitle = document.getElementById("EditPageTitle")
@@ -4496,10 +4499,10 @@
 
             if(updatesClass == "updatesItems"){
               imagesContainerArrar[`${parentId}`] = {images:imgfiles,updates:`updates${updatesId}`}
-              tempArray[`${parentId}`] = { type: "5", images: imgfiles,updates:`updates${updatesId}` }
+              tempArray[`${parentId}`] = { type: "4", images: imgfiles,updates:`updates${updatesId}` }
             }else{
               imagesContainerArrar[`${parentId}`] = imgfiles
-              tempArray[`${parentId}`] = { type: "5", images: imgfiles }
+              tempArray[`${parentId}`] = { type: "4", images: imgfiles }
             }
             form.reset();
             showEditImages()
