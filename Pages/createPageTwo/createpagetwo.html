@@ -1094,6 +1094,8 @@
           mainContainer.innerHTML=updatesElem
 
           modalBody.append(mainContainer)
+
+          changeToRichtext([`updatesHeading`])
         }
         
         const errorsModal = document.querySelectorAll('.error');
@@ -2989,7 +2991,7 @@
           updaesContainer.id=`updatesDiv${updatesId}`
 
           let elemBgColor = $(".updatesBgColor").val()
-          let updatesHeading=$("#updatesHeading").val()
+          let updatesHeading=CKEDITOR.instances['updatesHeading']?.getData()
           let accordionInput = $('#show:checked').val();
 
           let accordionShow = accordionInput===undefined?false:true
@@ -3833,6 +3835,7 @@
           `
 
 
+
           let mainContainer = document.createElement("div")
           mainContainer.className ='updatesDiv'
           mainContainer.id=`updatesDivContainer${updatesDivID}_modal`
@@ -3840,6 +3843,8 @@
 
           modalBody.append(mainContainer)
 
+          changeToRichtext([`updatesHeadingEdit`])
+          CKEDITOR.instances[`updatesHeadingEdit`].setData(heading);
           document.getElementById("showEdit").checked = show;
 
         }
@@ -4322,7 +4327,9 @@
 
           let updatedElem=document.getElementById(`${updatedElemId}`)
 
-          let heading = document.getElementById("updatesHeadingEdit").value
+          
+
+          let heading = CKEDITOR.instances['updatesHeadingEdit']?.getData()
           let bgColor = document.getElementById("bgColorEdit").value
           let accordionInput = $('#showEdit:checked').val();
 
@@ -4330,7 +4337,7 @@
 
           if (heading !== "") {
             $('#editModal').modal('hide');
-            updatedElem.innerText=heading
+            updatedElem.innerHTML=heading
             updatedElem.style.backgroundColor=bgColor
             updatesArray[`${elemId}`] = {heading:heading,show:showAccordion,bgColor:bgColor }
             tempArray[`${elemId}`] = { type: "12", heading:heading,show:showAccordion,bgColor:bgColor }

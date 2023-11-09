@@ -69,7 +69,7 @@
         },
         {
           "type": "5",
-          "video": ["1699341013_85d8bee50f2d0ba9a7e1.mp4"]
+          "video": ["../../assets/video/video1.mp4"]
         },
         {
           "type": "6",
@@ -140,7 +140,7 @@
         },
         {
           "type": "5",
-          "video": ["1699341013_85d8bee50f2d0ba9a7e1.mp4"]
+          "video": ["../../assets/video/video1.mp4"]
         },
         {
           "type": "6",
@@ -186,6 +186,17 @@
           "updates": "updates0"
         }
       ]
+    },
+    {
+      "type": "7",
+      "quiz": {
+        "question": "11",
+        "option0": "1",
+        "option1": "2",
+        "option2": "3",
+        "option3": "4",
+        "answer": "1"
+      }
     }
   ]
 }

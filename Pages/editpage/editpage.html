@@ -931,11 +931,11 @@
               document.getElementById("emptyPage")?.remove()
               parentContentCards.appendChild(quizDiv)
               if(updatesElemId){
-              quizContainerArray[`quizDiv${quizId}`] = {quiz:quiz[0],updates:`updates${idCount}`}
-              tempArray[`quizDiv${quizId}`] = {type:"7",quiz:quiz[0],updates:`updates${idCount}`}
+              quizContainerArray[`quizDiv${quizId}`] = {quiz:quiz,updates:`updates${idCount}`}
+              tempArray[`quizDiv${quizId}`] = {type:"7",quiz:quiz,updates:`updates${idCount}`}
               }else{
-                quizContainerArray[`quizDiv${quizId}`] = {quiz:quiz[0]}
-                 tempArray[`quizDiv${quizId}`] = {type:"7",quiz:quiz[0]}
+                quizContainerArray[`quizDiv${quizId}`] = {quiz:quiz}
+                 tempArray[`quizDiv${quizId}`] = {type:"7",quiz:quiz}
               }
 
               submitBtnDiv.style.display = "block"
@@ -1051,8 +1051,6 @@
               tempArray[`imgLink${imgLinkId}`] = { type: "9", link: link, image: image }
               }
 
-  
-              console.log(tempArray,"temp")
     
               let imgLinkDiv = `<a href="${link}" target="_blank"><img src="${URL.createObjectURL(image[0])}" alt=""/></a>`
     
@@ -1956,6 +1954,7 @@
           mainContainer.innerHTML=updatesElem
 
           modalBody.append(mainContainer)
+          changeToRichtext([`updatesHeading`])
         }
       
         const errorsModal = document.querySelectorAll('.error');
@@ -3711,7 +3710,6 @@
 
           let hyperLinkTag="";
           hyperLinks.forEach((e,i)=>{
-            console.log(e,"e")
             hyperLinkTag+=
             `<div class="hyperLink">
               <div class="linkDiv">
@@ -3802,7 +3800,7 @@
           updaesContainer.id=`updatesDiv${updatesId}`
 
           let elemBgColor = $(".updatesBgColor").val()
-          let updatesHeading=$("#updatesHeading").val()
+          let updatesHeading=CKEDITOR.instances['updatesHeading']?.getData()
           let accordionInput = $('#show:checked').val();
 
           let accordionShow = accordionInput===undefined?false:true
@@ -3864,7 +3862,6 @@
           }
           
         }
-        console.log(tempArray,"array")
       }
 
       // Edit Funtion
@@ -3994,7 +3991,7 @@
           var videoFile = []
 
           if(updatesClass==="updatesItems"){
-            videoFile = videoContainerArrary[`${parentId}`]['files']
+            videoFile = videoContainerArrary[`${parentId}`]['video'][0]
           }else{
             videoFile = videoContainerArrary[`${parentId}`]
           }
@@ -4026,13 +4023,15 @@
           }
 
           let showEditVideos = () => {
-            if(updatesClass==="updatesItems"){
-              videoFile = videoContainerArrary[`${parentId}`]['files']
+            let videoUrl=""
+            if(typeof videoFile==="object"){
+              videoUrl=URL.createObjectURL(videoFile)
             }else{
-              videoFile = videoContainerArrary[`${parentId}`]
+              videoUrl=videoFile
             }
+           
             let videos = `<div class="video" id="videoEditId" draggable="true">
-                      <video src=${URL.createObjectURL(videoFile)} alt="video">
+                      <video src=${videoUrl} alt="video">
                       <span onclick="delVideos()">&times;</span>
                   </div>`
 
@@ -4412,9 +4411,6 @@
           }else{
             imgfiles=imagesList
           }          
-
-          console.log(imgfiles,"img")
-          console.log(imagesList,"List")
           
           var paramId = id
           var modalTitle = document.getElementById("EditPageTitle")
@@ -4449,8 +4445,6 @@
           showEditImages = () => {
             let images = '';
             imgfiles.forEach((e, i) => {
-
-              console.log(e,"e")
               let imgUrl=""
               if(typeof e ==="object"){
                 imgUrl=URL.createObjectURL(e)
@@ -4536,7 +4530,6 @@
 
           let imgUrl=""
 
-          //console.log(hyperLinkArray,"Array")
 
           if(typeof hyperLinkCards[0].image[0]==="object"){
             imgUrl=URL.createObjectURL(hyperLinkCards[0].image[0])
@@ -4696,6 +4689,9 @@
           mainContainer.innerHTML=updatesElem
 
           modalBody.append(mainContainer)
+
+          changeToRichtext([`updatesHeadingEdit`])
+          CKEDITOR.instances[`updatesHeadingEdit`].setData(heading);
 
           document.getElementById("showEdit").checked = show;
 
@@ -5111,7 +5107,6 @@
               retrieved[obj.value[0]] = obj.value[1];
 
               if(obj.value[0]=="file"){
-                console.log(hyperLinkCards[h],"card")
                 if(hyperLinkCards[h]){
                   retrieved["image"]=[hyperLinkCards[h].image[0]]
                   retrieved["file"]=[hyperLinkCards[h].image[0]]
@@ -5156,7 +5151,6 @@
           let hyperLinkTag="";
           hyperLinksUpdate.forEach((e,i)=>{
             let hyperUrl=""
-            console.log(e,"e")
             if(typeof e.file[0] ==="object"){
               hyperUrl=URL.createObjectURL(e.file[0])
             }else{
@@ -5196,7 +5190,7 @@
 
           let updatedElem=document.getElementById(`${updatedElemId}`)
 
-          let heading = document.getElementById("updatesHeadingEdit").value
+          let heading = CKEDITOR.instances['updatesHeadingEdit']?.getData()
           let bgColor = document.getElementById("bgColorEdit").value
           let accordionInput = $('#showEdit:checked').val();
 
@@ -5204,7 +5198,7 @@
 
           if (heading !== "") {
             $('#editModal').modal('hide');
-            updatedElem.innerText=heading
+            updatedElem.innerHTML=heading
             updatedElem.style.backgroundColor=bgColor
             updatesArray[`${elemId}`] = {heading:heading,show:showAccordion,bgColor:bgColor }
             tempArray[`${elemId}`] = { type: "12", heading:heading,show:showAccordion,bgColor:bgColor }
@@ -5270,8 +5264,6 @@
        let selectedValue=document.getElementById("goToSelect").value
        let update_name_elem = document.getElementById("updateNameDiv")
        let update_color_elem = document.getElementById("updateColorDiv")
-
-       console.log(selectedValue,"select")
 
        if(selectedValue === "null"){
         update_name_elem.style.display="none"
@@ -5344,8 +5336,6 @@
         let updatesKey=[]
 
         const updatesElemClass=document.querySelectorAll('.updatesDivContainer')
-        
-        console.log(updatesElemClass,"goToSelect")
 
         for(let i=0;i<updatesElemClass.length;i++){
           let ParentId=updatesElemClass[i].id
