@@ -3869,11 +3869,14 @@
 
       function editModal(element, id, parentId) {
 
+        console.log(element,id,parentId,"edit")
+
         document.getElementById("editPageContent").innerHTML = ""
 
-        let updatesClass = document.getElementById(`${parentId}`).parentNode.className
-        let updatesDivId = document.getElementById(`${parentId}`).parentNode.id
-        let updatesId=document.getElementById(`${parentId}`).parentNode.id.split("").pop()
+        let updatesClass = document.getElementById(`${parentId}`)?.parentNode.className
+        let updatesDivId = document.getElementById(`${parentId}`)?.parentNode.id
+        let updatesId=document.getElementById(`${parentId}`)?.parentNode.id.split("").pop()
+
 
         let parentContentCard = document.getElementById("contentCard")
 
