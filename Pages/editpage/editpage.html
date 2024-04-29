@@ -403,7 +403,13 @@
       new Sortable(dragArea,{
         filter:'.titleDiv',
         handle:".dragImg",
-        Animation:350
+        Animation:350,
+        start:function(e,ui){
+          console.log(e)
+        },
+        stop:function(e,ui){
+          console.log(e)
+        }
       })
 
       
@@ -426,7 +432,10 @@
             parentContentCards = document.getElementById("contentCard")
           }
 
-          var idCount=updatesElemId?.split("").pop()
+          var numb = updatesElemId?.match(/\d/g);
+          numb = numb?.join("");
+
+          var idCount=numb
 
           pageData.map((data,i)=>{  
 
@@ -494,6 +503,7 @@
                // div.draggable = true
                 div.id = "headingId" + headingDivId
                 var dropImg = document.createElement("img")
+                dropImg.className="dragImg"
                 dropImg.height = 20
                 dropImg.width = 20
                 dropImg.src = sort
@@ -563,6 +573,7 @@
               div.id = `descriptionDiv${headingDescId}`
               div.draggable = true
               var dropImg = document.createElement("img")
+              dropImg.className="dragImg"
               dropImg.height = 20
               dropImg.width = 20
               dropImg.src = sort
@@ -626,6 +637,7 @@
               div.id = `imgContainerDiv${imageContainerId}`
               div.draggable = true
               var dropImg = document.createElement("img")
+              dropImg.className="dragImg"
               dropImg.height = 20
               dropImg.width = 20
               dropImg.src = sort
@@ -694,6 +706,7 @@
               div.id = "DivvideoContainer" + videoContainerId
               div.draggable = true
               var dropImg = document.createElement("img")
+              dropImg.className="dragImg"
               dropImg.height = 20
               dropImg.width = 20
               dropImg.src = sort
@@ -847,6 +860,7 @@
               quizDiv.id = "quizDiv" + quizId
               quizDiv.draggable = true
               var dropImg = document.createElement("img")
+              dropImg.className="dragImg"
               dropImg.height = 20
               dropImg.width = 20
               dropImg.src = sort
@@ -948,6 +962,7 @@
               let btnLink = data.link
     
               var dropImg = document.createElement("img")
+              dropImg.className="dragImg"
               dropImg.height = 20
               dropImg.width = 20
               dropImg.src = sort
@@ -1017,6 +1032,7 @@
               div.draggable = true
     
               var dropImg = document.createElement("img")
+              dropImg.className="dragImg"
               dropImg.height = 20
               dropImg.width = 20
               dropImg.src = sort
@@ -1258,13 +1274,17 @@
 
                 fetchElem(updates,`updatesItems${updatesId}`)
                 updatesId+=1;
+
+               
     
                 const updatesElemClassSort=document.querySelectorAll('.updatesDivContainer')
     
                 for (var i = 0; i < updatesElemClassSort?.length; i++) {
                     let ParentId=updatesElemClassSort[i].id
                     let idCount= ParentId.split("").pop()
-                    let dragAreaUpdates=document.getElementById(`updatesItems${idCount}`)  
+                    var numb = ParentId.match(/\d/g);
+                    numb = numb.join("");
+                    let dragAreaUpdates=document.getElementById(`updatesItems${Number(numb)}`)  
                     if(dragAreaUpdates){
                       new Sortable(dragAreaUpdates,{
                         filter:'.titleDiv',
@@ -2644,7 +2664,6 @@
             updatesContentId= pageTitle.split("_")[0]
            updatesContent=document.getElementById(updatesContentId)
           parentDivId= updatesContentId.split("").pop()
-           updatesDivContainer0
           }
 
           if (ckTextValue !== "") {
@@ -2655,8 +2674,10 @@
 
             if(pageTitle !==""){  
               updatesContent.appendChild(div)
-              let idCount=updatesContentId.split("").pop()
-        
+
+              var numb = updatesContentId?.match(/\d/g);
+              numb = numb?.join("");
+              let idCount=numb       
               headingArray[`headingId${headingDivId}`] = { "type": "2", heading: ckTextValue, bgColor: bgColor,updates:`updates${idCount}` }
               tempArray[`headingId${headingDivId}`] = { "type": "2", heading: ckTextValue, bgColor: bgColor,updates:`updates${idCount}` }
               let headingDiv = document.getElementById(`headingId${headingDivId}`)
@@ -2759,7 +2780,12 @@
               $('#createModal').modal('hide');
 
               updatesContent.appendChild(div)
-              let idCount=updatesContentId.split("").pop()
+
+              var numb = updatesContentId?.match(/\d/g);
+              numb = numb?.join("");
+              let idCount=numb
+
+
         
               document.getElementById("emptyPage")?.remove()
               descriptionArray[`${elemId}`] = { text: ckTextValue, bgColor: elemBgColor,updates:`updates${idCount}` }
@@ -3149,7 +3175,9 @@
             document.getElementById("emptyPage")?.remove()
 
             if(pageTitle !==""){
-              let idCount=updatesContentId.split("").pop()
+              var numb = updatesContentId?.match(/\d/g);
+              numb = numb?.join("");
+              let idCount=numb
               quizContainerArray[`quizDiv${quizId}`] = {quiz:quiz[0],updates:`updates${idCount}`}
               tempArray[`quizDiv${quizId}`] = {type:"7",quiz:quiz[0],updates:`updates${idCount}`}
               updatesContent.appendChild(quizDiv)
@@ -3456,8 +3484,9 @@
             $('#createModal').modal('hide');
 
             if(pageTitle !==""){
-
-              let idCount=updatesContentId.split("").pop()
+              var numb = updatesContentId?.match(/\d/g);
+              numb = numb?.join("");
+              let idCount=numb
               btnDiv.appendChild(dropImg)
               btnDiv.appendChild(linkDiv)
               btnDiv.appendChild(clickTag)
@@ -3876,6 +3905,8 @@
         let updatesClass = document.getElementById(`${parentId}`)?.parentNode.className
         let updatesDivId = document.getElementById(`${parentId}`)?.parentNode.id
         let updatesId=document.getElementById(`${parentId}`)?.parentNode.id.split("").pop()
+
+        console.log(updatesDivId,"id")
 
 
         let parentContentCard = document.getElementById("contentCard")
@@ -4713,8 +4744,15 @@
       function updateElement() {
         var modalBody = document.getElementById('editPageContent')
         let updatesClassName=document.getElementById("EditPageTitle").className.split("_")[0]
-        let updatesClass=updatesClassName.slice(0, -1);
+        let regex = /\d/g;
+        let updatesClass = updatesClassName.replace(regex, "");
         let updatesId=updatesClassName.split("").pop()
+
+       
+        console.log(updatesClassName,"class name")
+        console.log(updatesClass,"class")
+        console.log(updatesId,"update id")
+        
 
         if (modalBody.children[0].className === "formClassEdit") {
           var formDivClass = document.getElementsByClassName("formClassEdit")[0]
@@ -5343,25 +5381,44 @@
 
         const updatesElemClass=document.querySelectorAll('.updatesDivContainer')
 
+       // console.log(tempArray,"temp")
+
         for(let i=0;i<updatesElemClass.length;i++){
+
           let ParentId=updatesElemClass[i].id
+
+          var numb = ParentId.match(/\d/g);
+          numb = numb.join("");
           let idCount= ParentId.split("").pop()
-          let childElem=document.getElementById(`updatesItems${idCount}`).childNodes
-          childElem.forEach((e,i)=>{
-            updatesKey.push(e.id)
-         })
+          let childElem=document.getElementById(`updatesItems${Number(numb)}`).childNodes
+
+          for(let j=0;j<childElem.length;j++){
+          //  console.log(childElem[j])
+            updatesKey.push(childElem[j].id)
+          }
+
         }
 
-
          updatesKey.forEach((e)=>{
+         // console.log(e,"keys")
           updatesValue.push(tempArray[e])
          })
 
-        let updatesElemObj = Object.groupBy(updatesValue, ({ updates }) => updates);
+        let updatesElemObj = Object.groupBy(updatesValue, ({ updates }) =>{
+        return updates
+        } );
 
-        keysArray.forEach((e) => {
+       // console.log(updatesElemObj,"elem")
+
+        keysArray.forEach((e,i) => {
           if(e.includes('updates')){
-            let objId=`updates${e.split("").pop()}`
+            console.log(e)
+           
+            var numb = e.match(/\d/g);
+              numb = numb.join("");
+              console.log(numb)
+            let objId=`updates${numb}`
+           // console.log(updatesElemObj['updates12'],"obj id")
             let updates=updatesElemObj[`${objId}`]
            let element=tempArray[e]
            element={...element,updates}
@@ -5370,6 +5427,8 @@
             data.push(tempArray[e])
           }
         })
+
+        console.log(data)
 
         var action = $('#acionId input:radio:checked').val();
         let urlInput = $("#urlInput").val()
@@ -5389,6 +5448,17 @@
           }
         }else{
           updatesElemCheck=null;
+        }
+
+        const isDiv=updateName.startsWith("<div")
+        const strIndex=updateName.indexOf(">")
+        const substr = updateName.substr(0, strIndex+1);
+ 
+        let gotoName;
+ 
+        if(isDiv){
+         const newTag = updateName.replace(substr,"")
+         gotoName = newTag.replace("</div>","");
         }
 
 

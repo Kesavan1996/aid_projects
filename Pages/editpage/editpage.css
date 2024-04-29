@@ -1397,6 +1397,10 @@ label.radio {
     cursor: grab;
 }
 
+table, th, td {
+    border: 1px solid black !important;
+  }
+
 @media screen and (max-width: 480px) {
     .hyperLink {
        width:calc(100% - 1em);

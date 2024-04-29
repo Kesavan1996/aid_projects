@@ -411,7 +411,6 @@ box-shadow: inset 2px 2px 9px -6px rgba(0,0,0,0.75);
 .actionBtns
 {
     position: fixed;
-    border-radius: 70px;
     z-index: -1;
     transition: .2s;
     display: flex;
@@ -419,6 +418,20 @@ box-shadow: inset 2px 2px 9px -6px rgba(0,0,0,0.75);
     gap: 10px;
     bottom: 90px;
 }
+
+ .actionBtns::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  .actionBtns::-webkit-scrollbar-thumb {
+    background-color: #cacaca; /* thumb color */
+    border-radius: 6px; /* round corners */
+  }
+
+  .actionBtns::-webkit-scrollbar-track {
+    background-color: transparent; /* track color */
+  }
+
 .menuToggles.active ~ .actionBtns
 {
     /* width: 240px;
@@ -1398,7 +1411,15 @@ label.radio {
 
 .dragImg{
     cursor: grab;
-}
+}   
+
+.dragDiv table, th, td {
+    border: 1px solid black !important;
+  }
+
+  .cke_dialog_contents td  {
+    border: none !important;
+  }
 
 @media screen and (max-width: 480px) {
     .hyperLink {

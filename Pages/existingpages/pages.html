@@ -29,7 +29,7 @@
                         <div class="detailBox">
                             <h5>Page Name</h5>
                             <div class="pageLinkDiv">
-                                <a href="#" target="_blank">Page Link</a>
+                                <a href="#" target="_blank">Page Link 1</a>
                                 <a class="copyLink" onclick="copyUrl(this)" data-bs-toggle="tooltip" data-bs-placement="top" title="Copy Link">
                                     <img src="../../assets/img/copy.png"/>
                                 </a>
@@ -48,7 +48,7 @@
                         <div class="detailBox">
                             <h5>Page Name</h5>
                             <div class="pageLinkDiv">
-                                <a href="#" target="_blank">Page Link</a>
+                                <a href="#" target="_blank">Page Link 2</a>
                                 <a class="copyLink" onclick="copyUrl(this)" data-bs-toggle="tooltip" data-bs-placement="top" title="Copy Link">
                                     <img src="../../assets/img/copy.png"/>
                                 </a>
@@ -67,7 +67,7 @@
                         <div class="detailBox">
                             <h5>Page Name</h5>
                             <div class="pageLinkDiv">
-                                <a href="#" target="_blank">Page Link</a>
+                                <a href="#" target="_blank">Page Link 3</a>
                                 <a class="copyLink" onclick="copyUrl(this)" data-bs-toggle="tooltip" data-bs-placement="top" title="Copy Link">
                                     <img src="../../assets/img/copy.png"/>
                                 </a>
@@ -86,7 +86,7 @@
                         <div class="detailBox">
                             <h5>Page Name</h5>
                             <div class="pageLinkDiv">
-                                <a href="#" target="_blank">Page Link</a>
+                                <a href="#" target="_blank">Page Link 4</a>
                                 <a class="copyLink" onclick="copyUrl(this)">
                                     <img src="../../assets/img/copy.png"/>
                                 </a>
@@ -135,6 +135,8 @@
 
             function copyUrl(e){
                 let copyText=e.previousElementSibling.innerText
+               // copyText.select();
+                copyText.setSelectionRange(0, 99999); 
                 navigator.clipboard.writeText(copyText);
 
                 let image=e.children[0]
