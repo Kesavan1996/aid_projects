@@ -1256,7 +1256,8 @@ label.radio {
     flex-shrink: 0;
 }
 
-.hyperLinksContainer{
+.hyperLinksContainer,
+.stampCardLinkContainer{
     display: flex;
     gap: 10px;
     align-items: center;
@@ -1270,6 +1271,19 @@ label.radio {
     width: 100%;
 }
 
+.hyperLinksDiv.stampcard{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.stampCardLinksDiv{
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 10px;
+    width: 100%;
+}
+
 .hyperLink{
     width: 46%;
     border: 1px solid rgb(191, 191, 191);
@@ -1278,12 +1292,66 @@ label.radio {
     flex-shrink: 0;
 }
 
+.hyperLink.stampcard{
+    width: 100%;
+}
+
+.hyperLink.stampcard .captionDiv,
+.hyperLink.stampcard .captionDiv > span
+{
+    word-break: break-all;
+    display: -webkit-box;
+    max-width: 100%;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.hyperLink.stampcard:hover .captionDiv{
+    display: block;
+}
+
+
+.stampCardLink{
+    border: 1px solid rgb(191, 191, 191);
+    padding: 10px;
+}
+
+.stampCardLink .captionDiv,
+.stampCardLink .captionDiv > span
+{
+    word-break: break-all;
+    display: -webkit-box;
+    max-width: 100%;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.stampCardLink:hover .captionDiv{
+    display: block;
+}
+
+.stampCardLink .linkDiv img{
+    height: 100px;
+    width: 100%;
+}
+
 .linkDiv img{
     height: 300px;
     width: 100%;
 }
 
-.hyperLinkModalDivs{
+.linkDiv.stampcard img{
+    height: 100px;
+    width: 100%;
+}
+
+.hyperLinkModalDivs,
+.stampCardLinkModalDivs
+{
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -1298,7 +1366,9 @@ label.radio {
 }
 
 .hyperLinkModalDivs .hyperImgContainer img,
-.hyperLinkModalDivs .hyperImgEditContainer img
+.hyperLinkModalDivs .hyperImgEditContainer img,
+.stampCardImgContainer img,
+.stampCardImgEditContainer img
 {
     width: 100%;
     height: 100%;
@@ -1387,25 +1457,30 @@ label.radio {
     overflow-y: scroll;
 }
 
-.hyperLinkModalDiv .hyperLinkForm{
+.hyperLinkModalDiv .hyperLinkForm,
+.stampCardLinkForm{
     padding: 15px 0;
     border-bottom: 1px solid grey;
 }
 
 .hyperLinkForm .addMore,
+.stampCardLinkForm .addMore,
 .editForm .addMore
 {
    align-self: flex-end ;
 }
 
 .hyperLinkForm .addMore button,
+.stampCardLinkForm .addMore button,
 .editForm .addMore button
 {
   font-weight: bold;
   font-size: 20px;
 }
 
-.hyperLinkModalDiv .hyperLinkForm:last-child{
+.hyperLinkModalDiv .hyperLinkForm:last-child,
+.stampCardLinkForm:last-child
+{
     border-bottom: none;
 }
 
@@ -1421,9 +1496,112 @@ label.radio {
     border: none !important;
   }
 
+
+.carousel-item img{
+    height: 300px;
+}
+
+.carousel-indicators [data-bs-target]{
+    height: 10px !important;
+    width: 10px !important;
+    border-radius: 50%;
+}
+
+.uploadContainer{
+    border: 1px solid rgb(218, 218, 218);
+    padding: 10px;
+    width: 95% !important;
+    margin: 0 auto;
+}
+
+.uploadContainer label {
+    background-color: #585858;
+    color: white;
+    padding: 0.5rem;
+    border-radius: 0.3rem;
+    cursor: pointer;
+  }
+  
+.uploadContainer #pdfFile{
+    margin-left: 0.3rem;
+  }
+
+.uploadContainer #imageUpload{
+    align-items: center;
+    gap: 20px;
+  }
+
+#previewDiv img{
+    height: 50px;
+    width: 50px;
+  }
+
+.uploadDiv#linkUpload{
+    gap: 10px;
+}
+
+.uploadDiv#linkUpload form{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.input-div{
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.uploadDiv .addBtnDiv button{
+    background-color: #287bff;
+    padding: 5px;
+    border: none;
+    outline: none;
+    color: #fff;
+}
+
+.input-div{
+    display: flex;
+    gap: 10px;
+}
+
+.input-div .add-more-btn,
+.input-div .delete-btn{
+    background-color: #1b8bc9;
+    padding: 5px;
+    border: none;
+    outline: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.input-div .delete-btn{
+    background-color: #ea4c4f !important;
+}
+
+.input-div .add-more-btn i{
+    color:#fff;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.input-div .delete-btn i{
+    color:#fff;
+    font-size: 20px;
+    font-weight: bold;
+}
+
 @media screen and (max-width: 480px) {
     .hyperLink {
        width:calc(100% - 1em);
+    }
+
+    .stampCardLinksDiv{
+        grid-template-columns: repeat(2,1fr);
+    }
+    .hyperLinksDiv.stampcard{
+        grid-template-columns: repeat(2, 1fr);
     }
 }
 

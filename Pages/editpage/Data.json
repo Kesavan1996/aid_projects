@@ -22,7 +22,8 @@
     },
     {
       "type": "4",
-      "images": ["../../assets/img/img1.jpg"]
+      "images": ["../../assets/img/img1.jpg"],
+      "imagesView": "normal"
     },
     {
       "type": "11",
@@ -35,6 +36,23 @@
         },
         {
           "type": "11",
+          "link": "https//aid.com",
+          "caption": "fwwwerwer werw",
+          "image": ["../../assets/img/img1.jpg"]
+        }
+      ]
+    },
+    {
+      "type": "13",
+      "stampCardLink": [
+        {
+          "type": "13",
+          "link": "https//aid.com",
+          "caption": "fwwwerwer werw",
+          "image": ["../../assets/img/img1.jpg"]
+        },
+        {
+          "type": "13",
           "link": "https//aid.com",
           "caption": "fwwwerwer werw",
           "image": ["../../assets/img/img1.jpg"]

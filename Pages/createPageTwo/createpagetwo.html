@@ -18,6 +18,8 @@
       integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
       crossorigin="anonymous" />
 
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
     <!-- <script src="http://code.jquery.com/jquery.min.js"></script>
     <script src="http://code.jquery.com/ui/1.8.17/jquery-ui.min.js"></script> -->
 
@@ -87,6 +89,8 @@
                     onclick="showModal('hyperLink')">Hyperlink</button>
                   <button type="button" class="btn btn-primary"
                     onclick="showModal('updates')">Updates</button>
+                  <button type="button" class="btn btn-primary"
+                    onclick="showModal('popupButton')">Popup Button</button>
                   <button type="button" class="btn btn-primary"
                     onclick="addSpace()">Empty Space</button>
                 </div>
@@ -321,20 +325,10 @@
       var animationId = 0;
       var spaceId = 0;
       var buttonId = 0;
+      var popupBtnId = 0;
       var imgLinkId = 0;
       var hyperLinkId=0;
       var updatesId=0;
-
- // Updates Id's     
-      var updatesHeadingId = 0
-      var updatesDescId = 0
-      var updatesQuizId = 0
-      var updatesImageId = 0
-      var updatesAnimationId = 0;
-      var updatesSpaceId = 0;
-      var updatesButtonId = 0;
-      var updatesImgLinkId = 0;
-      var updatesHyperLinkId=0;
 
       var showImages;
       //var showAnimations;
@@ -474,16 +468,14 @@
 
 
       function showModal(element) {
-
         let menuToggles = document.querySelector(".menuToggles");
         menuToggles.classList.remove("active");
-
         document.getElementById("pageContent").innerHTML = ""
         if (element === "heading") {
           $('#createModal').modal('show');
           var modalTitle = document.getElementById("pageTitle")
-            modalTitle.innerText = "Add Heading"
-            modalTitle.className=""
+              modalTitle.innerText = "Add Heading"
+              modalTitle.className=""
           
           var modalBody = document.getElementById('pageContent')
           var input = document.createElement('input')
@@ -536,7 +528,6 @@
           modalTitle.innerText = "Add Images"
           modalTitle.className=""
 
-
           var modalBody = document.getElementById('pageContent')
           var cardDiv = document.createElement("div")
           cardDiv.className = "imgCard"
@@ -549,9 +540,45 @@
                       <input name="file" type="file" class="file" multiple accept="image/*"/>
                   </form>
                   <div class="imgContainer">
-                  </div>`
+                  </div>
+                  <fieldset class="row mb-3">
+                    <legend class="col-form-label col-sm-4 pt-0">Images View</legend>
+                    <div class="col-sm-8">
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="imageView" value="normal" id="normal" onchange="imageTypeFn(this)" checked>
+                        <label class="form-check-label" for="normal">
+                          Normal
+                        </label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="imageView" value="carousel" onchange="imageTypeFn(this)" id="carousel">
+                        <label class="form-check-label" for="carousel">
+                          Carousel
+                        </label>
+                      </div>
+                    </div>
+                  </fieldset>
+                  <div id="bgColorDiv" class="row gap-2" style="display:none">
+                    <div class="col-12">
+                      <div class="row align-items-center">
+                        <label for="arrowBgColor" class="form-label col-6">Arrow Background Color</label>
+                        <div class="col-4">
+                          <input type="color" class="form-control form-control-color" id="arrowBgColor" value="#828282">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  `
+          modalBody.appendChild(cardDiv);
 
-          modalBody.appendChild(cardDiv)
+          imageTypeFn=(elem)=>{
+            let typeVal=$(elem).val();
+            if(typeVal==="carousel"){
+              $("#bgColorDiv").css("display","flex");
+            }else if(typeVal==="normal"){
+              $("#bgColorDiv").css("display","none");
+            }
+          }
 
           files = [],
             button = document.querySelector('.top button'),
@@ -915,16 +942,20 @@
           modalTitle.className = ""
           var modalBody = document.getElementById('pageContent')
 
-          let buttonInput = `<div class="row g-3">
+          let buttonInput = `<div class="row gap-4">
             <div class="col-12">
               <input type="text" class="form-control" id="btnName" placeholder="Name">
             </div>
             <div class="col-12">
               <input type="text" class="form-control" id="btnLinkId" placeholder="Link">
             </div>
-            <div class="col-6">
-              <label for="colorPickerId" class="form-label">Choose background Color</label>
-              <input type="color" class="form-control form-control-color" id="btnColorPicker" value="#fcfcfc">
+            <div class="col-12">
+              <div class="row align-items-center">
+              <label for="colorPickerId" class="form-label col-6">Choose background Color</label>
+              <div class="col-4">
+                <input type="color" class="form-control form-control-color" id="btnColorPicker" value="#fcfcfc">
+              </div>
+            </div>
             </div>
           </div>`
 
@@ -936,8 +967,6 @@
           mainDiv.className = "linkBtnDiv"
           mainDiv.id = `btnLinkDiv${buttonId}`
           mainDiv.innerHTML = buttonInput
-
-
           modalBody.appendChild(mainDiv)
 
         }
@@ -998,7 +1027,7 @@
           `<form class="hyperLinkForm" id="hyperLink_form0">
             <div class="d-flex gap-2 mb-2">
               <div class="formDiv">
-                <input class="inputItem form-control" type="text" name="link" />
+                <input class="inputItem form-control" type="text" name="link" placeholder="link"/>
                 <div class="hyperLinkModalDivs">
                   <div>
                     <input class="inputItem form-control hyperImgClass" type="file" name="file" accept="image/*"/ id="hyperImgInput0_id" onchange="imgOnchangeFn(event)">
@@ -1016,13 +1045,32 @@
 
           </form>`
 
+          let typeOption=`<fieldset class="row mb-2 mt-2">
+            <legend class="col-form-label col-4 pt-0">Visible Type:</legend>
+            <div class="col-8">
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="hyperLinkType" id="hyperNormal" value="normal" checked>
+                <label class="form-check-label" for="hyperNormal">
+                  Normal
+                </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="hyperLinkType" id="stampCard" value="stampcard">
+                <label class="form-check-label" for="stampCard">
+                  Stamp Card
+                </label>
+              </div>
+            </div>
+          </fieldset>`
+
 
           let mainContainer = document.createElement("div")
           mainContainer.className ='hyperLinkModalDiv'
           mainContainer.id=`modal_hyperLink${hyperLinkId}`
-          mainContainer.innerHTML=formContent
+          mainContainer.innerHTML=typeOption;
+          mainContainer.innerHTML+=formContent;
 
-          modalBody.append(mainContainer)
+          modalBody.append(mainContainer);
 
           var i =0;
           var length;
@@ -1033,7 +1081,7 @@
             
           let  addContent= `<form  class="hyperLinkForm"id="hyperLink_form${i}"> <div class="d-flex gap-2 mb-2" id="fieldDiv${i}">
               <div class="formDiv">
-                <input class="inputItem form-control" type="text" name="link" />
+                <input class="inputItem form-control" type="text" name="link" placeholder="link" />
                 <div class="hyperLinkModalDivs">
                   <div>
                     <input class="inputItem form-control hyperImgClass" type="file" name="file" accept="image/*"/ id="hyperImgInput${i}_id" onchange="imgOnchangeFn(event)">
@@ -1100,7 +1148,154 @@
 
           changeToRichtext([`updatesHeading`])
         }
+        else if(element==="popupButton"){
+          $('#createModal').modal('show');
+          var modalTitle = document.getElementById("pageTitle")
+          modalTitle.innerText = "Add Popup Button"
+          modalTitle.className = ""
+          var modalBody = document.getElementById('pageContent')
+
+          let buttonInput = `<div class="row gap-4">
+            <div class="col-12">
+              <input type="text" class="form-control form-control-lg" id="btnName" placeholder="Name">
+            </div>
+            <div class="col-12">
+              <div class="row align-items-center">
+                <label for="colorPickerId" class="form-label col-6">Choose background Color</label>
+                <div class="col-4">
+                  <input type="color" class="form-control form-control-color" id="btnColorPicker" value="#fcfcfc">
+                </div>
+              </div>
+            </div>
+            <fieldset class="row mb-2 mt-2">
+              <legend class="col-form-label col-sm-2 pt-0">Position</legend>
+              <div class="col-sm-10">
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="btnPosition" id="header" value="header" checked>
+                  <label class="form-check-label" for="header">
+                    Header
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="btnPosition" id="body" value="body">
+                  <label class="form-check-label" for="body">
+                    Body
+                  </label>
+                </div>
+              </div>
+            </fieldset>
+            <fieldset class="row mb-2 mt-2">
+              <legend class="col-form-label col-sm-2 pt-0">Content</legend>
+              <div class="col-sm-10">
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="popupType" id="linkBtn" value="link" checked>
+                  <label class="form-check-label" for="linkBtn">
+                    Link
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="popupType" id="imageBtn" value="image">
+                  <label class="form-check-label" for="imageBtn">
+                    Image
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="popupType" id="pdfBtn" value="pdf">
+                  <label class="form-check-label" for="pdfBtn">
+                    PDF
+                  </label>
+                </div>
+              </div>
+            </fieldset>
+            <div class="uploadContainer">
+              <div class="uploadDiv" id="pdfUpload" style="display:none">
+                <input type="file" id="pdfFile" accept ="application/pdf" hidden/>
+                <label for="pdfFile">Choose File</label>
+                <span id="pdfChosen">No file chosen</span>
+              </div>
+              <div class="uploadDiv" id="imageUpload" style="display:none">
+                <input type="file" id="imageFile" accept="image/png, image/jpeg" hidden/>
+                <label for="imageFile">Choose File</label>
+                <div id="previewDiv"></div>
+              </div>
+              <div class="uploadDiv" id="linkUpload">
+                <form id="linkForm">
+                  <div class="input-div">
+                    <input type="text" class="form-control" name="link0" id="link0">
+                    <button type="button" id="addInputFieldButton" class='add-more-btn'><i class="fa-solid fa-plus"></i></button>
+                  </div> 
+                </form>
+               
+              </div>
+            </div>
+          </div>`
+
+          let buttonDiv = document.createElement("div")
+          buttonDiv.id = "btnLink"
+          buttonDiv.className = "row g-3"
+
+          let mainDiv = document.createElement("div")
+          mainDiv.className = "popupBtnDiv"
+          mainDiv.id = `popupBtnDiv${popupBtnId}`
+          mainDiv.innerHTML = buttonInput
+
+          modalBody.appendChild(mainDiv)
+
+          var linkBtnOption = document.getElementById('linkBtn');
+          var imageBtnOption = document.getElementById('imageBtn');
+          var pdfBtnOption = document.getElementById('pdfBtn');
         
+          linkBtnOption.onclick = popupChangeFn;
+          imageBtnOption.onclick = popupChangeFn;
+          pdfBtnOption.onclick = popupChangeFn;
+
+          var linkDiv=$("#linkUpload")
+          var imageDiv=$("#imageUpload")
+          var pdfDiv=$("#pdfUpload")
+          var uploadDiv=$(".uploadDiv")
+       
+          function popupChangeFn(){
+            let popupType= $('input[name="popupType"]:checked').val()
+            uploadDiv.css("display","none")
+            if(popupType==="link"){
+              linkDiv.css("display","block")
+            }else if(popupType ==="image"){
+              imageDiv.css("display","flex")
+            }else if(popupType === "pdf"){
+              pdfDiv.css("display","block")
+            }
+          }
+
+          const pdfBtn = document.getElementById('pdfFile');
+          const pdfChosen = document.getElementById('pdfChosen');
+          pdfBtn.addEventListener('change', function(){
+            pdfChosen.textContent = this.files[0].name
+          })
+
+          const imageBtn = document.getElementById('imageFile');
+          const imageChosen = document.getElementById('imageChosen');
+          imageBtn.addEventListener('change', function(){
+            $("#imageUpload #previewDiv").html(`<img src=${URL.createObjectURL(this.files[0])} id="uploadedImg" />`)
+          })
+
+          let inputCount=1;
+
+          $(".delete-btn").click(function() {
+            console.log("You clicked the button!");
+          });
+
+          
+
+          $("#addInputFieldButton").click(function() {
+            var input = $(`<div class="input-div"> <input type='text' class="form-control" id="link${inputCount}" name='link${inputCount}'><button type="button" class="delete-btn" onClick="deleteInput(this)"><i class="fa-solid fa-xmark"></i></button></div>`);
+            $("#linkForm").append(input);
+            inputCount+=1;
+          });
+
+          deleteInput=(elem)=>{
+            $(elem).parent().remove();
+          }
+        }
         const errorsModal = document.querySelectorAll('.error');
 
         errorsModal.forEach(error => {
@@ -1188,9 +1383,46 @@
                       <input name="file" type="file" class="file" multiple accept="image/*"/>
                   </form>
                   <div class="imgContainer">
-                  </div>`
+                  </div>
+                  <fieldset class="row mb-3">
+                    <legend class="col-form-label col-sm-4 pt-0">Images View</legend>
+                    <div class="col-sm-8">
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="imageView" value="normal" id="normal" checked>
+                        <label class="form-check-label" for="normal">
+                          Normal
+                        </label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="imageView" value="carousel" id="carousel">
+                        <label class="form-check-label" for="carousel">
+                          Carousel
+                        </label>
+                      </div>
+                    </div>
+                  </fieldset>
+                  <div id="bgColorDiv" class="row gap-2" style="display:none">
+                    <div class="col-12">
+                      <div class="row align-items-center">
+                        <label for="arrowBgColor" class="form-label col-6">Arrow Background Color</label>
+                        <div class="col-4">
+                          <input type="color" class="form-control form-control-color" id="arrowBgColor" value="#828282">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  `
 
           modalBody.appendChild(cardDiv)
+
+          imageTypeFn=(elem)=>{
+            let typeVal=$(elem).val();
+            if(typeVal==="carousel"){
+              $("#bgColorDiv").css("display","flex");
+            }else if(typeVal==="normal"){
+              $("#bgColorDiv").css("display","none");
+            }
+          }
 
           files = [],
             button = document.querySelector('.top button'),
@@ -1624,11 +1856,31 @@
 
           </form>`
 
+          
+          let typeOption=`<fieldset class="row mb-2 mt-2">
+            <legend class="col-form-label col-4 pt-0">Visible Type:</legend>
+            <div class="col-8">
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="hyperLinkType" id="hyperNormal" value="normal" checked>
+                <label class="form-check-label" for="hyperNormal">
+                  Normal
+                </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="hyperLinkType" id="stampCard" value="stampcard">
+                <label class="form-check-label" for="stampCard">
+                  Stamp Card
+                </label>
+              </div>
+            </div>
+          </fieldset>`
+
 
           let mainContainer = document.createElement("div")
           mainContainer.className ='hyperLinkModalDiv'
           mainContainer.id=`modal_hyperLink${hyperLinkId}`
-          mainContainer.innerHTML=formContent
+          mainContainer.innerHTML=typeOption
+          mainContainer.innerHTML+=formContent
 
           modalBody.append(mainContainer)
 
@@ -1728,9 +1980,11 @@
           delete imgLinkContainerArray[key]
         } else if (element === "space") {
           delete emptyPageArray[key]
-        }else if(element === "hyperLink"){
+        }
+        else if(element === "hyperLink"){
           delete hyperLinkArray[key]
-        }else if(element === "updates"){
+        }
+        else if(element === "updates"){
           delete updatesArray[key]
         }
 
@@ -1755,9 +2009,6 @@
       function menuHeight(){
         var windowHeight = $(window).height();  
         var elementHeight = $(".actionBtns").height()+90;
-
-        console.log(windowHeight)
-        console.log(elementHeight)
       if (elementHeight > windowHeight) {
         $(".actionBtns").css("max-height", windowHeight-100 + "px");
         $(".actionBtns").css("overflow-y", "auto");
@@ -2006,15 +2257,15 @@
         }
         else if (modalBody.children[0].className === "imgCard") {
 
+         let imagesView= $('input[name="imageView"]:checked').val();
+         let arrowBgColor=$("#arrowBgColor").val();
 
           let ParentId;
-
-
           var div = document.createElement('div')
           div.className = "imageContainer dragDiv"
 
-          //
           div.id =modalBody.children[0].id
+
           div.draggable = true
           var dropImg = document.createElement("img")
           dropImg.className="dragImg"
@@ -2034,29 +2285,33 @@
           clickTag.appendChild(editImg)
 
           var imgArry;
+
               
           var imgId=modalBody.children[0].id
+
+          var numb = imgId?.match(/\d/g);
+            numb = numb?.join("");
+
           if(pageTitle ==""){
             imgArry = imagesContainerArrar[`${imgId}`]
           } else{
             imgArry = imagesContainerArrar[`${imgId}`]["files"] ;
           }
-         
+          
+
           var imgSrc = document.getElementsByClassName("image")
           var parentContainer = document.getElementsByClassName("imgContainer")
           ParentId = parentContainer[0].id
-
-
-      /*    for (let i = 0; i < imgSrc.length; i++) {
-            imgArry.push(imgSrc[i].children[0].src)
-          }
-      */
 
           var imgContainer = document.createElement("div")
           imgContainer.className = "imagesDiv"
           imgContainer.id = parentContainer[0].id
           imgContainer.draggable = true
-          //
+
+          var carouselContainer=document.createElement("div")
+          carouselContainer.className="container main-margin-top"
+          carouselContainer.id = parentContainer[0].id
+
           clickTag.setAttribute("onclick", `editModal("editImages",this.previousElementSibling.id,this.parentElement.id)`)
 
           let images = '';
@@ -2066,8 +2321,42 @@
                 </div>`
           })
 
+          let imageSlideCount='';
+          let carouselImage='';
+
+          imgArry.forEach((e, i) => {
+            imageSlideCount += `<button type="button" data-bs-target="#carouselwithIndicators${numb}" data-bs-slide-to="${i}" aria-current="true" class="${i==0?"active":""}" aria-label="Slide ${i}">
+
+                                </button>`
+          })
+
+          imgArry.forEach((e, i) => {
+            carouselImage += `<div class="${i==0?"carousel-item active":"carousel-item"}">
+              <img src=${URL.createObjectURL(e)} class="d-block w-100" alt="${e.name}" >
+            </div>`
+          })
+
+          let carouselView=`
+            <div id="carouselwithIndicators${numb}" class="carousel slide" data-bs-ride="carousel">
+              <div class="carousel-indicators">
+                ${imageSlideCount}
+              </div>
+              <div class=" carousel-inner">
+                ${carouselImage}
+              </div>
+              <button class="carousel-control-prev" type="button" data-bs-target="#carouselwithIndicators${numb}" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" style="background-color:${arrowBgColor}" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+              </button>
+      
+              <button class="carousel-control-next" type="button" data-bs-target="#carouselwithIndicators${numb}" data-bs-slide="next">
+                <span class="carousel-control-next-icon" style="background-color:${arrowBgColor}" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+              </button>
+          </div>`
 
           imgContainer.innerHTML = images
+          carouselContainer.innerHTML = carouselView
 
           var deleteTag = document.createElement("a")
           deleteTag.href = "#"
@@ -2081,12 +2370,7 @@
           deleteTag.append(deleteImg)
           var existingElement = document.getElementById(tempId)
 
-          //
-
-
           tempId = parentContainer[0].id;
-
-          
           let updatesContent;
           let updatesContentId;
           let parentDivId;
@@ -2100,11 +2384,18 @@
 
           if (imgContainer.innerHTML !== "") {
 
+            tempArray[`${imgId}`]={...tempArray[`${imgId}`],"imagesView":imagesView,"arrowBgColor":arrowBgColor}
+
             if(pageTitle !==""){
+              
               $('#createModal').modal('hide');
               document.getElementById("emptyPage")?.remove()
               div.appendChild(dropImg)
-              div.appendChild(imgContainer)
+              if(imagesView==="carousel"){
+                div.appendChild(carouselContainer)
+              }else{
+                div.appendChild(imgContainer)
+              }
               div.appendChild(clickTag)
               div.appendChild(deleteTag)
               updatesContent.appendChild(div)
@@ -2115,7 +2406,11 @@
               document.getElementById("emptyPage")?.remove()
   
               div.appendChild(dropImg)
-              div.appendChild(imgContainer)
+              if(imagesView==="carousel"){
+                div.appendChild(carouselContainer)
+              }else{
+                div.appendChild(imgContainer)
+              }
               div.appendChild(clickTag)
               div.appendChild(deleteTag)
               contentCards.appendChild(div)
@@ -2827,6 +3122,7 @@
         }
         else if(modalBody.children[0].className === "hyperLinkModalDiv"){
 
+          let hyperLinkView= $('input[name="hyperLinkType"]:checked').val();
           let hyperLinks =[]
 
           let hyperLinkForms=document.getElementsByClassName("hyperLinkForm")
@@ -2920,14 +3216,14 @@
           deleteTag.append(deleteImg)
 
           let hyperLinkContainer=document.createElement("div")
-          hyperLinkContainer.className="hyperLinksDiv"
+          hyperLinkContainer.className=`hyperLinksDiv ${hyperLinkView==="stampcard"?"stampcard":""}`
           hyperLinkContainer.id=`linksDiv${hyperLinkId}`
 
           let hyperLinkTag="";
           hyperLinks.forEach((e,i)=>{
             hyperLinkTag+=
-            `<div class="hyperLink">
-              <div class="linkDiv">
+            `<div class="hyperLink ${hyperLinkView==="stampcard"?"stampcard":""}">
+              <div class="linkDiv ${hyperLinkView==="stampcard"?"stampcard":""}">
                   <a href="${e.link}" target="_blank">
                       <img src="${URL.createObjectURL(e.file)}" alt="">
                   </a>
@@ -2954,6 +3250,7 @@
            updatesContent=document.getElementById(updatesContentId)
             parentDivId= updatesContentId.split("").pop()
           }
+ 
 
           if(hyperLinks.length>0){
             $('#createModal').modal('hide');
@@ -2961,11 +3258,11 @@
             if(pageTitle !==""){
               updatesContent.appendChild(div)
               hyperLinkArray[`${hyperDivId}`] = {hyperLinkCards:hyperLinks,updates:`updates${parentDivId}` }
-              tempArray[`${hyperDivId}`] = { type: "11", hyperLinkCards:hyperLinks,updates:`updates${parentDivId}` }
+              tempArray[`${hyperDivId}`] = { type: "11", hyperLinkCards:hyperLinks,updates:`updates${parentDivId}`,"hyperLinkType":hyperLinkView }
             }else{
               contentCards.appendChild(div)
               hyperLinkArray[`${hyperDivId}`] = {hyperLinkCards:hyperLinks }
-              tempArray[`${hyperDivId}`] = { type: "11", hyperLinkCards:hyperLinks }
+              tempArray[`${hyperDivId}`] = { type: "11", hyperLinkCards:hyperLinks,"hyperLinkType":hyperLinkView }
             }
 
             hyperLinkId+=1;
@@ -3089,13 +3386,12 @@
 
 
       function editModal(element, id, parentId) {
-
         document.getElementById("editPageContent").innerHTML = ""
-
         let updatesClass = document.getElementById(`${parentId}`)?.parentNode.className
         let updatesDivId = document.getElementById(`${parentId}`)?.parentNode.id
-        let updatesId=document.getElementById(`${parentId}`)?.parentNode.id.split("").pop()
-
+        var numb = updatesDivId?.match(/\d/g);
+            numb = numb?.join("");
+        let updatesId=numb
         let parentContentCard = document.getElementById("contentCard")
 
         if (element === "editQuiz") {
@@ -3617,13 +3913,10 @@
 
         }
         else if (element === 'editImages') {
-
           $('#editModal').modal('show');
-
-          //
-
           var imagesList = imagesContainerArrar[`${parentId}`]
-
+          var imageView=tempArray[`${parentId}`]['imagesView']
+          var arrowBgColor=tempArray[`${parentId}`]['arrowBgColor']
           showImages()
           var paramId = id
           var modalTitle = document.getElementById("EditPageTitle")
@@ -3646,9 +3939,44 @@
                       <input name="file" type="file" class="file" id="imgInputEdit" multiple accept="image/*"/>
                   </form>
                   <div class="imgContainerEdit">
-                  </div>`
+                  </div>
+                  <fieldset class="row mb-3">
+                    <legend class="col-form-label col-sm-4 pt-0">Images View</legend>
+                    <div class="col-sm-8">
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="imageViewEdit" value="normal" id="normal">
+                        <label class="form-check-label" for="normal">
+                          Normal
+                        </label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="imageViewEdit" value="carousel" id="carousel">
+                        <label class="form-check-label" for="carousel">
+                          Carousel
+                        </label>
+                      </div>
+                    </div>
+                  </fieldset>
+                  <div id="bgColorDivEdit" class="row gap-2" style="display:none">
+                    <div class="col-12">
+                      <div class="row align-items-center">
+                        <label for="arrowBgColor" class="form-label col-6">Arrow Background Color</label>
+                        <div class="col-4">
+                          <input type="color" class="form-control form-control-color" id="arrowBgColorEdit" value="${arrowBgColor}">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  `
 
           modalBody.appendChild(cardDiv)
+
+          if(imageView==="carousel"){
+            $("#bgColorDivEdit").css("display","block")
+          }else if(imageView==="normal"){
+            $("#bgColorDivEdit").css("display","none")
+          }
+          
           var button = document.querySelector('.top button'),
             form = document.querySelector('form'),
             container = document.querySelector('.imgContainerEdit')
@@ -3660,7 +3988,6 @@
           browse.addEventListener('click', () => input.click());
 
           var imgfiles;
-
           let files = []
           var inputId = document.getElementById("imgInputEdit")
 
@@ -3673,7 +4000,6 @@
 
             }
 
-            //
 
             if(updatesClass == "updatesItems"){
               imagesContainerArrar[`${parentId}`] = {files:imgfiles,updates:`updates${updatesId}`}
@@ -3701,8 +4027,6 @@
                        <span onclick="delImages(${i})"> &times;</span>
                     </div>`
             })
-
-
             container.innerHTML = images
           }
 
@@ -3712,12 +4036,12 @@
           })
 
           imageId += 1
-
           showImages()
-
+          $(`input[name=imageViewEdit][value=${imageView=="normal"?"normal":"carousel"}]`).prop("checked",true);
         }
         else if(element==="editHyperLink"){
           $('#editModal').modal('show');
+          
           var modalTitle = document.getElementById("EditPageTitle")
           modalTitle.innerText = "Edit HyperLink"
           if(updatesClass==="updatesItems"){
@@ -3731,6 +4055,7 @@
           cardDiv.id = `${parentId}_editModal`
 
           let {hyperLinkCards}=hyperLinkArray[`${parentId}`]
+         let {hyperLinkType}=tempArray[`${parentId}`]
 
           let editFormContent=
           `<form class="editForm" id="hyperLinkEdit_form0">
@@ -3755,10 +4080,30 @@
           </form>`
 
           
+          let typeOptionEdit=`<fieldset class="row mb-2 mt-2">
+            <legend class="col-form-label col-4 pt-0">Visible Type:</legend>
+            <div class="col-8">
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="hyperLinkTypeEdit" id="hyperNormal" value="normal">
+                <label class="form-check-label" for="hyperNormal">
+                  Normal
+                </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="hyperLinkTypeEdit" id="stampCard" value="stampcard">
+                <label class="form-check-label" for="stampCard">
+                  Stamp Card
+                </label>
+              </div>
+            </div>
+          </fieldset>`
 
-          cardDiv.innerHTML=editFormContent
+          
 
-          let editRestContent=""
+          cardDiv.innerHTML=typeOptionEdit;
+          cardDiv.innerHTML +=editFormContent;
+
+          let editRestContent="";
 
           if(hyperLinkCards.length>0){
               for(let j=1;j<hyperLinkCards.length;j++){
@@ -3834,6 +4179,8 @@
             imgDiv.innerHTML = images
           }
 
+          $(`input[name=hyperLinkTypeEdit][value=${hyperLinkType=="stampcard"?"stampcard":"normal"}]`).prop("checked",true);
+
         }
         else if(element === "editUpdates"){
 
@@ -3875,7 +4222,6 @@
 
         }
         const errors = document.querySelectorAll('.error');
-
         errors.forEach(error => {
           error.remove();
         });
@@ -3886,8 +4232,12 @@
       function updateElement() {
         var modalBody = document.getElementById('editPageContent')
         let updatesClassName=document.getElementById("EditPageTitle").className.split("_")[0]
-        let updatesClass=updatesClassName.slice(0, -1);
-        let updatesId=updatesClassName.split("").pop()
+        let regex = /\d/g;
+        let updatesClass = updatesClassName.replace(regex, "");
+
+        var numb = updatesClassName?.match(/\d/g);
+        numb = numb?.join("");
+        let updatesId=numb
 
         if (modalBody.children[0].className === "formClassEdit") {
           var formDivClass = document.getElementsByClassName("formClassEdit")[0]
@@ -4216,19 +4566,16 @@
 
         }
         else if (modalBody.children[0].className === "imgEditCard") {
-
-          //
-
+          let imagesView= $('input[name="imageViewEdit"]:checked').val();
+          let arrowBgColor=$("#arrowBgColorEdit").val()
           let parentDivId = modalBody.children[0].id
-
           let updatesClass=document.getElementById("EditPageTitle").className.split("_")[0]
-
-
           let keyId = document.getElementsByClassName("imgContainerEdit")[0].id
+          let currentELement=document.getElementById(parentDivId).childNodes[1];
+          var numb = parentDivId?.match(/\d/g);
+              numb = numb?.join("");
 
-          let images
-
-          
+          let images;
 
           if(updatesClass ==="updatesItems"){
             images = imagesContainerArrar[`${parentDivId}`]['files']
@@ -4237,10 +4584,7 @@
           }
 
           let updatedElement = document.getElementById(keyId)
-
-
           let editedImages = '';
-
           let url="";
           images.forEach((e, i) => {
             if(typeof e === "string"){
@@ -4251,11 +4595,61 @@
             editedImages += `<img src=${url} alt="img">`
           })
 
+          let updatedImages=`<div class="imagesDiv" id="${keyId}">
+            ${editedImages}
+          </div>`
 
-          //
-          if (images.length > 0) {
+          let imageSlideCount='';
+          let carouselImage='';
+
+          images.forEach((e, i) => {
+            imageSlideCount += `<button type="button" data-bs-target="#carouselwithIndicators${numb}" data-bs-slide-to="${i}" aria-current="true" class="${i==0?"active":""}" aria-label="Slide ${i}"></button>`
+          })
+
+          let carouselUrl='';
+
+          images.forEach((e, i) => {
+            if(typeof e === "string"){
+              carouselUrl=e
+            }else{
+              carouselUrl=URL.createObjectURL(e)
+            }
+
+            carouselImage += `<div class="${i==0?"carousel-item active":"carousel-item"}">
+              <img src=${carouselUrl} class="d-block w-100" alt="${e.name}" >
+            </div>`
+          })
+
+          let carouselView=`<div class="container main-margin-top">
+            <div id="carouselwithIndicators${numb}" class="carousel slide" data-bs-ride="carousel">
+              <div class="carousel-indicators">
+                ${imageSlideCount}
+              </div>
+              <div class=" carousel-inner">
+                ${carouselImage}
+              </div>
+              <button class="carousel-control-prev" type="button" data-bs-target="#carouselwithIndicators${numb}" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" style="background-color:${arrowBgColor}" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+              </button>
+      
+              <button class="carousel-control-next" type="button" data-bs-target="#carouselwithIndicators${numb}" data-bs-slide="next">
+                <span class="carousel-control-next-icon" style="background-color:${arrowBgColor}" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+              </button>
+          </div>
+        </div>`
+
+        
+          
+        if (images.length > 0) {
+          tempArray[`${parentDivId}`]={...tempArray[`${parentDivId}`],"imagesView":imagesView,"arrowBgColor":arrowBgColor}
             $('#editModal').modal('hide');
-            updatedElement.innerHTML = editedImages
+           if(imagesView==="carousel"){
+            currentELement.outerHTML=carouselView
+           }else{
+            currentELement.outerHTML=updatedImages
+           }
           } else {
             let inputElem = document.querySelector(".imgContainerEdit")
             let errorElem = document.querySelector(".error")
@@ -4266,7 +4660,7 @@
         }
         else if(modalBody.children[0].className === "hyperLinkEdit"){
           let hyperLinksUpdate =[]; 
-          
+          let hyperLinkType= $('input[name="hyperLinkTypeEdit"]:checked').val();
           let parentId=modalBody.children[0].id.split("_")[0]
           
           let {hyperLinkCards}=hyperLinkArray[`${parentId}`]
@@ -4315,13 +4709,13 @@
 
           let parentElem = document.getElementById(parentId)
           let updatedElement = parentElem.children[1]
-
-
+          updatedElement.className=`hyperLinksDiv ${hyperLinkType==="stampcard"?"stampcard":""}`
+ 
           let hyperLinkTag="";
           hyperLinksUpdate.forEach((e,i)=>{
             hyperLinkTag+=
-            `<div class="hyperLink">
-              <div class="linkDiv">
+            `<div class="hyperLink ${hyperLinkType==="stampcard"?"stampcard":""}">
+              <div class="linkDiv ${hyperLinkType==="stampcard"?"stampcard":""}">
                   <a href="${e.link}" target="_blank">
                       <img src="${URL.createObjectURL(e.file)}" alt="">
                   </a>
@@ -4335,11 +4729,11 @@
 
           if(hyperLinksUpdate.length>0){
             if(updatesClass ==="updatesItems"){
-              hyperLinkArray[`${parentId}`] = {hyperLinkCards:hyperLinksUpdate,updates:`updates${updatesId}` };
-              tempArray[`${parentId}`] = { type: "11", hyperLinkCards:hyperLinksUpdate,updates:`updates${updatesId}` };
+              hyperLinkArray[`${parentId}`] = {hyperLinkCards:hyperLinksUpdate,updates:`updates${updatesId}`};
+              tempArray[`${parentId}`] = { type: "11", hyperLinkCards:hyperLinksUpdate,updates:`updates${updatesId}`,"hyperLinkType":hyperLinkType };
             }else{
               hyperLinkArray[`${parentId}`] = {hyperLinkCards:hyperLinksUpdate };
-              tempArray[`${parentId}`] = { type: "11", hyperLinkCards:hyperLinksUpdate };
+              tempArray[`${parentId}`] = { type: "11", hyperLinkCards:hyperLinksUpdate,"hyperLinkType":hyperLinkType };
             }
             $('#editModal').modal('hide');
             updatedElement.innerHTML=hyperLinkTag;
