@@ -1361,6 +1361,9 @@ label.radio {
 }
 
 .updatesDivContainer .updatesItems{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
     flex: 8;
     padding: 0px 10px;
     overflow-y: scroll;
@@ -1412,7 +1415,7 @@ label.radio {
 
 .modal-body{
     max-height:300px;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
 
@@ -1455,10 +1458,174 @@ table, th, td {
 }
 
 .carousel-indicators [data-bs-target]{
-    height: 20px !important;
-    width: 20px !important;
+    height: 10px !important;
+    width: 10px !important;
     border-radius: 50%;
 }
+
+.carousel-control-next-icon, 
+.carousel-control-prev-icon{
+    border-radius: 50%;
+    height: 2.5rem !important;
+    width: 2.5rem !important;
+    background-size: 85% 85% !important;
+}
+
+.popupImage{
+    width: 100%;
+    height: 300px;
+}
+
+.poplink{
+    display: block;
+    text-decoration: none;
+    background-color: #1b8bc9;
+    color: #fff;
+    padding: 10px 20px;
+    text-align: center;
+    width: 50%;
+    margin: 0 auto;
+    font-size: 16px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+#popupBtnModalEdit .modal-header{
+    border-bottom: none;
+}
+
+.poplink:hover{
+    text-decoration: none;
+    background-color: #1b8bc9;
+    color: #fff;
+}
+
+.uploadContainer,
+.uploadContainerEdit
+{
+    border: 1px solid rgb(218, 218, 218);
+    padding: 10px;
+    width: 95% !important;
+    margin: 0 auto;
+}
+
+.uploadContainer label,
+.uploadContainerEdit label
+{
+    background-color: #585858;
+    color: white;
+    padding: 0.5rem;
+    border-radius: 0.3rem;
+    cursor: pointer;
+  }
+  
+.uploadContainer #pdfFile,
+.uploadContainerEdit #pdfFileEdit
+{
+    margin-left: 0.3rem;
+  }
+
+.uploadContainer #imageUpload,
+.uploadContainerEdit #imageUploadEdit
+{
+    align-items: center;
+    gap: 20px;
+  }
+
+#previewDiv img,
+#previewDivEdit img
+{
+    height: 50px;
+    width: 50px;
+  }
+
+.uploadDiv#linkUpload,
+.uploadDivEdit#linkUploadEdit
+{
+    gap: 10px;
+}
+
+.uploadDiv#linkUpload #linkForm,
+.uploadDivEdit#linkUploadEdit #linkFormEdit
+{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.input-div{
+    display: flex;
+    gap: 10px;
+    align-items: flex-start ;
+}
+
+.input-div .links{
+    flex:9;
+    display: flex;
+    flex-direction: column;
+}
+
+.input-div .links input:first-child{
+    margin-top: 0;
+}
+
+
+.input-div .links .error{
+    margin-top: 0 !important;
+}
+
+.input-div .links input{
+    margin-top: 10px;
+}
+
+.input-div .btn-div{
+    flex: 1;
+}
+
+
+.uploadDiv .addBtnDiv button,
+.uploadDivEdit .addBtnDiv button
+{
+    background-color: #287bff;
+    padding: 5px;
+    border: none;
+    outline: none;
+    color: #fff;
+}
+
+.input-div{
+    display: flex;
+    gap: 10px;
+}
+
+.input-div .add-more-btn,
+.input-div .delete-btn{
+    background-color: #1b8bc9;
+    padding: 5px;
+    border: none;
+    outline: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.input-div .delete-btn{
+    background-color: #ea4c4f !important;
+}
+
+.input-div .add-more-btn i{
+    color:#fff;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.input-div .delete-btn i{
+    color:#fff;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+
 
 @media screen and (max-width: 480px) {
     .hyperLink {

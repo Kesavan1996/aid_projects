@@ -1403,6 +1403,9 @@ label.radio {
 }
 
 .updatesDivContainer .updatesItems{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
     flex: 8;
     padding: 0px 10px;
     overflow-y: scroll;
@@ -1454,7 +1457,7 @@ label.radio {
 
 .modal-body{
     max-height:300px;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
 .hyperLinkModalDiv .hyperLinkForm,
@@ -1501,20 +1504,32 @@ label.radio {
     height: 300px;
 }
 
+.carousel-control-next-icon, 
+.carousel-control-prev-icon{
+    border-radius: 50%;
+    height: 2.5rem !important;
+    width: 2.5rem !important;
+    background-size: 85% 85% !important;
+}
+
 .carousel-indicators [data-bs-target]{
     height: 10px !important;
     width: 10px !important;
     border-radius: 50%;
 }
 
-.uploadContainer{
+.uploadContainer,
+.uploadContainerEdit
+{
     border: 1px solid rgb(218, 218, 218);
     padding: 10px;
     width: 95% !important;
     margin: 0 auto;
 }
 
-.uploadContainer label {
+.uploadContainer label,
+.uploadContainerEdit label
+{
     background-color: #585858;
     color: white;
     padding: 0.5rem;
@@ -1522,25 +1537,35 @@ label.radio {
     cursor: pointer;
   }
   
-.uploadContainer #pdfFile{
+.uploadContainer #pdfFile,
+.uploadContainerEdit #pdfFileEdit
+{
     margin-left: 0.3rem;
   }
 
-.uploadContainer #imageUpload{
+.uploadContainer #imageUpload,
+.uploadContainerEdit #imageUploadEdit
+{
     align-items: center;
     gap: 20px;
   }
 
-#previewDiv img{
+#previewDiv img,
+#previewDivEdit img
+{
     height: 50px;
     width: 50px;
   }
 
-.uploadDiv#linkUpload{
+.uploadDiv#linkUpload,
+.uploadDivEdit#linkUploadEdit
+{
     gap: 10px;
 }
 
-.uploadDiv#linkUpload form{
+.uploadDiv#linkUpload #linkForm,
+.uploadDivEdit#linkUploadEdit #linkFormEdit
+{
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -1549,10 +1574,35 @@ label.radio {
 .input-div{
     display: flex;
     gap: 10px;
-    align-items: center;
+    align-items: flex-start ;
 }
 
-.uploadDiv .addBtnDiv button{
+.input-div .links{
+    flex:9;
+    display: flex;
+    flex-direction: column;
+}
+
+.input-div .links input:first-child{
+    margin-top: 0;
+}
+
+
+.input-div .links .error{
+    margin-top: 0 !important;
+}
+
+.input-div .links input{
+    margin-top: 10px;
+}
+
+.input-div .btn-div{
+    flex: 1;
+}
+
+.uploadDiv .addBtnDiv button,
+.uploadDivEdit .addBtnDiv button
+{
     background-color: #287bff;
     padding: 5px;
     border: none;
@@ -1590,6 +1640,35 @@ label.radio {
     color:#fff;
     font-size: 20px;
     font-weight: bold;
+}
+
+.popupImage{
+    width: 100%;
+    height: 300px;
+}
+
+.poplink{
+    display: block;
+    text-decoration: none;
+    background-color: #1b8bc9;
+    color: #fff;
+    padding: 10px 20px;
+    text-align: center;
+    width: 50%;
+    margin: 0 auto;
+    font-size: 16px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+#popupBtnModal .modal-header{
+    border-bottom: none;
+}
+
+.poplink:hover{
+    text-decoration: none;
+    background-color: #1b8bc9;
+    color: #fff;
 }
 
 @media screen and (max-width: 480px) {

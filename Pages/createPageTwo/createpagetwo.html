@@ -88,7 +88,7 @@
                   <button type="button" class="btn btn-primary"
                     onclick="showModal('hyperLink')">Hyperlink</button>
                   <button type="button" class="btn btn-primary"
-                    onclick="showModal('updates')">Updates</button>
+                    onclick="showModal('updates')">Accordion</button>
                   <button type="button" class="btn btn-primary"
                     onclick="showModal('popupButton')">Popup Button</button>
                   <button type="button" class="btn btn-primary"
@@ -225,6 +225,20 @@
           </div>
         </div>
       </div>
+
+      <!-- Popup Button Modal -->
+
+          <div class="modal fade" id="popupBtnModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                </div>
+              </div>
+            </div>
+          </div>
 
       <!-- <script src="https://code.jquery.com/jquery-1.10.2.js"></script> -->
 
@@ -378,6 +392,9 @@
       let titleArray = {}
       let hyperLinkArray= {}
       let updatesArray= {}
+
+      let popupImage;
+      let popupPdf;
 
       // Updates Items
 
@@ -937,27 +954,141 @@
         }
         else if (element === 'button') {
           $('#createModal').modal('show');
-          var modalTitle = document.getElementById("pageTitle")
-          modalTitle.innerText = "Add Button"
-          modalTitle.className = ""
-          var modalBody = document.getElementById('pageContent')
+          var modalTitle = document.getElementById("pageTitle");
+          modalTitle.innerText = "Add Button";
+          modalTitle.className = "";
+          var modalBody = document.getElementById('pageContent');
+          popupPdf="";
+          popupImage="";
 
           let buttonInput = `<div class="row gap-4">
-            <div class="col-12">
-              <input type="text" class="form-control" id="btnName" placeholder="Name">
-            </div>
-            <div class="col-12">
-              <input type="text" class="form-control" id="btnLinkId" placeholder="Link">
-            </div>
-            <div class="col-12">
-              <div class="row align-items-center">
-              <label for="colorPickerId" class="form-label col-6">Choose background Color</label>
-              <div class="col-4">
-                <input type="color" class="form-control form-control-color" id="btnColorPicker" value="#fcfcfc">
-              </div>
-            </div>
-            </div>
-          </div>`
+                      <div class="col-12">
+                        <fieldset class="row">
+                          <legend class="col-form-label col-4 pt-0">Button Type:</legend>
+                          <div class="col-8">
+                            <div class="form-check form-check-inline">
+                              <input class="form-check-input" type="radio" name="buttonType" id="link" value="link" onchange="buttonTypeChange(this)" checked>
+                              <label class="form-check-label" for="link">
+                                Link
+                              </label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                              <input class="form-check-input" type="radio" name="buttonType" id="popup" value="popup" onchange="buttonTypeChange(this)" >
+                              <label class="form-check-label" for="popup">
+                                Popup
+                              </label>
+                            </div>
+                          </div>
+                      </fieldset>
+                    </div>
+                    <div class="col-12">
+                      <input type="text" class="form-control" id="btnName" placeholder="Name">
+                    </div>
+                    <div class="col-12" id="linkDiv" style="display:block">
+                      <input type="text" class="form-control" id="btnLinkId" placeholder="Link">
+                    </div>
+                    <div class="col-12">
+                      <div class="row align-items-center">
+                      <label for="colorPickerId" class="form-label col-6">Choose background Color</label>
+                      <div class="col-4">
+                        <input type="color" class="form-control form-control-color" id="btnColorPicker" value="#fcfcfc">
+                      </div>
+                    </div>
+                    </div>
+                  </div>
+                  <div id="popupDiv" style="display:none" class="mt-4">
+                  <fieldset class="row mb-2 mt-2">
+                    <legend class="col-form-label col-sm-2 pt-0">Location:</legend>
+                    <div class="col-sm-10">
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="btnLocation" id="header" value="header" checked>
+                        <label class="form-check-label" for="header">
+                          Header
+                        </label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="btnLocation" id="body" value="body">
+                        <label class="form-check-label" for="body">
+                          Body
+                        </label>
+                      </div>
+                    </div>
+                  </fieldset>
+
+                  <fieldset class="row mb-2 mt-2">
+                    <legend class="col-form-label col-sm-2 pt-0">Position:</legend>
+                    <div class="col-sm-10">
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="btnPosition" id="left" value="left">
+                        <label class="form-check-label" for="left">
+                          Left
+                        </label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="btnPosition" id="center" value="center" checked>
+                        <label class="form-check-label" for="center">
+                          Center
+                        </label>
+                      </div>
+
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="btnPosition" id="right" value="right">
+                        <label class="form-check-label" for="right">
+                          Right
+                        </label>
+                      </div>
+                    </div>
+                  </fieldset>
+                  <fieldset class="row mb-2 mt-2">
+                    <legend class="col-form-label col-sm-2 pt-0">Content</legend>
+                    <div class="col-sm-10">
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="popupType" id="linkBtn" value="link" checked>
+                        <label class="form-check-label" for="linkBtn">
+                          Link
+                        </label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="popupType" id="imageBtn" value="image">
+                        <label class="form-check-label" for="imageBtn">
+                          Image
+                        </label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="popupType" id="pdfBtn" value="pdf">
+                        <label class="form-check-label" for="pdfBtn">
+                          PDF
+                        </label>
+                      </div>
+                    </div>
+                  </fieldset>
+                  <div class="uploadContainer">
+                    <div class="uploadDiv" id="pdfUpload" style="display:none">
+                      <input type="file" id="pdfFile" accept ="application/pdf" hidden/>
+                      <label for="pdfFile">Choose File</label>
+                      <span id="pdfChosen">No file chosen</span>
+                    </div>
+                    <div class="uploadDiv" id="imageUpload" style="display:none">
+                      <input type="file" id="imageFile" accept="image/png, image/jpeg" hidden/>
+                      <label for="imageFile">Choose File</label>
+                      <div id="previewDiv"></div>
+                    </div>
+                    <div class="uploadDiv" id="linkUpload">
+                      <div id="linkForm">
+                        <form class="input-div">
+                          <div class="links">
+                            <input type='text' class="form-control" name='name' placeholder="Name">
+                            <input type="text" class="form-control" name="link" placeholder="Link">
+                          </div>
+                          <div class="btn-div">
+                            <button type="button" id="addInputFieldButton" class='add-more-btn'><i class="fa-solid fa-plus"></i></button>
+                          </div>
+                        </form> 
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>`
 
           let buttonDiv = document.createElement("div")
           buttonDiv.id = "btnLink"
@@ -968,6 +1099,77 @@
           mainDiv.id = `btnLinkDiv${buttonId}`
           mainDiv.innerHTML = buttonInput
           modalBody.appendChild(mainDiv)
+
+          var linkBtnOption = document.getElementById('linkBtn');
+          var imageBtnOption = document.getElementById('imageBtn');
+          var pdfBtnOption = document.getElementById('pdfBtn');
+        
+          linkBtnOption.onclick = popupChangeFn;
+          imageBtnOption.onclick = popupChangeFn;
+          pdfBtnOption.onclick = popupChangeFn;
+
+          var linkDiv=$("#linkUpload")
+          var imageDiv=$("#imageUpload")
+          var pdfDiv=$("#pdfUpload")
+          var uploadDiv=$(".uploadDiv")
+       
+          function popupChangeFn(){
+            let popupType= $('input[name="popupType"]:checked').val()
+            $(".popup-error").remove();
+            uploadDiv.css("display","none")
+            if(popupType==="link"){
+              linkDiv.css("display","block")
+            }else if(popupType ==="image"){
+              imageDiv.css("display","flex")
+            }else if(popupType === "pdf"){
+              pdfDiv.css("display","block")
+            }
+          }
+
+          buttonTypeChange=(elem)=>{
+           let buttonOption= $(elem).val();
+           if(buttonOption === "link"){
+            $("#popupDiv").css("display","none");
+            $("#linkDiv").css("display","block");
+           }else if(buttonOption === "popup"){
+            $("#linkDiv").css("display","none");
+            $("#popupDiv").css("display","block");
+           }
+          }
+
+          const pdfBtn = document.getElementById('pdfFile');
+          const pdfChosen = document.getElementById('pdfChosen');
+          pdfBtn.addEventListener('change', function(){
+            pdfChosen.textContent = this.files[0].name;
+            popupPdf=this.files[0];
+          })
+
+          const imageBtn = document.getElementById('imageFile');
+          const imageChosen = document.getElementById('imageChosen');
+          imageBtn.addEventListener('change', function(){
+            $("#imageUpload #previewDiv").html(`<img src=${URL.createObjectURL(this.files[0])} id="uploadedImg" />`);
+            popupImage=this.files[0];
+          })
+
+          let inputCount=1;        
+
+          $("#addInputFieldButton").click(function() {
+            var input = $(`<form class="input-div"> 
+                          <div class="links">
+                            <input type='text' class="form-control" name='name' placeholder="Name">
+                            <input type='text' class="form-control" name='link' placeholder="Link">
+                          </div>
+                          <div class="btn-div">
+                            <button type="button" class="delete-btn" onClick="deleteInput(this)"><i class="fa-solid fa-xmark"></i></button>
+                          </div>
+                        </form>`);
+            $("#linkForm").append(input);
+            inputCount+=1;
+          });
+
+          deleteInput=(elem)=>{
+            $(elem).closest('form').remove();
+          }
 
         }
         else if (element === "imageLink") {
@@ -1747,23 +1949,141 @@
         }
         else if (element === 'button') {
           $('#createModal').modal('show');
-          var modalTitle = document.getElementById("pageTitle")
-          modalTitle.innerText = "Add Updates Button"
-          modalTitle.className=`${updatesDivClass}_modal`
-          var modalBody = document.getElementById('pageContent')
+          var modalTitle = document.getElementById("pageTitle");
+          modalTitle.innerText = "Add Button";
+          modalTitle.className = "";
+          var modalBody = document.getElementById('pageContent');
+          popupPdf="";
+          popupImage="";
 
-          let buttonInput = `<div class="row g-3">
-            <div class="col-12">
-              <input type="text" class="form-control" id="btnName" placeholder="Name">
-            </div>
-            <div class="col-12">
-              <input type="text" class="form-control" id="btnLinkId" placeholder="Link">
-            </div>
-            <div class="col-6">
-              <label for="colorPickerId" class="form-label">Choose background Color</label>
-              <input type="color" class="form-control form-control-color" id="btnColorPicker" value="#fcfcfc">
-            </div>
-          </div>`
+          let buttonInput = `<div class="row gap-4">
+                      <div class="col-12">
+                        <fieldset class="row">
+                          <legend class="col-form-label col-4 pt-0">Button Type:</legend>
+                          <div class="col-8">
+                            <div class="form-check form-check-inline">
+                              <input class="form-check-input" type="radio" name="buttonType" id="link" value="link" onchange="buttonTypeChange(this)" checked>
+                              <label class="form-check-label" for="link">
+                                Link
+                              </label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                              <input class="form-check-input" type="radio" name="buttonType" id="popup" value="popup" onchange="buttonTypeChange(this)" >
+                              <label class="form-check-label" for="popup">
+                                Popup
+                              </label>
+                            </div>
+                          </div>
+                      </fieldset>
+                    </div>
+                    <div class="col-12">
+                      <input type="text" class="form-control" id="btnName" placeholder="Name">
+                    </div>
+                    <div class="col-12" id="linkDiv" style="display:block">
+                      <input type="text" class="form-control" id="btnLinkId" placeholder="Link">
+                    </div>
+                    <div class="col-12">
+                      <div class="row align-items-center">
+                      <label for="colorPickerId" class="form-label col-6">Choose background Color</label>
+                      <div class="col-4">
+                        <input type="color" class="form-control form-control-color" id="btnColorPicker" value="#fcfcfc">
+                      </div>
+                    </div>
+                    </div>
+                  </div>
+                  <div id="popupDiv" style="display:none" class="mt-4">
+                  <fieldset class="row mb-2 mt-2">
+                    <legend class="col-form-label col-sm-2 pt-0">Location:</legend>
+                    <div class="col-sm-10">
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="btnLocation" id="header" value="header" checked>
+                        <label class="form-check-label" for="header">
+                          Header
+                        </label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="btnLocation" id="body" value="body">
+                        <label class="form-check-label" for="body">
+                          Body
+                        </label>
+                      </div>
+                    </div>
+                  </fieldset>
+
+                  <fieldset class="row mb-2 mt-2">
+                    <legend class="col-form-label col-sm-2 pt-0">Position:</legend>
+                    <div class="col-sm-10">
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="btnPosition" id="left" value="left">
+                        <label class="form-check-label" for="left">
+                          Left
+                        </label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="btnPosition" id="center" value="center" checked>
+                        <label class="form-check-label" for="center">
+                          Center
+                        </label>
+                      </div>
+
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="btnPosition" id="right" value="right">
+                        <label class="form-check-label" for="right">
+                          Right
+                        </label>
+                      </div>
+                    </div>
+                  </fieldset>
+                  <fieldset class="row mb-2 mt-2">
+                    <legend class="col-form-label col-sm-2 pt-0">Content</legend>
+                    <div class="col-sm-10">
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="popupType" id="linkBtn" value="link" checked>
+                        <label class="form-check-label" for="linkBtn">
+                          Link
+                        </label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="popupType" id="imageBtn" value="image">
+                        <label class="form-check-label" for="imageBtn">
+                          Image
+                        </label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="popupType" id="pdfBtn" value="pdf">
+                        <label class="form-check-label" for="pdfBtn">
+                          PDF
+                        </label>
+                      </div>
+                    </div>
+                  </fieldset>
+                  <div class="uploadContainer">
+                    <div class="uploadDiv" id="pdfUpload" style="display:none">
+                      <input type="file" id="pdfFile" accept ="application/pdf" hidden/>
+                      <label for="pdfFile">Choose File</label>
+                      <span id="pdfChosen">No file chosen</span>
+                    </div>
+                    <div class="uploadDiv" id="imageUpload" style="display:none">
+                      <input type="file" id="imageFile" accept="image/png, image/jpeg" hidden/>
+                      <label for="imageFile">Choose File</label>
+                      <div id="previewDiv"></div>
+                    </div>
+                    <div class="uploadDiv" id="linkUpload">
+                      <div id="linkForm">
+                        <form class="input-div">
+                          <div class="links">
+                            <input type='text' class="form-control" name='name' placeholder="Name">
+                            <input type="text" class="form-control" name="link" placeholder="Link">
+                          </div>
+                          <div class="btn-div">
+                            <button type="button" id="addInputFieldButton" class='add-more-btn'><i class="fa-solid fa-plus"></i></button>
+                          </div>
+                        </form> 
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>`
 
           let buttonDiv = document.createElement("div")
           buttonDiv.id = "btnLink"
@@ -1773,10 +2093,78 @@
           mainDiv.className = "linkBtnDiv"
           mainDiv.id = `btnLinkDiv${buttonId}`
           mainDiv.innerHTML = buttonInput
-
-
           modalBody.appendChild(mainDiv)
 
+          var linkBtnOption = document.getElementById('linkBtn');
+          var imageBtnOption = document.getElementById('imageBtn');
+          var pdfBtnOption = document.getElementById('pdfBtn');
+        
+          linkBtnOption.onclick = popupChangeFn;
+          imageBtnOption.onclick = popupChangeFn;
+          pdfBtnOption.onclick = popupChangeFn;
+
+          var linkDiv=$("#linkUpload")
+          var imageDiv=$("#imageUpload")
+          var pdfDiv=$("#pdfUpload")
+          var uploadDiv=$(".uploadDiv")
+       
+          function popupChangeFn(){
+            let popupType= $('input[name="popupType"]:checked').val()
+            $(".popup-error").remove();
+            uploadDiv.css("display","none")
+            if(popupType==="link"){
+              linkDiv.css("display","block")
+            }else if(popupType ==="image"){
+              imageDiv.css("display","flex")
+            }else if(popupType === "pdf"){
+              pdfDiv.css("display","block")
+            }
+          }
+
+          buttonTypeChange=(elem)=>{
+           let buttonOption= $(elem).val();
+           if(buttonOption === "link"){
+            $("#popupDiv").css("display","none");
+            $("#linkDiv").css("display","block");
+           }else if(buttonOption === "popup"){
+            $("#linkDiv").css("display","none");
+            $("#popupDiv").css("display","block");
+           }
+          }
+
+          const pdfBtn = document.getElementById('pdfFile');
+          const pdfChosen = document.getElementById('pdfChosen');
+          pdfBtn.addEventListener('change', function(){
+            pdfChosen.textContent = this.files[0].name;
+            popupPdf=this.files[0];
+          })
+
+          const imageBtn = document.getElementById('imageFile');
+          const imageChosen = document.getElementById('imageChosen');
+          imageBtn.addEventListener('change', function(){
+            $("#imageUpload #previewDiv").html(`<img src=${URL.createObjectURL(this.files[0])} id="uploadedImg" />`);
+            popupImage=this.files[0];
+          })
+
+          let inputCount=1;        
+
+          $("#addInputFieldButton").click(function() {
+            var input = $(`<form class="input-div"> 
+                          <div class="links">
+                            <input type='text' class="form-control" name='name' placeholder="Name">
+                            <input type='text' class="form-control" name='link' placeholder="Link">
+                          </div>
+                          <div class="btn-div">
+                            <button type="button" class="delete-btn" onClick="deleteInput(this)"><i class="fa-solid fa-xmark"></i></button>
+                          </div>
+                        </form>`);
+            $("#linkForm").append(input);
+            inputCount+=1;
+          });
+
+          deleteInput=(elem)=>{
+            $(elem).closest('form').remove();
+          }
         }
         else if (element === "link") {
           $('#createModal').modal('show');
@@ -2037,8 +2425,6 @@
         var contentCards = document.getElementById("contentCard")
 
         if (modalBody.children[0].className === "form-control headingClass") {
-
-
           var div = document.createElement('div')
           div.className = "heading dragDiv"
          div.draggable = true
@@ -2151,7 +2537,6 @@
           }
 
         }
-
         else if (modalBody.children[0].className === "form-control headingDescClass") {
           var div = document.createElement('div')
           div.className = "headingDesc dragDiv"
@@ -2426,7 +2811,7 @@
             }
           }
 
-
+          console.log(tempArray,"temp")
         }
         else if (modalBody.children[0].className === "videoCard") {
 
@@ -2896,8 +3281,50 @@
 
         }
         else if (modalBody.children[0].className === "linkBtnDiv") {
-          let btnName = document.getElementById("btnName").value
-          let btnLink = document.getElementById("btnLinkId").value
+          let btnName = document.getElementById("btnName").value;
+          let btnLink = document.getElementById("btnLinkId").value;
+
+          let btnType= $('input[name="buttonType"]:checked').val();
+          let btnLocation= $('input[name="btnLocation"]:checked').val();
+          let btnPosition= $('input[name="btnPosition"]:checked').val();
+          let popupType= $('input[name="popupType"]:checked').val();
+
+          var forms = document.querySelectorAll("#linkForm form");
+
+          let hasEmptyValue=false;
+          var links=[];
+
+          if(popupType==="link"){        
+          var result = Array.from(forms).map((a,i) => {
+            var obj = {};
+            Array.from(a.querySelectorAll("[name]")).forEach((b,j) => {
+              obj[b.getAttribute("name")] = b.value;
+              if(b.value === ""){
+                if($(`.error-msg${i}${j}`).length === 0){
+                  $(b).after(`<div class="error popup-error error-msg${i}${j}">Please enter the value..!</div>`);
+                }
+                hasEmptyValue=true;
+              }else{
+                $(`.error-msg${i}${j}`).remove();
+              }
+              
+            });
+            links.push(obj);
+            return links;
+          });
+          }else if(popupType ==="image"){
+            if(popupImage === ""){
+              $("#imageUpload").after(`<div class="error popup-error error-msg-image">Please upload the image..!</div>`);
+            }else{
+              $(".error-msg-image").remove("");
+            }
+          }else if(popupType === "pdf"){
+            if(popupPdf === ""){
+              $("#pdfUpload").after(`<div class="error popup-error error-msg-pdf">Please upload the document..!</div>`);
+            }else{
+              $(".error-msg-pdf").remove("");
+            }
+          }
 
           let parentId = modalBody.children[0].id
 
@@ -2936,20 +3363,26 @@
 
           let linkDiv = document.createElement("div")
           linkDiv.className = "linkDiv"
-          linkDiv.id = "btnLink" + buttonId
+          linkDiv.id = "btnLink" + buttonId;
+          linkDiv.style.textAlign=`${btnPosition}`
 
           clickTag.setAttribute("onclick", `editModal("editButton",this.previousElementSibling.id,this.parentElement.id)`)
 
-          let btnTag = `<a href=${btnLink} id="linkTag${buttonId}" target="_blank" class="linkBtn">${btnName}</a>`
+          let btnTag;
 
-          linkDiv.innerHTML = btnTag
+          if(btnType === "link"){
+            btnTag=`<a href="${btnLink}" id="linkTag${buttonId}" target="_blank" class="linkBtn">${btnName}</a>`;
+          }else if(btnType === "popup"){
+            btnTag=`<a href="#" id="linkTag${buttonId}" class="linkBtn link_${parentId}" onclick="openPopupModal(this)">${btnName}</a>`
+          }
+
+
+          linkDiv.innerHTML = btnTag;
 
           let btnColor = document.getElementById("btnColorPicker").value
-
           let updatesContent;
           let updatesContentId;
           let parentDivId;
-
 
           if (pageTitle !==""){
             updatesContentId= pageTitle.split("_")[0]
@@ -2957,39 +3390,97 @@
           parentDivId= updatesContentId.split("").pop()
           }
 
-          if (btnName !== "" && btnLink !== "") {
-
-           
-            //
-            $('#createModal').modal('hide');
-
+          if (btnName !== "") {
             if(pageTitle !==""){
-
-              let idCount=updatesContentId.split("").pop()
+              
+              
+              var numb = updatesContentId?.match(/\d/g);
+              numb = numb?.join("");
+              let idCount=numb;
               btnDiv.appendChild(dropImg)
               btnDiv.appendChild(linkDiv)
               btnDiv.appendChild(clickTag)
               btnDiv.appendChild(deleteTag)
-              updatesContent.appendChild(btnDiv)
-              
-              btnContainerArray[`${parentId}`] = { name: btnName, link: btnLink, bgColor: btnColor,updates:`updates${idCount}` }
-              tempArray[`${parentId}`] = { type: "8", name: btnName, link: btnLink, bgColor: btnColor,updates:`updates${idCount}` }
+              if(btnType === "popup"){
+                  if(popupType === "image"){
+                    if(popupImage !==""){
+                      $('#createModal').modal('hide');
+                      updatesContent.appendChild(btnDiv);
+                      btnContainerArray[`${parentId}`] = { name: btnName,btnType:"popup", popupType:"image",image:popupImage, bgColor: btnColor,btnLocation, btnPosition, updates:`updates${idCount}` }
+                      tempArray[`${parentId}`] = { type: "8", name: btnName, btnType:"popup", popupType:"image",image:popupImage, bgColor: btnColor,btnLocation, btnPosition, updates:`updates${idCount}` }
+                    } 
+                  }else if(popupType === "pdf"){
+                    if(popupPdf !== ""){
+                      $('#createModal').modal('hide');
+                      updatesContent.appendChild(btnDiv);
+                      btnContainerArray[`${parentId}`] = { name: btnName,btnType:"popup", popupType:"pdf",pdf:popupPdf,btnLocation, btnPosition, bgColor: btnColor,updates:`updates${idCount}` }
+                      tempArray[`${parentId}`] = { type: "8", name: btnName, btnType:"popup", popupType:"pdf",pdf:popupPdf,btnLocation, btnPosition, bgColor: btnColor,updates:`updates${idCount}` }
+                    }
+                  }else if(popupType === "link"){
+                    if(hasEmptyValue === false){
+                      $('#createModal').modal('hide');
+                      updatesContent.appendChild(btnDiv);
+                      btnContainerArray[`${parentId}`] = { name: btnName,btnType:"popup", popupType:"link",links:links,btnLocation, btnPosition, bgColor: btnColor,updates:`updates${idCount}` }
+                      tempArray[`${parentId}`] = { type: "8", name: btnName, btnType:"popup", popupType:"link",links:links,btnLocation, btnPosition, bgColor: btnColor,updates:`updates${idCount}` }
+                    }
+                  }
+              }else{
+                if(btnLink !== ""){
+                  $('#createModal').modal('hide');
+                  updatesContent.appendChild(btnDiv);            
+                  btnContainerArray[`${parentId}`] = { name: btnName,btnType:"link", link: btnLink, bgColor: btnColor,updates:`updates${idCount}` }
+                  tempArray[`${parentId}`] = { type: "8", name: btnName,btnType:"link", link: btnLink, bgColor: btnColor,updates:`updates${idCount}` }
+                }
+              }
             }else{
               btnDiv.appendChild(dropImg)
               btnDiv.appendChild(linkDiv)
               btnDiv.appendChild(clickTag)
               btnDiv.appendChild(deleteTag)
-              contentCards.appendChild(btnDiv)
-              
-              btnContainerArray[`${parentId}`] = { name: btnName, link: btnLink, bgColor: btnColor }
-              tempArray[`${parentId}`] = { type: "8", name: btnName, link: btnLink, bgColor: btnColor }
+
+              if(btnType === "popup"){
+                if(popupType === "image"){
+                  if(popupImage !==""){
+                    $('#createModal').modal('hide');
+                    contentCards.appendChild(btnDiv);
+                    btnContainerArray[`${parentId}`] = { name: btnName,btnType:"popup", popupType:"image",image:popupImage,btnLocation:btnLocation, btnPosition:btnPosition, bgColor: btnColor }
+                    tempArray[`${parentId}`] = { type: "8", name: btnName, btnType:"popup", popupType:"image",image:popupImage, btnLocation, btnPosition, bgColor: btnColor}
+                  } 
+                }else if(popupType === "pdf"){
+                  if(popupPdf !== ""){
+                    $('#createModal').modal('hide');
+                    contentCards.appendChild(btnDiv);
+                    btnContainerArray[`${parentId}`] = { name: btnName,btnType:"popup", popupType:"pdf",pdf:popupPdf,btnLocation:btnLocation, btnPosition:btnPosition, bgColor: btnColor}
+                    tempArray[`${parentId}`] = { type: "8", name: btnName, btnType:"popup", popupType:"pdf",pdf:popupPdf,btnLocation:btnLocation, btnPosition:btnPosition, bgColor: btnColor }
+                  }
+                }else if(popupType === "link"){
+                  if(hasEmptyValue === false){
+                    $('#createModal').modal('hide');
+                    contentCards.appendChild(btnDiv);
+                    btnContainerArray[`${parentId}`] = { name: btnName,btnType:"popup", popupType:"link",links:links,btnLocation, btnPosition, bgColor: btnColor }
+                    tempArray[`${parentId}`] = { type: "8", name: btnName, btnType:"popup", popupType:"link",links:links,btnLocation, btnPosition, bgColor: btnColor}
+                  }
+                }
+            }else{
+              if(btnLink !== ""){
+                $('#createModal').modal('hide');
+                contentCards.appendChild(btnDiv);            
+                btnContainerArray[`${parentId}`] = { name: btnName,btnType:"link", link: btnLink, bgColor: btnColor }
+                tempArray[`${parentId}`] = { type: "8", name: btnName,btnType:"link", link: btnLink, bgColor: btnColor}
+              }
+            }
+            
             }
 
             let childElem = document.getElementById(`linkTag${buttonId}`)
 
             childElem.style.backgroundColor = btnColor
-            submitBtnDiv.style.display = "block"
+            submitBtnDiv.style.display = "block";
+         
             buttonId += 1;
+
+            console.log(tempArray)
+
           } else {
 
             let inputName = document.querySelector("#btnName")
@@ -3020,6 +3511,32 @@
             }
           }
 
+          
+          let modalContent='';
+          let linkElem="";
+
+           openPopupModal = (elem) =>{
+            
+            let btnAttr=elem.classList[1].split("_")[1];
+            let popupData=tempArray[`${btnAttr}`];
+            let modalType = popupData['popupType'];
+
+              if(modalType === "image"){
+                  modalContent=`<img src="${URL.createObjectURL(popupData.image)}" class="popupImage" />`
+                  $("#popupBtnModal .modal-title").text('Image Preview');
+              }else if(modalType === "pdf"){
+                modalContent=`<object data='${URL.createObjectURL(popupData.pdf)}' type='application/pdf' width='100%' height='700px'>`
+                $("#popupBtnModal .modal-title").text('Document Preview');
+              }else if(modalType === "link"){
+                popupData.links.map((l)=>{
+                  modalContent+=`<a class="poplink" target=”_blank” href="${l.link}">${l.name}</a>`
+                })
+              }
+
+              $("#popupBtnModal .modal-body").html(modalContent);
+              $('#popupBtnModal').modal('show'); 
+            }
+         
         }
         else if (modalBody.children[0].className === "linkImgModalDiv") {
 
@@ -3379,6 +3896,8 @@
           
         }
 
+
+
       }
 
       // Edit Funtion
@@ -3710,7 +4229,7 @@
             cardbgColor = colorPickerField.value
           });
         }
-        else if (element === "editButton") {
+        else if (element === "editButton") {       
           $('#editModal').modal('show');
           var modalTitle = document.getElementById("EditPageTitle")
           modalTitle.innerText = "Edit Button"
@@ -3722,46 +4241,308 @@
           }
 
           var modalBody = document.getElementById('editPageContent')
-
-          const { name, link, bgColor } = btnContainerArray[parentId]
+          const { name, bgColor } = btnContainerArray[parentId];
+          let link = btnContainerArray[parentId]['link'] === undefined ? '': btnContainerArray[parentId]['link'];
+          let btnType = tempArray[parentId]['btnType'] === undefined? 'link': tempArray[parentId]['btnType'];
           let btnName = document.getElementById(`${id}`).children[0].innerText
-          let btnLink = document.getElementById(`${id}`).children[0].getAttribute("href")
+          let btnLink = document.getElementById(`${id}`).children[0].getAttribute("href");
 
-          let rowDiv = document.createElement("div")
-          rowDiv.className = "row g-3"
+          let btnLocation='';
+          let btnPosition='';
+          let popupType='';
+          let links;
 
-          let nameInput = document.createElement("input")
-          nameInput.className = "form-control col-12"
-          nameInput.id = "btnNameEdit"
-          nameInput.value = btnName
+          if(btnType === "popup"){
+           btnLocation= tempArray[parentId]['btnLocation']  === undefined? 'body': tempArray[parentId]['btnLocation'];
+           btnPosition= tempArray[parentId]['btnPosition'] === undefined? 'center': tempArray[parentId]['btnPosition'];
+           popupType= tempArray[parentId]['popupType'] === undefined? 'link': tempArray[parentId]['popupType'];
 
-          let linkInput = document.createElement("input")
-          linkInput.className = "form-control col-12"
-          linkInput.id = "btnLinkEdit"
-          linkInput.value = btnLink
+           if(popupType === 'link'){
+              links = tempArray[parentId]['links'];
+           }else if(popupType === 'image'){
+             popupImage= tempArray[parentId]['image'];
+           }
+           else if(popupType === 'pdf'){
+              popupPdf= tempArray[parentId]['pdf'];
+           }
+          }
 
-          let buttonLink = `<div class="col-6">
-            <label for="colorPickerId" class="form-label">Choose background Color</label>
-            <input type="color" class="form-control form-control-color" id="btnEditColor" value="${bgColor}">
-          </div>`
 
-          let btnDiv = document.createElement('div')
-          btnDiv.innerHTML = buttonLink
 
-          rowDiv.appendChild(nameInput)
-          rowDiv.appendChild(linkInput)
 
-          let buttonDiv = document.createElement("div")
-          buttonDiv.id = "btnLink"
-          buttonDiv.className = "row g-3"
+          let buttonInput = `<div class="row gap-4">
+            <div class="col-12">
+              <fieldset class="row">
+                <legend class="col-form-label col-4 pt-0">Button Type:</legend>
+                <div class="col-8">
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="buttonTypeEdit" id="link" value="link" onchange="buttonTypeChangeEdit(this)">
+                    <label class="form-check-label" for="link">
+                      Link
+                    </label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="buttonTypeEdit" id="popup" value="popup" onchange="buttonTypeChangeEdit(this)" >
+                    <label class="form-check-label" for="popup">
+                      Popup
+                    </label>
+                  </div>
+                </div>
+            </fieldset>
+          </div>
+          <div class="col-12">
+            <input type="text" class="form-control" id="btnNameEdit" placeholder="Name" value="${name}">
+          </div>
+          <div class="col-12" id="linkDivEdit" style="display:block">
+            <input type="text" class="form-control" id="btnLinkIdEdit" placeholder="Link" value="${link}">
+          </div>
+          <div class="col-12">
+            <div class="row align-items-center">
+            <label for="colorPickerIdEdit" class="form-label col-6">Choose background Color</label>
+            <div class="col-4">
+              <input type="color" class="form-control form-control-color" id="btnColorPickerEdit" value="${bgColor}">
+            </div>
+          </div>
+          </div>
+        </div>
+        <div id="popupDivEdit" style="display:none" class="mt-4">
+        <fieldset class="row mb-2 mt-2">
+          <legend class="col-form-label col-sm-2 pt-0">Location:</legend>
+          <div class="col-sm-10">
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="btnLocationEdit" id="header" value="header">
+              <label class="form-check-label" for="header">
+                Header
+              </label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="btnLocationEdit" id="body" value="body" checked>
+              <label class="form-check-label" for="body">
+                Body
+              </label>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset class="row mb-2 mt-2">
+          <legend class="col-form-label col-sm-2 pt-0">Position:</legend>
+          <div class="col-sm-10">
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="btnPositionEdit" id="left" value="left">
+              <label class="form-check-label" for="left">
+                Left
+              </label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="btnPositionEdit" id="center" value="center" checked>
+              <label class="form-check-label" for="center">
+                Center
+              </label>
+            </div>
+
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="btnPositionEdit" id="right" value="right">
+              <label class="form-check-label" for="right">
+                Right
+              </label>
+            </div>
+          </div>
+        </fieldset>
+        <fieldset class="row mb-2 mt-2">
+          <legend class="col-form-label col-sm-2 pt-0">Content</legend>
+          <div class="col-sm-10">
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="popupTypeEdit" id="linkBtnEdit" value="link">
+              <label class="form-check-label" for="linkBtnEdit">
+                Link
+              </label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="popupTypeEdit" id="imageBtnEdit" value="image" checked>
+              <label class="form-check-label" for="imageBtnEdit">
+                Image
+              </label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="popupTypeEdit" id="pdfBtnEdit" value="pdf">
+              <label class="form-check-label" for="pdfBtnEdit">
+                PDF
+              </label>
+            </div>
+          </div>
+        </fieldset>
+        <div class="uploadContainerEdit">
+          <div class="uploadDivEdit" id="pdfUploadEdit" style="display:none">
+            <input type="file" id="pdfFileEdit" accept ="application/pdf" hidden/>
+            <label for="pdfFileEdit">Choose File</label>
+            <span id="pdfChosenEdit">No file chosen</span>
+          </div>
+          <div class="uploadDivEdit" id="imageUploadEdit" style="display:none">
+            <input type="file" id="imageFileEdit" accept="image/png, image/jpeg" hidden/>
+            <label for="imageFileEdit">Choose File</label>
+            <div id="previewDivEdit"></div>
+          </div>
+          <div class="uploadDivEdit" id="linkUploadEdit">
+            <div id="linkFormEdit">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>`
+
 
           let mainDiv = document.createElement("div")
           mainDiv.className = "linkBtnDiv"
           mainDiv.id = parentId
-          mainDiv.appendChild(rowDiv)
-          mainDiv.appendChild(btnDiv)
-          modalBody.appendChild(mainDiv)
+          mainDiv.innerHTML=buttonInput;
+          modalBody.appendChild(mainDiv);
 
+          
+           if(popupType !== "link"){
+              let firstForm=`  <form class="input-div">
+                          <div class="links">
+                            <input type='text' class="form-control" name='name' placeholder="Name">
+                            <input type="text" class="form-control" name="link" placeholder="Link">
+                          </div>
+                          <div class="btn-div">
+                            <button type="button" id="addInputFieldButtonEdit" class='add-more-btn'><i class="fa-solid fa-plus"></i></button>
+                          </div>
+                        </form> `;
+              $("#linkFormEdit").html(firstForm);
+
+              $("#linkUploadEdit").css("display","none")
+           }
+
+           if(btnType === "link"){
+            $("#imageUploadEdit").css("display","flex")
+           }
+
+          var linkBtnOption = document.getElementById('linkBtnEdit');
+          var imageBtnOption = document.getElementById('imageBtnEdit');
+          var pdfBtnOption = document.getElementById('pdfBtnEdit');
+
+          linkBtnOption.onclick = popupChangeEditFn;
+          imageBtnOption.onclick = popupChangeEditFn;
+          pdfBtnOption.onclick = popupChangeEditFn;
+
+          var linkDiv=$("#linkUploadEdit")
+          var imageDiv=$("#imageUploadEdit")
+          var pdfDiv=$("#pdfUploadEdit")
+          var uploadDiv=$(".uploadDivEdit")
+
+           
+          function popupChangeEditFn(){
+            let popupType= $('input[name="popupTypeEdit"]:checked').val()
+            $(".popup-error").remove();
+            uploadDiv.css("display","none")
+            if(popupType==="link"){
+              linkDiv.css("display","block")
+            }else if(popupType ==="image"){
+              imageDiv.css("display","flex")
+            }else if(popupType === "pdf"){
+              pdfDiv.css("display","block")
+            }
+          }
+
+          buttonTypeChangeEdit=(elem)=>{
+            let buttonOption= $(elem).val();
+            if(buttonOption === "link"){
+             $("#popupDivEdit").css("display","none");
+             $("#linkDivEdit").css("display","block");
+            }else if(buttonOption === "popup"){
+             $("#linkDivEdit").css("display","none");
+             $("#popupDivEdit").css("display","block");
+            }
+           }
+
+          const pdfBtn = document.getElementById('pdfFileEdit');
+          const pdfChosen = document.getElementById('pdfChosenEdit');
+          pdfBtn.addEventListener('change', function(){
+            pdfChosen.textContent = this.files[0].name;
+            popupPdf=this.files[0];
+          })
+
+          
+          const imageBtn = document.getElementById('imageFileEdit');
+          const imageChosen = document.getElementById('imageChosenEdit');
+          imageBtn.addEventListener('change', function(){
+            $("#imageUploadEdit #previewDivEdit").html(`<img src=${URL.createObjectURL(this.files[0])} id="uploadedImg" />`);
+            popupImage=this.files[0];
+          })
+
+
+
+          $(`input[name=buttonTypeEdit][value=${btnType=="link"?"link":"popup"}]`).prop("checked",true);
+          $(`input[name=btnLocationEdit][value=${btnLocation=="body"?"body":"header"}]`).prop("checked",true);
+          $(`input[name=btnPositionEdit][value=${btnPosition}]`).prop("checked",true);
+          $(`input[name=popupTypeEdit][value=${popupType}]`).prop("checked",true);
+
+          if(btnType === "link"){
+            $("#popupDivEdit").css("display","none");
+            $("#linkDivEdit").css("display","block");
+           }else if(btnType === "popup"){
+            $("#linkDivEdit").css("display","none");
+            $("#popupDivEdit").css("display","block");
+           }
+
+
+
+          if(popupType==="link"){
+            linkDiv.css("display","block")
+          }else if(popupType ==="image"){
+            imageDiv.css("display","flex")
+          }else if(popupType === "pdf"){
+            pdfDiv.css("display","block")
+          }
+
+          let inputCount=0;  
+
+          if(popupType === 'image'){
+            $("#imageUploadEdit #previewDivEdit").html(`<img src=${URL.createObjectURL(popupImage)} id="uploadedImgEdit" />`);
+          }else if(popupType === "pdf"){
+            pdfChosen.textContent = popupPdf.name;
+          }else if(popupType === 'link'){
+            var input = '';
+           
+           links.forEach((l,i)=>{
+            input+= `<form class="input-div"> 
+              <div class="links">
+                <input type='text' class="form-control" name='name' placeholder="Name" value="${l.name}">
+                <input type='text' class="form-control" name='link' placeholder="Link" value="${l.link}">
+              </div>
+              <div class="btn-div">
+                ${
+                  i == 0 ? `<button type="button" id="addInputFieldButtonEdit" class='add-more-btn'><i class="fa-solid fa-plus"></i></button>`
+                  :
+                 `<button type="button" class="delete-btn" onClick="deleteEditInput(this)"><i class="fa-solid fa-xmark"></i></button>`
+                }
+
+              </div>
+            </form>`
+          }) 
+            $("#linkFormEdit").html(input);
+            inputCount+=1;
+          }
+
+      
+
+          $("#addInputFieldButtonEdit").click(function() {
+            var input = $(`<form class="input-div"> 
+                          <div class="links">
+                            <input type='text' class="form-control" name='name' placeholder="Name">
+                            <input type='text' class="form-control" name='link' placeholder="Link">
+                          </div>
+                          <div class="btn-div">
+                            <button type="button" class="delete-btn" onClick="deleteEditInput(this)"><i class="fa-solid fa-xmark"></i></button>
+                          </div>
+                        </form>`);
+            $("#linkFormEdit").append(input);
+            inputCount+=1;
+          });
+
+          deleteEditInput=(elem)=>{
+            $(elem).closest('form').remove();
+          }
 
         }
         else if (element === "editHeading") {
@@ -3944,20 +4725,20 @@
                     <legend class="col-form-label col-sm-4 pt-0">Images View</legend>
                     <div class="col-sm-8">
                       <div class="form-check">
-                        <input class="form-check-input" type="radio" name="imageViewEdit" value="normal" id="normal">
+                        <input class="form-check-input" type="radio" name="imageViewEdit" value="normal" onchange="imageTypeEditFn(this)" id="normal">
                         <label class="form-check-label" for="normal">
                           Normal
                         </label>
                       </div>
                       <div class="form-check">
-                        <input class="form-check-input" type="radio" name="imageViewEdit" value="carousel" id="carousel">
+                        <input class="form-check-input" type="radio" name="imageViewEdit" value="carousel" onchange="imageTypeEditFn(this)" id="carousel">
                         <label class="form-check-label" for="carousel">
                           Carousel
                         </label>
                       </div>
                     </div>
                   </fieldset>
-                  <div id="bgColorDivEdit" class="row gap-2" style="display:none">
+                  <div id="bgColorDivEdit" class="row gap-2">
                     <div class="col-12">
                       <div class="row align-items-center">
                         <label for="arrowBgColor" class="form-label col-6">Arrow Background Color</label>
@@ -3970,6 +4751,15 @@
                   `
 
           modalBody.appendChild(cardDiv)
+
+          imageTypeEditFn=(elem)=>{
+            let imageTypeOption=$(elem).val();
+            if(imageTypeOption==="carousel"){
+              $("#bgColorDivEdit").css("display","block")
+            }else if(imageTypeOption==="normal"){
+              $("#bgColorDivEdit").css("display","none")
+            }
+          }
 
           if(imageView==="carousel"){
             $("#bgColorDivEdit").css("display","block")
@@ -4414,30 +5204,142 @@
 
         }
         else if (modalBody.children[0].className === "linkBtnDiv") {
-
           let elemId = modalBody.children[0].id
-          let btnName = document.getElementById("btnNameEdit").value
-          let btnLink = document.getElementById("btnLinkEdit").value
-          let btnColor = document.getElementById("btnEditColor")
+          let btnName = document.getElementById("btnNameEdit").value;
+          let btnLink = document.getElementById("btnLinkIdEdit")?.value;
+          let btnColor = document.getElementById("btnColorPickerEdit").value;
 
-          let updatedElement = document.getElementById(elemId).children[1]
+          let btnType= $('input[name="buttonTypeEdit"]:checked').val();
+          let btnLocation= $('input[name="btnLocationEdit"]:checked').val();
+          let btnPosition= $('input[name="btnPositionEdit"]:checked').val();
+          let popupType= $('input[name="popupTypeEdit"]:checked').val();
 
-          //
-          let btnTag = `<a href="${btnLink}" target="_blank" class="linkBtn">${btnName}</a>`
+          let updatedElement = document.getElementById(elemId).children[1];
+          updatedElement.style.textAlign=`${btnPosition}`
+
+          var forms = document.querySelectorAll("#linkFormEdit form");
+
+          let hasEmptyValue=false;
+          var links=[];
+
+          if(popupType==="link"){        
+            var result = Array.from(forms).map((a,i) => {
+              var obj = {};
+              Array.from(a.querySelectorAll("[name]")).forEach((b,j) => {
+                obj[b.getAttribute("name")] = b.value;
+                if(b.value === ""){
+                  if($(`.error-msg${i}${j}`).length === 0){
+                    $(b).after(`<div class="error popup-error error-msg${i}${j}">Please enter the value..!</div>`);
+                  }
+                  hasEmptyValue=true;
+                }else{
+                  $(`.error-msg${i}${j}`).remove();
+                }
+                
+              });
+              links.push(obj);
+              return links;
+            });
+            }else if(popupType ==="image"){
+              if(popupImage === ""){
+                $("#imageUploadEdit").after(`<div class="error popup-error error-msg-image">Please upload the image..!</div>`);
+              }else{
+                $(".error-msg-image").remove("");
+              }
+            }else if(popupType === "pdf"){
+              if(popupPdf === ""){
+                $("#pdfUploadEdit").after(`<div class="error popup-error error-msg-pdf">Please upload the document..!</div>`);
+              }else{
+                $(".error-msg-pdf").remove("");
+              }
+            }
+
+          let btnTag ='';
+
+          if(btnType === "link"){
+            btnTag=`<a href="${btnLink}" target="_blank" class="linkBtn">${btnName}</a>`;
+          }else if(btnType === "popup"){
+            btnTag=`<a href="#" class="linkBtn link_${elemId}" onclick="openPopupModal(this)">${btnName}</a>`
+          }
 
           var color = $("#btnEditColor").val();
-
-          if (btnName !== "" && btnLink !== "") {
-            //
-            $('#editModal').modal('hide');
-            updatedElement.innerHTML = btnTag
-            updatedElement.children[0].style.backgroundColor = color
+          if (btnName !== "") {
             if(updatesClass==="updatesItems"){
-              btnContainerArray[`${elemId}`] = { name: btnName, link: btnLink, bgColor: btnColor.value,updates:`updates${updatesId}` }
-              tempArray[`${elemId}`] = { type: "8", name: btnName, link: btnLink, bgColor: btnColor.value,updates:`updates${updatesId}` }
+              if(btnType === "popup"){
+                if(popupType === "image"){
+                  if(popupImage !==""){
+                    $('#editModal').modal('hide');
+                    updatedElement.innerHTML = btnTag;
+                    updatedElement.children[0].style.backgroundColor = btnColor;
+                    btnContainerArray[`${elemId}`] = { name: btnName, btnType:"popup", popupType:"image",image:popupImage, btnLocation, btnPosition, bgColor: btnColor,updates:`updates${updatesId}` }
+                    tempArray[`${elemId}`] = { type: "8", name: btnName, btnType:"popup", popupType:"image",image:popupImage, btnLocation, btnPosition, bgColor: btnColor,updates:`updates${updatesId}` }
+                  }
+                }
+                else if(popupType === "pdf"){
+                  if(popupPdf !== ""){
+                    $('#editModal').modal('hide');
+                    updatedElement.innerHTML = btnTag;
+                    updatedElement.children[0].style.backgroundColor = btnColor;
+                    btnContainerArray[`${elemId}`] = { name: btnName, btnType:"popup", popupType:"pdf",pdf:popupPdf, btnLocation, btnPosition, bgColor: btnColor,updates:`updates${updatesId}` }
+                    tempArray[`${elemId}`] = { type: "8", name: btnName, btnType:"popup", popupType:"pdf",pdf:popupPdf, btnLocation, btnPosition, bgColor: btnColor,updates:`updates${updatesId}` }
+                  }
+                }else if(popupType === "link"){
+                  if(hasEmptyValue === false){
+                    $('#editModal').modal('hide');
+                    updatedElement.innerHTML = btnTag;
+                    updatedElement.children[0].style.backgroundColor = btnColor;
+                    btnContainerArray[`${elemId}`] = { name: btnName, btnType:"popup", popupType:"link",links:links, btnLocation, btnPosition, bgColor: btnColor,updates:`updates${updatesId}` }
+                    tempArray[`${elemId}`] = { type: "8", name: btnName, btnType:"popup", popupType:"link",links:links, btnLocation, btnPosition, bgColor: btnColor,updates:`updates${updatesId}` }
+                  }
+                }  
+              }
+              else{
+                if(btnLink !== ""){
+                  $('#editModal').modal('hide');
+                  updatedElement.innerHTML = btnTag;
+                  updatedElement.children[0].style.backgroundColor = btnColor;
+                  btnContainerArray[`${elemId}`] = { name: btnName, link: btnLink,btnType:"link", bgColor: btnColor,updates:`updates${updatesId}` }
+                  tempArray[`${elemId}`] = { type: "8", name: btnName, link: btnLink,btnType:"link", bgColor: btnColor,updates:`updates${updatesId}` }
+                }
+              }
             }else{
-              btnContainerArray[`${elemId}`] = { name: btnName, link: btnLink, bgColor: btnColor.value }
-              tempArray[`${elemId}`] = { type: "8", name: btnName, link: btnLink, bgColor: btnColor.value }
+              if(btnType === "popup"){
+                if(popupType === "image"){
+                  if(popupImage !==""){
+                    $('#editModal').modal('hide');
+                    updatedElement.innerHTML = btnTag;
+                    updatedElement.children[0].style.backgroundColor = btnColor;
+                    btnContainerArray[`${elemId}`] = { name: btnName, btnType:"popup", popupType:"image",image:popupImage, btnLocation, btnPosition, bgColor: btnColor }
+                    tempArray[`${elemId}`] = { type: "8", name: btnName, btnType:"popup", popupType:"image",image:popupImage, btnLocation, btnPosition, bgColor: btnColor }
+                  }
+                }
+                else if(popupType === "pdf"){
+                  if(popupPdf !== ""){
+                    $('#editModal').modal('hide');
+                    updatedElement.innerHTML = btnTag;
+                    updatedElement.children[0].style.backgroundColor = btnColor;
+                    btnContainerArray[`${elemId}`] = { name: btnName, btnType:"popup", popupType:"pdf",pdf:popupPdf, btnLocation, btnPosition, bgColor: btnColor }
+                    tempArray[`${elemId}`] = { type: "8", name: btnName, btnType:"popup", popupType:"pdf",pdf:popupPdf, btnLocation, btnPosition, bgColor: btnColor}
+                  }
+                }else if(popupType === "link"){
+                  if(hasEmptyValue === false){
+                    $('#editModal').modal('hide');
+                    updatedElement.innerHTML = btnTag;
+                    updatedElement.children[0].style.backgroundColor = btnColor;
+                    btnContainerArray[`${elemId}`] = { name: btnName, btnType:"popup", popupType:"link",links:links, btnLocation, btnPosition, bgColor: btnColor }
+                    tempArray[`${elemId}`] = { type: "8", name: btnName, btnType:"popup", popupType:"link",links:links, btnLocation, btnPosition, bgColor: btnColor}
+                  }
+                }  
+              }
+              else{
+                if(btnLink !== ""){
+                  $('#editModal').modal('hide');
+                  updatedElement.innerHTML = btnTag;
+                  updatedElement.children[0].style.backgroundColor = btnColor;
+                  btnContainerArray[`${elemId}`] = { name: btnName, link: btnLink,btnType:"link", bgColor: btnColor}
+                  tempArray[`${elemId}`] = { type: "8", name: btnName, link: btnLink,btnType:"link", bgColor: btnColor }
+                }
+              }
             }
           } else {
 
@@ -4468,6 +5370,31 @@
             }
           }
 
+                    
+          let modalContent='';
+          let linkElem="";
+
+           openPopupModal = (elem) =>{
+            
+            let btnAttr=elem.classList[1].split("_")[1];
+            let popupData=tempArray[`${btnAttr}`];
+            let modalType = popupData['popupType'];
+
+              if(modalType === "image"){
+                  modalContent=`<img src="${URL.createObjectURL(popupData.image)}" class="popupImage" />`
+                  $("#popupBtnModal .modal-title").text('Image Preview');
+              }else if(modalType === "pdf"){
+                modalContent=`<object data='${URL.createObjectURL(popupData.pdf)}' type='application/pdf' width='100%' height='700px'>`
+                $("#popupBtnModal .modal-title").text('Document Preview');
+              }else if(modalType === "link"){
+                popupData.links.map((l)=>{
+                  modalContent+=`<a class="poplink" target=”_blank” href="${l.link}">${l.name}</a>`
+                })
+              }
+
+              $("#popupBtnModal .modal-body").html(modalContent);
+              $('#popupBtnModal').modal('show'); 
+            }
 
         }
         else if (modalBody.children[0].className === "editHeading") {
@@ -4657,6 +5584,8 @@
               inputElem.insertAdjacentHTML('afterend', '<p class="error">Please insert image...!</p>');
             }
           }
+
+          console.log(tempArray,"array")
         }
         else if(modalBody.children[0].className === "hyperLinkEdit"){
           let hyperLinksUpdate =[]; 

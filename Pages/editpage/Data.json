@@ -26,6 +26,16 @@
       "imagesView": "normal"
     },
     {
+      "type": "8",
+      "name": "Button",
+      "btnType": "popup",
+      "popupType": "image",
+      "image": "../../assets/img/img1.jpg",
+      "btnLocation": "header",
+      "btnPosition": "center",
+      "bgColor": "#e67575"
+    },
+    {
       "type": "11",
       "hyperlink": [
         {
@@ -190,6 +200,7 @@
         },
         {
           "type": "11",
+          "hyperLinkType": "stampcard",
           "hyperlink": [
             {
               "type": "11",
