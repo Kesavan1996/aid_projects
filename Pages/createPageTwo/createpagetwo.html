@@ -215,6 +215,50 @@
                     <input type="color" class="form-control form-control-color" id="updateBgColor" value="#53bcf5" />
                   </div>
                 </div>
+                <div class="mb-3 row align-items-center">
+                  <label for="mainPageLink" class="col-sm-2 col-form-label">Parent Link</label>
+                  <div class="col-sm-10 ">
+                    <input type="text" class="form-control" name="mainPageLink" id="mainPageLink" onkeyup="urlValidate(this)" />
+                  </div>
+                </div>
+                <div class="mb-3 row align-items-center">
+                  <div class="col-12">
+                    <fieldset class="row mb-2 mt-2">
+                      <legend class="col-form-label col-4 pt-0">Choose Logo</legend>
+                      <div class="col-8">
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="radio" name="logoSelect" value="newimage"id="newimage" onchange="logoSelectChange(this)" checked>
+                          <label class="form-check-label" for="newimage">
+                            New Image
+                          </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="radio" name="logoSelect" value="existingimage" id="existingimage" onchange="logoSelectChange(this)">
+                          <label class="form-check-label" for="existingimage">
+                            Existing Image
+                          </label>
+                        </div>
+                      </div>
+                    </fieldset>
+                  </div>
+                </div>
+                <div class="mb-3 row align-items-center" id="logoChooseDiv">
+                  <label for="headerLogo" class="col-2 col-form-label"></label>
+                  <div class="col-10">
+                    <input type="file" class="form-control" name="headerLogo" id="headerLogo" accept="image/png, image/jpeg" onchange="logoChange(this)" />
+                  </div>
+                </div>
+                <div class="mb-3 row align-items-center" id="logoListDiv" style="display: none;">
+                  <div class="col-2">
+
+                  </div>
+                  <div class="col-10" id="logoDiv"></div>
+                </div>
+                <div class="mb-3 row col-12" id="selectDivLogo" style="display: none;">
+                  <div class="col-2">Selected Logo</div>
+                   <div id="pageLogoDiv" class="col-10">
+                   </div>
+                </div>
               </form>
             </div>
             <div class="modal-footer">
@@ -395,6 +439,7 @@
 
       let popupImage;
       let popupPdf;
+      let pageLogoImage;
 
       // Updates Items
 
@@ -5695,11 +5740,71 @@
         }
       }
 
+      const logoChange=(elem)=>{
+        $("#pageLogoDiv").html(`<img src="${URL.createObjectURL(elem.files[0])}"/>`)
+        $("#selectDivLogo").css("display","flex")
+        pageLogoImage=elem.files[0];
+      }
+
+      const urlValidate=(elem)=>{
+        let urlValue=$(elem).val();
+        var regexp = /^(ftp|http|https|chrome|:\/\/|\.|@){2,}(localhost|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|\S*:\w*@)*([a-zA-Z]|(\d{1,3}|\.){7}){1,}(\w|\.{2,}|\.[a-zA-Z]{2,3}|\/|\?|&|:\d|@|=|\/|\(.*\)|#|-|%)*$/gum
+        let urlValidation=regexp.test(urlValue)
+        if(urlValidation){
+          $(".url-error").remove()
+        }else{
+          if($(".url-error").length === 0){
+            $("#mainPageLink").after(`<p class="error url-error">Please enter the valid URL..!</p>`);
+          }
+        }
+      }
+
+      const logoSelectChange =(elem)=>{
+        let logoSelectOption= $(elem).val();
+        if(logoSelectOption === "existingimage"){
+          $('#logoChooseDiv').css("display","none");
+          $('#logoListDiv').css("display","flex");
+        }else if(logoSelectOption === "newimage"){
+          $('#logoChooseDiv').css("display","flex");
+          $('#logoListDiv').css("display","none");
+        }
+      }
+
       function submitModal(){
         let updatesElemClass=document.querySelectorAll('.updatesDivContainer')
 
         let selectOption = document.getElementById('goToSelect')
         let gotoDiv = document.getElementById("goToSelectDiv")
+
+        
+        $("#selectDivLogo").css("display","none");
+        pageLogoImage="";
+
+        let existingLogos=['../../assets/img/img1.jpg','../../assets/img/img2.jpg','../../assets/img/img3.jpg','../../assets/img/img4.jpg'];
+        let logoElem='';
+
+        existingLogos.forEach((logo,i)=>{
+          logoElem+=` <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="imageList" value="newimage${i}"id="newimage${i}" onchange="logoChangeFromList(${i})">
+            <label class="form-check-label" for="newimage">
+              <img src="${logo}"/>
+            </label>
+          </div>`
+        })
+
+        let imageRadioElem =   `<fieldset class="row mb-2 mt-2">
+                                <div class="radio-seletion">
+                                  ${logoElem}
+                                  <div>
+                            </fieldset>`
+
+         $("#logoDiv").html(imageRadioElem)
+
+         logoChangeFromList=(index)=>{
+          $("#pageLogoDiv").html(`<img src="${existingLogos[index]}"/>`);
+          $("#selectDivLogo").css("display","flex")
+          pageLogoImage=existingLogos[index];
+        }
 
         if(updatesElemClass.length===0){
           gotoDiv.style.display="none"
@@ -5782,12 +5887,16 @@
 
 
       function submitFn() {
-
         data = [];
 
         let mainDiv = document.getElementById("contentCard")
-
-        let childElem = mainDiv.childNodes
+        let childElem = mainDiv.childNodes;
+        // Parent Link Validation
+        let parentLink= $("#mainPageLink").val();
+        var regexp = /^(ftp|http|https|chrome|:\/\/|\.|@){2,}(localhost|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|\S*:\w*@)*([a-zA-Z]|(\d{1,3}|\.){7}){1,}(\w|\.{2,}|\.[a-zA-Z]{2,3}|\/|\?|&|:\d|@|=|\/|\(.*\)|#|-|%)*$/gum
+        let urlValidate=regexp.test(parentLink)
+        console.log(parentLink,"link");
+        console.log(pageLogoImage,"image");
 
         let keysArray = []
 

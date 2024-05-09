@@ -1625,6 +1625,27 @@ table, th, td {
     font-weight: bold;
 }
 
+#logoDiv fieldset .radio-seletion{
+    display: flex;
+    gap: 5px;
+    overflow-x: auto;
+}
+
+.radio-seletion::-webkit-scrollbar {
+    height: 7px; 
+  }
+  
+.radio-seletion::-webkit-scrollbar-thumb {
+    background-color: rgb(201, 201, 201);
+  }
+  
+
+#logoDiv img,
+#pageLogoDiv img
+{
+    height: 40px;
+    width: 40px;
+}
 
 
 @media screen and (max-width: 480px) {
@@ -1639,17 +1660,12 @@ table, th, td {
     }
 }
 
-
-
-
 @media(max-width:576px){
     .question{
         width: 100%;
         word-spacing: 2px;
     } 
 }
-
-
 
 
 /* responsive design */
