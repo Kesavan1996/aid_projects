@@ -5467,10 +5467,11 @@
   })
 
   $(`input[name=buttonTypeEdit][value=${btnType=="link"?"link":"popup"}]`).prop("checked",true);
-  $(`input[name=btnLocationEdit][value=${btnLocation=="body"?"body":"header"}]`).prop("checked",true);
-  $(`input[name=btnPositionEdit][value=${btnPosition}]`).prop("checked",true);
-  $(`input[name=popupTypeEdit][value=${popupType}]`).prop("checked",true);
-
+  if (btnType === "popup") {
+    $(`input[name=btnLocationEdit][value=${btnLocation=="body"?"body":"header"}]`).prop("checked",true);
+    $(`input[name=btnPositionEdit][value=${btnPosition}]`).prop("checked",true);
+    $(`input[name=popupTypeEdit][value=${popupType}]`).prop("checked",true);
+  }
   if(btnType === "link"){
     $("#popupDivEdit").css("display","none");
     $("#linkDivEdit").css("display","block");

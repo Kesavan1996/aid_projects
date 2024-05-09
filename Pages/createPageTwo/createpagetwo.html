@@ -2855,8 +2855,6 @@
               inputElem.insertAdjacentHTML('afterend', '<p class="error">Please insert image...!</p>');
             }
           }
-
-          console.log(tempArray,"temp")
         }
         else if (modalBody.children[0].className === "videoCard") {
 
@@ -3942,7 +3940,6 @@
         }
 
 
-
       }
 
       // Edit Funtion
@@ -4298,9 +4295,9 @@
           let links;
 
           if(btnType === "popup"){
-           btnLocation= tempArray[parentId]['btnLocation']  === undefined? 'body': tempArray[parentId]['btnLocation'];
-           btnPosition= tempArray[parentId]['btnPosition'] === undefined? 'center': tempArray[parentId]['btnPosition'];
-           popupType= tempArray[parentId]['popupType'] === undefined? 'link': tempArray[parentId]['popupType'];
+           btnLocation= tempArray[parentId]['btnLocation']  === undefined ? 'body': tempArray[parentId]['btnLocation'];
+           btnPosition= tempArray[parentId]['btnPosition'] === undefined ? 'center': tempArray[parentId]['btnPosition'];
+           popupType= tempArray[parentId]['popupType'] === undefined ? 'link': tempArray[parentId]['popupType'];
 
            if(popupType === 'link'){
               links = tempArray[parentId]['links'];
@@ -4515,12 +4512,12 @@
             popupImage=this.files[0];
           })
 
-
-
           $(`input[name=buttonTypeEdit][value=${btnType=="link"?"link":"popup"}]`).prop("checked",true);
-          $(`input[name=btnLocationEdit][value=${btnLocation=="body"?"body":"header"}]`).prop("checked",true);
-          $(`input[name=btnPositionEdit][value=${btnPosition}]`).prop("checked",true);
-          $(`input[name=popupTypeEdit][value=${popupType}]`).prop("checked",true);
+          if(btnType === "popup"){
+            $(`input[name=btnLocationEdit][value=${btnLocation=="body"?"body":"header"}]`).prop("checked",true);
+            $(`input[name=btnPositionEdit][value=${btnPosition}]`).prop("checked",true);
+            $(`input[name=popupTypeEdit][value=${popupType}]`).prop("checked",true);
+          }
 
           if(btnType === "link"){
             $("#popupDivEdit").css("display","none");
