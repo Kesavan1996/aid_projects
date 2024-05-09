@@ -413,7 +413,6 @@ box-shadow: inset 2px 2px 9px -6px rgba(0,0,0,0.75);
 .actionBtns
 {
     position: fixed;
-    border-radius: 70px;
     z-index: -1;
     transition: .2s;
     display: flex;

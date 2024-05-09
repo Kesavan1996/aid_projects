@@ -486,7 +486,7 @@
 
         // Page onload function
 
-      let fetchData=fetch('./Data.json')
+      let fetchData=fetch('./newData.json')
       .then((response) => response.json())
       .then((json) => {return json.data});
 
@@ -1085,6 +1085,7 @@
               let btnPosition= data.btnPosition;
               let popupType= data.popupType;
               let btnColor = data.bgColor;
+              let links=data.links;
 
               if(popupType == "image"){
                 popupImage=data['image'];
@@ -1092,8 +1093,8 @@
                 popupPdf=data['pdf'];
               }
 
-              var links=[];
-
+              
+      /*      
               if(popupType==="link"){        
                 var result = Array.from(data.links).map((a,i) => {
                   var obj = {};
@@ -1104,7 +1105,7 @@
                   return links;
                 });
                 }
-    
+    */
               var dropImg = document.createElement("img")
               dropImg.className="dragImg"
               dropImg.height = 20
@@ -1191,21 +1192,21 @@
                   tempArray[`btnLinkDiv${buttonId}`] = { type: "8", name: btnName,btnType:"link", link: btnLink, bgColor: btnColor}
                 }
               }
-              console.log(`${btnDiv.id}`,"button")
 
-              //childElem.style.backgroundColor = btnColor
               submitBtnDiv.style.display = "block"
 
               let modalContent='';
               let linkElem="";
     
                openPopupModal = (elem) =>{
-
+                modalContent='';
                 let btnAttr=elem.classList[1].split("_")[1];
                 let popupData=tempArray[`${btnAttr}`];
                 let modalType = popupData['popupType'];
                 let imageUrl='';
                 let pdfUrl='';
+
+                console.log(popupData,"daya")
     
                   if(modalType === "image"){
                     if(typeof popupData.image === "string"){
@@ -2069,7 +2070,7 @@
             <div class="row align-items-center">
             <label for="colorPickerId" class="form-label col-6">Choose background Color</label>
             <div class="col-4">
-              <input type="color" class="form-control form-control-color" id="btnColorPicker" value="#fcfcfc">
+              <input type="color" class="form-control form-control-color" id="btnColorPicker" value="#b3b3b3">
             </div>
           </div>
           </div>
@@ -2868,7 +2869,7 @@
                       <div class="row align-items-center">
                       <label for="colorPickerId" class="form-label col-6">Choose background Color</label>
                       <div class="col-4">
-                        <input type="color" class="form-control form-control-color" id="btnColorPicker" value="#fcfcfc">
+                        <input type="color" class="form-control form-control-color" id="btnColorPicker" value="#b3b3b3">
                       </div>
                     </div>
                     </div>
@@ -4372,7 +4373,7 @@
           let linkElem="";
 
            openPopupModal = (elem) =>{
-            
+            modalContent='';
             let btnAttr=elem.classList[1].split("_")[1];
             let popupData=tempArray[`${btnAttr}`];
             let modalType = popupData['popupType'];
@@ -6405,6 +6406,7 @@
           let linkElem="";
 
            openPopupModal = (elem) =>{
+            modalContent='';
             
             let btnAttr=elem.classList[1].split("_")[1];
             let popupData=tempArray[`${btnAttr}`];

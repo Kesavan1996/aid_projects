@@ -1,0 +1,107 @@
+{
+  "goto": {
+    "gotoselect": "0",
+    "gotoselectname": "Go To",
+    "gotoselectbg": "#53bcf5"
+  },
+  "data": [
+    {
+      "type": "1",
+      "title": "Page Title",
+      "bgColor": "#fcfcfc"
+    },
+    {
+      "type": "2",
+      "heading": "Heading",
+      "bgColor": "#fcfcfc"
+    },
+    {
+      "type": "4",
+      "images": [
+        "1714830841_8ba185147a797c8972b1.jpeg",
+        "1714830841_55f88c5e3ce50e5d0d8a.jpg"
+      ],
+      "arrowBgColor": "#828282",
+      "imagesView": "carousel"
+    },
+    {
+      "type": "11",
+      "hyperLinkType": "stampcard",
+      "hyperlink": [
+        {
+          "type": "11",
+          "link": "https://ahaguru.com",
+          "caption": "Test123",
+          "image": ["1714830841_4199eb4216f816417309.jpg"]
+        },
+        {
+          "type": "11",
+          "link": "https://ahaguru.com",
+          "caption": "Test 1234",
+          "image": ["1714830841_571c3cc07b92aba9883e.jpg"]
+        }
+      ]
+    },
+    {
+      "type": "8",
+      "name": "Donate 1",
+      "btnType": "link",
+      "link": "aidindia.in",
+      "bgColor": "#d8bbbb"
+    },
+    {
+      "type": "8",
+      "name": "Donate link body",
+      "btnType": "popup",
+      "popupType": "link",
+      "links": [
+        {
+          "name": "Cluster",
+          "link": "https://ahaguru.com"
+        },
+        {
+          "name": "Cluster 1",
+          "link": "https://ahaguru.com"
+        }
+      ],
+      "btnLocation": "header",
+      "btnPosition": "center",
+      "bgColor": "#9c5454"
+    },
+    {
+      "type": "12",
+      "heading": "Update1",
+      "bgcolor": "#f2f2f2",
+      "show": "false",
+      "updates": [
+        {
+          "type": "4",
+          "images": [
+            "1714830841_5e9aff7f9f6661a382ad.jpeg",
+            "1714830841_3f36abb7c58fac09a53d.jpg"
+          ],
+          "arrowBgColor": "#828282",
+          "imagesView": "carousel"
+        },
+        {
+          "type": "11",
+          "hyperLinkType": "normal",
+          "hyperlink": [
+            {
+              "type": "11",
+              "link": "https://ahaguru.com",
+              "caption": "Test 1234",
+              "image": ["1714830841_36e744cf13fa5134c7fc.jpg"]
+            },
+            {
+              "type": "11",
+              "link": "https://ahaguru.com",
+              "caption": "Test 1234",
+              "image": ["1714830841_7486bdf900d37b0cf15a.jpg"]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

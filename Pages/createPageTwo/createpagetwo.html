@@ -599,7 +599,7 @@
                   </div>
                   <form action="" method="post" class="dragover">
                       <span class="inner"><span class="select">Browse</span></span>
-                      <input name="file" type="file" class="file" multiple accept="image/*"/>
+                      <input name="file" type="file" class="file" id="imgInput" multiple accept="image/*"/>
                   </form>
                   <div class="imgContainer">
                   </div>
@@ -1036,7 +1036,7 @@
                       <div class="row align-items-center">
                       <label for="colorPickerId" class="form-label col-6">Choose background Color</label>
                       <div class="col-4">
-                        <input type="color" class="form-control form-control-color" id="btnColorPicker" value="#fcfcfc">
+                        <input type="color" class="form-control form-control-color" id="btnColorPicker" value="#b3b3b3">
                       </div>
                     </div>
                     </div>
@@ -1410,7 +1410,7 @@
               <div class="row align-items-center">
                 <label for="colorPickerId" class="form-label col-6">Choose background Color</label>
                 <div class="col-4">
-                  <input type="color" class="form-control form-control-color" id="btnColorPicker" value="#fcfcfc">
+                  <input type="color" class="form-control form-control-color" id="btnColorPicker" value="#b3b3b3">
                 </div>
               </div>
             </div>
@@ -1627,7 +1627,7 @@
                   </div>
                   <form action="" method="post" class="dragover">
                       <span class="inner"><span class="select">Browse</span></span>
-                      <input name="file" type="file" class="file" multiple accept="image/*"/>
+                      <input name="file" type="file" class="file" id="imgInput" multiple accept="image/*"/>
                   </form>
                   <div class="imgContainer">
                   </div>
@@ -2727,6 +2727,12 @@
           } else{
             imgArry = imagesContainerArrar[`${imgId}`]["files"] ;
           }
+
+          if(imgArry === undefined){
+            $("#imgInput").closest('form').after('<p class="error" id="imgErrorMsg">Upload the image..!</P')
+          }else{
+            $("#imgErrorMsg").remove();
+          }
           
 
           var imgSrc = document.getElementsByClassName("image")
@@ -3559,7 +3565,7 @@
           let linkElem="";
 
            openPopupModal = (elem) =>{
-            
+            modalContent='';
             let btnAttr=elem.classList[1].split("_")[1];
             let popupData=tempArray[`${btnAttr}`];
             let modalType = popupData['popupType'];
@@ -5250,6 +5256,7 @@
           let btnName = document.getElementById("btnNameEdit").value;
           let btnLink = document.getElementById("btnLinkIdEdit")?.value;
           let btnColor = document.getElementById("btnColorPickerEdit").value;
+          console.log(btnColor,"color");
 
           let btnType= $('input[name="buttonTypeEdit"]:checked').val();
           let btnLocation= $('input[name="btnLocationEdit"]:checked').val();
@@ -5417,7 +5424,7 @@
           let linkElem="";
 
            openPopupModal = (elem) =>{
-            
+            modalContent='';
             let btnAttr=elem.classList[1].split("_")[1];
             let popupData=tempArray[`${btnAttr}`];
             let modalType = popupData['popupType'];
