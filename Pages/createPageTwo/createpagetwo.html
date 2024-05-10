@@ -586,6 +586,7 @@
         }
         else if (element === "image") {
           $('#createModal').modal('show');
+          $("#imgErrorMsg").remove();
           var modalTitle = document.getElementById("pageTitle")
           modalTitle.innerText = "Add Images"
           modalTitle.className=""
@@ -665,10 +666,9 @@
 
             tempArray[`imgContainerDiv${imageContainerId}`] = { type: "4", images: files }
 
-
+            $("#imgErrorMsg").remove();
             form.reset();
-            showImages()
-            dragFunction();
+            showImages();
           })
 
           showImages = () => {
@@ -1046,13 +1046,13 @@
                     <legend class="col-form-label col-sm-2 pt-0">Location:</legend>
                     <div class="col-sm-10">
                       <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="btnLocation" id="header" value="header" checked>
+                        <input class="form-check-input" type="radio" name="btnLocation" id="header" value="header" onchange="btnLocationChange()" checked>
                         <label class="form-check-label" for="header">
                           Header
                         </label>
                       </div>
                       <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="btnLocation" id="body" value="body">
+                        <input class="form-check-input" type="radio" name="btnLocation" id="body" value="body" onchange="btnLocationChange()">
                         <label class="form-check-label" for="body">
                           Body
                         </label>
@@ -1180,6 +1180,18 @@
             $("#linkDiv").css("display","none");
             $("#popupDiv").css("display","block");
            }
+          }
+
+          btnLocationChange=()=>{
+            let btnLocationOption=$('input[name="btnLocation"]:checked').val()
+            if(btnLocationOption==="header"){
+              $(`input[name=btnPosition][value=left]`).parent().css("display","inline-block");
+              $(`input[name=btnPosition][value=right]`).parent().css("display","inline-block");
+            }else if(btnLocationOption === 'body'){
+              $(`input[name=btnPosition][value=left]`).parent().css("display","none");
+              $(`input[name=btnPosition][value=right]`).parent().css("display","none");
+              $(`input[name=btnPosition][value=center]`).prop("checked",true);
+            }
           }
 
           const pdfBtn = document.getElementById('pdfFile');
@@ -1613,6 +1625,7 @@
         }
         else if (element === "image") {
           $('#createModal').modal('show');
+          $("#imgErrorMsg").remove();
           var modalTitle = document.getElementById("pageTitle")
           modalTitle.innerText = "Add Updates Images"
           modalTitle.className=`${updatesDivClass}_modal`
@@ -1695,9 +1708,10 @@
 
             tempArray[`imgContainerDiv${imageContainerId}`] = { type: "4", images: files,updates:`updates${updatesIdCount}` }
 
+            $("#imgErrorMsg").remove();
             form.reset();
             showImages()
-            dragFunction();
+
           })
 
           showImages = () => {
@@ -2041,13 +2055,13 @@
                     <legend class="col-form-label col-sm-2 pt-0">Location:</legend>
                     <div class="col-sm-10">
                       <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="btnLocation" id="header" value="header" checked>
+                        <input class="form-check-input" type="radio" name="btnLocation" id="header" value="header" onchange="btnLocationChange()" checked>
                         <label class="form-check-label" for="header">
                           Header
                         </label>
                       </div>
                       <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="btnLocation" id="body" value="body">
+                        <input class="form-check-input" type="radio" name="btnLocation" id="body" value="body" onchange="btnLocationChange()">
                         <label class="form-check-label" for="body">
                           Body
                         </label>
@@ -2175,6 +2189,18 @@
             $("#linkDiv").css("display","none");
             $("#popupDiv").css("display","block");
            }
+          }
+
+          btnLocationChange=()=>{
+            let btnLocationOption=$('input[name="btnLocation"]:checked').val()
+            if(btnLocationOption==="header"){
+              $(`input[name=btnPosition][value=left]`).parent().css("display","inline-block");
+              $(`input[name=btnPosition][value=right]`).parent().css("display","inline-block");
+            }else if(btnLocationOption === 'body'){
+              $(`input[name=btnPosition][value=left]`).parent().css("display","none");
+              $(`input[name=btnPosition][value=right]`).parent().css("display","none");
+              $(`input[name=btnPosition][value=center]`).prop("checked",true);
+            }
           }
 
           const pdfBtn = document.getElementById('pdfFile');
@@ -2729,7 +2755,9 @@
           }
 
           if(imgArry === undefined){
-            $("#imgInput").closest('form').after('<p class="error" id="imgErrorMsg">Upload the image..!</P')
+            if($("#imgErrorMsg").length === 0){
+            $("#imgInput").closest('form').after('<p class="error" id="imgErrorMsg">Upload the image..!</P');
+            }
           }else{
             $("#imgErrorMsg").remove();
           }
@@ -2858,7 +2886,7 @@
             let inputElem = document.querySelector(".imgContainer")
             let errorElem = document.querySelector(".error")
             if (!errorElem) {
-              inputElem.insertAdjacentHTML('afterend', '<p class="error">Please insert image...!</p>');
+              inputElem.insertAdjacentHTML('afterend', '<p class="error">Upload the image..!</p>');
             }
           }
         }
@@ -4358,13 +4386,13 @@
           <legend class="col-form-label col-sm-2 pt-0">Location:</legend>
           <div class="col-sm-10">
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="btnLocationEdit" id="header" value="header">
+              <input class="form-check-input" type="radio" name="btnLocationEdit" id="header" value="header" onchange="btnLocationChange()">
               <label class="form-check-label" for="header">
                 Header
               </label>
             </div>
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="btnLocationEdit" id="body" value="body" checked>
+              <input class="form-check-input" type="radio" name="btnLocationEdit" id="body" value="body" checked onchange="btnLocationChange()">
               <label class="form-check-label" for="body">
                 Body
               </label>
@@ -4542,6 +4570,28 @@
           }else if(popupType === "pdf"){
             pdfDiv.css("display","block")
           }
+
+          if (btnLocation === "header") {
+            $(`input[name=btnPositionEdit][value=left]`).parent().css("display", "inline-block");
+            $(`input[name=btnPositionEdit][value=right]`).parent().css("display", "inline-block");
+        } else if (btnLocation === 'body') {
+            $(`input[name=btnPositionEdit][value=left]`).parent().css("display", "none");
+            $(`input[name=btnPositionEdit][value=right]`).parent().css("display", "none");
+            $(`input[name=btnPositionEdit][value=center]`).prop("checked", true);
+        }
+
+        btnLocationChange = () => {
+            let btnLocationOption = $('input[name="btnLocationEdit"]:checked').val()
+            console.log(btnLocationOption, "location")
+            if (btnLocationOption === "header") {
+                $(`input[name=btnPositionEdit][value=left]`).parent().css("display", "inline-block");
+                $(`input[name=btnPositionEdit][value=right]`).parent().css("display", "inline-block");
+            } else if (btnLocationOption === 'body') {
+                $(`input[name=btnPositionEdit][value=left]`).parent().css("display", "none");
+                $(`input[name=btnPositionEdit][value=right]`).parent().css("display", "none");
+                $(`input[name=btnPositionEdit][value=center]`).prop("checked", true);
+            }
+        }
 
           let inputCount=0;  
 
@@ -5630,7 +5680,7 @@
             let inputElem = document.querySelector(".imgContainerEdit")
             let errorElem = document.querySelector(".error")
             if (!errorElem) {
-              inputElem.insertAdjacentHTML('afterend', '<p class="error">Please insert image...!</p>');
+              inputElem.insertAdjacentHTML('afterend', '<p class="error">Upload the image..!</p>');
             }
           }
 
