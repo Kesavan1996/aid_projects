@@ -5568,12 +5568,13 @@
   let inputCount=0;  
   let imageUrl='';
   let pdfUrl='';
+  
 
   if(popupType === 'image'){
-    if(typeof popupData.image === "string"){
-      imageUrl= popupData.image;
+    if(typeof popupImage === "string"){
+      imageUrl= popupImage;
     }else{
-      imageUrl= URL.createObjectURL(popupData.image)
+      imageUrl= URL.createObjectURL(popupImage)
     }
     $("#imageUploadEdit #previewDivEdit").html(`<img src=${imageUrl} id="uploadedImgEdit" />`);
   }else if(popupType === "pdf"){

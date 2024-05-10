@@ -662,6 +662,8 @@
               }
 
             }
+
+            console.log(files,"file");
             imagesContainerArrar[`imgContainerDiv${imageContainerId}`] = files
 
             tempArray[`imgContainerDiv${imageContainerId}`] = { type: "4", images: files }
@@ -4910,8 +4912,7 @@
               tempArray[`${parentId}`] = { type: "4", images: imgfiles }
             }
             form.reset();
-            showImages()
-            dragFunction();
+            showImages();
 
           }
           showImages = () => {
