@@ -4557,22 +4557,38 @@
             for(let i = 0; i < inputFields.length; i++){
               let inputType = inputFields[i].type
               let inputName = inputFields[i].name
-              if(inputName === "link" && inputFields[i].value===""){
-                isEmpty=true
-              }else if(inputType==="file" && inputFields[i].files.length===0){
-               isEmpty=true
-              }
-              else if(CKEDITOR.instances[`captionInput${h}`]?.getData()===""){
-                isEmpty=true
+              if(inputName === "link"){
+                if(inputFields[i].value===""){
+                  isEmpty=true;
+                  if($(`#hyperError${h}${i}`).length === 0){
+                    $(inputFields[i]).after(`<p class="error" id="hyperError${h}${i}">Please enter the field..!</p>`)
+                  }
+                }else{
+                  $(`#hyperError${h}${i}`).remove();
+                }
+              }else if(inputType==="file"){
+                if(inputFields[i].files.length===0){
+                  isEmpty=true;
+                  if($(`#hyperError${h}${i}`).length === 0){
+                    $(inputFields[i]).after(`<p class="error" id="hyperError${h}${i}">Upload the image..!</p>`);
+                  }
+                }else{
+                  $(`#hyperError${h}${i}`).remove();
+                }
+              }else if(inputName === "caption"){
+                if(CKEDITOR.instances[`captionInput${h}`]?.getData()===""){
+                  isEmpty=true;
+                  console.log(`${h}${i}`);
+                  if($(`#hyperError${h}${i}`).length === 0){
+                    $(`#cke_captionInput${h}`).after(`<p class="error" id="hyperError${h}${i}">Please enter the field..!</p>`);
+                  }
+                }else{
+                  $(`#hyperError${h}${i}`).remove();
+                }
               }
             }
 
-            if(isEmpty===true){
-              if($(`.formError${h}`).length==0){
-                $(`#hyperLink_form${h}`).after(`<span class="formError${h} error">Please enter the field..!</span>`)
-              }   
-            }else{
-              $(`.formError${h}`).remove()
+            if(isEmpty===false){
               hyperLinks.push(retrieved)
             }
           }
@@ -6711,21 +6727,30 @@
             for(let i = 0; i < inputFields.length; i++){
               let inputType = inputFields[i].type
               let inputName = inputFields[i].name
-              if(inputName === "link" && inputFields[i].value===""){
-                isEmpty=true
-              }
-              else if(CKEDITOR.instances[`captionInputEdit${h}`]?.getData()===""){
-                isEmpty=true
+              if(inputName === "link"){
+                if(inputFields[i].value===""){
+                  isEmpty=true;
+                  if($(`#hyperError${h}${i}`).length === 0){
+                    $(inputFields[i]).after(`<p class="error" id="hyperError${h}${i}">Please enter the field..!</p>`)
+                  }
+                }else{
+                  $(`#hyperError${h}${i}`).remove();
+                }
+              }else if(inputName === "caption"){
+                if(CKEDITOR.instances[`captionInputEdit${h}`]?.getData()===""){
+                  isEmpty=true;
+                  console.log(`${h}${i}`);
+                  if($(`#hyperError${h}${i}`).length === 0){
+                    $(`#cke_captionInputEdit${h}`).after(`<p class="error" id="hyperError${h}${i}">Please enter the field..!</p>`);
+                  }
+                }else{
+                  $(`#hyperError${h}${i}`).remove();
+                }
               }
             }
 
-            if(isEmpty===true){
-              if($(`.formError${h}`).length==0){
-                $(`#hyperLinkEdit_form${h}`).after(`<span class="formError${h} error">Please enter the field..!</span>`)
-              }   
-            }else{
-              $(`.formError${h}`).remove()
-              hyperLinksUpdate.push(retrieved)
+            if(isEmpty===false){
+              hyperLinksUpdate.push(retrieved)  
             }
           }
 

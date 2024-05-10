@@ -1245,13 +1245,11 @@ label.radio {
 
 .formDiv{
     display: flex;
-    flex-wrap: wrap;
-    row-gap: 1rem;
-    column-gap: 1rem;
+    flex-direction: column;
 }
 
 .formDiv .inputItem{    
-    width: 47%;
+    width: 100%;
     flex-grow: 1;
     flex-shrink: 0;
 }
@@ -1356,6 +1354,8 @@ label.radio {
     align-items: center;
     justify-content: space-between;
     width: 100%;
+    margin-bottom: 10px;
+    margin-top: 10px;
 }
 
 .hyperLinkModalDivs .hyperImgContainer,
@@ -1463,7 +1463,7 @@ label.radio {
 .hyperLinkModalDiv .hyperLinkForm,
 .stampCardLinkForm{
     padding: 15px 0;
-    border-bottom: 1px solid grey;
+    border-bottom: 1px solid rgb(188, 188, 188);
 }
 
 .hyperLinkForm .addMore,
@@ -1471,6 +1471,10 @@ label.radio {
 .editForm .addMore
 {
    align-self: flex-end ;
+}
+
+.hyperLinkForm .error{
+    margin-top: 0;
 }
 
 .hyperLinkForm .addMore button,
