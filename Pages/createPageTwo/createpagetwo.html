@@ -1008,134 +1008,290 @@
           popupPdf="";
           popupImage="";
 
-          let buttonInput = `<div class="row gap-4">
-                      <div class="col-12">
-                        <fieldset class="row">
-                          <legend class="col-form-label col-4 pt-0">Button Type:</legend>
-                          <div class="col-8">
-                            <div class="form-check form-check-inline">
-                              <input class="form-check-input" type="radio" name="buttonType" id="link" value="link" onchange="buttonTypeChange(this)" checked>
-                              <label class="form-check-label" for="link">
-                                Link
-                              </label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                              <input class="form-check-input" type="radio" name="buttonType" id="popup" value="popup" onchange="buttonTypeChange(this)" >
-                              <label class="form-check-label" for="popup">
-                                Popup
-                              </label>
-                            </div>
-                          </div>
-                      </fieldset>
-                    </div>
-                    <div class="col-12">
-                      <input type="text" class="form-control" id="btnName" placeholder="Name">
-                    </div>
-                    <div class="col-12" id="linkDiv" style="display:block">
-                      <input type="text" class="form-control" id="btnLinkId" placeholder="Link">
-                    </div>
-                    <div class="col-12">
-                      <div class="row align-items-center">
-                      <label for="colorPickerId" class="form-label col-6">Choose background Color</label>
-                      <div class="col-4">
-                        <input type="color" class="form-control form-control-color" id="btnColorPicker" value="#b3b3b3">
-                      </div>
-                    </div>
-                    </div>
-                  </div>
-                  <div id="popupDiv" style="display:none" class="mt-4">
-                  <fieldset class="row mb-2 mt-2">
-                    <legend class="col-form-label col-sm-2 pt-0">Location:</legend>
-                    <div class="col-sm-10">
-                      <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="btnLocation" id="header" value="header" onchange="btnLocationChange()" checked>
-                        <label class="form-check-label" for="header">
-                          Header
-                        </label>
-                      </div>
-                      <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="btnLocation" id="body" value="body" onchange="btnLocationChange()">
-                        <label class="form-check-label" for="body">
-                          Body
-                        </label>
-                      </div>
-                    </div>
-                  </fieldset>
+          let buttonInput = `<div class="row gap-2">
+                          <div class="col-12">
+                            <fieldset class="row">
+                              <legend class="col-form-label col-4 pt-0">Buttons Count:</legend>
+                              <div class="col-8">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="radio" name="buttonCount" id="one" value="one" onchange="buttonCountChange(this)" checked>
+                                  <label class="form-check-label" for="one">
+                                    One
+                                  </label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="radio" name="buttonCount" id="two" value="two" onchange="buttonCountChange(this)" >
+                                  <label class="form-check-label" for="two">
+                                    Two
+                                  </label>
+                                </div>
+                              </div>
+                          </fieldset>
+                        </div>
+                                <div class="d-flex gap-4 flex-column">
+                                      <div class="col-12">
+                                        <fieldset class="row">
+                                          <legend class="col-form-label col-4 pt-0">Button Type:</legend>
+                                          <div class="col-8">
+                                            <div class="form-check form-check-inline">
+                                              <input class="form-check-input" type="radio" name="buttonType" id="link" value="link" onchange="buttonTypeChange(this)" checked>
+                                              <label class="form-check-label" for="link">
+                                                Link
+                                              </label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                              <input class="form-check-input" type="radio" name="buttonType" id="popup" value="popup" onchange="buttonTypeChange(this)" >
+                                              <label class="form-check-label" for="popup">
+                                                Popup
+                                              </label>
+                                            </div>
+                                          </div>
+                                      </fieldset>
+                                    </div>
+                            
+                                  <div class="col-12">
+                                    <input type="text" class="form-control" id="btnName" placeholder="Name">
+                                  </div>
+                                  <div class="col-12" id="linkDiv" style="display:block">
+                                    <input type="text" class="form-control" id="btnLinkId" placeholder="Link">
+                                  </div>
+                                  <div class="col-12">
+                                    <div class="row align-items-center">
+                                    <label for="colorPickerId" class="form-label col-6">Choose background Color</label>
+                                    <div class="col-4">
+                                      <input type="color" class="form-control form-control-color" id="btnColorPicker" value="#b3b3b3">
+                                    </div>
+                                  </div>
+                                  </div>
+                                  <div class="col-12">
+                                    <fieldset class="row mb-2 mt-2">
+                                      <legend class="col-form-label col-sm-2 pt-0">Position:</legend>
+                                      <div class="col-sm-10">
+                                        <div class="form-check form-check-inline">
+                                          <input class="form-check-input" type="radio" name="btnPosition" id="left" value="left">
+                                          <label class="form-check-label" for="left">
+                                            Left
+                                          </label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                          <input class="form-check-input" type="radio" name="btnPosition" id="center" value="center" checked>
+                                          <label class="form-check-label" for="center">
+                                            Center
+                                          </label>
+                                        </div>
+    
+                                        <div class="form-check form-check-inline">
+                                          <input class="form-check-input" type="radio" name="btnPosition" id="right" value="right">
+                                          <label class="form-check-label" for="right">
+                                            Right
+                                          </label>
+                                        </div>
+                                      </div>
+                                    </fieldset>
+                                  </div>
+                                </div>
+                                <div id="popupDiv" style="display:none">
+                                <fieldset class="row mb-2 mt-2">
+                                  <legend class="col-form-label col-sm-2 pt-0">Location:</legend>
+                                  <div class="col-sm-10">
+                                    <div class="form-check form-check-inline">
+                                      <input class="form-check-input" type="radio" name="btnLocation" id="header" value="header" checked>
+                                      <label class="form-check-label" for="header">
+                                        Header
+                                      </label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                      <input class="form-check-input" type="radio" name="btnLocation" id="body" value="body">
+                                      <label class="form-check-label" for="body">
+                                        Body
+                                      </label>
+                                    </div>
+                                  </div>
+                                </fieldset>
 
-                  <fieldset class="row mb-2 mt-2">
-                    <legend class="col-form-label col-sm-2 pt-0">Position:</legend>
-                    <div class="col-sm-10">
-                      <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="btnPosition" id="left" value="left">
-                        <label class="form-check-label" for="left">
-                          Left
-                        </label>
-                      </div>
-                      <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="btnPosition" id="center" value="center" checked>
-                        <label class="form-check-label" for="center">
-                          Center
-                        </label>
-                      </div>
-
-                      <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="btnPosition" id="right" value="right">
-                        <label class="form-check-label" for="right">
-                          Right
-                        </label>
-                      </div>
-                    </div>
-                  </fieldset>
-                  <fieldset class="row mb-2 mt-2">
-                    <legend class="col-form-label col-sm-2 pt-0">Content</legend>
-                    <div class="col-sm-10">
-                      <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="popupType" id="linkBtn" value="link" checked>
-                        <label class="form-check-label" for="linkBtn">
-                          Link
-                        </label>
-                      </div>
-                      <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="popupType" id="imageBtn" value="image">
-                        <label class="form-check-label" for="imageBtn">
-                          Image
-                        </label>
-                      </div>
-                      <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="popupType" id="pdfBtn" value="pdf">
-                        <label class="form-check-label" for="pdfBtn">
-                          PDF
-                        </label>
-                      </div>
-                    </div>
-                  </fieldset>
-                  <div class="uploadContainer">
-                    <div class="uploadDiv" id="pdfUpload" style="display:none">
-                      <input type="file" id="pdfFile" accept ="application/pdf" hidden/>
-                      <label for="pdfFile">Choose File</label>
-                      <span id="pdfChosen">No file chosen</span>
-                    </div>
-                    <div class="uploadDiv" id="imageUpload" style="display:none">
-                      <input type="file" id="imageFile" accept="image/png, image/jpeg" hidden/>
-                      <label for="imageFile">Choose File</label>
-                      <div id="previewDiv"></div>
-                    </div>
-                    <div class="uploadDiv" id="linkUpload">
-                      <div id="linkForm">
-                        <form class="input-div">
-                          <div class="links">
-                            <input type='text' class="form-control" name='name' placeholder="Name">
-                            <input type="text" class="form-control" name="link" placeholder="Link">
-                          </div>
-                          <div class="btn-div">
-                            <button type="button" id="addInputFieldButton" class='add-more-btn'><i class="fa-solid fa-plus"></i></button>
-                          </div>
-                        </form> 
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                       
+                                <fieldset class="row mb-2 mt-2">
+                                  <legend class="col-form-label col-sm-2 pt-0">Content</legend>
+                                  <div class="col-sm-10">
+                                    <div class="form-check form-check-inline">
+                                      <input class="form-check-input" type="radio" name="popupType" id="linkBtn" value="link" checked>
+                                      <label class="form-check-label" for="linkBtn">
+                                        Link
+                                      </label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                      <input class="form-check-input" type="radio" name="popupType" id="imageBtn" value="image">
+                                      <label class="form-check-label" for="imageBtn">
+                                        Image
+                                      </label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                      <input class="form-check-input" type="radio" name="popupType" id="pdfBtn" value="pdf">
+                                      <label class="form-check-label" for="pdfBtn">
+                                        PDF
+                                      </label>
+                                    </div>
+                                  </div>
+                                </fieldset>
+                                <div class="uploadContainer">
+                                  <div class="uploadDiv" id="pdfUpload" style="display:none">
+                                    <input type="file" id="pdfFile" accept ="application/pdf" hidden/>
+                                    <label for="pdfFile">Choose File</label>
+                                    <span id="pdfChosen">No file chosen</span>
+                                  </div>
+                                  <div class="uploadDiv" id="imageUpload" style="display:none">
+                                    <input type="file" id="imageFile" accept="image/png, image/jpeg" hidden/>
+                                    <label for="imageFile">Choose File</label>
+                                    <div id="previewDiv"></div>
+                                  </div>
+                                  <div class="uploadDiv" id="linkUpload">
+                                    <div id="linkForm">
+                                      <form class="input-div">
+                                        <div class="links">
+                                          <input type='text' class="form-control" name='name' placeholder="Name">
+                                          <input type="text" class="form-control" name="link" placeholder="Link">
+                                        </div>
+                                        <div class="btn-div">
+                                          <button type="button" id="addInputFieldButton" class='add-more-btn'><i class="fa-solid fa-plus"></i></button>
+                                        </div>
+                                      </form> 
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                      </div>  
+                      
               </div>`
+
+        let buttonInputTwo =  `<div>
+                                  <div class="col-12">
+                                    <fieldset class="row">
+                                      <legend class="col-form-label col-4 pt-0">Button Type:</legend>
+                                      <div class="col-8">
+                                        <div class="form-check form-check-inline">
+                                          <input class="form-check-input" type="radio" name="buttonTypeTwo" id="linkTwo" value="link" onchange="buttonTypeChangeTwo(this)" checked>
+                                          <label class="form-check-label" for="linkTwo">
+                                            Link
+                                          </label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                          <input class="form-check-input" type="radio" name="buttonTypeTwo" id="popupTwo" value="popup" onchange="buttonTypeChangeTwo(this)" >
+                                          <label class="form-check-label" for="popupTwo">
+                                            Popup
+                                          </label>
+                                        </div>
+                                      </div>
+                                  </fieldset>
+                                </div>
+
+                              <div class="col-12">
+                                <input type="text" class="form-control" id="btnNameTwo" placeholder="Name">
+                              </div>
+                              <div class="col-12" id="linkDiv" style="display:block">
+                                <input type="text" class="form-control" id="btnLinkIdTwo" placeholder="Link">
+                              </div>
+                              <div class="col-12">
+                                <div class="row align-items-center">
+                                <label for="btnColorPickerwo" class="form-label col-6">Choose background Color</label>
+                                <div class="col-4">
+                                  <input type="color" class="form-control form-control-color" id="btnColorPickerwo" value="#b3b3b3">
+                                </div>
+                              </div>
+                              </div>
+                            </div>
+                            <div id="popupDiv" style="display:none" class="mt-4">
+                            <fieldset class="row mb-2 mt-2">
+                              <legend class="col-form-label col-sm-2 pt-0">Location:</legend>
+                              <div class="col-sm-10">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="radio" name="btnLocationTwo" id="headerTwo" value="header" onchange="btnLocationChangeTwo()" checked>
+                                  <label class="form-check-label" for="headerTwo">
+                                    Header
+                                  </label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="radio" name="btnLocationTwo" id="bodyTwo" value="body" onchange="btnLocationChangeTwo()">
+                                  <label class="form-check-label" for="bodyTwo">
+                                    Body
+                                  </label>
+                                </div>
+                              </div>
+                            </fieldset>
+
+                            <fieldset class="row mb-2 mt-2">
+                              <legend class="col-form-label col-sm-2 pt-0">Position:</legend>
+                              <div class="col-sm-10">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="radio" name="btnPositionTwo" id="leftTwo" value="left">
+                                  <label class="form-check-label" for="leftTwo">
+                                    Left
+                                  </label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="radio" name="btnPositionTwo" id="centerTwo" value="center" checked>
+                                  <label class="form-check-label" for="centerTwo">
+                                    Center
+                                  </label>
+                                </div>
+
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="radio" name="btnPositionTwo" id="rightTwo" value="right">
+                                  <label class="form-check-label" for="rightTwo">
+                                    Right
+                                  </label>
+                                </div>
+                              </div>
+                            </fieldset>
+                            <fieldset class="row mb-2 mt-2">
+                              <legend class="col-form-label col-sm-2 pt-0">Content</legend>
+                              <div class="col-sm-10">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="radio" name="popupTypeTwo" id="linkBtnTwo" value="link" checked>
+                                  <label class="form-check-label" for="linkBtnTwo">
+                                    Link
+                                  </label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="radio" name="popupTypeTwo" id="imageBtnTwo" value="image">
+                                  <label class="form-check-label" for="imageBtnTwo">
+                                    Image
+                                  </label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="radio" name="popupTypeTwo" id="pdfBtnTwo" value="pdf">
+                                  <label class="form-check-label" for="pdfBtnTwo">
+                                    PDF
+                                  </label>
+                                </div>
+                              </div>
+                            </fieldset>
+                            <div class="uploadContainer">
+                              <div class="uploadDiv" id="pdfUploadTwo" style="display:none">
+                                <input type="file" id="pdfFileTwo" accept ="application/pdf" hidden/>
+                                <label for="pdfFileTwo">Choose File</label>
+                                <span id="pdfChosenTwo">No file chosen</span>
+                              </div>
+                              <div class="uploadDiv" id="imageUploadTwo" style="display:none">
+                                <input type="file" id="imageFileTwo" accept="image/png, image/jpeg" hidden/>
+                                <label for="imageFileTwo">Choose File</label>
+                                <div id="previewDivTwo"></div>
+                              </div>
+                              <div class="uploadDiv" id="linkUploadTwo">
+                                <div id="linkFormTwo">
+                                  <form class="input-div">
+                                    <div class="links">
+                                      <input type='text' class="form-control" name='name' placeholder="Name">
+                                      <input type="text" class="form-control" name="link" placeholder="Link">
+                                    </div>
+                                    <div class="btn-div">
+                                      <button type="button" id="addInputFieldButtonTwo" class='add-more-btn'><i class="fa-solid fa-plus"></i></button>
+                                    </div>
+                                  </form> 
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>  `
 
           let buttonDiv = document.createElement("div")
           buttonDiv.id = "btnLink"
@@ -1159,6 +1315,8 @@
           var imageDiv=$("#imageUpload")
           var pdfDiv=$("#pdfUpload")
           var uploadDiv=$(".uploadDiv")
+          
+          //
        
           function popupChangeFn(){
             let popupType= $('input[name="popupType"]:checked').val()
@@ -1174,6 +1332,10 @@
           }
 
           buttonTypeChange=(elem)=>{
+            let buttonsCount= $('input[name="buttonCount"]:checked').val()
+          }
+
+          buttonTypeChange=(elem)=>{
            let buttonOption= $(elem).val();
            if(buttonOption === "link"){
             $("#popupDiv").css("display","none");
@@ -1182,18 +1344,6 @@
             $("#linkDiv").css("display","none");
             $("#popupDiv").css("display","block");
            }
-          }
-
-          btnLocationChange=()=>{
-            let btnLocationOption=$('input[name="btnLocation"]:checked').val()
-            if(btnLocationOption==="header"){
-              $(`input[name=btnPosition][value=left]`).parent().css("display","inline-block");
-              $(`input[name=btnPosition][value=right]`).parent().css("display","inline-block");
-            }else if(btnLocationOption === 'body'){
-              $(`input[name=btnPosition][value=left]`).parent().css("display","none");
-              $(`input[name=btnPosition][value=right]`).parent().css("display","none");
-              $(`input[name=btnPosition][value=center]`).prop("checked",true);
-            }
           }
 
           const pdfBtn = document.getElementById('pdfFile');
@@ -2051,19 +2201,45 @@
                       </div>
                     </div>
                     </div>
+                    <div class="col-12">
+                      <fieldset class="row mb-2 mt-2">
+                        <legend class="col-form-label col-sm-2 pt-0">Position:</legend>
+                        <div class="col-sm-10">
+                          <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="btnPosition" id="left" value="left">
+                            <label class="form-check-label" for="left">
+                              Left
+                            </label>
+                          </div>
+                          <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="btnPosition" id="center" value="center" checked>
+                            <label class="form-check-label" for="center">
+                              Center
+                            </label>
+                          </div>
+    
+                          <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="btnPosition" id="right" value="right">
+                            <label class="form-check-label" for="right">
+                              Right
+                            </label>
+                          </div>
+                        </div>
+                      </fieldset>
+                    </div>
                   </div>
                   <div id="popupDiv" style="display:none" class="mt-4">
                   <fieldset class="row mb-2 mt-2">
                     <legend class="col-form-label col-sm-2 pt-0">Location:</legend>
                     <div class="col-sm-10">
                       <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="btnLocation" id="header" value="header" onchange="btnLocationChange()" checked>
+                        <input class="form-check-input" type="radio" name="btnLocation" id="header" value="header"  checked>
                         <label class="form-check-label" for="header">
                           Header
                         </label>
                       </div>
                       <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="btnLocation" id="body" value="body" onchange="btnLocationChange()">
+                        <input class="form-check-input" type="radio" name="btnLocation" id="body" value="body">
                         <label class="form-check-label" for="body">
                           Body
                         </label>
@@ -2071,30 +2247,7 @@
                     </div>
                   </fieldset>
 
-                  <fieldset class="row mb-2 mt-2">
-                    <legend class="col-form-label col-sm-2 pt-0">Position:</legend>
-                    <div class="col-sm-10">
-                      <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="btnPosition" id="left" value="left">
-                        <label class="form-check-label" for="left">
-                          Left
-                        </label>
-                      </div>
-                      <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="btnPosition" id="center" value="center" checked>
-                        <label class="form-check-label" for="center">
-                          Center
-                        </label>
-                      </div>
-
-                      <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="btnPosition" id="right" value="right">
-                        <label class="form-check-label" for="right">
-                          Right
-                        </label>
-                      </div>
-                    </div>
-                  </fieldset>
+      
                   <fieldset class="row mb-2 mt-2">
                     <legend class="col-form-label col-sm-2 pt-0">Content</legend>
                     <div class="col-sm-10">
@@ -2191,18 +2344,6 @@
             $("#linkDiv").css("display","none");
             $("#popupDiv").css("display","block");
            }
-          }
-
-          btnLocationChange=()=>{
-            let btnLocationOption=$('input[name="btnLocation"]:checked').val()
-            if(btnLocationOption==="header"){
-              $(`input[name=btnPosition][value=left]`).parent().css("display","inline-block");
-              $(`input[name=btnPosition][value=right]`).parent().css("display","inline-block");
-            }else if(btnLocationOption === 'body'){
-              $(`input[name=btnPosition][value=left]`).parent().css("display","none");
-              $(`input[name=btnPosition][value=right]`).parent().css("display","none");
-              $(`input[name=btnPosition][value=center]`).prop("checked",true);
-            }
           }
 
           const pdfBtn = document.getElementById('pdfFile');
@@ -3507,8 +3648,8 @@
                 if(btnLink !== ""){
                   $('#createModal').modal('hide');
                   updatesContent.appendChild(btnDiv);            
-                  btnContainerArray[`${parentId}`] = { name: btnName,btnType:"link", link: btnLink, bgColor: btnColor,updates:`updates${idCount}` }
-                  tempArray[`${parentId}`] = { type: "8", name: btnName,btnType:"link", link: btnLink, bgColor: btnColor,updates:`updates${idCount}` }
+                  btnContainerArray[`${parentId}`] = { name: btnName,btnType:"link", link: btnLink,btnPosition, bgColor: btnColor,updates:`updates${idCount}` }
+                  tempArray[`${parentId}`] = { type: "8", name: btnName,btnType:"link", link: btnLink,btnPosition, bgColor: btnColor,updates:`updates${idCount}` }
                 }
               }
             }else{
@@ -3544,8 +3685,8 @@
               if(btnLink !== ""){
                 $('#createModal').modal('hide');
                 contentCards.appendChild(btnDiv);            
-                btnContainerArray[`${parentId}`] = { name: btnName,btnType:"link", link: btnLink, bgColor: btnColor }
-                tempArray[`${parentId}`] = { type: "8", name: btnName,btnType:"link", link: btnLink, bgColor: btnColor}
+                btnContainerArray[`${parentId}`] = { name: btnName,btnType:"link",btnPosition, link: btnLink, bgColor: btnColor }
+                tempArray[`${parentId}`] = { type: "8", name: btnName,btnType:"link",btnPosition, link: btnLink, bgColor: btnColor}
               }
             }
             
@@ -4335,17 +4476,20 @@
           const { name, bgColor } = btnContainerArray[parentId];
           let link = btnContainerArray[parentId]['link'] === undefined ? '': btnContainerArray[parentId]['link'];
           let btnType = tempArray[parentId]['btnType'] === undefined? 'link': tempArray[parentId]['btnType'];
+          let btnPosition= tempArray[parentId]['btnPosition'] === undefined ? 'center': tempArray[parentId]['btnPosition'];
           let btnName = document.getElementById(`${id}`).children[0].innerText
           let btnLink = document.getElementById(`${id}`).children[0].getAttribute("href");
 
           let btnLocation='';
-          let btnPosition='';
           let popupType='';
           let links;
 
+
+        
+
           if(btnType === "popup"){
            btnLocation= tempArray[parentId]['btnLocation']  === undefined ? 'body': tempArray[parentId]['btnLocation'];
-           btnPosition= tempArray[parentId]['btnPosition'] === undefined ? 'center': tempArray[parentId]['btnPosition'];
+          
            popupType= tempArray[parentId]['popupType'] === undefined ? 'link': tempArray[parentId]['popupType'];
 
            if(popupType === 'link'){
@@ -4395,26 +4539,8 @@
             </div>
           </div>
           </div>
-        </div>
-        <div id="popupDivEdit" style="display:none" class="mt-4">
-        <fieldset class="row mb-2 mt-2">
-          <legend class="col-form-label col-sm-2 pt-0">Location:</legend>
-          <div class="col-sm-10">
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="btnLocationEdit" id="header" value="header" onchange="btnLocationChange()">
-              <label class="form-check-label" for="header">
-                Header
-              </label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="btnLocationEdit" id="body" value="body" checked onchange="btnLocationChange()">
-              <label class="form-check-label" for="body">
-                Body
-              </label>
-            </div>
-          </div>
-        </fieldset>
-
+          <div class="col-12">
+            
         <fieldset class="row mb-2 mt-2">
           <legend class="col-form-label col-sm-2 pt-0">Position:</legend>
           <div class="col-sm-10">
@@ -4439,6 +4565,27 @@
             </div>
           </div>
         </fieldset>
+          </div>
+        </div>
+        <div id="popupDivEdit" style="display:none" class="mt-4">
+        <fieldset class="row mb-2 mt-2">
+          <legend class="col-form-label col-sm-2 pt-0">Location:</legend>
+          <div class="col-sm-10">
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="btnLocationEdit" id="header" value="header">
+              <label class="form-check-label" for="header">
+                Header
+              </label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="btnLocationEdit" id="body" value="body" checked>
+              <label class="form-check-label" for="body">
+                Body
+              </label>
+            </div>
+          </div>
+        </fieldset>
+
         <fieldset class="row mb-2 mt-2">
           <legend class="col-form-label col-sm-2 pt-0">Content</legend>
           <div class="col-sm-10">
@@ -4562,9 +4709,10 @@
           })
 
           $(`input[name=buttonTypeEdit][value=${btnType=="link"?"link":"popup"}]`).prop("checked",true);
+          $(`input[name=btnPositionEdit][value=${btnPosition}]`).prop("checked",true);
           if(btnType === "popup"){
             $(`input[name=btnLocationEdit][value=${btnLocation=="body"?"body":"header"}]`).prop("checked",true);
-            $(`input[name=btnPositionEdit][value=${btnPosition}]`).prop("checked",true);
+          
             $(`input[name=popupTypeEdit][value=${popupType}]`).prop("checked",true);
           }
 
@@ -4585,28 +4733,6 @@
           }else if(popupType === "pdf"){
             pdfDiv.css("display","block")
           }
-
-          if (btnLocation === "header") {
-            $(`input[name=btnPositionEdit][value=left]`).parent().css("display", "inline-block");
-            $(`input[name=btnPositionEdit][value=right]`).parent().css("display", "inline-block");
-        } else if (btnLocation === 'body') {
-            $(`input[name=btnPositionEdit][value=left]`).parent().css("display", "none");
-            $(`input[name=btnPositionEdit][value=right]`).parent().css("display", "none");
-            $(`input[name=btnPositionEdit][value=center]`).prop("checked", true);
-        }
-
-        btnLocationChange = () => {
-            let btnLocationOption = $('input[name="btnLocationEdit"]:checked').val()
-            console.log(btnLocationOption, "location")
-            if (btnLocationOption === "header") {
-                $(`input[name=btnPositionEdit][value=left]`).parent().css("display", "inline-block");
-                $(`input[name=btnPositionEdit][value=right]`).parent().css("display", "inline-block");
-            } else if (btnLocationOption === 'body') {
-                $(`input[name=btnPositionEdit][value=left]`).parent().css("display", "none");
-                $(`input[name=btnPositionEdit][value=right]`).parent().css("display", "none");
-                $(`input[name=btnPositionEdit][value=center]`).prop("checked", true);
-            }
-        }
 
           let inputCount=0;  
 
@@ -5320,8 +5446,6 @@
           let btnName = document.getElementById("btnNameEdit").value;
           let btnLink = document.getElementById("btnLinkIdEdit")?.value;
           let btnColor = document.getElementById("btnColorPickerEdit").value;
-          console.log(btnColor,"color");
-
           let btnType= $('input[name="buttonTypeEdit"]:checked').val();
           let btnLocation= $('input[name="btnLocationEdit"]:checked').val();
           let btnPosition= $('input[name="btnPositionEdit"]:checked').val();
@@ -5411,8 +5535,8 @@
                   $('#editModal').modal('hide');
                   updatedElement.innerHTML = btnTag;
                   updatedElement.children[0].style.backgroundColor = btnColor;
-                  btnContainerArray[`${elemId}`] = { name: btnName, link: btnLink,btnType:"link", bgColor: btnColor,updates:`updates${updatesId}` }
-                  tempArray[`${elemId}`] = { type: "8", name: btnName, link: btnLink,btnType:"link", bgColor: btnColor,updates:`updates${updatesId}` }
+                  btnContainerArray[`${elemId}`] = { name: btnName, link: btnLink,btnType:"link",btnPosition, bgColor: btnColor,updates:`updates${updatesId}` }
+                  tempArray[`${elemId}`] = { type: "8", name: btnName, link: btnLink,btnType:"link",btnPosition, bgColor: btnColor,updates:`updates${updatesId}` }
                 }
               }
             }else{
@@ -5449,8 +5573,8 @@
                   $('#editModal').modal('hide');
                   updatedElement.innerHTML = btnTag;
                   updatedElement.children[0].style.backgroundColor = btnColor;
-                  btnContainerArray[`${elemId}`] = { name: btnName, link: btnLink,btnType:"link", bgColor: btnColor}
-                  tempArray[`${elemId}`] = { type: "8", name: btnName, link: btnLink,btnType:"link", bgColor: btnColor }
+                  btnContainerArray[`${elemId}`] = { name: btnName, link: btnLink,btnType:"link",btnPosition, bgColor: btnColor}
+                  tempArray[`${elemId}`] = { type: "8", name: btnName, link: btnLink,btnType:"link",btnPosition, bgColor: btnColor }
                 }
               }
             }
@@ -5508,6 +5632,8 @@
               $("#popupBtnModal .modal-body").html(modalContent);
               $('#popupBtnModal').modal('show'); 
             }
+
+            console.log(tempArray,"array")
 
         }
         else if (modalBody.children[0].className === "editHeading") {
@@ -5804,6 +5930,8 @@
           let heading = CKEDITOR.instances['updatesHeadingEdit']?.getData()
           let bgColor = document.getElementById("bgColorEdit").value
           let accordionInput = $('#showEdit:checked').val();
+
+          console.log(heading,"heading")
 
           let showAccordion= accordionInput===undefined?false:true
 

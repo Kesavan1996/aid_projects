@@ -1080,10 +1080,10 @@
               let btnName = data.name;
               let btnLink = data.link && data.link;
 
-              let btnType= data.btnType;
-              let btnLocation= data.btnLocation;
-              let btnPosition= data.btnPosition;
-              let popupType= data.popupType;
+              let btnType= data.btnType === undefined ? "link":data.btnType;
+              let btnLocation= data.btnLocation === undefined ? "header":data.btnLocation;
+              let btnPosition= data.btnPosition === undefined ? "center":data.btnPosition;
+              let popupType= data.popupType === undefined ? "image":data.popupType;
               let btnColor = data.bgColor;
               let links=data.links;
 
@@ -1138,7 +1138,9 @@
     
               let linkDiv = document.createElement("div")
               linkDiv.className = "linkDiv"
-              linkDiv.id = "btnLink" + buttonId
+              linkDiv.id = "btnLink" + buttonId;
+              linkDiv.style.textAlign=`${btnPosition}`;
+
     
               clickTag.setAttribute("onclick", `editModal("editButton",this.previousElementSibling.id,this.parentElement.id)`)
   
@@ -1172,8 +1174,8 @@
                           tempArray[`btnLinkDiv${buttonId}`] = { type: "8", name: btnName, btnType:"popup", popupType:"link",links:links,btnLocation, btnPosition, bgColor: btnColor,updates:`updates${idCount}` }
                     }
                   }else{           
-                    btnContainerArray[`btnLinkDiv${buttonId}`] = { name: btnName,btnType:"link", link: btnLink, bgColor: btnColor,updates:`updates${idCount}` }
-                    tempArray[`btnLinkDiv${buttonId}`] = { type: "8", name: btnName,btnType:"link", link: btnLink, bgColor: btnColor,updates:`updates${idCount}` }
+                    btnContainerArray[`btnLinkDiv${buttonId}`] = { name: btnName,btnType:"link", link: btnLink,btnPosition, bgColor: btnColor,updates:`updates${idCount}` }
+                    tempArray[`btnLinkDiv${buttonId}`] = { type: "8", name: btnName,btnType:"link", link: btnLink,btnPosition, bgColor: btnColor,updates:`updates${idCount}` }
                   }
               }else{
                 if(btnType === "popup"){
@@ -1188,8 +1190,8 @@
                         tempArray[`btnLinkDiv${buttonId}`] = { type: "8", name: btnName, btnType:"popup", popupType:"link",links:links,btnLocation, btnPosition, bgColor: btnColor}
                   }
                 }else{           
-                  btnContainerArray[`btnLinkDiv${buttonId}`] = { name: btnName,btnType:"link", link: btnLink, bgColor: btnColor}
-                  tempArray[`btnLinkDiv${buttonId}`] = { type: "8", name: btnName,btnType:"link", link: btnLink, bgColor: btnColor}
+                  btnContainerArray[`btnLinkDiv${buttonId}`] = { name: btnName,btnType:"link", link: btnLink,btnPosition, bgColor: btnColor}
+                  tempArray[`btnLinkDiv${buttonId}`] = { type: "8", name: btnName,btnType:"link", link: btnLink,btnPosition, bgColor: btnColor}
                 }
               }
 
@@ -2075,19 +2077,45 @@
             </div>
           </div>
           </div>
+          <div class="col-12">
+            <fieldset class="row mb-2 mt-2">
+              <legend class="col-form-label col-sm-2 pt-0">Position:</legend>
+              <div class="col-sm-10">
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="btnPosition" id="left" value="left">
+                  <label class="form-check-label" for="left">
+                    Left
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="btnPosition" id="center" value="center" checked>
+                  <label class="form-check-label" for="center">
+                    Center
+                  </label>
+                </div>
+    
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="btnPosition" id="right" value="right">
+                  <label class="form-check-label" for="right">
+                    Right
+                  </label>
+                </div>
+              </div>
+            </fieldset>
+          </div>
         </div>
         <div id="popupDiv" style="display:none" class="mt-4">
         <fieldset class="row mb-2 mt-2">
           <legend class="col-form-label col-sm-2 pt-0">Location:</legend>
           <div class="col-sm-10">
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="btnLocation" id="header" value="header" onchange="btnLocationChange()" checked>
+              <input class="form-check-input" type="radio" name="btnLocation" id="header" value="header" checked>
               <label class="form-check-label" for="header">
                 Header
               </label>
             </div>
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="btnLocation" id="body" value="body" onchange="btnLocationChange()">
+              <input class="form-check-input" type="radio" name="btnLocation" id="body" value="body">
               <label class="form-check-label" for="body">
                 Body
               </label>
@@ -2095,30 +2123,7 @@
           </div>
         </fieldset>
 
-        <fieldset class="row mb-2 mt-2">
-          <legend class="col-form-label col-sm-2 pt-0">Position:</legend>
-          <div class="col-sm-10">
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="btnPosition" id="left" value="left">
-              <label class="form-check-label" for="left">
-                Left
-              </label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="btnPosition" id="center" value="center" checked>
-              <label class="form-check-label" for="center">
-                Center
-              </label>
-            </div>
 
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="btnPosition" id="right" value="right">
-              <label class="form-check-label" for="right">
-                Right
-              </label>
-            </div>
-          </div>
-        </fieldset>
         <fieldset class="row mb-2 mt-2">
           <legend class="col-form-label col-sm-2 pt-0">Content</legend>
           <div class="col-sm-10">
@@ -2218,17 +2223,6 @@
            }
           }
 
-          btnLocationChange=()=>{
-            let btnLocationOption=$('input[name="btnLocation"]:checked').val()
-            if(btnLocationOption==="header"){
-              $(`input[name=btnPosition][value=left]`).parent().css("display","inline-block");
-              $(`input[name=btnPosition][value=right]`).parent().css("display","inline-block");
-            }else if(btnLocationOption === 'body'){
-              $(`input[name=btnPosition][value=left]`).parent().css("display","none");
-              $(`input[name=btnPosition][value=right]`).parent().css("display","none");
-              $(`input[name=btnPosition][value=center]`).prop("checked",true);
-            }
-          }
 
           const pdfBtn = document.getElementById('pdfFile');
           const pdfChosen = document.getElementById('pdfChosen');
@@ -2889,19 +2883,45 @@
                       </div>
                     </div>
                     </div>
+                    <div class="col-12">
+                      <fieldset class="row mb-2 mt-2">
+                        <legend class="col-form-label col-sm-2 pt-0">Position:</legend>
+                        <div class="col-sm-10">
+                          <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="btnPosition" id="left" value="left">
+                            <label class="form-check-label" for="left">
+                              Left
+                            </label>
+                          </div>
+                          <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="btnPosition" id="center" value="center" checked>
+                            <label class="form-check-label" for="center">
+                              Center
+                            </label>
+                          </div>
+    
+                          <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="btnPosition" id="right" value="right">
+                            <label class="form-check-label" for="right">
+                              Right
+                            </label>
+                          </div>
+                        </div>
+                      </fieldset>
+                    </div>
                   </div>
                   <div id="popupDiv" style="display:none" class="mt-4">
                   <fieldset class="row mb-2 mt-2">
                     <legend class="col-form-label col-sm-2 pt-0">Location:</legend>
                     <div class="col-sm-10">
                       <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="btnLocation" id="header" value="header" onchange="btnLocationChange()" checked>
+                        <input class="form-check-input" type="radio" name="btnLocation" id="header" value="header" checked>
                         <label class="form-check-label" for="header">
                           Header
                         </label>
                       </div>
                       <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="btnLocation" id="body" value="body" onchange="btnLocationChange()">
+                        <input class="form-check-input" type="radio" name="btnLocation" id="body" value="body">
                         <label class="form-check-label" for="body">
                           Body
                         </label>
@@ -2909,30 +2929,7 @@
                     </div>
                   </fieldset>
 
-                  <fieldset class="row mb-2 mt-2">
-                    <legend class="col-form-label col-sm-2 pt-0">Position:</legend>
-                    <div class="col-sm-10">
-                      <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="btnPosition" id="left" value="left">
-                        <label class="form-check-label" for="left">
-                          Left
-                        </label>
-                      </div>
-                      <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="btnPosition" id="center" value="center" checked>
-                        <label class="form-check-label" for="center">
-                          Center
-                        </label>
-                      </div>
-
-                      <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="btnPosition" id="right" value="right">
-                        <label class="form-check-label" for="right">
-                          Right
-                        </label>
-                      </div>
-                    </div>
-                  </fieldset>
+     
                   <fieldset class="row mb-2 mt-2">
                     <legend class="col-form-label col-sm-2 pt-0">Content</legend>
                     <div class="col-sm-10">
@@ -3029,18 +3026,6 @@
             $("#linkDiv").css("display","none");
             $("#popupDiv").css("display","block");
            }
-          }
-
-          btnLocationChange=()=>{
-            let btnLocationOption=$('input[name="btnLocation"]:checked').val()
-            if(btnLocationOption==="header"){
-              $(`input[name=btnPosition][value=left]`).parent().css("display","inline-block");
-              $(`input[name=btnPosition][value=right]`).parent().css("display","inline-block");
-            }else if(btnLocationOption === 'body'){
-              $(`input[name=btnPosition][value=left]`).parent().css("display","none");
-              $(`input[name=btnPosition][value=right]`).parent().css("display","none");
-              $(`input[name=btnPosition][value=center]`).prop("checked",true);
-            }
           }
 
           const pdfBtn = document.getElementById('pdfFile');
@@ -4322,8 +4307,8 @@
                 if(btnLink !== ""){
                   $('#createModal').modal('hide');
                   updatesContent.appendChild(btnDiv);            
-                  btnContainerArray[`${parentId}`] = { name: btnName,btnType:"link", link: btnLink, bgColor: btnColor,updates:`updates${idCount}` }
-                  tempArray[`${parentId}`] = { type: "8", name: btnName,btnType:"link", link: btnLink, bgColor: btnColor,updates:`updates${idCount}` }
+                  btnContainerArray[`${parentId}`] = { name: btnName,btnType:"link", link: btnLink, bgColor: btnColor,btnPosition,updates:`updates${idCount}` }
+                  tempArray[`${parentId}`] = { type: "8", name: btnName,btnType:"link", link: btnLink, bgColor: btnColor,btnPosition,updates:`updates${idCount}` }
                 }
               }
             }else{
@@ -4359,8 +4344,8 @@
               if(btnLink !== ""){
                 $('#createModal').modal('hide');
                 contentCards.appendChild(btnDiv);            
-                btnContainerArray[`${parentId}`] = { name: btnName,btnType:"link", link: btnLink, bgColor: btnColor }
-                tempArray[`${parentId}`] = { type: "8", name: btnName,btnType:"link", link: btnLink, bgColor: btnColor}
+                btnContainerArray[`${parentId}`] = { name: btnName,btnType:"link", link: btnLink,btnPosition, bgColor: btnColor }
+                tempArray[`${parentId}`] = { type: "8", name: btnName,btnType:"link", link: btnLink,btnPosition, bgColor: btnColor}
               }
             }
             
@@ -4427,6 +4412,8 @@
               $("#popupBtnModalEdit .modal-body").html(modalContent);
               $('#popupBtnModalEdit').modal('show'); 
             }
+
+            console.log(tempArray,"temp")
 
         }
         else if (modalBody.children[0].className === "linkImgModalDiv") {
@@ -5294,15 +5281,15 @@
 
           let link = btnContainerArray[parentId]['link'] === undefined ? '': btnContainerArray[parentId]['link'];
           let btnType = tempArray[parentId]['btnType'] === undefined? 'link': tempArray[parentId]['btnType'];
+         let btnPosition= tempArray[parentId]['btnPosition'] === undefined ? 'center': tempArray[parentId]['btnPosition'];
 
+         console.log(btnPosition,"posi")
           let btnLocation='';
-          let btnPosition='';
           let popupType='';
           let links;
 
           if(btnType === "popup"){
            btnLocation= tempArray[parentId]['btnLocation']  === undefined? 'body': tempArray[parentId]['btnLocation'];
-           btnPosition= tempArray[parentId]['btnPosition'] === undefined? 'center': tempArray[parentId]['btnPosition'];
            popupType= tempArray[parentId]['popupType'] === undefined? 'link': tempArray[parentId]['popupType'];
 
            if(popupType === 'link'){
@@ -5359,27 +5346,8 @@
             </div>
           </div>
           </div>
-        </div>
-        <div id="popupDivEdit" style="display:none" class="mt-4">
-        <fieldset class="row mb-2 mt-2">
-          <legend class="col-form-label col-sm-2 pt-0">Location:</legend>
-          <div class="col-sm-10">
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="btnLocationEdit" id="header" value="header" onchange="btnLocationChange()">
-              <label class="form-check-label" for="header">
-                Header
-              </label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="btnLocationEdit" id="body" value="body" checked onchange="btnLocationChange()">
-              <label class="form-check-label" for="body">
-                Body
-              </label>
-            </div>
-          </div>
-        </fieldset>
-
-        <fieldset class="row mb-2 mt-2">
+          <div class="col-12">
+             <fieldset class="row mb-2 mt-2">
           <legend class="col-form-label col-sm-2 pt-0">Position:</legend>
           <div class="col-sm-10">
             <div class="form-check form-check-inline">
@@ -5389,7 +5357,7 @@
               </label>
             </div>
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="btnPositionEdit" id="center" value="center" checked>
+              <input class="form-check-input" type="radio" name="btnPositionEdit" id="center" value="center">
               <label class="form-check-label" for="center">
                 Center
               </label>
@@ -5399,6 +5367,26 @@
               <input class="form-check-input" type="radio" name="btnPositionEdit" id="right" value="right">
               <label class="form-check-label" for="right">
                 Right
+              </label>
+            </div>
+          </div>
+        </fieldset>
+          </div>
+        </div>
+        <div id="popupDivEdit" style="display:none" class="mt-4">
+        <fieldset class="row mb-2 mt-2">
+          <legend class="col-form-label col-sm-2 pt-0">Location:</legend>
+          <div class="col-sm-10">
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="btnLocationEdit" id="header" value="header">
+              <label class="form-check-label" for="header">
+                Header
+              </label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="btnLocationEdit" id="body" value="body" checked>
+              <label class="form-check-label" for="body">
+                Body
               </label>
             </div>
           </div>
@@ -5522,9 +5510,9 @@
   })
 
   $(`input[name=buttonTypeEdit][value=${btnType=="link"?"link":"popup"}]`).prop("checked",true);
+  $(`input[name=btnPositionEdit][value="${btnPosition}"]`).prop("checked",true);
   if (btnType === "popup") {
     $(`input[name=btnLocationEdit][value=${btnLocation=="body"?"body":"header"}]`).prop("checked",true);
-    $(`input[name=btnPositionEdit][value=${btnPosition}]`).prop("checked",true);
     $(`input[name=popupTypeEdit][value=${popupType}]`).prop("checked",true);
   }
   if(btnType === "link"){
@@ -5541,28 +5529,6 @@
     imageDiv.css("display","flex")
   }else if(popupType === "pdf"){
     pdfDiv.css("display","block")
-  }
-
-  if(btnLocation==="header"){
-    $(`input[name=btnPositionEdit][value=left]`).parent().css("display","inline-block");
-    $(`input[name=btnPositionEdit][value=right]`).parent().css("display","inline-block");
-  }else if(btnLocation === 'body'){
-    $(`input[name=btnPositionEdit][value=left]`).parent().css("display","none");
-    $(`input[name=btnPositionEdit][value=right]`).parent().css("display","none");
-    $(`input[name=btnPositionEdit][value=center]`).prop("checked",true);
-  }
-
-   btnLocationChange=()=>{
-    let btnLocationOption=$('input[name="btnLocationEdit"]:checked').val()
-    console.log(btnLocationOption,"location")
-    if(btnLocationOption==="header"){
-      $(`input[name=btnPositionEdit][value=left]`).parent().css("display","inline-block");
-      $(`input[name=btnPositionEdit][value=right]`).parent().css("display","inline-block");
-    }else if(btnLocationOption === 'body'){
-      $(`input[name=btnPositionEdit][value=left]`).parent().css("display","none");
-      $(`input[name=btnPositionEdit][value=right]`).parent().css("display","none");
-      $(`input[name=btnPositionEdit][value=center]`).prop("checked",true);
-    }
   }
 
   let inputCount=0;  
@@ -6407,8 +6373,8 @@
                   $('#editModal').modal('hide');
                   updatedElement.innerHTML = btnTag;
                   updatedElement.children[0].style.backgroundColor = btnColor;
-                  btnContainerArray[`${elemId}`] = { name: btnName, link: btnLink,btnType:"link", bgColor: btnColor,updates:`updates${updatesId}` }
-                  tempArray[`${elemId}`] = { type: "8", name: btnName, link: btnLink,btnType:"link", bgColor: btnColor,updates:`updates${updatesId}` }
+                  btnContainerArray[`${elemId}`] = { name: btnName, link: btnLink,btnType:"link",btnPosition, bgColor: btnColor,updates:`updates${updatesId}` }
+                  tempArray[`${elemId}`] = { type: "8", name: btnName, link: btnLink,btnType:"link",btnPosition, bgColor: btnColor,updates:`updates${updatesId}` }
                 }
               }
             }else{
@@ -6445,8 +6411,8 @@
                   $('#editModal').modal('hide');
                   updatedElement.innerHTML = btnTag;
                   updatedElement.children[0].style.backgroundColor = btnColor;
-                  btnContainerArray[`${elemId}`] = { name: btnName, link: btnLink,btnType:"link", bgColor: btnColor}
-                  tempArray[`${elemId}`] = { type: "8", name: btnName, link: btnLink,btnType:"link", bgColor: btnColor }
+                  btnContainerArray[`${elemId}`] = { name: btnName,btnPosition, link: btnLink,btnType:"link", bgColor: btnColor}
+                  tempArray[`${elemId}`] = { type: "8", name: btnName,btnPosition, link: btnLink,btnType:"link", bgColor: btnColor }
                 }
               }
             }
@@ -6806,7 +6772,9 @@
           let bgColor = document.getElementById("bgColorEdit").value
           let accordionInput = $('#showEdit:checked').val();
 
-          let showAccordion= accordionInput===undefined?false:true
+          let showAccordion= accordionInput===undefined?false:true;
+
+          
 
           if (heading !== "") {
             $('#editModal').modal('hide');
