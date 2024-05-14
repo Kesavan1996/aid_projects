@@ -1361,6 +1361,9 @@
       
                 let hyperLinkTag="";
                 hyperLinks.forEach((e,i)=>{
+
+                  // add image Url
+
                   hyperLinkTag+=
                   `<div class="hyperLink ${hyperLinkView==="stampcard"?"stampcard":""}">
                     <div class="linkDiv ${hyperLinkView==="stampcard"?"stampcard":""}">
@@ -4555,7 +4558,9 @@
           let hyperLinkView= $('input[name="hyperLinkType"]:checked').val();
           let hyperLinks =[]
           let hyperLinkForms=document.getElementsByClassName("hyperLinkForm")
-
+          let isEmpty=[];
+          var ValidateUrlExp = /^(ftp|http|https|chrome|:\/\/|\.|@){2,}(localhost|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|\S*:\w*@)*([a-zA-Z]|(\d{1,3}|\.){7}){1,}(\w|\.{2,}|\.[a-zA-Z]{2,3}|\/|\?|&|:\d|@|=|\/|\(.*\)|#|-|%)*$/gum
+          
           for (let h=0;h<hyperLinkForms.length;h++){
             let form = hyperLinkForms[h];
             let data = new FormData(form);
@@ -4577,43 +4582,45 @@
             var formElem = document.getElementById(`hyperLink_form${h}`);
             const inputFields=formElem.querySelectorAll(`input`)
 
-            let isEmpty=false;
-
             for(let i = 0; i < inputFields.length; i++){
               let inputType = inputFields[i].type
               let inputName = inputFields[i].name
               if(inputName === "link"){
-                if(inputFields[i].value===""){
-                  isEmpty=true;
+                let hyperLinkVal=ValidateUrlExp.test(inputFields[i].value)
+                if(inputFields[i].value==="" || hyperLinkVal=== false){
+                  isEmpty.push(true);
                   if($(`#hyperError${h}${i}`).length === 0){
-                    $(inputFields[i]).after(`<p class="error" id="hyperError${h}${i}">Please enter the field..!</p>`)
+                    $(inputFields[i]).after(`<p class="error" id="hyperError${h}${i}">Please enter the valid URL..!</p>`)
                   }
                 }else{
+                  isEmpty.push(false);
                   $(`#hyperError${h}${i}`).remove();
                 }
               }else if(inputType==="file"){
                 if(inputFields[i].files.length===0){
-                  isEmpty=true;
+                  isEmpty.push(true);
                   if($(`#hyperError${h}${i}`).length === 0){
                     $(inputFields[i]).after(`<p class="error" id="hyperError${h}${i}">Upload the image..!</p>`);
                   }
                 }else{
+                  isEmpty.push(false);
                   $(`#hyperError${h}${i}`).remove();
                 }
               }else if(inputName === "caption"){
                 if(CKEDITOR.instances[`captionInput${h}`]?.getData()===""){
-                  isEmpty=true;
+                  isEmpty.push(true);
                   console.log(`${h}${i}`);
                   if($(`#hyperError${h}${i}`).length === 0){
                     $(`#cke_captionInput${h}`).after(`<p class="error" id="hyperError${h}${i}">Please enter the field..!</p>`);
                   }
                 }else{
+                  isEmpty.push(false);
                   $(`#hyperError${h}${i}`).remove();
                 }
               }
             }
 
-            if(isEmpty===false){
+            if(!isEmpty.includes(true)){
               hyperLinks.push(retrieved)
             }
           }
@@ -4697,7 +4704,7 @@
             parentDivId= updatesContentId.split("").pop()
           }
 
-          if(hyperLinks.length>0){
+          if(!isEmpty.includes(true)){
             $('#createModal').modal('hide');
             document.getElementById("emptyPage")?.remove()
             if(pageTitle !==""){
@@ -6735,6 +6742,9 @@
           let {hyperLinkCards}=hyperLinkArray[`${parentId}`]
           let editForms=document.getElementsByClassName("editForm")
 
+          let isEmpty=[];
+          var ValidateUrlExp = /^(ftp|http|https|chrome|:\/\/|\.|@){2,}(localhost|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|\S*:\w*@)*([a-zA-Z]|(\d{1,3}|\.){7}){1,}(\w|\.{2,}|\.[a-zA-Z]{2,3}|\/|\?|&|:\d|@|=|\/|\(.*\)|#|-|%)*$/gum
+
           for (let h=0;h<editForms.length;h++){
             let form = editForms[h];
             let data = new FormData(form);
@@ -6761,34 +6771,34 @@
 
             let inputFields = $(`#hyperLinkEdit_form${h} input`);
 
-            let isEmpty=false;
-
             for(let i = 0; i < inputFields.length; i++){
               let inputType = inputFields[i].type
               let inputName = inputFields[i].name
               if(inputName === "link"){
-                if(inputFields[i].value===""){
-                  isEmpty=true;
+                let hyperLinkEditVal=ValidateUrlExp.test(inputFields[i].value)
+                if(inputFields[i].value===""|| hyperLinkEditVal=== false){
+                  isEmpty.push(true);
                   if($(`#hyperError${h}${i}`).length === 0){
-                    $(inputFields[i]).after(`<p class="error" id="hyperError${h}${i}">Please enter the field..!</p>`)
+                    $(inputFields[i]).after(`<p class="error" id="hyperError${h}${i}">Please enter the valid URL..!</p>`)
                   }
                 }else{
+                  isEmpty.push(false);
                   $(`#hyperError${h}${i}`).remove();
                 }
               }else if(inputName === "caption"){
                 if(CKEDITOR.instances[`captionInputEdit${h}`]?.getData()===""){
-                  isEmpty=true;
-                  console.log(`${h}${i}`);
+                  isEmpty.push(true);
                   if($(`#hyperError${h}${i}`).length === 0){
                     $(`#cke_captionInputEdit${h}`).after(`<p class="error" id="hyperError${h}${i}">Please enter the field..!</p>`);
                   }
                 }else{
+                  isEmpty.push(false);
                   $(`#hyperError${h}${i}`).remove();
                 }
               }
             }
 
-            if(isEmpty===false){
+            if(!isEmpty.includes(true)){
               hyperLinksUpdate.push(retrieved)  
             }
           }
@@ -6820,7 +6830,7 @@
           })
           
 
-          if(hyperLinksUpdate.length>0){
+          if(!isEmpty.includes(true)){
             if(updatesClass ==="updatesItems"){
               hyperLinkArray[`${parentId}`] = {hyperLinkCards:hyperLinksUpdate,updates:`updates${updatesId}` };
               tempArray[`${parentId}`] = { type: "11", hyperLinkCards:hyperLinksUpdate,updates:`updates${updatesId}`,"hyperLinkType":hyperLinkType };
