@@ -1413,8 +1413,7 @@ label.radio {
 
 .updatesDivContainer .headingDiv{
     flex: 2;
-    display: flex;
-    justify-content: center;
+    display: grid;
     align-items: center;
     padding: 10px;
 }

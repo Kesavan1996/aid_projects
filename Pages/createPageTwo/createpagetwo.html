@@ -441,6 +441,10 @@
       let popupPdf;
       let pageLogoImage;
 
+      let popupImageTwo;
+      let popupPdfTwo;
+      let pageLogoImageTwo;
+
       // Updates Items
 
       let updatesItems={}
@@ -1008,7 +1012,10 @@
           popupPdf="";
           popupImage="";
 
-          let buttonInput = `<div class="row gap-2">
+          popupPdfTwo="";
+          popupImageTwo="";
+
+          let buttonInput = `<div class="row gap-2 pb-3">
                           <div class="col-12">
                             <fieldset class="row">
                               <legend class="col-form-label col-4 pt-0">Buttons Count:</legend>
@@ -1163,161 +1170,176 @@
                       
               </div>`
 
-        let buttonInputTwo =  `<div>
+        let buttonInputTwo =  `<div class="d-flex gap-4 flex-column border-top pt-3">
+                                    <div class="col-12">
+                                      <fieldset class="row">
+                                        <legend class="col-form-label col-4 pt-0">Button Type:</legend>
+                                        <div class="col-8">
+                                          <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="buttonTypeTwo" id="linkTwo" value="link" onchange="buttonTypeChangeTwo(this)" checked>
+                                            <label class="form-check-label" for="linkTwo">
+                                              Link
+                                            </label>
+                                          </div>
+                                          <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="buttonTypeTwo" id="popupTwo" value="popup" onchange="buttonTypeChangeTwo(this)" >
+                                            <label class="form-check-label" for="popupTwo">
+                                              Popup
+                                            </label>
+                                          </div>
+                                        </div>
+                                    </fieldset>
+                                  </div>
+
                                   <div class="col-12">
-                                    <fieldset class="row">
-                                      <legend class="col-form-label col-4 pt-0">Button Type:</legend>
-                                      <div class="col-8">
+                                    <input type="text" class="form-control" id="btnNameTwo" placeholder="Name">
+                                  </div>
+                                  <div class="col-12" id="linkDivTwo" style="display:block">
+                                    <input type="text" class="form-control" id="btnLinkIdTwo" placeholder="Link">
+                                  </div>
+                                  <div class="col-12">
+                                      <div class="row align-items-center">
+                                        <label for="btnColorPickerwo" class="form-label col-6">Choose background Color</label>
+                                        <div class="col-4">
+                                          <input type="color" class="form-control form-control-color" id="btnColorPickerwo" value="#b3b3b3">
+                                        </div>
+                                      </div>
+                                  </div>
+                                  <div id="popupDivTwo" style="display:none">
+                                    <fieldset class="row mb-2 mt-2">
+                                      <legend class="col-form-label col-sm-2 pt-0">Location:</legend>
+                                      <div class="col-sm-10">
                                         <div class="form-check form-check-inline">
-                                          <input class="form-check-input" type="radio" name="buttonTypeTwo" id="linkTwo" value="link" onchange="buttonTypeChangeTwo(this)" checked>
-                                          <label class="form-check-label" for="linkTwo">
+                                          <input class="form-check-input" type="radio" name="btnLocationTwo" id="headerTwo" value="header" onchange="btnLocationChangeTwo()" checked>
+                                          <label class="form-check-label" for="headerTwo">
+                                            Header
+                                          </label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                          <input class="form-check-input" type="radio" name="btnLocationTwo" id="bodyTwo" value="body" onchange="btnLocationChangeTwo()">
+                                          <label class="form-check-label" for="bodyTwo">
+                                            Body
+                                          </label>
+                                        </div>
+                                      </div>
+                                    </fieldset>
+                                    <fieldset class="row mb-2 mt-2">
+                                      <legend class="col-form-label col-sm-2 pt-0">Position:</legend>
+                                      <div class="col-sm-10">
+                                        <div class="form-check form-check-inline">
+                                          <input class="form-check-input" type="radio" name="btnPositionTwo" id="leftTwo" value="left">
+                                          <label class="form-check-label" for="leftTwo">
+                                            Left
+                                          </label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                          <input class="form-check-input" type="radio" name="btnPositionTwo" id="centerTwo" value="center" checked>
+                                          <label class="form-check-label" for="centerTwo">
+                                            Center
+                                          </label>
+                                        </div>
+    
+                                        <div class="form-check form-check-inline">
+                                          <input class="form-check-input" type="radio" name="btnPositionTwo" id="rightTwo" value="right">
+                                          <label class="form-check-label" for="rightTwo">
+                                            Right
+                                          </label>
+                                        </div>
+                                      </div>
+                                    </fieldset>
+                                    <fieldset class="row mb-2 mt-2">
+                                      <legend class="col-form-label col-sm-2 pt-0">Content</legend>
+                                      <div class="col-sm-10">
+                                        <div class="form-check form-check-inline">
+                                          <input class="form-check-input" type="radio" name="popupTypeTwo" id="linkBtnTwo" value="link" checked>
+                                          <label class="form-check-label" for="linkBtnTwo">
                                             Link
                                           </label>
                                         </div>
                                         <div class="form-check form-check-inline">
-                                          <input class="form-check-input" type="radio" name="buttonTypeTwo" id="popupTwo" value="popup" onchange="buttonTypeChangeTwo(this)" >
-                                          <label class="form-check-label" for="popupTwo">
-                                            Popup
+                                          <input class="form-check-input" type="radio" name="popupTypeTwo" id="imageBtnTwo" value="image">
+                                          <label class="form-check-label" for="imageBtnTwo">
+                                            Image
+                                          </label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                          <input class="form-check-input" type="radio" name="popupTypeTwo" id="pdfBtnTwo" value="pdf">
+                                          <label class="form-check-label" for="pdfBtnTwo">
+                                            PDF
                                           </label>
                                         </div>
                                       </div>
-                                  </fieldset>
-                                </div>
-
-                              <div class="col-12">
-                                <input type="text" class="form-control" id="btnNameTwo" placeholder="Name">
-                              </div>
-                              <div class="col-12" id="linkDiv" style="display:block">
-                                <input type="text" class="form-control" id="btnLinkIdTwo" placeholder="Link">
-                              </div>
-                              <div class="col-12">
-                                <div class="row align-items-center">
-                                <label for="btnColorPickerwo" class="form-label col-6">Choose background Color</label>
-                                <div class="col-4">
-                                  <input type="color" class="form-control form-control-color" id="btnColorPickerwo" value="#b3b3b3">
-                                </div>
-                              </div>
-                              </div>
-                            </div>
-                            <div id="popupDiv" style="display:none" class="mt-4">
-                            <fieldset class="row mb-2 mt-2">
-                              <legend class="col-form-label col-sm-2 pt-0">Location:</legend>
-                              <div class="col-sm-10">
-                                <div class="form-check form-check-inline">
-                                  <input class="form-check-input" type="radio" name="btnLocationTwo" id="headerTwo" value="header" onchange="btnLocationChangeTwo()" checked>
-                                  <label class="form-check-label" for="headerTwo">
-                                    Header
-                                  </label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                  <input class="form-check-input" type="radio" name="btnLocationTwo" id="bodyTwo" value="body" onchange="btnLocationChangeTwo()">
-                                  <label class="form-check-label" for="bodyTwo">
-                                    Body
-                                  </label>
-                                </div>
-                              </div>
-                            </fieldset>
-
-                            <fieldset class="row mb-2 mt-2">
-                              <legend class="col-form-label col-sm-2 pt-0">Position:</legend>
-                              <div class="col-sm-10">
-                                <div class="form-check form-check-inline">
-                                  <input class="form-check-input" type="radio" name="btnPositionTwo" id="leftTwo" value="left">
-                                  <label class="form-check-label" for="leftTwo">
-                                    Left
-                                  </label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                  <input class="form-check-input" type="radio" name="btnPositionTwo" id="centerTwo" value="center" checked>
-                                  <label class="form-check-label" for="centerTwo">
-                                    Center
-                                  </label>
-                                </div>
-
-                                <div class="form-check form-check-inline">
-                                  <input class="form-check-input" type="radio" name="btnPositionTwo" id="rightTwo" value="right">
-                                  <label class="form-check-label" for="rightTwo">
-                                    Right
-                                  </label>
-                                </div>
-                              </div>
-                            </fieldset>
-                            <fieldset class="row mb-2 mt-2">
-                              <legend class="col-form-label col-sm-2 pt-0">Content</legend>
-                              <div class="col-sm-10">
-                                <div class="form-check form-check-inline">
-                                  <input class="form-check-input" type="radio" name="popupTypeTwo" id="linkBtnTwo" value="link" checked>
-                                  <label class="form-check-label" for="linkBtnTwo">
-                                    Link
-                                  </label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                  <input class="form-check-input" type="radio" name="popupTypeTwo" id="imageBtnTwo" value="image">
-                                  <label class="form-check-label" for="imageBtnTwo">
-                                    Image
-                                  </label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                  <input class="form-check-input" type="radio" name="popupTypeTwo" id="pdfBtnTwo" value="pdf">
-                                  <label class="form-check-label" for="pdfBtnTwo">
-                                    PDF
-                                  </label>
-                                </div>
-                              </div>
-                            </fieldset>
-                            <div class="uploadContainer">
-                              <div class="uploadDiv" id="pdfUploadTwo" style="display:none">
-                                <input type="file" id="pdfFileTwo" accept ="application/pdf" hidden/>
-                                <label for="pdfFileTwo">Choose File</label>
-                                <span id="pdfChosenTwo">No file chosen</span>
-                              </div>
-                              <div class="uploadDiv" id="imageUploadTwo" style="display:none">
-                                <input type="file" id="imageFileTwo" accept="image/png, image/jpeg" hidden/>
-                                <label for="imageFileTwo">Choose File</label>
-                                <div id="previewDivTwo"></div>
-                              </div>
-                              <div class="uploadDiv" id="linkUploadTwo">
-                                <div id="linkFormTwo">
-                                  <form class="input-div">
-                                    <div class="links">
-                                      <input type='text' class="form-control" name='name' placeholder="Name">
-                                      <input type="text" class="form-control" name="link" placeholder="Link">
+                                    </fieldset>
+                                    <div class="uploadContainer">
+                                      <div class="uploadDiv" id="pdfUploadTwo" style="display:none">
+                                        <input type="file" id="pdfFileTwo" accept ="application/pdf" hidden/>
+                                        <label for="pdfFileTwo">Choose File</label>
+                                        <span id="pdfChosenTwo">No file chosen</span>
+                                      </div>
+                                      <div class="uploadDiv" id="imageUploadTwo" style="display:none">
+                                        <input type="file" id="imageFileTwo" accept="image/png, image/jpeg" hidden/>
+                                        <label for="imageFileTwo">Choose File</label>
+                                        <div id="previewDivTwo"></div>
+                                      </div>
+                                      <div class="uploadDivTwo" id="linkUploadTwo">
+                                        <div id="linkFormTwo">
+                                          <form class="input-div">
+                                            <div class="links">
+                                              <input type='text' class="form-control" name='name' placeholder="Name">
+                                              <input type="text" class="form-control" name="link" placeholder="Link">
+                                            </div>
+                                            <div class="btn-div">
+                                              <button type="button" id="addInputFieldButtonTwo" class='add-more-btn'><i class="fa-solid fa-plus"></i></button>
+                                            </div>
+                                          </form> 
+                                        </div>
+                                      </div>
                                     </div>
-                                    <div class="btn-div">
-                                      <button type="button" id="addInputFieldButtonTwo" class='add-more-btn'><i class="fa-solid fa-plus"></i></button>
                                     </div>
-                                  </form> 
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>  `
+                                  </div>  
+                             </div>`
 
           let buttonDiv = document.createElement("div")
           buttonDiv.id = "btnLink"
           buttonDiv.className = "row g-3"
 
-          let mainDiv = document.createElement("div")
-          mainDiv.className = "linkBtnDiv"
-          mainDiv.id = `btnLinkDiv${buttonId}`
-          mainDiv.innerHTML = buttonInput
-          modalBody.appendChild(mainDiv)
+          let mainDiv = document.createElement("div");
+          mainDiv.className = "linkBtnDiv";
+          mainDiv.id = `btnLinkDiv${buttonId}`;
+          mainDiv.innerHTML = buttonInput;
+          mainDiv.innerHTML += buttonInputTwo;
+          modalBody.appendChild(mainDiv);
 
           var linkBtnOption = document.getElementById('linkBtn');
           var imageBtnOption = document.getElementById('imageBtn');
           var pdfBtnOption = document.getElementById('pdfBtn');
+
+          //Button Two
+          var linkBtnOptionTwo = document.getElementById('linkBtnTwo');
+          var imageBtnOptionTwo = document.getElementById('imageBtnTwo');
+          var pdfBtnOptionTwo = document.getElementById('pdfBtnTwo');
         
           linkBtnOption.onclick = popupChangeFn;
           imageBtnOption.onclick = popupChangeFn;
           pdfBtnOption.onclick = popupChangeFn;
 
+          //Button Two
+          linkBtnOptionTwo.onclick = popupChangeFnTwo;
+          imageBtnOptionTwo.onclick = popupChangeFnTwo;
+          pdfBtnOptionTwo.onclick = popupChangeFnTwo;
+
           var linkDiv=$("#linkUpload")
           var imageDiv=$("#imageUpload")
           var pdfDiv=$("#pdfUpload")
           var uploadDiv=$(".uploadDiv")
+
+          //Button Two
+          var linkDivTwo=$("#linkUploadTwo")
+          var imageDivTwo=$("#imageUploadTwo")
+          var pdfDivTwo=$("#pdfUploadTwo")
+          var uploadDivTwo=$(".uploadDivTwo")
           
-          //
-       
+
           function popupChangeFn(){
             let popupType= $('input[name="popupType"]:checked').val()
             $(".popup-error").remove();
@@ -1331,8 +1353,18 @@
             }
           }
 
-          buttonTypeChange=(elem)=>{
-            let buttonsCount= $('input[name="buttonCount"]:checked').val()
+          //Button Two
+          function popupChangeFnTwo(){
+            let popupTypeTwo= $('input[name="popupTypeTwo"]:checked').val()
+            $(".popup-error").remove();
+            uploadDivTwo.css("display","none")
+            if(popupTypeTwo==="link"){
+              linkDivTwo.css("display","block")
+            }else if(popupTypeTwo ==="image"){
+              imageDivTwo.css("display","flex")
+            }else if(popupTypeTwo === "pdf"){
+              pdfDivTwo.css("display","block")
+            }
           }
 
           buttonTypeChange=(elem)=>{
@@ -1346,11 +1378,31 @@
            }
           }
 
+          //Button Two
+          buttonTypeChangeTwo=(elem)=>{
+            let buttonOptionTwo= $(elem).val();
+            if(buttonOptionTwo === "link"){
+             $("#popupDivTwo").css("display","none");
+             $("#linkDivTwo").css("display","block");
+            }else if(buttonOptionTwo === "popup"){
+             $("#linkDivTwo").css("display","none");
+             $("#popupDivTwo").css("display","block");
+            }
+          }
+
           const pdfBtn = document.getElementById('pdfFile');
           const pdfChosen = document.getElementById('pdfChosen');
           pdfBtn.addEventListener('change', function(){
             pdfChosen.textContent = this.files[0].name;
             popupPdf=this.files[0];
+          })
+
+          //Button Two
+          const pdfBtnTwo = document.getElementById('pdfFileTwo');
+          const pdfChosenTwo = document.getElementById('pdfChosenTwo');
+          pdfBtnTwo.addEventListener('change', function(){
+            pdfChosenTwo.textContent = this.files[0].name;
+            popupPdfTwo=this.files[0];
           })
 
           const imageBtn = document.getElementById('imageFile');
@@ -1360,7 +1412,18 @@
             popupImage=this.files[0];
           })
 
-          let inputCount=1;        
+          //Button Two
+          const imageBtnTwo = document.getElementById('imageFileTwo');
+          const imageChosenTwo = document.getElementById('imageChosenTwo');
+          imageBtn.addEventListener('change', function(){
+            $("#imageUploadTwo #previewDivTwo").html(`<img src=${URL.createObjectURL(this.files[0])} id="uploadedImgTwo" />`);
+            popupImageTwo=this.files[0];
+          })
+
+          let inputCount=1;    
+          
+          //Button Two
+          let inputCountTwo=1;        
 
           $("#addInputFieldButton").click(function() {
             var input = $(`<form class="input-div"> 
@@ -1376,7 +1439,27 @@
             inputCount+=1;
           });
 
+          //Button Two
+          $("#addInputFieldButtonTwo").click(function() {
+            var input = $(`<form class="input-div"> 
+                          <div class="links">
+                            <input type='text' class="form-control" name='name' placeholder="Name">
+                            <input type='text' class="form-control" name='link' placeholder="Link">
+                          </div>
+                          <div class="btn-div">
+                            <button type="button" class="delete-btn" onClick="deleteInputTwo(this)"><i class="fa-solid fa-xmark"></i></button>
+                          </div>
+                        </form>`);
+            $("#linkFormTwo").append(input);
+            inputCountTwo+=1;
+          });
+
           deleteInput=(elem)=>{
+            $(elem).closest('form').remove();
+          }
+
+         //Button Two 
+          deleteInputTwo=(elem)=>{
             $(elem).closest('form').remove();
           }
 
@@ -1388,9 +1471,9 @@
           modalTitle.className = ""
           var modalBody = document.getElementById('pageContent')
 
-          let linkInput = `<input class="form-control mb-3 linkInput" type="text" id="imgLinkField" placeholder="Enter link">`
+          let linkInput = `<input class="form-control linkInput" type="text" id="imgLinkField" onkeyup="validateValue(this)" placeholder="Enter link">`
           
-          let imgLinkContainer = `<div class="container col-md-12">
+          let imgLinkContainer = `<div class="container col-md-12 mt-3">
           <div class="mb-3">
                 <input class="form-control" type="file" id="formFile" accept="image/*">
             </div>
@@ -1406,25 +1489,34 @@
 
           modalBody.appendChild(mainContainer)
 
+          validateValue=(elem)=>{
+             let linkInputElem = $(elem).val();
+              var ValidateUrlExp = /^(ftp|http|https|chrome|:\/\/|\.|@){2,}(localhost|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|\S*:\w*@)*([a-zA-Z]|(\d{1,3}|\.){7}){1,}(\w|\.{2,}|\.[a-zA-Z]{2,3}|\/|\?|&|:\d|@|=|\/|\(.*\)|#|-|%)*$/gum
+              let linkUrlValidate=ValidateUrlExp.test(linkInputElem)
+            if(linkUrlValidate === false){
+              if($(".link-error").length === 0){
+                $(elem).after('<p class="error link-error mt-0">Please enter the valid URL..!</p>')
+              }
+            }else{
+              $(".link-error").remove()
+            }
+          }
+
           let imgInputId = document.getElementById("formFile")
           let imgDiv = document.getElementById("linkImage")
 
-          let linkInputElem = document.getElementById("imgLinkField")
+         
 
           let files;
 
           imgInputId.addEventListener("change", () => {
             files = event.target.files[0];
             imgDiv.src = URL.createObjectURL(files);
-            imgLinkContainerArray[`imgLink${imgLinkId}`] = { link: linkInputElem.value, image: files }
-            tempArray[`imgLink${imgLinkId}`] = { type: "9", link: linkInputElem.value, image: files }
+            imgLinkContainerArray[`imgLink${imgLinkId}`] = {image: files }
+            tempArray[`imgLink${imgLinkId}`] = { type: "9",image: files }
           })
 
-          linkInputElem.addEventListener("change", () => {
-            imgLinkContainerArray[`imgLink${imgLinkId}`] = { link: linkInputElem.value, image: files }
-            tempArray[`imgLink${imgLinkId}`] = { type: "9", link: linkInputElem.value, image: files }
 
-          })
 
         }
         else if(element === "hyperLink"){
@@ -2388,9 +2480,9 @@
 
           var modalBody = document.getElementById('pageContent')
 
-          let linkInput = `<input class="form-control mb-3 linkInput" type="text" id="imgLinkField" placeholder="Enter link">`
+          let linkInput = `<input class="form-control mb-3 linkInput" type="text" id="imgLinkField" onkeyup="validateValue(this)" placeholder="Enter link">`
           
-          let imgLinkContainer = `<div class="container col-md-12">
+          let imgLinkContainer = `<div class="container col-md-12 mt-3">
           <div class="mb-3">
                 <input class="form-control" type="file" id="formFileUpdates" accept="image/*">
             </div>
@@ -2406,6 +2498,20 @@
 
           modalBody.appendChild(mainContainer)
 
+          
+          validateValue=(elem)=>{
+            let linkInputElem = $(elem).val();
+             var ValidateUrlExp = /^(ftp|http|https|chrome|:\/\/|\.|@){2,}(localhost|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|\S*:\w*@)*([a-zA-Z]|(\d{1,3}|\.){7}){1,}(\w|\.{2,}|\.[a-zA-Z]{2,3}|\/|\?|&|:\d|@|=|\/|\(.*\)|#|-|%)*$/gum
+             let linkUrlValidate=ValidateUrlExp.test(linkInputElem)
+           if(linkUrlValidate === false){
+             if($(".link-error").length === 0){
+               $(elem).after('<p class="error link-error mt-0">Please enter the valid URL..!</p>')
+             }
+           }else{
+             $(".link-error").remove()
+           }
+         }
+
           let imgInputId = document.getElementById("formFileUpdates")
           let imgDiv = document.getElementById("linkImage")
 
@@ -2417,15 +2523,11 @@
 
             files = event.target.files[0];
             imgDiv.src = URL.createObjectURL(files);
-              imgLinkContainerArray[`imgLink${imgLinkId}`] = { link: linkInputElem.value, image: files,updates:`updates${updatesIdCount}` }
-              tempArray[`imgLink${imgLinkId}`] = { type: "9", link: linkInputElem.value, image: files,updates:`updates${updatesIdCount}` }
+              imgLinkContainerArray[`imgLink${imgLinkId}`] = { image: files,updates:`updates${updatesIdCount}` }
+              tempArray[`imgLink${imgLinkId}`] = { type: "9", image: files,updates:`updates${updatesIdCount}` }
           
           })
 
-          linkInputElem.addEventListener("change", () => {
-              imgLinkContainerArray[`imgLink${imgLinkId}`] = { link: linkInputElem.value, image: files,updates:`updates${updatesIdCount}` }
-              tempArray[`imgLink${imgLinkId}`] = { type: "9", link: linkInputElem.value, image: files,updates:`updates${updatesIdCount}` }
-          })
 
         }
         else if(element === "hyperLink"){
@@ -3795,19 +3897,36 @@
 
           deleteTag.append(deleteImg)
 
+          var imageLinkVal=$("#imgLinkField").val();
+          let imageValue=$("#formFile").val();
 
-          let linkData = imgLinkContainerArray[`${imgId}`]
-          
+          if(imageValue == ""){
+            if($(".link-img-error").length === 0){
+              $("#formFile").after(`<p class="error link-img-error">Please upload the image..!</p>`)
+            }
+          }else{
+            $(".link-img-error").remove();
+          }
+
+          var ValidateUrlExp = /^(ftp|http|https|chrome|:\/\/|\.|@){2,}(localhost|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|\S*:\w*@)*([a-zA-Z]|(\d{1,3}|\.){7}){1,}(\w|\.{2,}|\.[a-zA-Z]{2,3}|\/|\?|&|:\d|@|=|\/|\(.*\)|#|-|%)*$/gum
+          let linkUrlValidate=ValidateUrlExp.test(imageLinkVal)
+
+          if(imageLinkVal){
+            imgLinkContainerArray[`${imgId}`]['link']=imageLinkVal;
+            tempArray[`${imgId}`]['link']=imageLinkVal;
+          }
+          let linkData = imgLinkContainerArray[`${imgId}`];
           let updatesContent;
           let updatesContentId;
           let parentDivId;
-
 
           if (pageTitle !==""){
             updatesContentId= pageTitle.split("_")[0]
            updatesContent=document.getElementById(updatesContentId)
             parentDivId= updatesContentId.split("").pop()
           }
+
+
 
           if (linkData === undefined) {
             let imageLink = document.querySelector("#formFile")
@@ -3822,9 +3941,10 @@
             }
           }
 
-          const { link, image } = imgLinkContainerArray[`${imgId}`]
-
+        
           
+          const { link, image } = imgLinkContainerArray[`${imgId}`]
+       
 
           //
 
@@ -3841,7 +3961,7 @@
           div.appendChild(clickTag)
           div.appendChild(deleteTag)
 
-          if (link !== "" && image !== "") {
+          if (link !== "" && image !== "" && linkUrlValidate===true) {
 
             if(pageTitle !==""){
               updatesContent.appendChild(div)
@@ -3855,6 +3975,7 @@
             buttonId += 1;
             imgLinkId += 1;
           }
+
           clickTag.setAttribute("onclick", `editModal("editImgLink",this.previousElementSibling.id,this.parentElement.id)`)
         }
         else if(modalBody.children[0].className === "hyperLinkModalDiv"){
@@ -4844,9 +4965,10 @@
 
           const { link, image } = imgLinkContainerArray[`${parentId}`]
 
-          let linkInput = `<input class="form-control mb-3" type="text" id="imgLinkEditField" placeholder="Image link" value=${link}>`
 
-          let imgLinkContainer = `<div class="container col-md-12">
+          let linkInput = `<input class="form-control" type="text" id="imgLinkEditField" onkeyup="validateEditValue(this)" placeholder="Image link" value=${link}>`
+
+          let imgLinkContainer = `<div class="container col-md-12 mt-3">
           <div class="mb-3">
                 <input class="form-control" type="file" id="formFileEdit" accept="image/*">
             </div>
@@ -4873,14 +4995,27 @@
             files = event.target.files[0];
             imgDivEdit.src = URL.createObjectURL(files);
             if(updatesClass==="updatesItems"){
-              imgLinkContainerArray[`${parentId}`] = { link: linkInputElemEdit.value, image: files,updates:`updates${updatesId}` }
-              tempArray[`${parentId}`] = { type: "9", link: linkInputElemEdit.value, image: files,updates:`updates${updatesId}` }
+              imgLinkContainerArray[`${parentId}`] = { image: files,updates:`updates${updatesId}` }
+              tempArray[`${parentId}`] = { type: "9",image: files,updates:`updates${updatesId}` }
             }else{
-              imgLinkContainerArray[`${parentId}`] = { link: linkInputElemEdit.value, image: files }
-              tempArray[`${parentId}`] = { type: "9", link: linkInputElemEdit.value, image: files }
+              imgLinkContainerArray[`${parentId}`] = {image: files }
+              tempArray[`${parentId}`] = { type: "9",image: files }
             }
             
           })
+
+          validateEditValue=(elem)=>{
+            let linkInputElem = $(elem).val();
+             var ValidateUrlExp = /^(ftp|http|https|chrome|:\/\/|\.|@){2,}(localhost|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|\S*:\w*@)*([a-zA-Z]|(\d{1,3}|\.){7}){1,}(\w|\.{2,}|\.[a-zA-Z]{2,3}|\/|\?|&|:\d|@|=|\/|\(.*\)|#|-|%)*$/gum
+             let linkUrlValidate=ValidateUrlExp.test(linkInputElem)
+           if(linkUrlValidate === false){
+             if($(".link-error-edit").length === 0){
+               $(elem).after('<p class="error link-error-edit mt-0">Please enter the valid URL..!</p>')
+             }
+           }else{
+             $(".link-error-edit").remove()
+           }
+         }
 
         }
         else if (element === "editDescription") {
@@ -5703,23 +5838,29 @@
         else if (modalBody.children[0].className === "linkImgModalDiv") {
           let imgId = modalBody.children[0].id
           let updatedElement = document.getElementById(imgId).children[1]
-          const { link, image } = imgLinkContainerArray[imgId]
 
-    
+          var imageLinkEditVal=$("#imgLinkEditField").val();
+          var ValidateUrlExp = /^(ftp|http|https|chrome|:\/\/|\.|@){2,}(localhost|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|\S*:\w*@)*([a-zA-Z]|(\d{1,3}|\.){7}){1,}(\w|\.{2,}|\.[a-zA-Z]{2,3}|\/|\?|&|:\d|@|=|\/|\(.*\)|#|-|%)*$/gum
+          let linkUrlValidate=ValidateUrlExp.test(imageLinkEditVal)
+
+          if(linkUrlValidate){
+            imgLinkContainerArray[`${imgId}`]['link']=imageLinkEditVal;
+            tempArray[`${imgId}`]['link']=imageLinkEditVal;
+          }
+          const { link, image } = imgLinkContainerArray[imgId];
 
           let imgLinkDiv = `<a href="${link}" target="_blank"><img src="${URL.createObjectURL(image)}" alt=""/></a>`
           let linkInputElemEdit = document.getElementById("imgLinkEditField")
 
-          if (linkInputElemEdit.value !== "") {
-            //
-            $('#editModal').modal('hide');
+          if (linkInputElemEdit.value !== "" && linkUrlValidate) {
+            $('#editModal').modal('hide');  
             updatedElement.innerHTML = imgLinkDiv
             if(updatesClass ==="updatesItems"){
-              imgLinkContainerArray[`${imgId}`] = { link: linkInputElemEdit.value, image: image,updates:`updates${updatesId}` }
-              tempArray[`${imageId}`] = { type: "9", link: linkInputElemEdit.value, image: image,updates:`updates${updatesId}`  }
+              imgLinkContainerArray[`${imgId}`] = { link:link, image: image,updates:`updates${updatesId}` }
+              tempArray[`${imageId}`] = { type: "9", link: link, image: image,updates:`updates${updatesId}`  }
             }else{
-              imgLinkContainerArray[`${imgId}`] = { link: linkInputElemEdit.value, image: image }
-              tempArray[`${imageId}`] = { type: "9", link: linkInputElemEdit.value, image: image }
+              imgLinkContainerArray[`${imgId}`] = { link: link, image: image }
+              tempArray[`${imageId}`] = { type: "9", link: link, image: image }
             }
             
           } else {
@@ -5728,7 +5869,7 @@
               linkInputElemEdit.insertAdjacentHTML('afterend', '<p class="error">Please enter the field...!</p>');
             }
           }
-
+          console.log(tempArray,"update")
 
         }
         else if (modalBody.children[0].className === "imgEditCard") {
@@ -6034,6 +6175,7 @@
           selectOption.appendChild(opt);
         }
         $('#submitModal').modal('show');
+      
       }
 
       function goToFn(){

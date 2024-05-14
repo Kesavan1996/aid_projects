@@ -26,6 +26,11 @@
       "imagesView": "normal"
     },
     {
+      "type": "9",
+      "image": ["../../assets/img/img1.jpg"],
+      "link": "https://www.google.com/"
+    },
+    {
       "type": "8",
       "name": "Button",
       "btnType": "popup",
