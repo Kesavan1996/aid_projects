@@ -1530,7 +1530,7 @@
           `<form class="hyperLinkForm" id="hyperLink_form0">
             <div class="d-flex gap-2 mb-2">
               <div class="formDiv">
-                <input class="inputItem form-control" type="text" name="link" placeholder="link"/>
+                <input class="inputItem form-control" type="text" name="link" id="link0" placeholder="link" required/>
                 <div class="hyperLinkModalDivs">
                   <div>
                     <input class="inputItem form-control hyperImgClass" type="file" name="file" accept="image/*"/ id="hyperImgInput0_id" onchange="imgOnchangeFn(event)">
@@ -3985,7 +3985,7 @@
 
           let hyperLinkForms=document.getElementsByClassName("hyperLinkForm")
           let isEmpty=[];
-          var ValidateUrlExp = /^(ftp|http|https|chrome|:\/\/|\.|@){2,}(localhost|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|\S*:\w*@)*([a-zA-Z]|(\d{1,3}|\.){7}){1,}(\w|\.{2,}|\.[a-zA-Z]{2,3}|\/|\?|&|:\d|@|=|\/|\(.*\)|#|-|%)*$/gum
+          
           
 
           for (let h=0;h<hyperLinkForms.length;h++){
@@ -4009,8 +4009,12 @@
               let inputType = inputFields[i].type
               let inputName = inputFields[i].name
               if(inputName === "link"){
+                var ValidateUrlExp = /^(ftp|http|https|chrome|:\/\/|\.|@){2,}(localhost|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|\S*:\w*@)*([a-zA-Z]|(\d{1,3}|\.){7}){1,}(\w|\.{2,}|\.[a-zA-Z]{2,3}|\/|\?|&|:\d|@|=|\/|\(.*\)|#|-|%)*$/gum
                 let hyperLinkVal=ValidateUrlExp.test(inputFields[i].value)
+                console.log(inputFields[i].value,"value")
+                console.log(hyperLinkVal,"test")
                 if(inputFields[i].value==="" || hyperLinkVal=== false){
+                  
                   isEmpty.push(true);
                   if($(`#hyperError${h}${i}`).length === 0){
                     $(inputFields[i]).after(`<p class="error" id="hyperError${h}${i}">Please enter the valid URL..!</p>`)
@@ -4045,8 +4049,10 @@
 
             if(!isEmpty.includes(true)){
               hyperLinks.push(retrieved)
-            }
+            } 
           }
+
+          console.log(hyperLinks,"data")
 
           let modalId = modalBody.children[0].id
 
@@ -5224,6 +5230,7 @@
 
           let {hyperLinkCards}=hyperLinkArray[`${parentId}`]
          let {hyperLinkType}=tempArray[`${parentId}`]
+         console.log(hyperLinkCards,"links")
 
           let editFormContent=
           `<form class="editForm" id="hyperLinkEdit_form0">
@@ -5273,9 +5280,11 @@
 
           let editRestContent="";
 
-          if(hyperLinkCards.length>0){
+          if(hyperLinkCards.length>1){
               for(let j=1;j<hyperLinkCards.length;j++){
-                  editRestContent= `<form class="editForm" id="hyperLinkEdit_form${j}"> <div class="d-flex gap-2 mb-2" id="fieldDiv${j}">
+                console.log(hyperLinkCards[j],"cards")
+                console.log(j,"count")
+                  editRestContent+= `<form class="editForm" id="hyperLinkEdit_form${j}"> <div class="d-flex gap-2 mb-2" id="fieldDiv${j}">
                   <div class="formDiv">
                     <input class="inputItem form-control" type="text" name="link" value="${hyperLinkCards[j].link}" />
                     <div class="hyperLinkModalDivs">
@@ -5287,7 +5296,7 @@
                       </div>
                     </div>
 
-                    <input class="inputItem form-control" type="text" name="caption" id="captionInputEdit${j}" value="${hyperLinkCards[j].caption}" />
+                    <input class="inputItem form-control" type="text" name="caption" id="captionInputEdit${j}" />
                   </div>
                   <div>
                     <button type="button" class="btn btn-danger" name="remove" id="${j}" onClick="removeInputs(this)">X</button>
@@ -5300,13 +5309,17 @@
 
           modalBody.appendChild(cardDiv)
 
+          
+
           changeToRichtext([`captionInputEdit0`])
 
           for(let k=1;k<hyperLinkCards.length;k++){
+            console.log(hyperLinkCards[k]['caption'],"hyper card")
             changeToRichtext([`captionInputEdit${k}`])
-            CKEDITOR.instances[`captionInputEdit${k}`].setData(hyperLinkCards[k].caption);
+            CKEDITOR.instances[`captionInputEdit${k}`].setData(hyperLinkCards[k]['caption']);
+          
           }
-          CKEDITOR.instances[`captionInputEdit0`].setData(hyperLinkCards[0].caption);
+          CKEDITOR.instances[`captionInputEdit0`].setData(hyperLinkCards[0]['caption']);
 
           var i = hyperLinkCards.length-1;
           var length;
@@ -5981,8 +5994,7 @@
           let editForms=document.getElementsByClassName("editForm")
 
           let isEmpty=[];
-          var ValidateUrlExp = /^(ftp|http|https|chrome|:\/\/|\.|@){2,}(localhost|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|\S*:\w*@)*([a-zA-Z]|(\d{1,3}|\.){7}){1,}(\w|\.{2,}|\.[a-zA-Z]{2,3}|\/|\?|&|:\d|@|=|\/|\(.*\)|#|-|%)*$/gum
-
+         
           for (let h=0;h<editForms.length;h++){
             let form = editForms[h];
             let data = new FormData(form);
@@ -6006,6 +6018,7 @@
               let inputName = inputFields[i].name
 
               if(inputName === "link"){
+                var ValidateUrlExp = /^(ftp|http|https|chrome|:\/\/|\.|@){2,}(localhost|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|\S*:\w*@)*([a-zA-Z]|(\d{1,3}|\.){7}){1,}(\w|\.{2,}|\.[a-zA-Z]{2,3}|\/|\?|&|:\d|@|=|\/|\(.*\)|#|-|%)*$/gum
                 let hyperLinkEditVal=ValidateUrlExp.test(inputFields[i].value)
                 if(inputFields[i].value==="" || hyperLinkEditVal=== false){
                   isEmpty.push(true);
