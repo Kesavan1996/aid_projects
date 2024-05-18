@@ -1018,18 +1018,18 @@
           let buttonInput = `<div class="row gap-2 pb-3">
                           <div class="col-12">
                             <fieldset class="row">
-                              <legend class="col-form-label col-4 pt-0">Buttons Count:</legend>
+                              <legend class="col-form-label col-4 pt-0">Buttons:</legend>
                               <div class="col-8">
                                 <div class="form-check form-check-inline">
                                   <input class="form-check-input" type="radio" name="buttonCount" id="one" value="one" onchange="buttonCountChange(this)" checked>
                                   <label class="form-check-label" for="one">
-                                    One
+                                    Single
                                   </label>
                                 </div>
                                 <div class="form-check form-check-inline">
                                   <input class="form-check-input" type="radio" name="buttonCount" id="two" value="two" onchange="buttonCountChange(this)" >
                                   <label class="form-check-label" for="two">
-                                    Two
+                                    Double
                                   </label>
                                 </div>
                               </div>
@@ -1170,7 +1170,7 @@
                       
               </div>`
 
-        let buttonInputTwo =  `<div class="d-flex gap-4 flex-column border-top pt-3">
+        let buttonInputTwo =  `<div class="gap-4 flex-column border-top pt-3" id="secondBtnDiv" style="display:none">
                                     <div class="col-12">
                                       <fieldset class="row">
                                         <legend class="col-form-label col-4 pt-0">Button Type:</legend>
@@ -1199,30 +1199,13 @@
                                   </div>
                                   <div class="col-12">
                                       <div class="row align-items-center">
-                                        <label for="btnColorPickerwo" class="form-label col-6">Choose background Color</label>
+                                        <label for="btnColorPickerTwo" class="form-label col-6">Choose background Color</label>
                                         <div class="col-4">
-                                          <input type="color" class="form-control form-control-color" id="btnColorPickerwo" value="#b3b3b3">
+                                          <input type="color" class="form-control form-control-color" id="btnColorPickerTwo" value="#b3b3b3">
                                         </div>
                                       </div>
                                   </div>
-                                  <div id="popupDivTwo" style="display:none">
-                                    <fieldset class="row mb-2 mt-2">
-                                      <legend class="col-form-label col-sm-2 pt-0">Location:</legend>
-                                      <div class="col-sm-10">
-                                        <div class="form-check form-check-inline">
-                                          <input class="form-check-input" type="radio" name="btnLocationTwo" id="headerTwo" value="header" onchange="btnLocationChangeTwo()" checked>
-                                          <label class="form-check-label" for="headerTwo">
-                                            Header
-                                          </label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                          <input class="form-check-input" type="radio" name="btnLocationTwo" id="bodyTwo" value="body" onchange="btnLocationChangeTwo()">
-                                          <label class="form-check-label" for="bodyTwo">
-                                            Body
-                                          </label>
-                                        </div>
-                                      </div>
-                                    </fieldset>
+                                  <div class="col-12">
                                     <fieldset class="row mb-2 mt-2">
                                       <legend class="col-form-label col-sm-2 pt-0">Position:</legend>
                                       <div class="col-sm-10">
@@ -1247,6 +1230,26 @@
                                         </div>
                                       </div>
                                     </fieldset>
+                                  </div>
+                                  <div id="popupDivTwo" style="display:none">
+                                    <fieldset class="row mb-2 mt-2">
+                                      <legend class="col-form-label col-sm-2 pt-0">Location:</legend>
+                                      <div class="col-sm-10">
+                                        <div class="form-check form-check-inline">
+                                          <input class="form-check-input" type="radio" name="btnLocationTwo" id="headerTwo" value="header" onchange="btnLocationChangeTwo()" checked>
+                                          <label class="form-check-label" for="headerTwo">
+                                            Header
+                                          </label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                          <input class="form-check-input" type="radio" name="btnLocationTwo" id="bodyTwo" value="body" onchange="btnLocationChangeTwo()">
+                                          <label class="form-check-label" for="bodyTwo">
+                                            Body
+                                          </label>
+                                        </div>
+                                      </div>
+                                    </fieldset>
+                 
                                     <fieldset class="row mb-2 mt-2">
                                       <legend class="col-form-label col-sm-2 pt-0">Content</legend>
                                       <div class="col-sm-10">
@@ -1271,12 +1274,12 @@
                                       </div>
                                     </fieldset>
                                     <div class="uploadContainer">
-                                      <div class="uploadDiv" id="pdfUploadTwo" style="display:none">
+                                      <div class="uploadDivTwo" id="pdfUploadTwo" style="display:none">
                                         <input type="file" id="pdfFileTwo" accept ="application/pdf" hidden/>
                                         <label for="pdfFileTwo">Choose File</label>
                                         <span id="pdfChosenTwo">No file chosen</span>
                                       </div>
-                                      <div class="uploadDiv" id="imageUploadTwo" style="display:none">
+                                      <div class="uploadDivTwo" id="imageUploadTwo" style="display:none">
                                         <input type="file" id="imageFileTwo" accept="image/png, image/jpeg" hidden/>
                                         <label for="imageFileTwo">Choose File</label>
                                         <div id="previewDivTwo"></div>
@@ -1339,6 +1342,27 @@
           var pdfDivTwo=$("#pdfUploadTwo")
           var uploadDivTwo=$(".uploadDivTwo")
           
+
+          //Button count
+         buttonCountChange =(elem)=>{
+         
+          let btnCountOption = $(elem).val();
+          if(btnCountOption === "one"){
+            $("#secondBtnDiv").css("display","none");
+            $(`input[name=btnLocation][value=header]`).parent().css("pointer-events","auto");
+            $(`input[name=btnLocation][value=header]`).parent().css("opacity","1");
+            $(`input[name=btnLocationTwo][value=header]`).parent().css("pointer-events","auto");
+            $(`input[name=btnLocationTwo][value=header]`).parent().css("opacity","1");
+          }else{
+            $("#secondBtnDiv").css("display","flex");
+            $(`input[name=btnLocation][value=header]`).parent().css("pointer-events","none");
+            $(`input[name=btnLocation][value=header]`).parent().css("opacity","0.4");
+            $(`input[name=btnLocationTwo][value=header]`).parent().css("pointer-events","none");
+            $(`input[name=btnLocationTwo][value=header]`).parent().css("opacity","0.4");
+            $(`input[name=btnLocation][value=body]`).prop("checked",true);
+            $(`input[name=btnLocationTwo][value=body]`).prop("checked",true);
+          }
+          }
 
           function popupChangeFn(){
             let popupType= $('input[name="popupType"]:checked').val()
@@ -1415,7 +1439,7 @@
           //Button Two
           const imageBtnTwo = document.getElementById('imageFileTwo');
           const imageChosenTwo = document.getElementById('imageChosenTwo');
-          imageBtn.addEventListener('change', function(){
+          imageBtnTwo.addEventListener('change', function(){
             $("#imageUploadTwo #previewDivTwo").html(`<img src=${URL.createObjectURL(this.files[0])} id="uploadedImgTwo" />`);
             popupImageTwo=this.files[0];
           })
@@ -3605,35 +3629,55 @@
         else if (modalBody.children[0].className === "linkBtnDiv") {
           let btnName = document.getElementById("btnName").value;
           let btnLink = document.getElementById("btnLinkId").value;
-
           let btnType= $('input[name="buttonType"]:checked').val();
           let btnLocation= $('input[name="btnLocation"]:checked').val();
           let btnPosition= $('input[name="btnPosition"]:checked').val();
           let popupType= $('input[name="popupType"]:checked').val();
+          let btnCount= $('input[name="buttonCount"]:checked').val();
+          let btnColor = $("#btnColorPicker").val();
+
+
+          //Button two
+          let btnTwoName=$("#btnNameTwo").val();
+          let btnTwoLink =$("#btnLinkIdTwo").val();
+          let btnTypeTwo= $('input[name="buttonTypeTwo"]:checked').val();
+          let btnLocationTwo= $('input[name="btnLocationTwo"]:checked').val();
+          let btnPositionTwo= $('input[name="btnPositionTwo"]:checked').val();
+          let popupTypeTwo= $('input[name="popupTypeTwo"]:checked').val();
+          let btnColorTwo = $("#btnColorPickerTwo").val();
+
 
           var forms = document.querySelectorAll("#linkForm form");
+
+          //Button two
+          let formsTwo = document.querySelectorAll("#linkFormTwo form");
 
           let hasEmptyValue=false;
           var links=[];
 
+          //Button Two
+          let hasEmptyValueTwo=false;
+          var linksTwo=[];
+
+      
           if(popupType==="link"){        
-          var result = Array.from(forms).map((a,i) => {
-            var obj = {};
-            Array.from(a.querySelectorAll("[name]")).forEach((b,j) => {
-              obj[b.getAttribute("name")] = b.value;
-              if(b.value === ""){
-                if($(`.error-msg${i}${j}`).length === 0){
-                  $(b).after(`<div class="error popup-error error-msg${i}${j}">Please enter the value..!</div>`);
+            var result = Array.from(forms).map((a,i) => {
+              var obj = {};
+              Array.from(a.querySelectorAll("[name]")).forEach((b,j) => {
+                obj[b.getAttribute("name")] = b.value;
+                if(b.value === ""){
+                  if($(`.error-msg${i}${j}`).length === 0){
+                    $(b).after(`<div class="error popup-error error-msg${i}${j}">Please enter the value..!</div>`);
+                  }
+                  hasEmptyValue=true;
+                }else{
+                  $(`.error-msg${i}${j}`).remove();
                 }
-                hasEmptyValue=true;
-              }else{
-                $(`.error-msg${i}${j}`).remove();
-              }
-              
+                
+              });
+              links.push(obj);
+              return links;
             });
-            links.push(obj);
-            return links;
-          });
           }else if(popupType ==="image"){
             if(popupImage === ""){
               $("#imageUpload").after(`<div class="error popup-error error-msg-image">Please upload the image..!</div>`);
@@ -3648,6 +3692,53 @@
             }
           }
 
+          //Button two error handling
+          $(".poptwo-error-msg").remove();
+
+
+
+          if(btnTwoName === ""){
+            $("#btnNameTwo").after('<p class="error poptwo-error-msg mt-0">Please enter the value.</p>');
+          }
+          if(btnTypeTwo === "link"){
+            if(btnTwoLink===""){
+              $("#btnLinkIdTwo").after('<p class="error poptwo-error-msg mt-0">Please enter the value.</p>');
+            }
+          }
+
+          $(`.popup-error-two`).remove();
+
+          if(btnCount === "two"){
+            if(popupTypeTwo==="link"){        
+              var resultTwo = Array.from(formsTwo).map((a,i) => {
+                var objTwo = {};
+                Array.from(a.querySelectorAll("[name]")).forEach((b,j) => {
+                    objTwo[b.getAttribute("name")] = b.value;
+                    if(b.value === ""){
+                        $(b).after(`<div class="error popup-error-two">Please enter the value.</div>`);
+                      hasEmptyValue=true;
+                    }
+                  });
+                  linksTwo.push(objTwo);
+                  return linksTwo;
+              });
+            }
+            else if(popupTypeTwo ==="image"){
+                if(popupImageTwo === ""){
+                  $("#imageUploadTwo").after(`<div class="error popup-error error-msg-image-two">Please upload the image..!</div>`);
+                }else{
+                  $(".error-msg-image-two").remove("");
+                }
+            }
+            else if(popupTypeTwo === "pdf"){
+              if(popupPdfTwo === ""){
+                $("#pdfUploadTwo").after(`<div class="error popup-error error-msg-pdf-two">Please upload the document..!</div>`);
+              }else{
+                $(".error-msg-pdf-two").remove("");
+              }
+          }
+          }
+          
           let parentId = modalBody.children[0].id
 
           var dropImg = document.createElement("img")
@@ -3683,25 +3774,90 @@
           btnDiv.className = "btnDiv dragDiv"
           btnDiv.id = parentId
 
-          let linkDiv = document.createElement("div")
-          linkDiv.className = "linkDiv"
+          let linkDiv = document.createElement("div");
+          linkDiv.className = "linkDiv";
           linkDiv.id = "btnLink" + buttonId;
-          linkDiv.style.textAlign=`${btnPosition}`
+          if(btnCount==="one"){
+            linkDiv.style.textAlign=`${btnPosition}`;
+          }else{
+            linkDiv.style.display="grid";
+            linkDiv.style.gridTemplateColumns="repeat(2, 1fr)";
+            linkDiv.style.gap="10px";
+          }
+         
 
           clickTag.setAttribute("onclick", `editModal("editButton",this.previousElementSibling.id,this.parentElement.id)`)
 
           let btnTag;
 
-          if(btnType === "link"){
-            btnTag=`<a href="${btnLink}" id="linkTag${buttonId}" target="_blank" class="linkBtn">${btnName}</a>`;
-          }else if(btnType === "popup"){
-            btnTag=`<a href="#" id="linkTag${buttonId}" class="linkBtn link_${parentId}" onclick="openPopupModal(this)">${btnName}</a>`
+          if(btnCount==="two"){
+            if(btnType === "link"){
+              btnTag=`<div style="text-align:${btnPosition}">
+                        <a href="${btnLink}" id="linkTag${buttonId}_0" target="_blank" class="linkBtn" style="background-color:${btnColor}">${btnName}</a>
+                      </div>`;
+            }else if(btnType === "popup"){
+              btnTag=`<div style="text-align:${btnPosition}">
+                        <a href="#" id="linkTag${buttonId}_0" class="linkBtn link_${parentId}" onclick="openPopupTwoModal(this)" style="background-color:${btnColor}">${btnName}</a>
+                      </div>`
+            }
+
+            if(btnTypeTwo === "link"){
+              btnTag+=`<div style="text-align:${btnPositionTwo}">
+                        <a href="${btnTwoLink}" id="linkTag${buttonId}_1" target="_blank" class="linkBtn" style="background-color:${btnColorTwo}">${btnTwoName}</a>
+                    </div>`;
+            }else if(btnTypeTwo === "popup"){
+              btnTag+=`<div>
+                        <a href="#" id="linkTag${buttonId}_1" class="linkBtn link_${parentId}" onclick="openPopupTwoModal(this)" style="background-color:${btnColorTwo}">${btnTwoName}</a>
+                      </div>`
+            }
+          }else{
+            if(btnType === "link"){
+              btnTag=`<a href="${btnLink}" id="linkTag${buttonId}0" target="_blank" class="linkBtn" style="background-color:${btnColor}">${btnName}</a>`;
+            }else if(btnType === "popup"){
+              btnTag=`<a href="#" id="linkTag${buttonId}1" class="linkBtn link_${parentId}" onclick="openPopupModal(this)" style="background-color:${btnColor}">${btnName}</a>`;
+            }
+
           }
 
 
-          linkDiv.innerHTML = btnTag;
+          let buttonOneInfo;
+          let buttonTwoInfo;
 
-          let btnColor = document.getElementById("btnColorPicker").value
+          if(btnType==="link"){
+            buttonOneInfo={ name: btnName,btnType, link: btnLink,btnPosition, bgColor: btnColor}
+          }else{
+            if(popupType === "link"){
+              buttonOneInfo={name: btnName, btnType, popupType,links, bgColor: btnColor,btnLocation, btnPosition};
+            }else if(popupType ==="image"){
+              buttonOneInfo={name: btnName, btnType, popupType,image:popupImage, bgColor: btnColor,btnLocation, btnPosition};
+            }else{
+              buttonOneInfo={name: btnName, btnType, popupType,pdf:popupPdf, bgColor: btnColor,btnLocation, btnPosition};
+            }
+          }
+
+            if(btnCount === "two"){
+              if(btnTypeTwo==="link"){
+                buttonTwoInfo={ name: btnTwoName,btnType:btnTypeTwo, link: btnTwoLink,btnPosition:btnPositionTwo, bgColor: btnColorTwo}
+              }else{
+                if(popupTypeTwo === "link"){
+                  buttonTwoInfo={name: btnTwoName, btnType:btnTypeTwo,popupType:popupTypeTwo,links:linksTwo, bgColor: btnColorTwo,btnLocation:btnLocationTwo, btnPosition:btnPositionTwo};
+                }else if(popupTypeTwo ==="image"){
+                  buttonTwoInfo={name: btnTwoName, btnType:btnTypeTwo, popupType:popupTypeTwo,image:popupImageTwo, bgColor: btnColorTwo,btnLocation:btnLocationTwo,btnPosition:btnPositionTwo};
+                }else{
+                  buttonTwoInfo={name: btnTwoName, btnType:btnTypeTwo, popupType:popupTypeTwo,pdf:popupPdfTwo, bgColor: btnColorTwo,btnLocation:btnLocationTwo,btnPosition:btnPositionTwo};
+                }
+              }
+            }
+
+          let buttons=[];
+
+          buttons.push(buttonOneInfo);
+
+          if(btnCount === "two"){
+            buttons.push(buttonTwoInfo);
+          }
+          linkDiv.innerHTML = btnTag;
+         
           let updatesContent;
           let updatesContentId;
           let parentDivId;
@@ -3713,9 +3869,7 @@
           }
 
           if (btnName !== "") {
-            if(pageTitle !==""){
-              
-              
+            if(pageTitle !==""){ 
               var numb = updatesContentId?.match(/\d/g);
               numb = numb?.join("");
               let idCount=numb;
@@ -3728,33 +3882,34 @@
                     if(popupImage !==""){
                       $('#createModal').modal('hide');
                       updatesContent.appendChild(btnDiv);
-                      btnContainerArray[`${parentId}`] = { name: btnName,btnType:"popup", popupType:"image",image:popupImage, bgColor: btnColor,btnLocation, btnPosition, updates:`updates${idCount}` }
-                      tempArray[`${parentId}`] = { type: "8", name: btnName, btnType:"popup", popupType:"image",image:popupImage, bgColor: btnColor,btnLocation, btnPosition, updates:`updates${idCount}` }
+                      btnContainerArray[`${parentId}`] = {btnCount,buttons, updates:`updates${idCount}` }
+                      tempArray[`${parentId}`] = { type: "8",btnCount,buttons, updates:`updates${idCount}` }
                     } 
                   }else if(popupType === "pdf"){
                     if(popupPdf !== ""){
                       $('#createModal').modal('hide');
                       updatesContent.appendChild(btnDiv);
-                      btnContainerArray[`${parentId}`] = { name: btnName,btnType:"popup", popupType:"pdf",pdf:popupPdf,btnLocation, btnPosition, bgColor: btnColor,updates:`updates${idCount}` }
-                      tempArray[`${parentId}`] = { type: "8", name: btnName, btnType:"popup", popupType:"pdf",pdf:popupPdf,btnLocation, btnPosition, bgColor: btnColor,updates:`updates${idCount}` }
+                      btnContainerArray[`${parentId}`] = { btnCount,buttons,updates:`updates${idCount}` }
+                      tempArray[`${parentId}`] = { type: "8",btnCount,buttons,updates:`updates${idCount}` }
                     }
                   }else if(popupType === "link"){
                     if(hasEmptyValue === false){
                       $('#createModal').modal('hide');
                       updatesContent.appendChild(btnDiv);
-                      btnContainerArray[`${parentId}`] = { name: btnName,btnType:"popup", popupType:"link",links:links,btnLocation, btnPosition, bgColor: btnColor,updates:`updates${idCount}` }
-                      tempArray[`${parentId}`] = { type: "8", name: btnName, btnType:"popup", popupType:"link",links:links,btnLocation, btnPosition, bgColor: btnColor,updates:`updates${idCount}` }
+                      btnContainerArray[`${parentId}`] = { btnCount,buttons,updates:`updates${idCount}` }
+                      tempArray[`${parentId}`] = { type: "8", btnCount,buttons,updates:`updates${idCount}` }
                     }
                   }
               }else{
                 if(btnLink !== ""){
                   $('#createModal').modal('hide');
                   updatesContent.appendChild(btnDiv);            
-                  btnContainerArray[`${parentId}`] = { name: btnName,btnType:"link", link: btnLink,btnPosition, bgColor: btnColor,updates:`updates${idCount}` }
-                  tempArray[`${parentId}`] = { type: "8", name: btnName,btnType:"link", link: btnLink,btnPosition, bgColor: btnColor,updates:`updates${idCount}` }
+                  btnContainerArray[`${parentId}`] = { btnCount,buttons,updates:`updates${idCount}` }
+                  tempArray[`${parentId}`] = { type: "8",btnCount,buttons,updates:`updates${idCount}` }
                 }
               }
-            }else{
+            }
+            else{
               btnDiv.appendChild(dropImg)
               btnDiv.appendChild(linkDiv)
               btnDiv.appendChild(clickTag)
@@ -3765,30 +3920,30 @@
                   if(popupImage !==""){
                     $('#createModal').modal('hide');
                     contentCards.appendChild(btnDiv);
-                    btnContainerArray[`${parentId}`] = { name: btnName,btnType:"popup", popupType:"image",image:popupImage,btnLocation:btnLocation, btnPosition:btnPosition, bgColor: btnColor }
-                    tempArray[`${parentId}`] = { type: "8", name: btnName, btnType:"popup", popupType:"image",image:popupImage, btnLocation, btnPosition, bgColor: btnColor}
+                    btnContainerArray[`${parentId}`] = { btnCount,buttons}
+                    tempArray[`${parentId}`] = { type: "8", btnCount,buttons}
                   } 
                 }else if(popupType === "pdf"){
                   if(popupPdf !== ""){
                     $('#createModal').modal('hide');
                     contentCards.appendChild(btnDiv);
-                    btnContainerArray[`${parentId}`] = { name: btnName,btnType:"popup", popupType:"pdf",pdf:popupPdf,btnLocation:btnLocation, btnPosition:btnPosition, bgColor: btnColor}
-                    tempArray[`${parentId}`] = { type: "8", name: btnName, btnType:"popup", popupType:"pdf",pdf:popupPdf,btnLocation:btnLocation, btnPosition:btnPosition, bgColor: btnColor }
+                    btnContainerArray[`${parentId}`] = {btnCount,buttons}
+                    tempArray[`${parentId}`] = { type: "8", btnCount,buttons}
                   }
                 }else if(popupType === "link"){
                   if(hasEmptyValue === false){
                     $('#createModal').modal('hide');
                     contentCards.appendChild(btnDiv);
-                    btnContainerArray[`${parentId}`] = { name: btnName,btnType:"popup", popupType:"link",links:links,btnLocation, btnPosition, bgColor: btnColor }
-                    tempArray[`${parentId}`] = { type: "8", name: btnName, btnType:"popup", popupType:"link",links:links,btnLocation, btnPosition, bgColor: btnColor}
+                    btnContainerArray[`${parentId}`] = { btnCount,buttons}
+                    tempArray[`${parentId}`] = { type: "8",btnCount,buttons}
                   }
                 }
             }else{
               if(btnLink !== ""){
                 $('#createModal').modal('hide');
                 contentCards.appendChild(btnDiv);            
-                btnContainerArray[`${parentId}`] = { name: btnName,btnType:"link",btnPosition, link: btnLink, bgColor: btnColor }
-                tempArray[`${parentId}`] = { type: "8", name: btnName,btnType:"link",btnPosition, link: btnLink, bgColor: btnColor}
+                btnContainerArray[`${parentId}`] = { btnCount,buttons }
+                tempArray[`${parentId}`] = { type: "8",btnCount,buttons}
               }
             }
             
@@ -3796,7 +3951,7 @@
 
             let childElem = document.getElementById(`linkTag${buttonId}`)
 
-            childElem.style.backgroundColor = btnColor
+           // childElem.style.backgroundColor = btnColor
             submitBtnDiv.style.display = "block";
          
             buttonId += 1;
@@ -3838,9 +3993,10 @@
           let linkElem="";
 
            openPopupModal = (elem) =>{
+            console.log(elem,"pop dat")
             modalContent='';
             let btnAttr=elem.classList[1].split("_")[1];
-            let popupData=tempArray[`${btnAttr}`];
+            let popupData=tempArray[`${btnAttr}`]['buttons'][0];  
             let modalType = popupData['popupType'];
 
               if(modalType === "image"){
@@ -3856,6 +4012,33 @@
               }
 
               $("#popupBtnModal .modal-body").html(modalContent);
+              $('#popupBtnModal').modal('show'); 
+            }
+
+           //Button Two
+            let modalContentTwo='';
+            let linkElemTwo="";
+
+           openPopupTwoModal = (elem) =>{
+            modalContentTwo='';
+            let elemIndex=elem.id.split("_")[1];
+            let btnAttr=elem.classList[1].split("_")[1];
+            let popupTwoData=tempArray[`${btnAttr}`]['buttons'][elemIndex];
+            let modalTypeTwo = popupTwoData['popupType'];
+
+              if(modalTypeTwo === "image"){
+                  modalContentTwo=`<img src="${URL.createObjectURL(popupTwoData.image)}" class="popupImage" />`
+                  $("#popupBtnModal .modal-title").text('Image Preview');
+              }else if(modalTypeTwo === "pdf"){
+                modalContentTwo=`<object data='${URL.createObjectURL(popupTwoData.pdf)}' type='application/pdf' width='100%' height='700px'>`
+                $("#popupBtnModal .modal-title").text('Document Preview');
+              }else if(modalTypeTwo === "link"){
+                popupTwoData.links.map((l)=>{
+                  modalContentTwo+=`<a class="poplink" target=”_blank” href="${l.link}">${l.name}</a>`
+                })
+              }
+
+              $("#popupBtnModal .modal-body").html(modalContentTwo);
               $('#popupBtnModal').modal('show'); 
             }
          
@@ -4605,167 +4788,399 @@
           }
 
           var modalBody = document.getElementById('editPageContent')
-          const { name, bgColor } = btnContainerArray[parentId];
-          let link = btnContainerArray[parentId]['link'] === undefined ? '': btnContainerArray[parentId]['link'];
-          let btnType = tempArray[parentId]['btnType'] === undefined? 'link': tempArray[parentId]['btnType'];
-          let btnPosition= tempArray[parentId]['btnPosition'] === undefined ? 'center': tempArray[parentId]['btnPosition'];
-          let btnName = document.getElementById(`${id}`).children[0].innerText
+          console.log(tempArray[parentId],"data")
+          let btnCount = tempArray[parentId]['btnCount'] === undefined ? "one":tempArray[parentId]['btnCount'];
+          let buttonOneData=tempArray[parentId]['buttons'][0] === undefined ? tempArray[parentId]:tempArray[parentId]['buttons'][0];
+          const { name, bgColor } = buttonOneData;
+          let link = buttonOneData['link'] === undefined ? '': buttonOneData['link'];
+          let btnType = buttonOneData['btnType'] === undefined? 'link': buttonOneData['btnType'];
+          let btnPosition= buttonOneData['btnPosition'] === undefined ? 'center': buttonOneData['btnPosition'];
+          let btnName = document.getElementById(`${id}`).children[0].innerText;
           let btnLink = document.getElementById(`${id}`).children[0].getAttribute("href");
+
+          //Button two
+          let buttonTwoData="";
+          let btnNameTwo="";
+          let bgColorTwo="";
+          let linkTwo = "";
+          let btnTypeTwo = "";
+          let btnPositionTwo="";
+          let btnLocationTwo='';
+          let popupTypeTwo='';
+          let linksTwo;
+
+          if(btnCount==="two"){
+            buttonTwoData=tempArray[parentId]['buttons'][1];
+            btnNameTwo=buttonTwoData['name'];
+            bgColorTwo=buttonTwoData['bgColor'];
+            linkTwo = buttonTwoData['link'] === undefined ? '': buttonTwoData['link'];
+            btnTypeTwo = buttonTwoData['btnType'] === undefined? 'link': buttonTwoData['btnType'];
+            btnPositionTwo= buttonTwoData['btnPosition'] === undefined ? 'center': buttonTwoData['btnPosition'];
+
+            if(btnTypeTwo === "popup"){
+              btnLocationTwo= buttonTwoData['btnLocation']  === undefined ? 'body': buttonTwoData['btnLocation'];
+              popupTypeTwo= buttonTwoData['popupType'] === undefined ? 'link': buttonTwoData['popupType'];
+              if(popupTypeTwo === 'link'){
+                  linksTwo = buttonTwoData['links'];
+              }else if(popupTypeTwo === 'image'){
+                popupImageTwo= buttonTwoData['image'];
+              }
+              else if(popupTypeTwo === 'pdf'){
+                  popupImageTwo= buttonTwoData['pdf'];
+              }
+            }
+          }
 
           let btnLocation='';
           let popupType='';
           let links;
 
-
-        
-
           if(btnType === "popup"){
-           btnLocation= tempArray[parentId]['btnLocation']  === undefined ? 'body': tempArray[parentId]['btnLocation'];
-          
-           popupType= tempArray[parentId]['popupType'] === undefined ? 'link': tempArray[parentId]['popupType'];
+           btnLocation= buttonOneData['btnLocation']  === undefined ? 'body': buttonOneData['btnLocation'];
+           popupType= buttonOneData['popupType'] === undefined ? 'link': buttonOneData['popupType'];
 
            if(popupType === 'link'){
-              links = tempArray[parentId]['links'];
+              links = buttonOneData['links'];
            }else if(popupType === 'image'){
-             popupImage= tempArray[parentId]['image'];
+             popupImage= buttonOneData['image'];
            }
            else if(popupType === 'pdf'){
-              popupPdf= tempArray[parentId]['pdf'];
+              popupPdf= buttonOneData['pdf'];
            }
           }
 
 
 
 
+
+
           let buttonInput = `<div class="row gap-4">
-            <div class="col-12">
-              <fieldset class="row">
-                <legend class="col-form-label col-4 pt-0">Button Type:</legend>
-                <div class="col-8">
-                  <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="buttonTypeEdit" id="link" value="link" onchange="buttonTypeChangeEdit(this)">
-                    <label class="form-check-label" for="link">
-                      Link
-                    </label>
-                  </div>
-                  <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="buttonTypeEdit" id="popup" value="popup" onchange="buttonTypeChangeEdit(this)" >
-                    <label class="form-check-label" for="popup">
-                      Popup
-                    </label>
-                  </div>
-                </div>
-            </fieldset>
-          </div>
-          <div class="col-12">
-            <input type="text" class="form-control" id="btnNameEdit" placeholder="Name" value="${name}">
-          </div>
-          <div class="col-12" id="linkDivEdit" style="display:block">
-            <input type="text" class="form-control" id="btnLinkIdEdit" placeholder="Link" value="${link}">
-          </div>
-          <div class="col-12">
-            <div class="row align-items-center">
-            <label for="colorPickerIdEdit" class="form-label col-6">Choose background Color</label>
-            <div class="col-4">
-              <input type="color" class="form-control form-control-color" id="btnColorPickerEdit" value="${bgColor}">
-            </div>
-          </div>
-          </div>
-          <div class="col-12">
-            
-        <fieldset class="row mb-2 mt-2">
-          <legend class="col-form-label col-sm-2 pt-0">Position:</legend>
-          <div class="col-sm-10">
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="btnPositionEdit" id="left" value="left">
-              <label class="form-check-label" for="left">
-                Left
-              </label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="btnPositionEdit" id="center" value="center" checked>
-              <label class="form-check-label" for="center">
-                Center
-              </label>
-            </div>
+                                <div class="col-12">
+                                  <fieldset class="row">
+                                    <legend class="col-form-label col-4 pt-0">Buttons:</legend>
+                                    <div class="col-8">
+                                      <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="buttonCountEdit" id="oneEdit" value="one" onchange="buttonCountChangeEdit(this)" checked>
+                                        <label class="form-check-label" for="oneEdit">
+                                          Single
+                                        </label>
+                                      </div>
+                                      <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="buttonCountEdit" id="twoEdit" value="two" onchange="buttonCountChangeEdit(this)" >
+                                        <label class="form-check-label" for="twoEdit">
+                                          Double
+                                        </label>
+                                      </div>
+                                    </div>
+                                </fieldset>
+                              </div>
+                                <div class="col-12">
+                                  <fieldset class="row">
+                                    <legend class="col-form-label col-4 pt-0">Button Type:</legend>
+                                    <div class="col-8">
+                                      <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="buttonTypeEdit" id="link" value="link" onchange="buttonTypeChangeEdit(this)">
+                                        <label class="form-check-label" for="link">
+                                          Link
+                                        </label>
+                                      </div>
+                                      <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="buttonTypeEdit" id="popup" value="popup" onchange="buttonTypeChangeEdit(this)" >
+                                        <label class="form-check-label" for="popup">
+                                          Popup
+                                        </label>
+                                      </div>
+                                    </div>
+                                </fieldset>
+                              </div>
+                              <div class="col-12">
+                                <input type="text" class="form-control" id="btnNameEdit" placeholder="Name" value="${name}">
+                              </div>
+                              <div class="col-12" id="linkDivEdit" style="display:block">
+                                <input type="text" class="form-control" id="btnLinkIdEdit" placeholder="Link" value="${link}">
+                              </div>
+                              <div class="col-12">
+                                <div class="row align-items-center">
+                                <label for="colorPickerIdEdit" class="form-label col-6">Choose background Color</label>
+                                <div class="col-4">
+                                  <input type="color" class="form-control form-control-color" id="btnColorPickerEdit" value="${bgColor}">
+                                </div>
+                              </div>
+                              </div>
+                              <div class="col-12">
+                                
+                            <fieldset class="row mb-2 mt-2">
+                              <legend class="col-form-label col-sm-2 pt-0">Position:</legend>
+                              <div class="col-sm-10">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="radio" name="btnPositionEdit" id="left" value="left">
+                                  <label class="form-check-label" for="left">
+                                    Left
+                                  </label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="radio" name="btnPositionEdit" id="center" value="center" checked>
+                                  <label class="form-check-label" for="center">
+                                    Center
+                                  </label>
+                                </div>
 
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="btnPositionEdit" id="right" value="right">
-              <label class="form-check-label" for="right">
-                Right
-              </label>
-            </div>
-          </div>
-        </fieldset>
-          </div>
-        </div>
-        <div id="popupDivEdit" style="display:none" class="mt-4">
-        <fieldset class="row mb-2 mt-2">
-          <legend class="col-form-label col-sm-2 pt-0">Location:</legend>
-          <div class="col-sm-10">
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="btnLocationEdit" id="header" value="header">
-              <label class="form-check-label" for="header">
-                Header
-              </label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="btnLocationEdit" id="body" value="body" checked>
-              <label class="form-check-label" for="body">
-                Body
-              </label>
-            </div>
-          </div>
-        </fieldset>
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="radio" name="btnPositionEdit" id="right" value="right">
+                                  <label class="form-check-label" for="right">
+                                    Right
+                                  </label>
+                                </div>
+                              </div>
+                            </fieldset>
+                              </div>
+                            </div>
+                            <div id="popupDivEdit" style="display:none" class="mt-4">
+                            <fieldset class="row mb-2 mt-2">
+                              <legend class="col-form-label col-sm-2 pt-0">Location:</legend>
+                              <div class="col-sm-10">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="radio" name="btnLocationEdit" id="header" value="header">
+                                  <label class="form-check-label" for="header">
+                                    Header
+                                  </label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="radio" name="btnLocationEdit" id="body" value="body" checked>
+                                  <label class="form-check-label" for="body">
+                                    Body
+                                  </label>
+                                </div>
+                              </div>
+                            </fieldset>
 
-        <fieldset class="row mb-2 mt-2">
-          <legend class="col-form-label col-sm-2 pt-0">Content</legend>
-          <div class="col-sm-10">
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="popupTypeEdit" id="linkBtnEdit" value="link">
-              <label class="form-check-label" for="linkBtnEdit">
-                Link
-              </label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="popupTypeEdit" id="imageBtnEdit" value="image" checked>
-              <label class="form-check-label" for="imageBtnEdit">
-                Image
-              </label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="popupTypeEdit" id="pdfBtnEdit" value="pdf">
-              <label class="form-check-label" for="pdfBtnEdit">
-                PDF
-              </label>
-            </div>
-          </div>
-        </fieldset>
-        <div class="uploadContainerEdit">
-          <div class="uploadDivEdit" id="pdfUploadEdit" style="display:none">
-            <input type="file" id="pdfFileEdit" accept ="application/pdf" hidden/>
-            <label for="pdfFileEdit">Choose File</label>
-            <span id="pdfChosenEdit">No file chosen</span>
-          </div>
-          <div class="uploadDivEdit" id="imageUploadEdit" style="display:none">
-            <input type="file" id="imageFileEdit" accept="image/png, image/jpeg" hidden/>
-            <label for="imageFileEdit">Choose File</label>
-            <div id="previewDivEdit"></div>
-          </div>
-          <div class="uploadDivEdit" id="linkUploadEdit">
-            <div id="linkFormEdit">
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>`
+                            <fieldset class="row mb-2 mt-2">
+                              <legend class="col-form-label col-sm-2 pt-0">Content</legend>
+                              <div class="col-sm-10">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="radio" name="popupTypeEdit" id="linkBtnEdit" value="link">
+                                  <label class="form-check-label" for="linkBtnEdit">
+                                    Link
+                                  </label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="radio" name="popupTypeEdit" id="imageBtnEdit" value="image" checked>
+                                  <label class="form-check-label" for="imageBtnEdit">
+                                    Image
+                                  </label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="radio" name="popupTypeEdit" id="pdfBtnEdit" value="pdf">
+                                  <label class="form-check-label" for="pdfBtnEdit">
+                                    PDF
+                                  </label>
+                                </div>
+                              </div>
+                            </fieldset>
+                            <div class="uploadContainerEdit">
+                              <div class="uploadDivEdit" id="pdfUploadEdit" style="display:none">
+                                <input type="file" id="pdfFileEdit" accept ="application/pdf" hidden/>
+                                <label for="pdfFileEdit">Choose File</label>
+                                <span id="pdfChosenEdit">No file chosen</span>
+                              </div>
+                              <div class="uploadDivEdit" id="imageUploadEdit" style="display:none">
+                                <input type="file" id="imageFileEdit" accept="image/png, image/jpeg" hidden/>
+                                <label for="imageFileEdit">Choose File</label>
+                                <div id="previewDivEdit"></div>
+                              </div>
+                              <div class="uploadDivEdit" id="linkUploadEdit">
+                                <div id="linkFormEdit">
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>`
+
+    
+    let buttonInputTwo =  `<div class="gap-4 flex-column border-top pt-3" id="secondBtnDivEdit" style="display:none">
+                              <div class="row gap-4">
+                                <div class="col-12">
+                                  <fieldset class="row">
+                                    <legend class="col-form-label col-4 pt-0">Button Type:</legend>
+                                    <div class="col-8">
+                                      <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="buttonTypeEditTwo" id="linkTwo" value="link" onchange="buttonTypeChangeEditTwo(this)">
+                                        <label class="form-check-label" for="linkTwo">
+                                          Link
+                                        </label>
+                                      </div>
+                                      <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="buttonTypeEditTwo" id="popupTwo" value="popup" onchange="buttonTypeChangeEditTwo(this)" >
+                                        <label class="form-check-label" for="popupTwo">
+                                          Popup
+                                        </label>
+                                      </div>
+                                    </div>
+                                </fieldset>
+                              </div>
+                              <div class="col-12">
+                                <input type="text" class="form-control" id="btnNameEditTwo" placeholder="Name" value="${name}">
+                              </div>
+                              <div class="col-12" id="linkDivEditTwo" style="display:block">
+                                <input type="text" class="form-control" id="btnLinkIdEditTwo" placeholder="Link" value="${link}">
+                              </div>
+                              <div class="col-12">
+                                <div class="row align-items-center">
+                                <label for="colorPickerIdEditTwo" class="form-label col-6">Choose background Color</label>
+                                <div class="col-4">
+                                  <input type="color" class="form-control form-control-color" id="btnColorPickerEditTwo" value="${bgColor}">
+                                </div>
+                              </div>
+                              </div>
+                              <div class="col-12">
+                                
+                            <fieldset class="row mb-2 mt-2">
+                              <legend class="col-form-label col-sm-2 pt-0">Position:</legend>
+                              <div class="col-sm-10">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="radio" name="btnPositionEditTwo" id="leftTwo" value="left">
+                                  <label class="form-check-label" for="leftTwo">
+                                    Left
+                                  </label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="radio" name="btnPositionEditTwo" id="centerTwo" value="center" checked>
+                                  <label class="form-check-label" for="centerTwo">
+                                    Center
+                                  </label>
+                                </div>
+
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="radio" name="btnPositionEditTwo" id="rightTwo" value="right">
+                                  <label class="form-check-label" for="rightTwo">
+                                    Right
+                                  </label>
+                                </div>
+                              </div>
+                            </fieldset>
+                              </div>
+                            </div>
+                            <div id="popupDivEdiTwot" style="display:none" class="mt-4">
+                            <fieldset class="row mb-2 mt-2">
+                              <legend class="col-form-label col-sm-2 pt-0">Location:</legend>
+                              <div class="col-sm-10">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="radio" name="btnLocationEditTwo" id="headerTwo" value="header">
+                                  <label class="form-check-label" for="headerTwo">
+                                    Header
+                                  </label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="radio" name="btnLocationEditTwo" id="bodyTwo" value="body" checked>
+                                  <label class="form-check-label" for="bodyTwo">
+                                    Body
+                                  </label>
+                                </div>
+                              </div>
+                            </fieldset>
+
+                            <fieldset class="row mb-2 mt-2">
+                              <legend class="col-form-label col-sm-2 pt-0">Content</legend>
+                              <div class="col-sm-10">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="radio" name="popupTypeEditTwo" id="linkBtnEditTwo" value="link">
+                                  <label class="form-check-label" for="linkBtnEditTwo">
+                                    Link
+                                  </label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="radio" name="popupTypeEditTwo" id="imageBtnEditTwo" value="image" checked>
+                                  <label class="form-check-label" for="imageBtnEditTwo">
+                                    Image
+                                  </label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="radio" name="popupTypeEditTwo" id="pdfBtnEditTwo" value="pdf">
+                                  <label class="form-check-label" for="pdfBtnEditTwo">
+                                    PDF
+                                  </label>
+                                </div>
+                              </div>
+                            </fieldset>
+                            <div class="uploadContainerEditTwo">
+                              <div class="uploadDivEditTwo" id="pdfUploadEditTwo" style="display:none">
+                                <input type="file" id="pdfFileEditTwo" accept ="application/pdf" hidden/>
+                                <label for="pdfFileEditTwo">Choose File</label>
+                                <span id="pdfChosenEditTwo">No file chosen</span>
+                              </div>
+                              <div class="uploadDivEditTwo" id="imageUploadEditTwo" style="display:none">
+                                <input type="file" id="imageFileEditTwo" accept="image/png, image/jpeg" hidden/>
+                                <label for="imageFileEditTwo">Choose File</label>
+                                <div id="previewDivEditTwo"></div>
+                              </div>
+                              <div class="uploadDivEditTwo" id="linkUploadEditTwo">
+                                <div id="linkFormEditTwo">
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                    </div>`
 
 
           let mainDiv = document.createElement("div")
           mainDiv.className = "linkBtnDiv"
           mainDiv.id = parentId
           mainDiv.innerHTML=buttonInput;
+          mainDiv.innerHTML +=buttonInputTwo;
           modalBody.appendChild(mainDiv);
+
+          //button two set values
+          if(btnCount === "two"){
+            $("#secondBtnDivEdit").css("display","flex");
+            $(`input[name=btnLocationEdit][value=header]`).parent().css("pointer-events","none");
+            $(`input[name=btnLocationEdit][value=header]`).parent().css("opacity","0.4");
+            $(`input[name=btnLocationEditTwo][value=header]`).parent().css("pointer-events","none");
+            $(`input[name=btnLocationEditTwo][value=header]`).parent().css("opacity","0.4");
+            $(`input[name=btnLocationEdit][value=body]`).prop("checked",true);
+            $(`input[name=btnLocationEditTwo][value=body]`).prop("checked",true);
+
+            if(popupTypeTwo !== "link"){
+              let firstFormTwo=`  <form class="input-div">
+                          <div class="links">
+                            <input type='text' class="form-control" name='name' placeholder="Name">
+                            <input type="text" class="form-control" name="link" placeholder="Link">
+                          </div>
+                          <div class="btn-div">
+                            <button type="button" id="addInputFieldButtonEditTwo" class='add-more-btn'><i class="fa-solid fa-plus"></i></button>
+                          </div>
+                        </form> `;
+              $("#linkFormEditTwo").html(firstFormTwo);
+              $("#linkUploadEditTwo").css("display","none");
+           }
+
+           if(btnTypeTwo === "link"){
+            $("#imageUploadEditTwo").css("display","flex");
+           }
+          }
+
+        //button count option set value  
+        $(`input[name=buttonCountEdit][value=${btnCount}]`).prop("checked",true);
+
+        //Button count change
+         buttonCountChangeEdit =(elem)=>{
+          let btnCountOptionEdit = $(elem).val();
+            if(btnCountOptionEdit === "one"){
+              $("#secondBtnDivEdit").css("display","none");
+              $(`input[name=btnLocationEdit][value=header]`).parent().css("pointer-events","auto");
+              $(`input[name=btnLocationEdit][value=header]`).parent().css("opacity","1");
+              $(`input[name=btnLocationEditTwo][value=header]`).parent().css("pointer-events","auto");
+              $(`input[name=btnLocationEditTwo][value=header]`).parent().css("opacity","1");
+            }else{
+              $("#secondBtnDivEdit").css("display","flex");
+              $(`input[name=btnLocationEdit][value=header]`).parent().css("pointer-events","none");
+              $(`input[name=btnLocationEdit][value=header]`).parent().css("opacity","0.4");
+              $(`input[name=btnLocationEditTwo][value=header]`).parent().css("pointer-events","none");
+              $(`input[name=btnLocationEditTwo][value=header]`).parent().css("opacity","0.4");
+              $(`input[name=btnLocationEdit][value=body]`).prop("checked",true);
+              $(`input[name=btnLocationEditTwo][value=body]`).prop("checked",true);
+            }
+          }
 
           
            if(popupType !== "link"){
@@ -4800,7 +5215,21 @@
           var pdfDiv=$("#pdfUploadEdit")
           var uploadDiv=$(".uploadDivEdit")
 
-           
+          //Button two elements
+          var linkBtnOptionTwo = document.getElementById('linkBtnEditTwo');
+          var imageBtnOptionTwo = document.getElementById('imageBtnEditTwo');
+          var pdfBtnOptionTwo = document.getElementById('pdfBtnEditTwo');
+
+          linkBtnOptionTwo.onclick = popupChangeEditTwoFn;
+          imageBtnOptionTwo.onclick = popupChangeEditTwoFn;
+          pdfBtnOptionTwo.onclick = popupChangeEditTwoFn;
+
+          var linkDivTwo=$("#linkUploadEditTwo")
+          var imageDivTwo=$("#imageUploadEditTwo")
+          var pdfDivTwo=$("#pdfUploadEditTwo")
+          var uploadDivTwo=$(".uploadDivEditTwo")
+
+           //Button one popup type change
           function popupChangeEditFn(){
             let popupType= $('input[name="popupTypeEdit"]:checked').val()
             $(".popup-error").remove();
@@ -4814,6 +5243,21 @@
             }
           }
 
+          //Button two popup type change
+          function popupChangeEditTwoFn(){
+            let popupTypeTwo= $('input[name="popupTypeEditTwo"]:checked').val()
+            $(".popup-error-two").remove();
+            uploadDivTwo.css("display","none")
+            if(popupTypeTwo==="link"){
+              linkDivTwo.css("display","block")
+            }else if(popupTypeTwo ==="image"){
+              imageDivTwo.css("display","flex")
+            }else if(popupTypeTwo === "pdf"){
+              pdfDivTwo.css("display","block")
+            }
+          }
+
+          //Button one type change
           buttonTypeChangeEdit=(elem)=>{
             let buttonOption= $(elem).val();
             if(buttonOption === "link"){
@@ -4823,8 +5267,21 @@
              $("#linkDivEdit").css("display","none");
              $("#popupDivEdit").css("display","block");
             }
-           }
+          }
 
+           //Button two type change
+          buttonTypeChangeEditTwo=(elem)=>{
+            let buttonOptionTwo= $(elem).val();
+            if(buttonOptionTwo === "link"){
+             $("#popupDivEditTwo").css("display","none");
+             $("#linkDivEditTwo").css("display","block");
+            }else if(buttonOptionTwo === "popup"){
+             $("#linkDivEditTwo").css("display","none");
+             $("#popupDivEditTwo").css("display","block");
+            }
+          }
+
+          //Button one pdf file select onchange
           const pdfBtn = document.getElementById('pdfFileEdit');
           const pdfChosen = document.getElementById('pdfChosenEdit');
           pdfBtn.addEventListener('change', function(){
@@ -4832,7 +5289,15 @@
             popupPdf=this.files[0];
           })
 
-          
+          //Button two pdf file select onchange
+          const pdfBtnTwo = document.getElementById('pdfFileEditTwo');
+          const pdfChosenTwo = document.getElementById('pdfChosenEditTwo');
+          pdfBtnTwo.addEventListener('change', function(){
+            pdfChosenTwo.textContent = this.files[0].name;
+            popupPdfTwo=this.files[0];
+          })
+
+          //Button one image file select onchange
           const imageBtn = document.getElementById('imageFileEdit');
           const imageChosen = document.getElementById('imageChosenEdit');
           imageBtn.addEventListener('change', function(){
@@ -4840,6 +5305,15 @@
             popupImage=this.files[0];
           })
 
+          //Button two image file select onchange
+          const imageBtnTwo = document.getElementById('imageFileEditTwo');
+          const imageChosenTwo = document.getElementById('imageChosenEditTwo');
+          imageBtnTwo.addEventListener('change', function(){
+            $("#imageUploadEditTwo #previewDivEditTwo").html(`<img src=${URL.createObjectURL(this.files[0])} id="uploadedImgTwo" />`);
+            popupImageTwo=this.files[0];
+          })
+
+          //Button one options value set
           $(`input[name=buttonTypeEdit][value=${btnType=="link"?"link":"popup"}]`).prop("checked",true);
           $(`input[name=btnPositionEdit][value=${btnPosition}]`).prop("checked",true);
           if(btnType === "popup"){
@@ -4848,6 +5322,15 @@
             $(`input[name=popupTypeEdit][value=${popupType}]`).prop("checked",true);
           }
 
+          //Button two options value set
+          $(`input[name=buttonTypeEditTwo][value=${btnTypeTwo}]`).prop("checked",true);
+          $(`input[name=btnPositionEditTwo][value=${btnPositionTwo}]`).prop("checked",true);
+          if(btnTypeTwo === "popup"){
+            $(`input[name=btnLocationEditTwo][value=${btnLocationTwo}]`).prop("checked",true);
+            $(`input[name=popupTypeEditTwo][value=${popupTypeTwo}]`).prop("checked",true);
+          }
+
+          //Button one popup div hide and show
           if(btnType === "link"){
             $("#popupDivEdit").css("display","none");
             $("#linkDivEdit").css("display","block");
@@ -4856,14 +5339,31 @@
             $("#popupDivEdit").css("display","block");
            }
 
+          //Button two popup div hide and show
+          if(btnTypeTwo === "link"){
+            $("#popupDivEditTwo").css("display","none");
+            $("#linkDivEditTwo").css("display","block");
+           }else if(btnTypeTwo === "popup"){
+            $("#linkDivEditTwo").css("display","none");
+            $("#popupDivEditTwo").css("display","block");
+           }
 
-
+           //Button one popup input div hide and show
           if(popupType==="link"){
             linkDiv.css("display","block")
           }else if(popupType ==="image"){
             imageDiv.css("display","flex")
           }else if(popupType === "pdf"){
             pdfDiv.css("display","block")
+          }
+
+          //Button two popup input div hide and show
+          if(popupTypeTwo==="link"){
+            linkDivTwo.css("display","block")
+          }else if(popupTypeTwo ==="image"){
+            imageDivTwo.css("display","flex")
+          }else if(popupTypeTwo === "pdf"){
+            pdfDivTwo.css("display","block")
           }
 
           let inputCount=0;  
@@ -4874,6 +5374,37 @@
             pdfChosen.textContent = popupPdf.name;
           }else if(popupType === 'link'){
             var input = '';
+           
+           links.forEach((l,i)=>{
+            input+= `<form class="input-div"> 
+              <div class="links">
+                <input type='text' class="form-control" name='name' placeholder="Name" value="${l.name}">
+                <input type='text' class="form-control" name='link' placeholder="Link" value="${l.link}">
+              </div>
+              <div class="btn-div">
+                ${
+                  i == 0 ? `<button type="button" id="addInputFieldButtonEdit" class='add-more-btn'><i class="fa-solid fa-plus"></i></button>`
+                  :
+                 `<button type="button" class="delete-btn" onClick="deleteEditInput(this)"><i class="fa-solid fa-xmark"></i></button>`
+                }
+
+              </div>
+            </form>`
+          }) 
+            $("#linkFormEdit").html(input);
+            inputCount+=1;
+          }
+
+
+          // Button two links element
+          let inputCountTwo=0;  
+
+          if(popupTypeTwo === 'image'){
+            $("#imageUploadEditTwo #previewDivEditTwo").html(`<img src=${URL.createObjectURL(popupImage)} id="uploadedImgEditTwo" />`);
+          }else if(popupTypeTwo === "pdf"){
+            pdfChosenTwo.textContent = popupPdfTwo.name;
+          }else if(popupTypeTwo === 'link'){
+            var inputTwo = '';
            
            links.forEach((l,i)=>{
             input+= `<form class="input-div"> 

@@ -782,12 +782,12 @@
                 ${carouselImage}
               </div>
               <button class="carousel-control-prev" type="button" data-bs-target="#carouselwithIndicators${imageContainerId}" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="carousel-control-prev-icon" style="background-color:${arrowBgColor}" aria-hidden="true"></span>
                 <span class="visually-hidden">Previous</span>
               </button>
       
               <button class="carousel-control-next" type="button" data-bs-target="#carouselwithIndicators${imageContainerId}" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="carousel-control-next-icon" style="background-color:${arrowBgColor}" aria-hidden="true"></span>
                 <span class="visually-hidden">Next</span>
               </button>
           </div>`
@@ -1717,13 +1717,13 @@
                     <legend class="col-form-label col-sm-4 pt-0">Images View</legend>
                     <div class="col-sm-8">
                       <div class="form-check">
-                        <input class="form-check-input" type="radio" name="imageView" value="normal" id="normal" checked>
+                        <input class="form-check-input" type="radio" name="imageView" value="normal" id="normal" onchange="imageTypeFn(this)" checked>
                         <label class="form-check-label" for="normal">
                           Normal
                         </label>
                       </div>
                       <div class="form-check">
-                        <input class="form-check-input" type="radio" name="imageView" value="carousel" id="carousel">
+                        <input class="form-check-input" type="radio" name="imageView" value="carousel" onchange="imageTypeFn(this)" id="carousel">
                         <label class="form-check-label" for="carousel">
                           Carousel
                         </label>

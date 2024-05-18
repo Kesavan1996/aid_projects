@@ -852,6 +852,7 @@ box-shadow: inset 2px 2px 9px -6px rgba(0,0,0,0.75);
     border-radius: 25px;
     font-size: 20px;
     font-weight: bold;
+    display: inline-block;
 }
 
 
@@ -1547,14 +1548,16 @@ label.radio {
   }
 
 .uploadContainer #imageUpload,
-.uploadContainerEdit #imageUploadEdit
+.uploadContainerEdit #imageUploadEdit,
+.uploadContainer #imageUploadTwo
 {
     align-items: center;
     gap: 20px;
   }
 
 #previewDiv img,
-#previewDivEdit img
+#previewDivEdit img,
+#previewDivTwo img
 {
     height: 50px;
     width: 50px;
@@ -1567,7 +1570,8 @@ label.radio {
 }
 
 .uploadDiv#linkUpload #linkForm,
-.uploadDivEdit#linkUploadEdit #linkFormEdit
+.uploadDivEdit#linkUploadEdit #linkFormEdit,
+#linkFormTwo
 {
     display: flex;
     flex-direction: column;

@@ -22,6 +22,12 @@
     },
     {
       "type": "4",
+      "images": ["../../assets/img/img1.jpg", "../../assets/img/img2.jpg"],
+      "imagesView": "carousel",
+      "arrowBgColor": "#f9cdcd"
+    },
+    {
+      "type": "4",
       "images": ["../../assets/img/img1.jpg"],
       "imagesView": "normal"
     },
