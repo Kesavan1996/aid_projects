@@ -1535,6 +1535,15 @@ label.radio {
     border-bottom: none;
 }
 
+.hyperLinkEdit .editForm{
+    padding: 15px 0;
+    border-bottom: 1px solid rgb(188, 188, 188);
+}
+
+.hyperLinkEdit .editForm:last-child{
+    border-bottom: none;
+}
+
 .dragImg{
     cursor: grab;
 }   

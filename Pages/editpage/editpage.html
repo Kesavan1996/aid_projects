@@ -6549,7 +6549,7 @@
           }else{
             videoSrc = videoContainerArrary[updatedElement]
           }
-          document.getElementById(editedElement.id).innerHTML = `<video src=${URL.createObjectURL(videoSrc)} alt="" controls>`
+          document.getElementById(editedElement.id).innerHTML = `<video src="${URL.createObjectURL(videoSrc)}" alt="" controls>`
             $('#editModal').modal('hide');
         }
         else if (modalBody.children[0].className === "animationCard") {

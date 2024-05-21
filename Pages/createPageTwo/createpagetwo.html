@@ -4688,8 +4688,6 @@
             modalTitle.className = ""
           }
 
-          console.log(quizObject,"quiz")
-
           var modalBody = document.getElementById('editPageContent')
 
           var formDiv = document.createElement('form')
@@ -6305,7 +6303,9 @@
           }else{
             videoSrc = videoContainerArrary[updatedElement]
           }
-          document.getElementById(editedElement.id).innerHTML = `<video src=${URL.createObjectURL(videoSrc)} alt="" controls>`
+
+          console.log(videoSrc,"src")
+          document.getElementById(editedElement.id).innerHTML = `<video src="${URL.createObjectURL(videoSrc)}" alt="" controls>`
             $('#editModal').modal('hide');
         }
         else if (modalBody.children[0].className === "animationCard") {
