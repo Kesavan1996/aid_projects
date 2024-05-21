@@ -1032,7 +1032,7 @@
               showVideos();
               $("#videoChosen").css("display","none")
             } else {
-              container.insertAdjacentHTML('afterend', '<p style="color:red">Maximum video size is 10MP</p>');
+              container.insertAdjacentHTML('afterend', '<p style="color:red">Maximum video size is 10MB</p>');
             }
           }
 
@@ -3653,6 +3653,8 @@
             }
           }
 
+          console.log(quizContainerArray,"add array")
+
         }
         else if (modalBody.children[0].className === "animationCard") {
 
@@ -4686,6 +4688,8 @@
             modalTitle.className = ""
           }
 
+          console.log(quizObject,"quiz")
+
           var modalBody = document.getElementById('editPageContent')
 
           var formDiv = document.createElement('form')
@@ -4695,21 +4699,21 @@
           var options = ""
 
           options += `<div class="col-6 gy-3">
-                  <input class="form-control"  id="option0" placeholder="option 1" required name="option0" value=${quizObject['option0']} >
+                  <input class="form-control"  id="option0" placeholder="option 1" required name="option0" value="${quizObject['option0']}" >
                 </div>`
           options += `<div class="col-6 gy-3">
-                  <input class="form-control"  id="option1" placeholder="option 2" required name="option1" value=${quizObject['option1']} >
+                  <input class="form-control"  id="option1" placeholder="option 2" required name="option1" value="${quizObject['option1']}" >
                 </div>`
           options += `<div class="col-6 gy-3">
-                  <input class="form-control"  id="option2" placeholder="option 3" required name="option2" value=${quizObject['option2']} >
+                  <input class="form-control"  id="option2" placeholder="option 3" required name="option2" value="${quizObject['option2']}" >
                 </div>`
           options += `<div class="col-6 gy-3">
-                  <input class="form-control"  id="option3" placeholder="option 4" required name="option3" value=${quizObject['option3']} >
+                  <input class="form-control"  id="option3" placeholder="option 4" required name="option3" value="${quizObject['option3']}" >
                 </div>`
 
 
           var answerDiv = `<div class="col-12 gy-3">
-            <input class="form-control"  id="answer" placeholder="Enter answer" required name="answer" value=${quizObject['answer']} >
+            <input class="form-control"  id="answer" placeholder="Enter answer" required name="answer" value="${quizObject['answer']}" >
           </div>`
 
           var divOne = document.createElement("div")
@@ -6036,6 +6040,12 @@
 
           if(hyperLinkCards.length>1){
               for(let j=1;j<hyperLinkCards.length;j++){
+                let hyperLinkImg = '';
+                if(typeof hyperLinkCards[j].file ==="object"){
+                  hyperLinkImg = URL.createObjectURL(hyperLinkCards[j].file);
+                }else{
+                  hyperLinkImg = hyperLinkCards[j].file;
+                }
                   editRestContent+= `<form class="editForm" id="hyperLinkEdit_form${j}"> <div class="d-flex gap-2 mb-2" id="fieldDiv${j}">
                   <div class="formDiv">
 
@@ -6045,7 +6055,7 @@
                         <label class="file-choose-label" for="hyperImgEditInput${j}_id">Choose Image</label>
                       </div>
                       <div class="hyperImgEditContainer" id="hyperImgEditInput${j}">
-                        <img src=${URL.createObjectURL(hyperLinkCards[j].file)} alt="img" />
+                        <img src=${hyperLinkImg} alt="img" />
                       </div>
                     </div>
 
@@ -6193,14 +6203,18 @@
             tempArray[`${quizArraykey}`] = { type: "7", quiz: quizObject,updates:`updates${updatesId}` }
 
           }else{
-            quizContainerArray[`${quizArraykey}`] = data
+            quizContainerArray[`${quizArraykey}`] = {quiz:data};
 
-            quizObject = quizContainerArray[`${quizArraykey}`]
+            quizObject = quizContainerArray[`${quizArraykey}`]['quiz']
 
             tempArray[`${quizArraykey}`] = { type: "7", quiz: quizObject }
           }
 
+          console.log(quizContainerArray,"update array")
+
           const { question, answer, ...rest } = quizObject
+
+          console.log(quizObject,"update")
 
           var options = ""
 

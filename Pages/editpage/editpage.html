@@ -2133,7 +2133,7 @@
               showVideos();
               $("#videoChosen").css("display","none")
             } else {
-              container.insertAdjacentHTML('afterend', '<p style="color:red">Maximum video size is 10MP</p>');
+              container.insertAdjacentHTML('afterend', '<p style="color:red">Maximum video size is 10MB</p>');
             }
           }
 
@@ -2961,7 +2961,7 @@
               showVideos();
               $("#videoChosen").css("display","none")
             } else {
-              container.insertAdjacentHTML('afterend', '<p style="color:red">Maximum video size is 10MP</p>');
+              container.insertAdjacentHTML('afterend', '<p style="color:red">Maximum video size is 10MB</p>');
             }
           }
 
@@ -3014,7 +3014,8 @@
           input = document.querySelector('form input');
 
           animationonChange = (elem) => {
-            let file = input.files;
+            let file = elem.files;
+            console.log(file,"files")
             for (let i = 0; i < file.length; i++) {
               if (files.every(e => e.name !== file[i].name)) files.push(file[i])
             }
@@ -4186,6 +4187,8 @@
             parentDivId= updatesContentId.split("").pop()
           }
 
+          console.log(optionsList,"list")
+
           if (quiz[0].quizQstn !== "" && optionsList.length >= 2 && answer) {
 
             $('#createModal').modal('hide');
@@ -5259,21 +5262,21 @@
           var options = ""
 
           options += `<div class="col-6 gy-3">
-                  <input class="form-control"  id="option0" placeholder="option 1" required name="option0" value=${quizObject['option0']} >
+                  <input class="form-control"  id="option0" placeholder="option 1" required name="option0" value="${quizObject['option0']}" >
                 </div>`
           options += `<div class="col-6 gy-3">
-                  <input class="form-control"  id="option1" placeholder="option 2" required name="option1" value=${quizObject['option1']} >
+                  <input class="form-control"  id="option1" placeholder="option 2" required name="option1" value="${quizObject['option1']}" >
                 </div>`
           options += `<div class="col-6 gy-3">
-                  <input class="form-control"  id="option2" placeholder="option 3" required name="option2" value=${quizObject['option2']} >
+                  <input class="form-control"  id="option2" placeholder="option 3" required name="option2" value="${quizObject['option2']}" >
                 </div>`
           options += `<div class="col-6 gy-3">
-                  <input class="form-control"  id="option3" placeholder="option 4" required name="option3" value=${quizObject['option3']} >
+                  <input class="form-control"  id="option3" placeholder="option 4" required name="option3" value="${quizObject['option3']}" >
                 </div>`
 
 
           var answerDiv = `<div class="col-12 gy-3">
-            <input class="form-control"  id="answer" placeholder="Enter answer" required name="answer" value=${quizObject['answer']} >
+            <input class="form-control"  id="answer" placeholder="Enter answer" required name="answer" value="${quizObject['answer']}" >
           </div>`
 
           var divOne = document.createElement("div")
@@ -6446,9 +6449,9 @@
             tempArray[`${quizArraykey}`] = { type: "7", quiz: quizObject,updates:`updates${updatesId}` }
 
           }else{
-            quizContainerArray[`${quizArraykey}`] = data
+            quizContainerArray[`${quizArraykey}`] = {quiz:data};
 
-            quizObject = quizContainerArray[`${quizArraykey}`]
+            quizObject = quizContainerArray[`${quizArraykey}`]['quiz']
 
             tempArray[`${quizArraykey}`] = { type: "7", quiz: quizObject }
           }
@@ -6457,6 +6460,7 @@
 
           var options = ""
 
+          console.log(rest,"resrrr")
           let value = [];
           for (var property in rest) {
             if (rest[property] !== "") {
@@ -6466,6 +6470,7 @@
             </label>`
 
               value.push(rest[property])
+              console.log(rest[property],"rest")
             }
           }
 
@@ -6483,7 +6488,7 @@
                 </div>
             </div>`
 
-          //
+          console.log(value,"value")
 
           if (answer !== "" && value.length >= 2 && question !== "") {
             $('#editModal').modal('hide');
