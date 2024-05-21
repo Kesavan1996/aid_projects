@@ -67,6 +67,30 @@ body {
     border-bottom: none;
 }
 
+.header-btns{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.header-btns button{
+    outline: none;
+    border: none;
+    color: #ffffff;
+    background-color: #f7c600;
+    padding: 10px 20px;
+}
+
+.thumbnail-note{
+    font-size: 13px;
+    color: gray;
+}
+
+#thumbImgContainer img{
+height: 100px;
+width: 100px;
+}
+
 
 /* Main */
 
@@ -415,8 +439,8 @@ box-shadow: inset 2px 2px 9px -6px rgba(0,0,0,0.75);
     position: fixed;
     z-index: -1;
     transition: .2s;
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
     gap: 10px;
     bottom: 90px;
 }
@@ -425,8 +449,8 @@ box-shadow: inset 2px 2px 9px -6px rgba(0,0,0,0.75);
     z-index: 1;
     transform: translateY(-30px);
     transition-delay: 0s, 0.5s, 0.5s;
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
     gap: 10px;
 }
 .menuToggles.active ~ .actionBtns::before
@@ -615,7 +639,6 @@ box-shadow: inset 2px 2px 9px -6px rgba(0,0,0,0.75);
  .animationCard form
  {
     width: 100%;
-    height: 50px;
     border-radius: 5px;
     border: 2px dashed #d5d5e1;
     color:#c8c9dd;
@@ -624,9 +647,19 @@ box-shadow: inset 2px 2px 9px -6px rgba(0,0,0,0.75);
     position: relative;
     background: #dfe3f259;
     display: flex;
-    justify-content: center;
     align-items: center;
     user-select: none;
+    padding: 10px;
+    gap: 10px;
+ }
+
+ .imgCard form label,
+ .file-choose-label
+ {
+    padding: 10px;
+    background-color: #1b8bc9;
+    color: #fff;
+    cursor: pointer;
  }
 
  .imgCard form .select,
@@ -1313,7 +1346,6 @@ label.radio {
     justify-content: space-between;
     width: 100%;
     margin-bottom: 10px;
-    margin-top: 10px;
 }
 .hyperLinkModalDivs .hyperImgContainer,
 .hyperLinkModalDivs .hyperImgEditContainer
@@ -1409,10 +1441,12 @@ label.radio {
     background-color: #ffc107;
     border: none;
     outline: none;
+    min-width: fit-content;
 }
 
 .modal-body{
-    max-height:300px;
+    max-height:500px;
+    min-height: fit-content;
     overflow-y: auto;
 }
 

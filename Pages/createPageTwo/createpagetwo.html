@@ -39,7 +39,10 @@
           <div id="topbar-div"></div>
           <div class="createPageDiv">
             <div class="mainContainer">
-
+              <div class="header-btns">
+                <button type="button" onclick="openParentLink()" class="logoBtn">Parent logo</button>
+                <button type="button" onclick="openGotoModal()" class="gotoBtn">Go to Section</button>
+              </div>
               <div class="cards">
                 <div class="card" id="contentCard">
                 </div>
@@ -61,40 +64,153 @@
 
                 <div class="actionBtns">
                   <button type="button" class="btn btn-primary" id
-                    onclick="showModal('pageTitle')"> Page
-                    Title</button>
+                    onclick="showModal('pageTitle')"> Page Title & Color</button>
                   <button type="button" class="btn btn-primary" id="headingBtn"
                     onclick="showModal('heading')">
-                    Heading</button>
+                    Header Band</button>
                   <button type="button" class="btn btn-primary" id
                     onclick="showModal('headingDesc')">Description</button>
                   <!-- <button type="button" class="btn btn-primary" onclick="newText()" id="textBtn"><ion-icon
                     name="add-circle-outline"></ion-icon> Text</button> -->
                   <button type="button" class="btn btn-primary"
-                    onclick="showModal('image')">Image
+                    onclick="showModal('image')">Image & Carousel
                   </button>
                   <button type="button" class="btn btn-primary"
                     onclick="showModal('video')">Video
                   </button>
                   <button type="button" class="btn btn-primary"
-                    onclick="showModal('animation')">Animation
+                    onclick="showModal('animation')">Gif Animation
                   </button>
+              
                   <button type="button" class="btn btn-primary"
-                    onclick="showModal('quiz')">Quiz</button>
+                    onclick="showModal('button','button')">Button with Link</button>
+                    <button type="button" class="btn btn-primary"
+                    onclick="showModal('button','popup')">Button with Popup</button>
                   <button type="button" class="btn btn-primary"
-                    onclick="showModal('button')">Button</button>
+                    onclick="showModal('imageLink')">Image with Link</button>
                   <button type="button" class="btn btn-primary"
-                    onclick="showModal('imageLink')">Link</button>
-                  <button type="button" class="btn btn-primary"
-                    onclick="showModal('hyperLink')">Hyperlink</button>
+                    onclick="showModal('hyperLink')">Image[s] with Caption & Link</button>
+                    <button type="button" class="btn btn-primary"
+                    onclick="showModal('quiz')">Add Quiz Question</button>
                   <button type="button" class="btn btn-primary"
                     onclick="showModal('updates')">Accordion</button>
-                  <button type="button" class="btn btn-primary"
-                    onclick="showModal('popupButton')">Popup Button</button>
+                  
                   <button type="button" class="btn btn-primary"
                     onclick="addSpace()">Empty Space</button>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!--Parent Link Modal -->
+      <div class="modal fade" id="parentLinkModal"
+        aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="">Create Logo Link</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal"
+                aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class="mb-3 row align-items-center">
+                <label for="mainPageLink" class="col-sm-2 col-form-label">Parent Page Link</label>
+                <div class="col-sm-10 ">
+                  <input type="text" class="form-control" name="mainPageLink" id="mainPageLink" onkeyup="urlValidate(this)" />
+                </div>
+              </div>
+              <div class="mb-3 row align-items-center">
+                <div class="col-12">
+                  <fieldset class="row mb-2 mt-2">
+                    <legend class="col-form-label col-2 pt-0">Choose Logo</legend>
+                    <div class="col-10">
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="logoSelect" value="newimage"id="newimage" onchange="logoSelectChange(this)" checked>
+                        <label class="form-check-label" for="newimage">
+                          New Logo
+                        </label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="logoSelect" value="existingimage" id="existingimage" onchange="logoSelectChange(this)">
+                        <label class="form-check-label" for="existingimage">
+                          Existing Logo
+                        </label>
+                      </div>
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+              <div class="mb-3 row align-items-center" id="logoChooseDiv">
+                <label for="headerLogo" class="col-2 col-form-label"></label>
+                <div class="col-10">
+                  <label class="file-choose-label" for="headerLogo">Choose image</label>
+                  <input type="file" class="form-control" name="headerLogo" id="headerLogo" accept="image/png, image/jpeg" onchange="logoChange(this)" hidden />
+                  
+                </div>
+              </div>
+              <div class="mb-3 row align-items-center" id="logoListDiv" style="display: none;">
+                <div class="col-2">
+
+                </div>
+                <div class="col-10" id="logoDiv"></div>
+              </div>
+              <div class="mb-3 row col-12" id="selectDivLogo" style="display: none;">
+                <div class="col-2">Selected Logo</div>
+                 <div id="pageLogoDiv" class="col-10">
+                 </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary"
+                onclick="addParentLink()">Ok</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!--goto Modal -->
+      <div class="modal fade" id="gotoModal"
+        aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="">Add Goto</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal"
+                aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <form>
+                <div class="row mb-3">
+                  <label for="inputEmail3" class="col-sm-2 col-form-label">Goto Update </label>
+                  <div class="col-sm-10">
+                    <select class="form-select" id="updatesList">
+                      <option value="null">Choose...</option>
+                      <option value="1">One</option>
+                      <option value="2">Two</option>
+                      <option value="3">Three</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <label for="updateName" class="col-sm-2 col-form-label">Update display name</label>
+                  <div class="col-sm-10">
+                    <input type="password" class="form-control" id="updateName">
+                  </div>
+                </div>
+
+                <div class="row mb-3">
+                  <label for="updateColour" class="col-sm-2 col-form-label">Update button colour</label>
+                  <div class="col-sm-10">
+                    <input type="color" class="form-control form-control-color" value="#42d0ff" id="updateColour">
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary"
+                onclick="addGoto()">Ok</button>
             </div>
           </div>
         </div>
@@ -106,7 +222,7 @@
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="" id="pageTitle">Create Page</h5>
+              <h5 class="" id="pageTitle"></h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal"
                 aria-label="Close"></button>
             </div>
@@ -196,25 +312,6 @@
                     </div>
                   </div>
                 </fieldset>
-                <div class="row mb-3 align-items-center" id="goToSelectDiv" style="display:none">
-                  <label for="goToSelect" class="col-sm-2 col-form-label">Go to update</label>
-                  <div class="col-sm-10">
-                    <select id="goToSelect" class="form-select" onchange="goToFn()">
-                    </select>
-                  </div>
-                </div>
-                <div class="mb-3 row align-items-center" id="updateNameDiv" style="display:none">
-                  <label for="updateName" class="col-sm-2 col-form-label">Update display name</label>
-                  <div class="col-sm-10 ">
-                    <input type="text" class="form-control" id="updateName" />
-                  </div>
-                </div>
-                <div class="mb-3 row align-items-center" id="updateColorDiv" style="display:none">
-                  <label for="updateBgColor" class="col-sm-2 col-form-label">Update button color</label>
-                  <div class="col-sm-10 ">
-                    <input type="color" class="form-control form-control-color" id="updateBgColor" value="#53bcf5" />
-                  </div>
-                </div>
                 <div class="mb-3 row align-items-center">
                   <label for="mainPageLink" class="col-sm-2 col-form-label">Parent Link</label>
                   <div class="col-sm-10 ">
@@ -335,7 +432,7 @@
           CKEDITOR.config.enterMode = CKEDITOR.ENTER_BR;
           CKEDITOR.replace(id, {
             toolbar: basic,
-            height: "25vh",
+            height: "15vh",
             allowedContent: true
           });
 
@@ -346,6 +443,111 @@
       
 
       changeToRichtext([`updateName`])
+
+      //Parent link change
+      let parentLinkImageFile=''; 
+
+     const openParentLink = ()=>{
+      $('#parentLinkModal').modal('show');
+      $(".logo-error").remove();
+      $("#selectDivLogo").css("display","none");
+      pageLogoImage="";
+
+      let existingLogos=['../../assets/img/img1.jpg','../../assets/img/img2.jpg','../../assets/img/img3.jpg','../../assets/img/img4.jpg'];
+      let logoElem='';
+
+      existingLogos.forEach((logo,i)=>{
+        logoElem+=` <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="imageList" value="newimage${i}"id="newimage${i}" onchange="logoChangeFromList(${i})">
+          <label class="form-check-label" for="newimage">
+            <img src="${logo}"/>
+          </label>
+        </div>`
+      })
+
+      let imageRadioElem =   `<fieldset class="row mb-2 mt-2">
+                              <div class="radio-seletion">
+                                ${logoElem}
+                                <div>
+                          </fieldset>`
+
+       $("#logoDiv").html(imageRadioElem)
+
+       logoChangeFromList=(index)=>{
+        $("#pageLogoDiv").html(`<img src="${existingLogos[index]}"/>`);
+        $("#selectDivLogo").css("display","flex")
+        parentLinkImageFile=existingLogos[index];
+       }
+     }
+
+     const logoChange=(elem)=>{
+      $("#pageLogoDiv").html(`<img src="${URL.createObjectURL(elem.files[0])}"/>`)
+      $("#selectDivLogo").css("display","flex")
+      parentLinkImageFile=elem.files[0];
+    }
+
+    const urlValidate=(elem)=>{
+      let urlValue=$(elem).val();
+      var regexp = /^(ftp|http|https|chrome|:\/\/|\.|@){2,}(localhost|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|\S*:\w*@)*([a-zA-Z]|(\d{1,3}|\.){7}){1,}(\w|\.{2,}|\.[a-zA-Z]{2,3}|\/|\?|&|:\d|@|=|\/|\(.*\)|#|-|%)*$/gum
+      let urlValidation=regexp.test(urlValue)
+      if(urlValidation){
+        $(".url-error").remove()
+      }else{
+        if($(".url-error").length === 0){
+          $("#mainPageLink").after(`<p class="error url-error">Please enter the valid URL.</p>`);
+        }
+      }
+    }
+
+
+      const addParentLink = () =>{
+        $(".logo-error").remove();
+        let parentLinkValue = $("#mainPageLink").val();
+        if(parentLinkValue === ""){
+          $("#mainPageLink").after('<p class="error logo-error">Enter the parent link.</p>')
+        }
+
+        if(parentLinkImageFile === ""){
+          $("#headerLogo").after('<p class="error logo-error">Upload the parent link logo.</p>')
+          $("#logoDiv").after('<p class="error logo-error">Upload the parent link logo.</p>')
+        }
+
+        if(parentLinkValue !== "" && parentLinkImageFile !== ""){
+          $('#parentLinkModal').modal('hide');
+        }
+      }
+
+      //Goto modal
+      let updateDataObj ={};
+      const openGotoModal = ()=>{
+        $('#gotoModal').modal('show');
+        $(".goto-error").remove();
+      }
+
+      const addGoto = ()=>{
+        $(".goto-error").remove();
+        let updateSelect = $("#updatesList").val();
+        let updateName = CKEDITOR.instances['updateName'].getData();
+        let updateColour= $("#updateColour").val();
+
+        if(updateSelect === "null"){
+          $("#updatesList").after('<p class="error goto-error mt-0">Select the update.</p')
+        }
+
+        if(updateName === ""){
+          $("#cke_updateName").after('<p class="error goto-error mt-0">Enter the update name.</p')
+        }
+
+        if(updateSelect !== "null" && updateName !== ""){
+          $('#gotoModal').modal('hide');
+        }
+
+        updateDataObj['updateSelect']=updateSelect;
+        updateDataObj['updateName']=updateName;
+        updateDataObj['updateColour']=updateColour;
+
+        console.log(updateDataObj);
+      }
 
       // Submit Modal Text
 
@@ -533,14 +735,14 @@
       }
 
 
-      function showModal(element) {
+      function showModal(element,btnPopup) {
         let menuToggles = document.querySelector(".menuToggles");
         menuToggles.classList.remove("active");
         document.getElementById("pageContent").innerHTML = ""
         if (element === "heading") {
           $('#createModal').modal('show');
           var modalTitle = document.getElementById("pageTitle")
-              modalTitle.innerText = "Add Heading"
+              modalTitle.innerText = "Add Header Band"
               modalTitle.className=""
           
           var modalBody = document.getElementById('pageContent')
@@ -591,8 +793,8 @@
         else if (element === "image") {
           $('#createModal').modal('show');
           $("#imgErrorMsg").remove();
-          var modalTitle = document.getElementById("pageTitle")
-          modalTitle.innerText = "Add Images"
+          var modalTitle = document.getElementById("pageTitle");
+          modalTitle.innerText = "Add Image and Carousel";
           modalTitle.className=""
 
           var modalBody = document.getElementById('pageContent')
@@ -602,12 +804,7 @@
           cardDiv.id = `imgContainerDiv${imageContainerId}`
           cardDiv.innerHTML = `<div class="top">
                   </div>
-                  <form action="" method="post" class="dragover">
-                      <span class="inner"><span class="select">Browse</span></span>
-                      <input name="file" type="file" class="file" id="imgInput" multiple accept="image/*"/>
-                  </form>
-                  <div class="imgContainer">
-                  </div>
+
                   <fieldset class="row mb-3">
                     <legend class="col-form-label col-sm-4 pt-0">Images View</legend>
                     <div class="col-sm-8">
@@ -625,6 +822,15 @@
                       </div>
                     </div>
                   </fieldset>
+                  <form action="" method="post" class="dragover">
+
+                      <input name="file" type="file" class="file" id="imgInput" multiple accept="image/png, image/jpeg" onchange="imageonChange(this)" hidden />
+                      <label for="imgInput">Choose Image</label>
+                      <span id="imageChosen">No image chosen</span>
+                  </form>
+                  <div class="imgContainer">
+                  </div>
+
                   <div id="bgColorDiv" class="row gap-2" style="display:none">
                     <div class="col-12">
                       <div class="row align-items-center">
@@ -637,6 +843,8 @@
                   </div>
                   `
           modalBody.appendChild(cardDiv);
+
+
 
           imageTypeFn=(elem)=>{
             let typeVal=$(elem).val();
@@ -656,29 +864,25 @@
           browse = document.querySelector('.select')
           input = document.querySelector('form input');
 
-          browse.addEventListener('click', () => input.click());
-
-          input.addEventListener("change", () => {
-            let file = input.files;
+          imageonChange = (elem)=>{
+            let file = elem.files;
             for (let i = 0; i < file.length; i++) {
               if (files.every(e => e.name !== file[i].name)) {
                 files.push(file[i])
               }
-
             }
 
-            console.log(files,"file");
             imagesContainerArrar[`imgContainerDiv${imageContainerId}`] = files
-
             tempArray[`imgContainerDiv${imageContainerId}`] = { type: "4", images: files }
 
             $("#imgErrorMsg").remove();
             form.reset();
             showImages();
-          })
+
+            $("#imageChosen").css("display","none")
+          }
 
           showImages = () => {
-
             let images = '';
             files.forEach((e, i) => {
               images += `<div class="image box" draggable="true"">
@@ -687,10 +891,7 @@
                     </div>`
             })
             container.innerHTML = images
-
           }
-
-          // const button=<button>Upload</button>
 
           form.addEventListener('dragover', e => {
             e.preventDefault();
@@ -727,7 +928,7 @@
         else if (element === "quiz") {
           $('#createModal').modal('show');
           var modalTitle = document.getElementById("pageTitle")
-          modalTitle.innerText = "Add Quiz"
+          modalTitle.innerText = "Add Quiz Question"
           modalTitle.className = ""
 
           var modalBody = document.getElementById('pageContent')
@@ -801,11 +1002,11 @@
 
           //
           cardDiv.innerHTML = `<div class="top">
-                  <p>Import videos</p>
                 </div>
                 <form action="" method="post" class="dragover">
-                    <span class="inner"><span class="select">Browse</span></span>
-                    <input name="file" type="file" class="file" accept="video/mp4"/>
+                    <input name="file" type="file" class="file" id="videoInputField" onchange="videoOnChange(this)" accept="video/mp4" hidden />
+                    <label class="file-choose-label" for="videoInputField">Choose Video</label>
+                    <span id="videoChosen">No video chosen</span>
                 </form>
                 <div class="videoModalContainer"></div>`
 
@@ -822,20 +1023,18 @@
           browse = document.querySelector('.select')
           input = document.querySelector('form input');
 
-          browse.addEventListener('click', () => input.click());
-
-          input.addEventListener("change", () => {
-            files = input.files[0];
-
+          videoOnChange = (elem) => {
+            files = elem.files[0];
             if (files.size < maxAllowedSize) {
               videoContainerArrary[`DivvideoContainer${videoContainerId}`] = files
               tempArray[`DivvideoContainer${videoContainerId}`] = { type: "5", video: files }
               form.reset();
-              showVideos()
+              showVideos();
+              $("#videoChosen").css("display","none")
             } else {
               container.insertAdjacentHTML('afterend', '<p style="color:red">Maximum video size is 10MP</p>');
             }
-          })
+          }
 
           const showVideos = () => {
             let videos = `<div class="video" id="videoId" draggable="true">
@@ -858,18 +1057,18 @@
         else if (element === "animation") {
           $('#createModal').modal('show');
           var modalTitle = document.getElementById("pageTitle")
-          modalTitle.innerText = "Add Animations"
+          modalTitle.innerText = "Add Gif Animation"
           modalTitle.className = ""
           var modalBody = document.getElementById('pageContent')
           var cardDiv = document.createElement("div")
           cardDiv.className = "animationCard"
           cardDiv.id = "animationsDiv" + animationId
           cardDiv.innerHTML = `<div class="top">
-                  <p>Import animations</p>
                 </div>
                 <form action="" method="post" class="dragover">
-                    <span class="inner"><span class="select">Browse</span></span>
-                    <input name="file" type="file" class="file" multiple accept="image/gif"/>
+                    <input name="file" type="file" class="file" id="animationInput" multiple accept="image/gif" onchange="animationonChange(this)" hidden />
+                    <label class="file-choose-label" for="animationInput">Choose GIF</label>
+                    <span id="animationChosen">No GIF chosen</span>
                 </form>
                 <div class="animationContainer">
                 </div>`
@@ -884,22 +1083,17 @@
           browse = document.querySelector('.select')
           input = document.querySelector('form input');
 
-          browse.addEventListener('click', () => input.click());
-
-          input.addEventListener("change", () => {
-            let file = input.files;
+          animationonChange = (elem) => {
+            let file = elem.files;
             for (let i = 0; i < file.length; i++) {
               if (files.every(e => e.name !== file[i].name)) files.push(file[i])
             }
             animationContainerArray[`animationsDiv${animationId}`] = files
-
-            // animation data
-
             tempArray[`animationsDiv${animationId}`] = { type: "6", animations: files }
-
             form.reset();
             showAnimations()
-          })
+            $("#animationChosen").css("display","none")
+          }
 
           const showAnimations = () => {
             let animations = '';
@@ -972,7 +1166,7 @@
           $('#createModal').modal('show');
           var modalTitle = document.getElementById("pageTitle")
 
-          modalTitle.innerText = "Add Page Title"
+          modalTitle.innerText = "Add Page Title & Color"
           var modalBody = document.getElementById('pageContent')
           var pageTitle = ` <div class="col-md-12">
               <input type="text" class="form-control" id="pageTitleField">
@@ -1006,7 +1200,7 @@
         else if (element === 'button') {
           $('#createModal').modal('show');
           var modalTitle = document.getElementById("pageTitle");
-          modalTitle.innerText = "Add Button";
+          modalTitle.innerText = btnPopup === "button"?"Add Button with Link":"Add Button with popup [PDF,Image,Link]";
           modalTitle.className = "";
           var modalBody = document.getElementById('pageContent');
           popupPdf="";
@@ -1123,7 +1317,7 @@
                                     <div class="form-check form-check-inline">
                                       <input class="form-check-input" type="radio" name="popupType" id="linkBtn" value="link" checked>
                                       <label class="form-check-label" for="linkBtn">
-                                        Link
+                                        List of links
                                       </label>
                                     </div>
                                     <div class="form-check form-check-inline">
@@ -1143,12 +1337,12 @@
                                 <div class="uploadContainer">
                                   <div class="uploadDiv" id="pdfUpload" style="display:none">
                                     <input type="file" id="pdfFile" accept ="application/pdf" hidden/>
-                                    <label for="pdfFile">Choose File</label>
+                                    <label for="pdfFile">Choose PDF</label>
                                     <span id="pdfChosen">No file chosen</span>
                                   </div>
                                   <div class="uploadDiv" id="imageUpload" style="display:none">
                                     <input type="file" id="imageFile" accept="image/png, image/jpeg" hidden/>
-                                    <label for="imageFile">Choose File</label>
+                                    <label for="imageFile">Choose Image</label>
                                     <div id="previewDiv"></div>
                                   </div>
                                   <div class="uploadDiv" id="linkUpload">
@@ -1256,7 +1450,7 @@
                                         <div class="form-check form-check-inline">
                                           <input class="form-check-input" type="radio" name="popupTypeTwo" id="linkBtnTwo" value="link" checked>
                                           <label class="form-check-label" for="linkBtnTwo">
-                                            Link
+                                            List of links
                                           </label>
                                         </div>
                                         <div class="form-check form-check-inline">
@@ -1276,12 +1470,12 @@
                                     <div class="uploadContainer">
                                       <div class="uploadDivTwo" id="pdfUploadTwo" style="display:none">
                                         <input type="file" id="pdfFileTwo" accept ="application/pdf" hidden/>
-                                        <label for="pdfFileTwo">Choose File</label>
+                                        <label for="pdfFileTwo">Choose PDF</label>
                                         <span id="pdfChosenTwo">No file chosen</span>
                                       </div>
                                       <div class="uploadDivTwo" id="imageUploadTwo" style="display:none">
                                         <input type="file" id="imageFileTwo" accept="image/png, image/jpeg" hidden/>
-                                        <label for="imageFileTwo">Choose File</label>
+                                        <label for="imageFileTwo">Choose Image</label>
                                         <div id="previewDivTwo"></div>
                                       </div>
                                       <div class="uploadDivTwo" id="linkUploadTwo">
@@ -1312,6 +1506,15 @@
           mainDiv.innerHTML = buttonInput;
           mainDiv.innerHTML += buttonInputTwo;
           modalBody.appendChild(mainDiv);
+  
+          $(`input[name=buttonType][value=${btnPopup}]`).prop("checked",true);
+          if(btnPopup === "button"){
+            $("#popupDiv").css("display","none");
+            $("#linkDiv").css("display","block");
+           }else if(btnPopup === "popup"){
+            $("#linkDiv").css("display","none");
+            $("#popupDiv").css("display","block");
+           }
 
           var linkBtnOption = document.getElementById('linkBtn');
           var imageBtnOption = document.getElementById('imageBtn');
@@ -1491,7 +1694,7 @@
         else if (element === "imageLink") {
           $('#createModal').modal('show');
           var modalTitle = document.getElementById("pageTitle")
-          modalTitle.innerText = "Add Link"
+          modalTitle.innerText = "Add Image with Link"
           modalTitle.className = ""
           var modalBody = document.getElementById('pageContent')
 
@@ -1499,7 +1702,9 @@
           
           let imgLinkContainer = `<div class="container col-md-12 mt-3">
           <div class="mb-3">
-                <input class="form-control" type="file" id="formFile" accept="image/*">
+                <input class="form-control" type="file" id="formFile" accept="image/png, image/jpeg" hidden />
+                <label class="file-choose-label" for="formFile">Choose Image</label>
+                <span id="imageLinkChosen">No image chosen</span>
             </div>
             <img id="linkImage" src="" class="img-fluid" /> </div>`
 
@@ -1528,25 +1733,21 @@
 
           let imgInputId = document.getElementById("formFile")
           let imgDiv = document.getElementById("linkImage")
-
-         
-
           let files;
 
           imgInputId.addEventListener("change", () => {
             files = event.target.files[0];
+            $("#imageLinkChosen").text(files.name)
             imgDiv.src = URL.createObjectURL(files);
             imgLinkContainerArray[`imgLink${imgLinkId}`] = {image: files }
             tempArray[`imgLink${imgLinkId}`] = { type: "9",image: files }
           })
 
-
-
         }
         else if(element === "hyperLink"){
           $('#createModal').modal('show');
           var modalTitle = document.getElementById("pageTitle")
-          modalTitle.innerText = "Add Hyperlink"
+          modalTitle.innerText = "Add Image(s) with Caption & Link"
           modalTitle.className=""
           var modalBody = $("#pageContent")
 
@@ -1554,16 +1755,17 @@
           `<form class="hyperLinkForm" id="hyperLink_form0">
             <div class="d-flex gap-2 mb-2">
               <div class="formDiv">
-                <input class="inputItem form-control" type="text" name="link" id="link0" placeholder="link" required/>
                 <div class="hyperLinkModalDivs">
                   <div>
-                    <input class="inputItem form-control hyperImgClass" type="file" name="file" accept="image/*"/ id="hyperImgInput0_id" onchange="imgOnchangeFn(event)">
+                    <input class="inputItem form-control hyperImgClass" type="file" name="file" accept="image/png, image/jpeg" id="hyperImgInput0_id" onchange="imgOnchangeFn(event)" hidden />
+                    <label class="file-choose-label" for="hyperImgInput0_id">Choose Image</label>
                   </div>
                   <div class="hyperImgContainer" id="hyperImgInput0">
                     
                   </div>
                 </div>
                 <input class="inputItem form-control" type="text" id="captionInput0" name="caption" />
+                <input class="inputItem form-control mt-2" type="text" name="link" id="link0" placeholder="link" required/>
               </div>
               <div class="addMore">
                 <button type="button" class="btn btn-primary" name="add" id="add" onClick="addInputs()">+</button>
@@ -1572,7 +1774,7 @@
 
           </form>`
 
-          let typeOption=`<fieldset class="row mb-2 mt-2">
+          let typeOption=`<fieldset class="row mt-2">
             <legend class="col-form-label col-4 pt-0">Visible Type:</legend>
             <div class="col-8">
               <div class="form-check form-check-inline">
@@ -1608,16 +1810,17 @@
             
           let  addContent= `<form  class="hyperLinkForm"id="hyperLink_form${i}"> <div class="d-flex gap-2 mb-2" id="fieldDiv${i}">
               <div class="formDiv">
-                <input class="inputItem form-control" type="text" name="link" placeholder="link" />
                 <div class="hyperLinkModalDivs">
                   <div>
-                    <input class="inputItem form-control hyperImgClass" type="file" name="file" accept="image/*"/ id="hyperImgInput${i}_id" onchange="imgOnchangeFn(event)">
+                    <input class="inputItem form-control hyperImgClass" type="file" name="file" id="hyperImgInput${i}_id" onchange="imgOnchangeFn(event)" accept="image/png, image/jpeg" hidden />
+                    <label class="file-choose-label" for="hyperImgInput${i}_id">Choose Image</label>
                   </div>
                   <div class="hyperImgContainer" id="hyperImgInput${i}">
                     
                   </div>
                 </div>
                 <input class="inputItem form-control" type="text" name="caption" id="captionInput${i}" />
+                <input class="inputItem form-control mt-2" type="text" name="link" placeholder="link" />
               </div>
               <div>
                 <button type="button" class="btn btn-danger" name="remove" id="${i}" onClick="removeInputs(this)">X</button>
@@ -1649,7 +1852,7 @@
         }
         else if(element === "updates"){
           $('#createModal').modal('show');
-          $("#pageTitle").html("Add Updates")
+          $("#pageTitle").html("Add Accordion")
           var modalBody = $("#pageContent")
 
           let updatesElem= `
@@ -1831,7 +2034,7 @@
       }
 
 
-      function showUpdatesModal(element,updatesDivBox) {
+      function showUpdatesModal(element,updatesDivBox, btnPopup){
 
         let menuToggles = document.querySelector(".menuToggles");
         menuToggles.classList.remove("active");
@@ -1845,7 +2048,7 @@
 
           $('#createModal').modal('show');
           var modalTitle = document.getElementById("pageTitle")
-            modalTitle.innerText = "Add Updates Heading"
+            modalTitle.innerText = "Add Header Band"
             modalTitle.className=`${updatesDivClass}_modal`
           
           var modalBody = document.getElementById('pageContent')
@@ -1867,7 +2070,7 @@
         else if (element === "description") {
           $('#createModal').modal('show');
           var modalTitle = document.getElementById("pageTitle")
-          modalTitle.innerText = "Add Updates Description"
+          modalTitle.innerText = "Add Description"
           modalTitle.className=`${updatesDivClass}_modal`
 
           var modalBody = document.getElementById('pageContent')
@@ -1895,7 +2098,7 @@
           $('#createModal').modal('show');
           $("#imgErrorMsg").remove();
           var modalTitle = document.getElementById("pageTitle")
-          modalTitle.innerText = "Add Updates Images"
+          modalTitle.innerText = "Add Image and Carousel"
           modalTitle.className=`${updatesDivClass}_modal`
 
 
@@ -1905,12 +2108,6 @@
           //
           cardDiv.id = `imgContainerDiv${imageContainerId}`
           cardDiv.innerHTML = `<div class="top">
-                  </div>
-                  <form action="" method="post" class="dragover">
-                      <span class="inner"><span class="select">Browse</span></span>
-                      <input name="file" type="file" class="file" id="imgInput" multiple accept="image/*"/>
-                  </form>
-                  <div class="imgContainer">
                   </div>
                   <fieldset class="row mb-3">
                     <legend class="col-form-label col-sm-4 pt-0">Images View</legend>
@@ -1929,6 +2126,14 @@
                       </div>
                     </div>
                   </fieldset>
+                  <form action="" method="post" class="dragover">
+                      <input name="file" type="file" class="file" id="imgInput" multiple accept="image/png, image/jpeg" onchange="imageonChange(this)" hidden />
+                      <label for="imgInput">Choose Image</label>
+                      <span id="imageChosen">No image chosen</span>
+                  </form>
+                  <div class="imgContainer">
+                  </div>
+
                   <div id="bgColorDiv" class="row gap-2" style="display:none">
                     <div class="col-12">
                       <div class="row align-items-center">
@@ -1961,26 +2166,23 @@
           browse = document.querySelector('.select')
           input = document.querySelector('form input');
 
-          browse.addEventListener('click', () => input.click());
-
-          input.addEventListener("change", () => {
-            let file = input.files;
+          imageonChange = (elem)=>{
+            let file = elem.files;
             for (let i = 0; i < file.length; i++) {
               if (files.every(e => e.name !== file[i].name)) {
                 files.push(file[i])
               }
-
             }
 
             imagesContainerArrar[`imgContainerDiv${imageContainerId}`] = {files,updates:`updates${updatesIdCount}`}
-
             tempArray[`imgContainerDiv${imageContainerId}`] = { type: "4", images: files,updates:`updates${updatesIdCount}` }
 
             $("#imgErrorMsg").remove();
             form.reset();
-            showImages()
+            showImages();
+            $("#imageChosen").css("display","none")
 
-          })
+          }
 
           showImages = () => {
 
@@ -1999,7 +2201,7 @@
         else if (element === "quiz") {
           $('#createModal').modal('show');
           var modalTitle = document.getElementById("pageTitle")
-          modalTitle.innerText = "Add Updates Quiz"
+          modalTitle.innerText = "Add Quiz Question"
           modalTitle.className=`${updatesDivClass}_modal`
 
           var modalBody = document.getElementById('pageContent')
@@ -2064,7 +2266,7 @@
         else if (element === 'video') {
           $('#createModal').modal('show');
           var modalTitle = document.getElementById("pageTitle")
-          modalTitle.innerText = "Add Updates Images"
+          modalTitle.innerText = "Add Video"
           modalTitle.className=`${updatesDivClass}_modal`
 
           var modalBody = document.getElementById('pageContent')
@@ -2074,11 +2276,11 @@
 
           //
           cardDiv.innerHTML = `<div class="top">
-                  <p>Import videos</p>
                 </div>
                 <form action="" method="post" class="dragover">
-                    <span class="inner"><span class="select">Browse</span></span>
-                    <input name="file" type="file" class="file" accept="video/mp4"/>
+                    <input name="file" type="file" class="file" id="videoInputField" onchange="videoOnChange(this)" accept="video/mp4" hidden />
+                    <label class="file-choose-label" for="videoInputField">Choose Video</label>
+                    <span id="videoChosen">No video chosen</span>
                 </form>
                 <div class="videoModalContainer"></div>`
 
@@ -2095,21 +2297,20 @@
           browse = document.querySelector('.select')
           input = document.querySelector('form input');
 
-          browse.addEventListener('click', () => input.click());
-
-          input.addEventListener("change", () => {
-            files = input.files[0];
+          videoOnChange = (elem) => {
+            files = elem.files[0];
 
             if (files.size < maxAllowedSize) {
 
               videoContainerArrary[`DivvideoContainer${videoContainerId}`] = {files,updates:`updates${updatesIdCount}`}
               tempArray[`DivvideoContainer${videoContainerId}`] = { type: "5", video: files,updates:`updates${updatesIdCount}` }
               form.reset();
-              showVideos()
+              showVideos();
+              $("#videoChosen").css("display","none")
             } else {
               container.insertAdjacentHTML('afterend', '<p style="color:red">Maximum video size is 10MP</p>');
             }
-          })
+          }
 
           const showVideos = () => {
             let videos = `<div class="video" id="videoId" draggable="true">
@@ -2132,7 +2333,7 @@
         else if (element === "animation") {
           $('#createModal').modal('show');
           var modalTitle = document.getElementById("pageTitle")
-          modalTitle.innerText = "Add Updates Animations"
+          modalTitle.innerText = "Add Gif Animation"
           modalTitle.className=`${updatesDivClass}_modal`
 
           var modalBody = document.getElementById('pageContent')
@@ -2140,11 +2341,11 @@
           cardDiv.className = "animationCard"
           cardDiv.id = "animationsDiv" + animationId
           cardDiv.innerHTML = `<div class="top">
-                  <p>Import animations</p>
                 </div>
                 <form action="" method="post" class="dragover">
-                    <span class="inner"><span class="select">Browse</span></span>
-                    <input name="file" type="file" class="file" multiple accept="image/gif"/>
+                    <input name="file" type="file" class="file" id="animationInput" multiple accept="image/gif" onchange="animationonChange(this)" hidden />
+                    <label class="file-choose-label" for="animationInput">Choose GIF</label>
+                    <span id="animationChosen">No GIF chosen</span>
                 </form>
                 <div class="animationContainer">
                 </div>`
@@ -2159,22 +2360,19 @@
           browse = document.querySelector('.select')
           input = document.querySelector('form input');
 
-          browse.addEventListener('click', () => input.click());
-
-          input.addEventListener("change", () => {
-            let file = input.files;
+          animationonChange = (elem) => {
+            let file = elem.files;
             for (let i = 0; i < file.length; i++) {
               if (files.every(e => e.name !== file[i].name)) files.push(file[i])
             }
             animationContainerArray[`animationsDiv${animationId}`] = {files,updates:`updates${updatesIdCount}`}
 
-            // animation data
-
             tempArray[`animationsDiv${animationId}`] = { type: "6", animations: files,updates:`updates${updatesIdCount}` }
 
             form.reset();
-            showAnimations()
-          })
+            showAnimations();
+            $("#animationChosen").css("display","none")
+          }
 
           const showAnimations = () => {
             let animations = '';
@@ -2243,7 +2441,7 @@
           $('#createModal').modal('show');
           var modalTitle = document.getElementById("pageTitle")
 
-          modalTitle.innerText = "Add Page Title"
+          modalTitle.innerText = "Add Page Title & Color"
           var modalBody = document.getElementById('pageContent')
           var pageTitle = ` <div class="col-md-12">
               <input type="text" class="form-control" id="pageTitleField">
@@ -2277,7 +2475,7 @@
         else if (element === 'button') {
           $('#createModal').modal('show');
           var modalTitle = document.getElementById("pageTitle");
-          modalTitle.innerText = "Add Button";
+          modalTitle.innerText = btnPopup === "button"?"Button with Link":"Button with popup [PDF,Image,Link]";
           modalTitle.className = "";
           var modalBody = document.getElementById('pageContent');
           popupPdf="";
@@ -2370,7 +2568,7 @@
                       <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" name="popupType" id="linkBtn" value="link" checked>
                         <label class="form-check-label" for="linkBtn">
-                          Link
+                          List of links
                         </label>
                       </div>
                       <div class="form-check form-check-inline">
@@ -2390,12 +2588,12 @@
                   <div class="uploadContainer">
                     <div class="uploadDiv" id="pdfUpload" style="display:none">
                       <input type="file" id="pdfFile" accept ="application/pdf" hidden/>
-                      <label for="pdfFile">Choose File</label>
+                      <label for="pdfFile">Choose PDF</label>
                       <span id="pdfChosen">No file chosen</span>
                     </div>
                     <div class="uploadDiv" id="imageUpload" style="display:none">
                       <input type="file" id="imageFile" accept="image/png, image/jpeg" hidden/>
-                      <label for="imageFile">Choose File</label>
+                      <label for="imageFile">Choose Image</label>
                       <div id="previewDiv"></div>
                     </div>
                     <div class="uploadDiv" id="linkUpload">
@@ -2424,6 +2622,15 @@
           mainDiv.id = `btnLinkDiv${buttonId}`
           mainDiv.innerHTML = buttonInput
           modalBody.appendChild(mainDiv)
+
+          $(`input[name=buttonType][value=${btnPopup}]`).prop("checked",true);
+          if(btnPopup === "button"){
+            $("#popupDiv").css("display","none");
+            $("#linkDiv").css("display","block");
+           }else if(btnPopup === "popup"){
+            $("#linkDiv").css("display","none");
+            $("#popupDiv").css("display","block");
+           }
 
           var linkBtnOption = document.getElementById('linkBtn');
           var imageBtnOption = document.getElementById('imageBtn');
@@ -2499,7 +2706,7 @@
         else if (element === "link") {
           $('#createModal').modal('show');
           var modalTitle = document.getElementById("pageTitle")
-          modalTitle.innerText = "Add Updates Link"
+          modalTitle.innerText = "Add Image with Link"
           modalTitle.className=`${updatesDivClass}_modal`
 
           var modalBody = document.getElementById('pageContent')
@@ -2508,7 +2715,9 @@
           
           let imgLinkContainer = `<div class="container col-md-12 mt-3">
           <div class="mb-3">
-                <input class="form-control" type="file" id="formFileUpdates" accept="image/*">
+                <input class="form-control" type="file" id="formFileUpdates" accept="image/png, image/jpeg" hidden />
+                <label class="file-choose-label" for="formFile">Choose Image</label>
+                <span id="imageLinkChosen">No image chosen</span>
             </div>
             <img id="linkImage" src="" class="img-fluid" /> </div>`
 
@@ -2546,6 +2755,7 @@
           imgInputId.addEventListener("change", () => {
 
             files = event.target.files[0];
+            $("#imageLinkChosen").text(files.name)
             imgDiv.src = URL.createObjectURL(files);
               imgLinkContainerArray[`imgLink${imgLinkId}`] = { image: files,updates:`updates${updatesIdCount}` }
               tempArray[`imgLink${imgLinkId}`] = { type: "9", image: files,updates:`updates${updatesIdCount}` }
@@ -2557,7 +2767,7 @@
         else if(element === "hyperLink"){
           $('#createModal').modal('show');
           var modalTitle = document.getElementById("pageTitle")
-          modalTitle.innerText = "Add Updates HyperLink"
+          modalTitle.innerText = "Add Image(s) with Caption & Link"
           modalTitle.className=`${updatesDivClass}_modal`
 
           var modalBody = $("#pageContent")
@@ -2566,16 +2776,18 @@
           `<form class="hyperLinkForm" id="hyperLink_form0">
             <div class="d-flex gap-2 mb-2">
               <div class="formDiv">
-                <input class="inputItem form-control" type="text" name="link" />
+
                 <div class="hyperLinkModalDivs">
                   <div>
-                    <input class="inputItem form-control hyperImgClass" type="file" name="file" accept="image/*"/ id="hyperImgInput0_id" onchange="imgOnchangeFn(event)">
+                    <input class="inputItem form-control hyperImgClass" type="file" name="file" accept="image/png, image/jpeg" id="hyperImgInput0_id" onchange="imgOnchangeFn(event)" hidden />
+                    <label class="file-choose-label" for="hyperImgInput0_id">Choose Image</label>
                   </div>
                   <div class="hyperImgContainer" id="hyperImgInput0">
                     
                   </div>
                 </div>
                 <input class="inputItem form-control" type="text" id="captionInput0" name="caption" />
+                <input class="inputItem form-control mt-2" type="text" name="link" />
               </div>
               <div classs="addMore">
                 <button type="button" class="btn btn-primary" name="add" id="add" onClick="addInputs()">+</button>
@@ -2585,7 +2797,7 @@
           </form>`
 
           
-          let typeOption=`<fieldset class="row mb-2 mt-2">
+          let typeOption=`<fieldset class="row mt-2">
             <legend class="col-form-label col-4 pt-0">Visible Type:</legend>
             <div class="col-8">
               <div class="form-check form-check-inline">
@@ -2621,16 +2833,17 @@
             
           let  addContent= `<form class="hyperLinkForm" id="hyperLink_form${i}"> <div class="d-flex gap-2 mb-2" id="fieldDiv${i}">
               <div class="formDiv">
-                <input class="inputItem form-control" type="text" name="link" />
+
                 <div class="hyperLinkModalDivs">
                   <div>
-                    <input class="inputItem form-control hyperImgClass" type="file" name="file" accept="image/*"/ id="hyperImgInput${i}_id" onchange="imgOnchangeFn(event)">
+                    <input class="inputItem form-control hyperImgClass" type="file" name="file" id="hyperImgInput${i}_id" onchange="imgOnchangeFn(event)" accept="image/png, image/jpeg" hidden />
+                    <label class="file-choose-label" for="hyperImgInput${i}_id">Choose Image</label>
                   </div>
                   <div class="hyperImgContainer" id="hyperImgInput${i}">
-                    
                   </div>
                 </div>
                 <input class="inputItem form-control" type="text" name="caption" id="captionInput${i}" />
+                <input class="inputItem form-control mt-2" type="text" name="link" />
               </div>
               <div>
                 <button type="button" class="btn btn-danger" name="remove" id="${i}" onClick="removeInputs(this)">X</button>
@@ -4386,15 +4599,16 @@
           <div class="updatesItems" id="updatesItems${updatesId}"></div>
           <div class="addButton">
             <div class="updatesBtns">
-              <button type="button" class="btn updatesItems${updatesId}_btn" onclick="showUpdatesModal('heading',this)">Heading</button>
+              <button type="button" class="btn updatesItems${updatesId}_btn" onclick="showUpdatesModal('heading',this)">Header Band</button>
               <button type="button" class="btn updatesItems${updatesId}_btn" onclick="showUpdatesModal('description',this)">Description</button>
-              <button type="button" class="btn updatesItems${updatesId}_btn" onclick="showUpdatesModal('image',this)">Image</button>
+              <button type="button" class="btn updatesItems${updatesId}_btn" onclick="showUpdatesModal('image',this)">Image & Carousel</button>
               <button type="button" class="btn updatesItems${updatesId}_btn" onclick="showUpdatesModal('video',this)">Video</button>
-              <button type="button" class="btn updatesItems${updatesId}_btn" onclick="showUpdatesModal('animation',this)">Animation</button>
-              <button type="button" class="btn updatesItems${updatesId}_btn" onclick="showUpdatesModal('quiz',this)">Quiz</button>
-              <button type="button" class="btn updatesItems${updatesId}_btn" onclick="showUpdatesModal('link',this)">Link</button>
-              <button type="button" class="btn updatesItems${updatesId}_btn" onclick="showUpdatesModal('button',this)">Button</button>
-              <button type="button" class="btn updatesItems${updatesId}_btn" onclick="showUpdatesModal('hyperLink',this)">Hyperlink</button>
+              <button type="button" class="btn updatesItems${updatesId}_btn" onclick="showUpdatesModal('animation',this)">Gif Animation</button>
+              <button type="button" class="btn updatesItems${updatesId}_btn" onclick="showUpdatesModal('quiz',this)">Add Quiz Question</button>
+              <button type="button" class="btn updatesItems${updatesId}_btn" onclick="showUpdatesModal('link',this)">Image with Link</button>
+              <button type="button" class="btn updatesItems${updatesId}_btn" onclick="showUpdatesModal('button',this,'button')">Button with Link</button>
+              <button type="button" class="btn updatesItems${updatesId}_btn" onclick="showUpdatesModal('button',this,'popup')">Button with Popup</button>
+              <button type="button" class="btn updatesItems${updatesId}_btn" onclick="showUpdatesModal('hyperLink',this)">Image[s] with Caption & Link</button>
               <button type="button" class="btn updatesItems${updatesId}_btn" onclick="addSpace('updates',this)">Space</button>
             </div>
             <div>
@@ -4465,7 +4679,7 @@
           $('#editModal').modal('show');
           const quizObject = quizContainerArray[`${parentId}`]['quiz']
           var modalTitle = document.getElementById("EditPageTitle")
-          modalTitle.innerText = "Edit Quiz"
+          modalTitle.innerText = "Edit Quiz Question"
           if(updatesClass==="updatesItems"){
             modalTitle.className = `${updatesDivId}_editModal`
           }else{
@@ -4548,11 +4762,11 @@
           //
           cardDiv.id = parentId
           cardDiv.innerHTML = `<div class="top">
-                  <p>Import videos</p>
                 </div>
                 <form action="" method="post" class="dragover">
-                    <span class="inner"><span class="select">Browse</span></span>
-                    <input name="file" type="file" class="file" id="videoInputEditId" accept="video/mp4"/>
+                    <input name="file" type="file" class="file" id="videoInputEditId" onchange="videoOnChangeEdit(this)" accept="video/mp4" hidden />
+                    <label class="file-choose-label" for="videoInputEditId">Choose Video</label>
+                    <span id="videoEditChosen">No video chosen</span>
                 </form>
                 <div class="videoModalContainerEdit" id=${paramId}>
                 </div>`
@@ -4570,8 +4784,6 @@
           browse = document.querySelector('.select')
           var inputFile = document.querySelector('form input');
 
-          browse.addEventListener('click', () => inputFile.click());
-
           var videoFile = []
 
           if(updatesClass==="updatesItems"){
@@ -4583,8 +4795,11 @@
           let files = []
 
           var inputId = document.getElementById("videoInputEditId")
-          inputId.onchange = e => {
-            videoFile = e.target.files[0];
+
+          $("#videoEditChosen").css("display","none")
+
+          videoOnChangeEdit = (elem) => {
+            videoFile = elem.files[0];
 
             if (videoFile.size < maxVideoSize) {
 
@@ -4636,7 +4851,7 @@
           var paramId = id
           $('#editModal').modal('show');  
           var modalTitle = document.getElementById("EditPageTitle")
-          modalTitle.innerText = "Add Animations"
+          modalTitle.innerText = "Edit Gif Animation"
           if(updatesClass==="updatesItems"){
             modalTitle.className = `${updatesDivId}_editModal`
           }else{
@@ -4652,11 +4867,11 @@
           cardDiv.className = "animationCard"
           cardDiv.id = parentId
           cardDiv.innerHTML = `<div class="top">
-                    <p>Import animations</p>
                   </div>
                   <form action="" method="post" class="dragover">
-                      <span class="inner"><span class="select">Browse</span></span>
-                      <input name="file" type="file" class="file" id="animationInputId" multiple accept="image/gif"/>
+                      <input name="file" type="file" class="file" id="animationInputId" multiple accept="image/gif" onchange="animationonEditChange(this)" hidden/>
+                      <label class="file-choose-label" for="animationInputId">Choose GIF</label>
+                      <span id="animationEditChosen">No GIF chosen</span>
                   </form>
                   <div class="animationEditContainer" id=${paramId}> 
                   </div>`
@@ -4681,13 +4896,12 @@
           browse = document.querySelector('.select')
           input = document.querySelector('form input');
 
-          browse.addEventListener('click', () => input.click());
-
-
           var input = document.getElementById("animationInputId")
 
-          input.addEventListener("change", () => {
-            let file = input.files;
+           $("#animationEditChosen").css("display","none")
+
+          animationonEditChange = (elem) => {
+            let file = elem.files;
             for (let i = 0; i < file.length; i++) {
               if (animationfiles.every(e => e.name !== file[i].name)) animationfiles.push(file[i])
             }
@@ -4701,7 +4915,7 @@
             }
             form.reset();
             showAnimations()
-          })
+          }
 
           let showAnimations = () => {
             if(updatesClass==="updatesItems"){
@@ -4732,7 +4946,7 @@
         else if (element === "editTitle") {
           $('#editModal').modal('show');
           var modalTitle = document.getElementById("EditPageTitle")
-          modalTitle.innerText = "Edit Page Title"
+          modalTitle.innerText = "Edit Page Title & Color"
           var modalBody = document.getElementById('editPageContent')
 
           let titleText = document.getElementById(id).innerText
@@ -4778,8 +4992,12 @@
         }
         else if (element === "editButton") {       
           $('#editModal').modal('show');
+
+          let buttonOneData=tempArray[parentId]['buttons'][0] === undefined ? tempArray[parentId]:tempArray[parentId]['buttons'][0];
+          let btnType = buttonOneData['btnType'] === undefined? 'link': buttonOneData['btnType'];
+
           var modalTitle = document.getElementById("EditPageTitle")
-          modalTitle.innerText = "Edit Button"
+                   modalTitle.innerText = btnPopup === "link"?"Edit Button with Link":"Edit Button with popup [PDF,Image,Link]";
 
           if(updatesClass==="updatesItems"){
             modalTitle.className = `${updatesDivId}_editModal`
@@ -4788,12 +5006,11 @@
           }
 
           var modalBody = document.getElementById('editPageContent')
-          console.log(tempArray[parentId],"data")
           let btnCount = tempArray[parentId]['btnCount'] === undefined ? "one":tempArray[parentId]['btnCount'];
-          let buttonOneData=tempArray[parentId]['buttons'][0] === undefined ? tempArray[parentId]:tempArray[parentId]['buttons'][0];
+
           const { name, bgColor } = buttonOneData;
           let link = buttonOneData['link'] === undefined ? '': buttonOneData['link'];
-          let btnType = buttonOneData['btnType'] === undefined? 'link': buttonOneData['btnType'];
+
           let btnPosition= buttonOneData['btnPosition'] === undefined ? 'center': buttonOneData['btnPosition'];
           let btnName = document.getElementById(`${id}`).children[0].innerText;
           let btnLink = document.getElementById(`${id}`).children[0].getAttribute("href");
@@ -4960,7 +5177,7 @@
                                 <div class="form-check form-check-inline">
                                   <input class="form-check-input" type="radio" name="popupTypeEdit" id="linkBtnEdit" value="link">
                                   <label class="form-check-label" for="linkBtnEdit">
-                                    Link
+                                    List of links
                                   </label>
                                 </div>
                                 <div class="form-check form-check-inline">
@@ -4980,12 +5197,12 @@
                             <div class="uploadContainerEdit">
                               <div class="uploadDivEdit" id="pdfUploadEdit" style="display:none">
                                 <input type="file" id="pdfFileEdit" accept ="application/pdf" hidden/>
-                                <label for="pdfFileEdit">Choose File</label>
+                                <label for="pdfFileEdit">Choose PDF</label>
                                 <span id="pdfChosenEdit">No file chosen</span>
                               </div>
                               <div class="uploadDivEdit" id="imageUploadEdit" style="display:none">
                                 <input type="file" id="imageFileEdit" accept="image/png, image/jpeg" hidden/>
-                                <label for="imageFileEdit">Choose File</label>
+                                <label for="imageFileEdit">Choose Image</label>
                                 <div id="previewDivEdit"></div>
                               </div>
                               <div class="uploadDivEdit" id="linkUploadEdit">
@@ -5085,7 +5302,7 @@
                                 <div class="form-check form-check-inline">
                                   <input class="form-check-input" type="radio" name="popupTypeEditTwo" id="linkBtnEditTwo" value="link">
                                   <label class="form-check-label" for="linkBtnEditTwo">
-                                    Link
+                                    List of links
                                   </label>
                                 </div>
                                 <div class="form-check form-check-inline">
@@ -5105,12 +5322,12 @@
                             <div class="uploadContainerEditTwo">
                               <div class="uploadDivEditTwo" id="pdfUploadEditTwo" style="display:none">
                                 <input type="file" id="pdfFileEditTwo" accept ="application/pdf" hidden/>
-                                <label for="pdfFileEditTwo">Choose File</label>
+                                <label for="pdfFileEditTwo">Choose PDF</label>
                                 <span id="pdfChosenEditTwo">No file chosen</span>
                               </div>
                               <div class="uploadDivEditTwo" id="imageUploadEditTwo" style="display:none">
                                 <input type="file" id="imageFileEditTwo" accept="image/png, image/jpeg" hidden/>
-                                <label for="imageFileEditTwo">Choose File</label>
+                                <label for="imageFileEditTwo">Choose Image</label>
                                 <div id="previewDivEditTwo"></div>
                               </div>
                               <div class="uploadDivEditTwo" id="linkUploadEditTwo">
@@ -5450,7 +5667,7 @@
         else if (element === "editHeading") {
           $('#editModal').modal('show');
           var modalTitle = document.getElementById("EditPageTitle")
-          modalTitle.innerText = "Edit Heading"
+          modalTitle.innerText = "Edit Header Band"
 
           if(updatesClass==="updatesItems"){
             modalTitle.className = `${updatesDivId}_editModal`
@@ -5492,7 +5709,7 @@
 
           $('#editModal').modal('show');
           var modalTitle = document.getElementById("EditPageTitle")
-          modalTitle.innerText = "Edit Link"
+          modalTitle.innerText = "Edit Image with Link"
 
           
           if(updatesClass==="updatesItems"){
@@ -5512,7 +5729,9 @@
 
           let imgLinkContainer = `<div class="container col-md-12 mt-3">
           <div class="mb-3">
-                <input class="form-control" type="file" id="formFileEdit" accept="image/*">
+                <input class="form-control" type="file" id="formFileEdit" accept="image/png, image/jpeg" hidden />
+                <label class="file-choose-label" for="formFileEdit">Choose Image</label>
+                <span id="imageLinkChosenEdit">No image chosen</span>
             </div>
             <img id="linkFormEdit" src=${URL.createObjectURL(image)} class="img-fluid" /> </div>`
 
@@ -5526,6 +5745,8 @@
           mainContainer.innerHTML += imgLinkContainer
 
           modalBody.appendChild(mainContainer)
+
+          $("#imageLinkChosenEdit").css("display","none");
 
           let imgInputIdEdit = document.getElementById("formFileEdit")
           let imgDivEdit = document.getElementById("linkFormEdit")
@@ -5617,7 +5838,7 @@
           showImages()
           var paramId = id
           var modalTitle = document.getElementById("EditPageTitle")
-          modalTitle.innerText = "Edit Images"
+          modalTitle.innerText = "Edit Image and Carousel"
           if(updatesClass==="updatesItems"){
             modalTitle.className = `${updatesClass}_editModal`
           }else{
@@ -5631,13 +5852,7 @@
           cardDiv.id = parentId
           cardDiv.innerHTML = `<div class="top">
                   </div>
-                  <form action="" method="post" class="dragover">
-                      <span class="inner"><span class="select">Browse</span></span>
-                      <input name="file" type="file" class="file" id="imgInputEdit" multiple accept="image/*"/>
-                  </form>
-                  <div class="imgContainerEdit">
-                  </div>
-                  <fieldset class="row mb-3">
+                      <fieldset class="row mb-3">
                     <legend class="col-form-label col-sm-4 pt-0">Images View</legend>
                     <div class="col-sm-8">
                       <div class="form-check">
@@ -5654,6 +5869,14 @@
                       </div>
                     </div>
                   </fieldset>
+                  <form action="" method="post" class="dragover">
+                      <input name="file" type="file" class="file" id="imgInputEdit" multiple accept="image/png, image/jpeg" onchange="imageonChangeEdit(this)" hidden />
+                      <label class="file-choose-label" for="imgInputEdit">Choose Image</label>
+                      <span id="imageChosenEdit">No image chosen</span>
+                  </form>
+                  <div class="imgContainerEdit">
+                  </div>
+
                   <div id="bgColorDivEdit" class="row gap-2">
                     <div class="col-12">
                       <div class="row align-items-center">
@@ -5667,6 +5890,8 @@
                   `
 
           modalBody.appendChild(cardDiv)
+
+          $("#imageChosenEdit").css("display","none")
 
           imageTypeEditFn=(elem)=>{
             let imageTypeOption=$(elem).val();
@@ -5691,14 +5916,12 @@
           browse = document.querySelector('.select')
           input = document.querySelector('form input');
 
-          browse.addEventListener('click', () => input.click());
-
           var imgfiles;
           let files = []
           var inputId = document.getElementById("imgInputEdit")
 
-          inputId.onchange = e => {
-            let file = inputId.files;
+          imageonChangeEdit = (elem) => {
+            let file = elem.files;
             for (let i = 0; i < file.length; i++) {
               if (imgfiles.every(e => e.name !== file[i].name)) {
                 imgfiles.push(file[i])
@@ -5748,7 +5971,7 @@
           $('#editModal').modal('show');
           
           var modalTitle = document.getElementById("EditPageTitle")
-          modalTitle.innerText = "Edit HyperLink"
+          modalTitle.innerText = "Edit Image(s) with Caption & Link"
           if(updatesClass==="updatesItems"){
             modalTitle.className = `${updatesDivId}_editModal`
           }else{
@@ -5767,17 +5990,17 @@
           `<form class="editForm" id="hyperLinkEdit_form0">
             <div class="d-flex gap-2 mb-2">
               <div class="formDiv">
-                <input class="inputItem form-control" type="text" name="link" value="${hyperLinkCards[0].link}" />
-
                 <div class="hyperLinkModalDivs">
                   <div>
-                    <input class="inputItem form-control hyperImgClass" type="file" name="file" accept="image/*"/ id="hyperImgEditInput0_id" onchange="imgEditOnchangeFn(event)">
+                    <input class="inputItem form-control hyperImgClass" type="file" name="file" accept="image/png, image/jpeg" id="hyperImgEditInput0_id" onchange="imgEditOnchangeFn(event)" hidden />
+                    <label class="file-choose-label" for="hyperImgEditInput0_id">Choose Image</label>
                   </div>
                   <div class="hyperImgEditContainer" id="hyperImgEditInput0">
                     <img src=${URL.createObjectURL(hyperLinkCards[0].file)} alt="img" />
                   </div>
                 </div>
                 <input class="inputItem form-control" type="text" id="captionInputEdit0" name="caption" />
+                <input class="inputItem form-control mt-2" type="text" name="link" value="${hyperLinkCards[0].link}" />
               </div>
               <div class="addMore">
                 <button type="button" class="btn btn-primary" name="add" id="add" onClick="addEditInputs()">+</button>
@@ -5786,7 +6009,7 @@
           </form>`
 
           
-          let typeOptionEdit=`<fieldset class="row mb-2 mt-2">
+          let typeOptionEdit=`<fieldset class="row mt-2">
             <legend class="col-form-label col-4 pt-0">Visible Type:</legend>
             <div class="col-8">
               <div class="form-check form-check-inline">
@@ -5813,14 +6036,13 @@
 
           if(hyperLinkCards.length>1){
               for(let j=1;j<hyperLinkCards.length;j++){
-                console.log(hyperLinkCards[j],"cards")
-                console.log(j,"count")
                   editRestContent+= `<form class="editForm" id="hyperLinkEdit_form${j}"> <div class="d-flex gap-2 mb-2" id="fieldDiv${j}">
                   <div class="formDiv">
-                    <input class="inputItem form-control" type="text" name="link" value="${hyperLinkCards[j].link}" />
+
                     <div class="hyperLinkModalDivs">
                       <div>
-                        <input class="inputItem form-control hyperImgClass" type="file" name="file" accept="image/*"/ id="hyperImgEditInput${j}_id" onchange="imgEditOnchangeFn(event)">
+                        <input class="inputItem form-control hyperImgClass" type="file" name="file" accept="image/png, image/jpeg" id="hyperImgEditInput${j}_id" onchange="imgEditOnchangeFn(event)" hidden />
+                        <label class="file-choose-label" for="hyperImgEditInput${j}_id">Choose Image</label>
                       </div>
                       <div class="hyperImgEditContainer" id="hyperImgEditInput${j}">
                         <img src=${URL.createObjectURL(hyperLinkCards[j].file)} alt="img" />
@@ -5828,6 +6050,7 @@
                     </div>
 
                     <input class="inputItem form-control" type="text" name="caption" id="captionInputEdit${j}" />
+                    <input class="inputItem form-control mt-2" type="text" name="link" value="${hyperLinkCards[j].link}" />
                   </div>
                   <div>
                     <button type="button" class="btn btn-danger" name="remove" id="${j}" onClick="removeInputs(this)">X</button>
@@ -5860,17 +6083,20 @@
             i++;  
             let  addContent= `<form class="editForm" id="hyperLinkEdit_form${i}"> <div class="d-flex gap-2 mb-2" id="fieldDiv${i}">
                 <div class="formDiv">
-                  <input class="inputItem form-control" type="text" name="link" />
+
                   <div class="hyperLinkModalDivs">
                     <div>
-                      <input class="inputItem form-control hyperImgClass" type="file" name="file" accept="image/*"/ id="hyperImgEditInput${i}_id" onchange="imgEditOnchangeFn(event)">
+                      <input class="inputItem form-control hyperImgClass" type="file" name="file" accept="image/png, image/jpeg" id="hyperImgEditInput${i}_id" onchange="imgEditOnchangeFn(event)" hidden />
+                      <label class="file-choose-label" for="hyperImgEditInput${i}_id">Choose Image</label>
                     </div>
                     <div class="hyperImgEditContainer" id="hyperImgEditInput${i}">
                       
                     </div>
                   </div>
                   <input class="inputItem form-control" type="text" name="caption" id="captionInputEdit${i}" />
+                  <input class="inputItem form-control mt-2" type="text" name="link" />
                 </div>
+
                 <div>
                   <button type="button" class="btn btn-danger" name="remove" id="${i}" onClick="removeInputs(this)">X</button>
                 </div> 
@@ -5900,7 +6126,7 @@
 
           $('#editModal').modal('show');
           var modalTitle = document.getElementById("EditPageTitle")
-          modalTitle.innerText = "Edit Updates"
+          modalTitle.innerText = "Edit Accordion"
 
           var modalBody = document.getElementById('editPageContent')
 
@@ -5918,8 +6144,6 @@
               <input type="checkbox" class="form-check-input" id="showEdit" name="show" value="show" />
             </div>
           `
-
-
 
           let mainContainer = document.createElement("div")
           mainContainer.className ='updatesDiv'
@@ -6636,25 +6860,6 @@
             tempArray[`${elemId}`] = { type: "12", heading:heading,show:showAccordion,bgColor:bgColor }
           }
 
-        }
-      }
-
-      const logoChange=(elem)=>{
-        $("#pageLogoDiv").html(`<img src="${URL.createObjectURL(elem.files[0])}"/>`)
-        $("#selectDivLogo").css("display","flex")
-        pageLogoImage=elem.files[0];
-      }
-
-      const urlValidate=(elem)=>{
-        let urlValue=$(elem).val();
-        var regexp = /^(ftp|http|https|chrome|:\/\/|\.|@){2,}(localhost|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|\S*:\w*@)*([a-zA-Z]|(\d{1,3}|\.){7}){1,}(\w|\.{2,}|\.[a-zA-Z]{2,3}|\/|\?|&|:\d|@|=|\/|\(.*\)|#|-|%)*$/gum
-        let urlValidation=regexp.test(urlValue)
-        if(urlValidation){
-          $(".url-error").remove()
-        }else{
-          if($(".url-error").length === 0){
-            $("#mainPageLink").after(`<p class="error url-error">Please enter the valid URL..!</p>`);
-          }
         }
       }
 
