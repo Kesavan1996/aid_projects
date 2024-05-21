@@ -1229,7 +1229,7 @@
                               </div>
                           </fieldset>
                         </div>
-                                <div class="d-flex gap-4 flex-column">
+                                <div class="d-flex gap-3 flex-column">
                                       <div class="col-12">
                                         <fieldset class="row">
                                           <legend class="col-form-label col-4 pt-0">Button Type:</legend>
@@ -1823,7 +1823,7 @@
                 <input class="inputItem form-control mt-2" type="text" name="link" placeholder="link" />
               </div>
               <div>
-                <button type="button" class="btn btn-danger" name="remove" id="${i}" onClick="removeInputs(this)">X</button>
+                <button type="button" class="btn btn-danger" name="remove" id="${i}" onclick="removeInputs(this)">X</button>
               </div> 
             </div> </form>`
 
@@ -1833,10 +1833,8 @@
 
           }
 
-          removeInputs=(e)=>{
-            
-            var button_id = e.id     
-           $('#fieldDiv'+button_id+'').remove();
+          removeInputs=(elem)=>{
+           $(elem).closest('form').remove();
           }
 
           changeToRichtext([`captionInput0`])
@@ -2481,7 +2479,7 @@
           popupPdf="";
           popupImage="";
 
-          let buttonInput = `<div class="row gap-4">
+          let buttonInput = `<div class="row gap-3">
                       <div class="col-12">
                         <fieldset class="row">
                           <legend class="col-form-label col-4 pt-0">Button Type:</legend>
@@ -2542,7 +2540,7 @@
                       </fieldset>
                     </div>
                   </div>
-                  <div id="popupDiv" style="display:none" class="mt-4">
+                  <div id="popupDiv" style="display:none">
                   <fieldset class="row mb-2 mt-2">
                     <legend class="col-form-label col-sm-2 pt-0">Location:</legend>
                     <div class="col-sm-10">
@@ -2716,7 +2714,7 @@
           let imgLinkContainer = `<div class="container col-md-12 mt-3">
           <div class="mb-3">
                 <input class="form-control" type="file" id="formFileUpdates" accept="image/png, image/jpeg" hidden />
-                <label class="file-choose-label" for="formFile">Choose Image</label>
+                <label class="file-choose-label" for="formFileUpdates">Choose Image</label>
                 <span id="imageLinkChosen">No image chosen</span>
             </div>
             <img id="linkImage" src="" class="img-fluid" /> </div>`
@@ -2787,6 +2785,7 @@
                   </div>
                 </div>
                 <input class="inputItem form-control" type="text" id="captionInput0" name="caption" />
+                //
                 <input class="inputItem form-control mt-2" type="text" name="link" />
               </div>
               <div classs="addMore">
@@ -4400,8 +4399,9 @@
               retrieved["caption"]=CKEDITOR.instances[`captionInput${h}`]?.getData()           
             }
 
-            var formElem = document.getElementById(`hyperLink_form${h}`);
-            const inputFields=formElem.querySelectorAll(`input`)
+           // var formElem = document.getElementById(`hyperLink_form${h}`);
+            var formElem = hyperLinkForms[h];
+            const inputFields=formElem?.querySelectorAll(`input`)
 
             for(let i = 0; i < inputFields.length; i++){
               let inputType = inputFields[i].type
@@ -5073,7 +5073,7 @@
 
 
 
-          let buttonInput = `<div class="row gap-4">
+          let buttonInput = `<div class="row gap-3">
                                 <div class="col-12">
                                   <fieldset class="row">
                                     <legend class="col-form-label col-4 pt-0">Buttons:</legend>
@@ -5154,7 +5154,7 @@
                             </fieldset>
                               </div>
                             </div>
-                            <div id="popupDivEdit" style="display:none" class="mt-4">
+                            <div id="popupDivEdit" style="display:none">
                             <fieldset class="row mb-2 mt-2">
                               <legend class="col-form-label col-sm-2 pt-0">Location:</legend>
                               <div class="col-sm-10">
@@ -5216,7 +5216,7 @@
                         </div>`
 
     
-    let buttonInputTwo =  `<div class="gap-4 flex-column border-top pt-3" id="secondBtnDivEdit" style="display:none">
+    let buttonInputTwo =  `<div class="gap-3 flex-column border-top pt-3" id="secondBtnDivEdit" style="display:none">
                               <div class="row gap-4">
                                 <div class="col-12">
                                   <fieldset class="row">
@@ -5279,7 +5279,7 @@
                             </fieldset>
                               </div>
                             </div>
-                            <div id="popupDivEdiTwot" style="display:none" class="mt-4">
+                            <div id="popupDivEdiTwot" style="display:none">
                             <fieldset class="row mb-2 mt-2">
                               <legend class="col-form-label col-sm-2 pt-0">Location:</legend>
                               <div class="col-sm-10">
@@ -6061,7 +6061,7 @@
                     <input class="inputItem form-control mt-2" type="text" name="link" value="${hyperLinkCards[j].link}" />
                   </div>
                   <div>
-                    <button type="button" class="btn btn-danger" name="remove" id="${j}" onClick="removeInputs(this)">X</button>
+                    <button type="button" class="btn btn-danger" name="remove" id="${j}" onclick="removeEditInputs(this)">X</button>
                   </div> 
                 </div></form>`
               }
@@ -6106,7 +6106,7 @@
                 </div>
 
                 <div>
-                  <button type="button" class="btn btn-danger" name="remove" id="${i}" onClick="removeInputs(this)">X</button>
+                  <button type="button" class="btn btn-danger" name="remove" id="${i}" onclick="removeEditInputs(this)">X</button>
                 </div> 
               </div> <p class="error" style="display:none">Please fill the value..!</p> </form>`
 
@@ -6114,6 +6114,10 @@
 
               changeToRichtext([`captionInputEdit${i}`])
 
+          }
+
+          removeEditInputs = (elem)=>{
+            $(elem).closest('form').remove();
           }
 
           imgEditOnchangeFn=(event)=>{
@@ -6765,6 +6769,7 @@
           let isEmpty=[];
          
           for (let h=0;h<editForms.length;h++){
+            console.log(editForms[h],"h")
             let form = editForms[h];
             let data = new FormData(form);
             data = data.entries();              
@@ -6780,9 +6785,12 @@
               retrieved["caption"]=CKEDITOR.instances[`captionInputEdit${h}`]?.getData();
             }
 
-            let inputFields = $(`#hyperLinkEdit_form${h} input`);
+            var formElemEdit = editForms[h];
+            let inputFields =formElemEdit?.querySelectorAll(`input`)
 
             for(let i = 0; i < inputFields.length; i++){
+
+              console.log(inputFields[i],"i")
               let inputType = inputFields[i].type
               let inputName = inputFields[i].name
 
@@ -6810,6 +6818,7 @@
                 }
               }
             }
+            console.log(retrieved,"ret")
 
             if(!isEmpty.includes(true)){
               hyperLinksUpdate.push(retrieved)  
@@ -6847,6 +6856,7 @@
             $('#editModal').modal('hide');
             updatedElement.innerHTML=hyperLinkTag;
           }
+          console.log(tempArray,"array")
 
         }
         else if(modalBody.children[0].className ==="updatesDiv"){
