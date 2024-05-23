@@ -4817,19 +4817,23 @@
             data = data.entries();              
             var obj = data.next();
             var retrieved = {}; 
+
+            var f = form.id;
+            var numberPattern = /\d+/g;
+            f = f.match( numberPattern ).join([]);
                 
             while(undefined !== obj.value) {  
-              retrieved["caption"]=CKEDITOR.instances[`captionInput${h}`]?.getData()
+              retrieved["caption"]=CKEDITOR.instances[`captionInput${f}`]?.getData()
               if(obj.value[0]==="file"){
                 retrieved['image']=[obj.value[1]];
               }else{
                 retrieved[obj.value[0]] = obj.value[1];
               }
               obj = data.next();   
-              retrieved["caption"]=CKEDITOR.instances[`captionInput${h}`]?.getData()           
+              retrieved["caption"]=CKEDITOR.instances[`captionInput${f}`]?.getData()           
             }
 
-            var formElem = document.getElementById(`hyperLink_form${h}`);
+            var formElem = document.getElementById(`hyperLink_form${f}`);
             const inputFields=formElem.querySelectorAll(`input`)
 
             for(let i = 0; i < inputFields.length; i++){
@@ -4840,33 +4844,32 @@
                 let hyperLinkVal=ValidateUrlExp.test(inputFields[i].value)
                 if(inputFields[i].value==="" || hyperLinkVal=== false){
                   isEmpty.push(true);
-                  if($(`#hyperError${h}${i}`).length === 0){
-                    $(inputFields[i]).after(`<p class="error" id="hyperError${h}${i}">Please enter the valid URL..!</p>`)
+                  if($(`#hyperError${f}${i}`).length === 0){
+                    $(inputFields[i]).after(`<p class="error" id="hyperError${f}${i}">Please enter the valid URL..!</p>`)
                   }
                 }else{
                   isEmpty.push(false);
-                  $(`#hyperError${h}${i}`).remove();
+                  $(`#hyperError${f}${i}`).remove();
                 }
               }else if(inputType==="file"){
                 if(inputFields[i].files.length===0){
                   isEmpty.push(true);
-                  if($(`#hyperError${h}${i}`).length === 0){
-                    $(inputFields[i]).after(`<p class="error" id="hyperError${h}${i}">Upload the image..!</p>`);
+                  if($(`#hyperError${f}${i}`).length === 0){
+                    $(inputFields[i]).after(`<p class="error" id="hyperError${f}${i}">Upload the image..!</p>`);
                   }
                 }else{
                   isEmpty.push(false);
-                  $(`#hyperError${h}${i}`).remove();
+                  $(`#hyperError${f}${i}`).remove();
                 }
               }else if(inputName === "caption"){
-                if(CKEDITOR.instances[`captionInput${h}`]?.getData()===""){
+                if(CKEDITOR.instances[`captionInput${f}`]?.getData()===""){
                   isEmpty.push(true);
-                  console.log(`${h}${i}`);
-                  if($(`#hyperError${h}${i}`).length === 0){
-                    $(`#cke_captionInput${h}`).after(`<p class="error" id="hyperError${h}${i}">Please enter the field..!</p>`);
+                  if($(`#hyperError${f}${i}`).length === 0){
+                    $(`#cke_captionInput${f}`).after(`<p class="error" id="hyperError${f}${i}">Please enter the field..!</p>`);
                   }
                 }else{
                   isEmpty.push(false);
-                  $(`#hyperError${h}${i}`).remove();
+                  $(`#hyperError${f}${i}`).remove();
                 }
               }
             }
@@ -7013,6 +7016,9 @@
             var obj = data.next();
             var retrieved = {}; 
 
+            var f = form.id;
+            var numberPattern = /\d+/g;
+            f = f.match( numberPattern ).join([]);
             
             while(undefined !== obj.value) {  
               retrieved[obj.value[0]] = obj.value[1];
@@ -7027,10 +7033,10 @@
                 }
               }
               obj = data.next();   
-              retrieved["caption"]=CKEDITOR.instances[`captionInputEdit${h}`]?.getData();
+              retrieved["caption"]=CKEDITOR.instances[`captionInputEdit${f}`]?.getData();
             }
 
-            let inputFields = $(`#hyperLinkEdit_form${h} input`);
+            let inputFields = $(`#hyperLinkEdit_form${f} input`);
 
             for(let i = 0; i < inputFields.length; i++){
               let inputType = inputFields[i].type
@@ -7040,22 +7046,22 @@
                 let hyperLinkEditVal=ValidateUrlExp.test(inputFields[i].value)
                 if(inputFields[i].value===""|| hyperLinkEditVal=== false){
                   isEmpty.push(true);
-                  if($(`#hyperError${h}${i}`).length === 0){
-                    $(inputFields[i]).after(`<p class="error" id="hyperError${h}${i}">Please enter the valid URL..!</p>`)
+                  if($(`#hyperError${f}${i}`).length === 0){
+                    $(inputFields[i]).after(`<p class="error" id="hyperError${f}${i}">Please enter the valid URL..!</p>`)
                   }
                 }else{
                   isEmpty.push(false);
-                  $(`#hyperError${h}${i}`).remove();
+                  $(`#hyperError${f}${i}`).remove();
                 }
               }else if(inputName === "caption"){
-                if(CKEDITOR.instances[`captionInputEdit${h}`]?.getData()===""){
+                if(CKEDITOR.instances[`captionInputEdit${f}`]?.getData()===""){
                   isEmpty.push(true);
-                  if($(`#hyperError${h}${i}`).length === 0){
-                    $(`#cke_captionInputEdit${h}`).after(`<p class="error" id="hyperError${h}${i}">Please enter the field..!</p>`);
+                  if($(`#hyperError${f}${i}`).length === 0){
+                    $(`#cke_captionInputEdit${f}`).after(`<p class="error" id="hyperError${f}${i}">Please enter the field..!</p>`);
                   }
                 }else{
                   isEmpty.push(false);
-                  $(`#hyperError${h}${i}`).remove();
+                  $(`#hyperError${f}${i}`).remove();
                 }
               }
             }

@@ -4386,18 +4386,26 @@
           
 
           for (let h=0;h<hyperLinkForms.length;h++){
+
             let form = hyperLinkForms[h];
             let data = new FormData(form);
             data = data.entries();              
             var obj = data.next();
             var retrieved = {}; 
-                
+
+            console.log(form.id,"form")
+
+            var f = form.id;
+            var numberPattern = /\d+/g;
+            f = f.match( numberPattern ).join([]);
+
             while(undefined !== obj.value) {  
-              retrieved["caption"]=CKEDITOR.instances[`captionInput${h}`]?.getData()
+              retrieved["caption"]=CKEDITOR.instances[`captionInput${f}`]?.getData()
               retrieved[obj.value[0]] = obj.value[1];
               obj = data.next();   
-              retrieved["caption"]=CKEDITOR.instances[`captionInput${h}`]?.getData()           
+              retrieved["caption"]=CKEDITOR.instances[`captionInput${f}`]?.getData()           
             }
+
 
            // var formElem = document.getElementById(`hyperLink_form${h}`);
             var formElem = hyperLinkForms[h];
@@ -4409,38 +4417,37 @@
               if(inputName === "link"){
                 var ValidateUrlExp = /^(ftp|http|https|chrome|:\/\/|\.|@){2,}(localhost|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|\S*:\w*@)*([a-zA-Z]|(\d{1,3}|\.){7}){1,}(\w|\.{2,}|\.[a-zA-Z]{2,3}|\/|\?|&|:\d|@|=|\/|\(.*\)|#|-|%)*$/gum
                 let hyperLinkVal=ValidateUrlExp.test(inputFields[i].value)
-                console.log(inputFields[i].value,"value")
-                console.log(hyperLinkVal,"test")
+
                 if(inputFields[i].value==="" || hyperLinkVal=== false){
                   
                   isEmpty.push(true);
-                  if($(`#hyperError${h}${i}`).length === 0){
-                    $(inputFields[i]).after(`<p class="error" id="hyperError${h}${i}">Please enter the valid URL..!</p>`)
+                  if($(`#hyperError${f}${i}`).length === 0){
+                    $(inputFields[i]).after(`<p class="error" id="hyperError${f}${i}">Please enter the valid URL..!</p>`)
                   }
                 }else{
                   isEmpty.push(false);
-                  $(`#hyperError${h}${i}`).remove();
+                  $(`#hyperError${f}${i}`).remove();
                 }
               }else if(inputType==="file"){
                 if(inputFields[i].files.length===0){
                   isEmpty.push(true);
-                  if($(`#hyperError${h}${i}`).length === 0){
-                    $(inputFields[i]).after(`<p class="error" id="hyperError${h}${i}">Upload the image..!</p>`);
+                  if($(`#hyperError${f}${i}`).length === 0){
+                    $(inputFields[i]).after(`<p class="error" id="hyperError${f}${i}">Upload the image..!</p>`);
                   }
                 }else{
                   isEmpty.push(false);
-                  $(`#hyperError${h}${i}`).remove();
+                  $(`#hyperError${f}${i}`).remove();
                 }
               }else if(inputName === "caption"){
-                if(CKEDITOR.instances[`captionInput${h}`]?.getData()===""){
+                if(CKEDITOR.instances[`captionInput${f}`]?.getData()===""){
                   isEmpty.push(true);
-                  console.log(`${h}${i}`);
-                  if($(`#hyperError${h}${i}`).length === 0){
-                    $(`#cke_captionInput${h}`).after(`<p class="error" id="hyperError${h}${i}">Please enter the field..!</p>`);
+                  console.log(`${f}${i}`);
+                  if($(`#hyperError${f}${i}`).length === 0){
+                    $(`#cke_captionInput${f}`).after(`<p class="error" id="hyperError${f}${i}">Please enter the field..!</p>`);
                   }
                 }else{
                   isEmpty.push(false);
-                  $(`#hyperError${h}${i}`).remove();
+                  $(`#hyperError${f}${i}`).remove();
                 }
               }
             }
@@ -6775,6 +6782,10 @@
             data = data.entries();              
             var obj = data.next();
             var retrieved = {}; 
+
+            var f = form.id;
+            var numberPattern = /\d+/g;
+            f = f.match( numberPattern ).join([]);
             
             while(undefined !== obj.value) {  
               retrieved[obj.value[0]] = obj.value[1];
@@ -6782,7 +6793,7 @@
                 retrieved["file"]=hyperLinkCards[h].file
               }
               obj = data.next();   
-              retrieved["caption"]=CKEDITOR.instances[`captionInputEdit${h}`]?.getData();
+              retrieved["caption"]=CKEDITOR.instances[`captionInputEdit${f}`]?.getData();
             }
 
             var formElemEdit = editForms[h];
@@ -6799,26 +6810,25 @@
                 let hyperLinkEditVal=ValidateUrlExp.test(inputFields[i].value)
                 if(inputFields[i].value==="" || hyperLinkEditVal=== false){
                   isEmpty.push(true);
-                  if($(`#hyperError${h}${i}`).length === 0){
-                    $(inputFields[i]).after(`<p class="error" id="hyperError${h}${i}">Please enter the field..!</p>`)
+                  if($(`#hyperError${f}${i}`).length === 0){
+                    $(inputFields[i]).after(`<p class="error" id="hyperError${f}${i}">Please enter the field..!</p>`)
                   }
                 }else{
                   isEmpty.push(false);
-                  $(`#hyperError${h}${i}`).remove();
+                  $(`#hyperError${f}${i}`).remove();
                 }
               }else if(inputName === "caption"){
-                if(CKEDITOR.instances[`captionInputEdit${h}`]?.getData()===""){
+                if(CKEDITOR.instances[`captionInputEdit${f}`]?.getData()===""){
                   isEmpty.push(true);
-                  if($(`#hyperError${h}${i}`).length === 0){
-                    $(`#cke_captionInputEdit${h}`).after(`<p class="error" id="hyperError${h}${i}">Please enter the field..!</p>`);
+                  if($(`#hyperError${f}${i}`).length === 0){
+                    $(`#cke_captionInputEdit${f}`).after(`<p class="error" id="hyperError${f}${i}">Please enter the field..!</p>`);
                   }
                 }else{
                   isEmpty.push(false);
-                  $(`#hyperError${h}${i}`).remove();
+                  $(`#hyperError${f}${i}`).remove();
                 }
               }
             }
-            console.log(retrieved,"ret")
 
             if(!isEmpty.includes(true)){
               hyperLinksUpdate.push(retrieved)  
