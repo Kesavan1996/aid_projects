@@ -44,29 +44,70 @@
     },
     {
       "type": "8",
-      "name": "Donate 1",
-      "btnType": "link",
-      "link": "aidindia.in",
-      "bgColor": "#d8bbbb"
+      "btnCount": "one",
+      "buttons": [
+        {
+          "name": "Donate 1",
+          "btnType": "link",
+          "link": "aidindia.in",
+          "btnPosition": "center",
+          "bgColor": "#d8bbbb"
+        }
+      ]
     },
     {
       "type": "8",
-      "name": "Donate link body",
-      "btnType": "popup",
-      "popupType": "link",
-      "links": [
+      "btnCount": "one",
+      "buttons": [
         {
-          "name": "Cluster",
-          "link": "https://ahaguru.com"
-        },
-        {
-          "name": "Cluster 1",
-          "link": "https://ahaguru.com"
+          "name": "Donate link header",
+          "btnType": "popup",
+          "popupType": "link",
+          "links": [
+            {
+              "name": "shorts",
+              "link": "https://ahaguru.com"
+            },
+            {
+              "name": "shorts 1",
+              "link": "https://ahaguru.com"
+            }
+          ],
+          "bgColor": "#b3b3b3",
+          "btnLocation": "header",
+          "btnPosition": "center"
         }
-      ],
-      "btnLocation": "header",
-      "btnPosition": "center",
-      "bgColor": "#9c5454"
+      ]
+    },
+    {
+      "type": "8",
+      "btnCount": "one",
+      "buttons": [
+        {
+          "name": "Donate image link",
+          "btnType": "popup",
+          "popupType": "image",
+          "image": ["1715268143_59e48c3c536d08532215.jpg"],
+          "bgColor": "#b3b3b3",
+          "btnLocation": "body",
+          "btnPosition": "center"
+        }
+      ]
+    },
+    {
+      "type": "8",
+      "btnCount": "one",
+      "buttons": [
+        {
+          "name": "Donate pdf link",
+          "btnType": "popup",
+          "popupType": "pdf",
+          "pdf": ["1715268143_21e68541f01708a248a9.pdf"],
+          "bgColor": "#b3b3b3",
+          "btnLocation": "body",
+          "btnPosition": "center"
+        }
+      ]
     },
     {
       "type": "12",
@@ -74,15 +115,6 @@
       "bgcolor": "#f2f2f2",
       "show": "false",
       "updates": [
-        {
-          "type": "4",
-          "images": [
-            "1714830841_5e9aff7f9f6661a382ad.jpeg",
-            "1714830841_3f36abb7c58fac09a53d.jpg"
-          ],
-          "arrowBgColor": "#828282",
-          "imagesView": "carousel"
-        },
         {
           "type": "11",
           "hyperLinkType": "normal",
@@ -100,6 +132,31 @@
               "image": ["1714830841_7486bdf900d37b0cf15a.jpg"]
             }
           ]
+        },
+        {
+          "type": "8",
+          "btnCount": "two",
+          "buttons": [
+            {
+              "name": "Donate link body",
+              "btnType": "popup",
+              "popupType": "image",
+              "image": ["1716813881_07736c9285a79ddd288e.jpg"],
+              "bgColor": "#b3b3b3",
+              "btnLocation": "body",
+              "btnPosition": "left"
+            },
+            {
+              "name": "Donate link body pdf",
+              "btnType": "popup",
+              "popupType": "pdf",
+              "pdf": ["1716813881_43c1acdca76b8d36d67d.pdf"],
+              "bgColor": "#b3b3b3",
+              "btnLocation": "body",
+              "btnPosition": "right"
+            }
+          ],
+          "updates": "updates0"
         }
       ]
     }

@@ -684,7 +684,7 @@
 
       // Page onload function
 
-      let fetchData = fetch('./Data.json')
+      let fetchData = fetch('./newData.json')
         .then((response) => response.json())
         .then((json) => { return json.data });
 
@@ -1479,19 +1479,18 @@
 
               if (modalType === "image") {
                 let imageUrl = '';
-                if (typeof popupData.image === "string") {
-
-                  imageUrl = popupData.image;
+                if (typeof popupData.image[0] === "string") {
+                  imageUrl = popupData.image[0];
                 } else {
-                  imageUrl = URL.createObjectURL(popupData.image)
+                  imageUrl = URL.createObjectURL(popupData.image[0])
                 }
                 modalContent = `<img src="${imageUrl}" class="popupImage" />`
               } else if (modalType === "pdf") {
                  let pdfUrl = '';
-                if (typeof popupData.pdf === "string") {
-                  pdfUrl = popupData.pdf;
+                if (typeof popupData.pdf[0] === "string") {
+                  pdfUrl = popupData.pdf[0];
                 } else {
-                  pdfUrl = URL.createObjectURL(popupData.pdf)
+                  pdfUrl = URL.createObjectURL(popupData.pdf[0])
                 }
                 modalContent = `<object data='${pdfUrl}' type='application/pdf' width='100%' height='700px'>`
               } else if (modalType === "link") {
@@ -1517,20 +1516,22 @@
             let popupTwoData = tempArray[`${btnAttr}`]['buttons'][elemIndex];
             let modalTypeTwo = popupTwoData['popupType'];
 
+            console.log(popupTwoData,"popup")
+
             if (modalTypeTwo === "image") {
                let imageUrlTwo = '';
-                if (typeof popupTwoData.image === "string") {
-                  imageUrlTwo = popupTwoData.image;
+                if (typeof popupTwoData.image[0] === "string") {
+                  imageUrlTwo = popupTwoData.image[0];
                 } else {
-                  imageUrlTwo = URL.createObjectURL(popupTwoData.image)
+                  imageUrlTwo = URL.createObjectURL(popupTwoData.image[0])
                 }
               modalContentTwo = `<img src="${imageUrlTwo}" class="popupImage" />`
             } else if (modalTypeTwo === "pdf") {
                 let pdfUrlTwo = '';
-                if (typeof popupData.pdf === "string") {
-                  pdfUrlTwo = popupData.pdf;
+                if (typeof popupTwoData.pdf[0] === "string") {
+                  pdfUrlTwo = popupTwoData.pdf[0];
                 } else {
-                  pdfUrlTwo = URL.createObjectURL(popupData.pdf)
+                  pdfUrlTwo = URL.createObjectURL(popupTwoData.pdf[0])
                 }
               modalContentTwo = `<object data='${pdfUrlTwo}' type='application/pdf' width='100%' height='700px'>`
             } else if (modalTypeTwo === "link") {
