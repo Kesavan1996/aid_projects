@@ -953,7 +953,7 @@
             let carouselImage = '';
 
             imgArry.forEach((e, i) => {
-              imageSlideCount += `<button type="button" data-bs-target="#carouselwithIndicators${imageContainerId}" data-bs-slide-to="${i}" aria-current="true" class="${i == 0 ? "active" : ""}" aria-label="Slide ${i}">
+              imageSlideCount += `<button type="button" data-bs-target="#carouselwithIndicators${imageContainerId}" data-bs-slide-to="${i}" style="background-color:${arrowBgColor}" aria-current="true" class="${i == 0 ? "active" : ""}" aria-label="Slide ${i}">
 
                                 </button>`
             })
@@ -972,7 +972,7 @@
             })
 
             let carouselView = `
-            <div id="carouselwithIndicators${imageContainerId}" class="carousel slide" data-bs-ride="carousel">
+            <div id="carouselwithIndicators${imageContainerId}" class="carousel slide" data-bs-ride="carousel" data-bs-interval="false">
               <div class="carousel-indicators">
                 ${imageSlideCount}
               </div>
@@ -4546,7 +4546,7 @@
           let carouselImage = '';
 
           imgArry.forEach((e, i) => {
-            imageSlideCount += `<button type="button" data-bs-target="#carouselwithIndicators${numb}" data-bs-slide-to="${i}" aria-current="true" class="${i == 0 ? "active" : ""}" aria-label="Slide ${i}">
+            imageSlideCount += `<button type="button" data-bs-target="#carouselwithIndicators${numb}" style="background-color:${arrowBgColor}" data-bs-slide-to="${i}" aria-current="true" class="${i == 0 ? "active" : ""}" aria-label="Slide ${i}">
 
                                 </button>`
           })
@@ -4558,7 +4558,7 @@
           })
 
           let carouselView = `
-            <div id="carouselwithIndicators${numb}" class="carousel slide" data-bs-ride="carousel">
+            <div id="carouselwithIndicators${numb}" class="carousel slide" data-bs-ride="carousel" data-bs-interval="false">
               <div class="carousel-indicators">
                 ${imageSlideCount}
               </div>
@@ -7026,18 +7026,18 @@
 
             links.forEach((l, i) => {
               input += `<form class="input-div"> 
-      <div class="links">
-        <input type='text' class="form-control" name='name' placeholder="Name" value="${l.name}">
-        <input type='text' class="form-control" name='link' placeholder="Link" value="${l.link}">
-      </div>
-      <div class="btn-div">
-        ${i == 0 ? `<button type="button" id="addInputFieldButtonEdit" class='add-more-btn'><i class="fa-solid fa-plus"></i></button>`
-                  :
-                  `<button type="button" class="delete-btn" onClick="deleteEditInput(this)"><i class="fa-solid fa-xmark"></i></button>`
-                }
+                      <div class="links">
+                        <input type='text' class="form-control" name='name' placeholder="Name" value="${l.name}">
+                        <input type='text' class="form-control" name='link' placeholder="Link" value="${l.link}">
+                      </div>
+                      <div class="btn-div">
+                        ${i == 0 ? `<button type="button" id="addInputFieldButtonEdit" class='add-more-btn'><i class="fa-solid fa-plus"></i></button>`
+                                  :
+                                  `<button type="button" class="delete-btn" onClick="deleteEditInput(this)"><i class="fa-solid fa-xmark"></i></button>`
+                                }
 
-      </div>
-    </form>`
+                      </div>
+                    </form>`
             })
             $("#linkFormEdit").html(input);
             inputCount += 1;
@@ -7048,17 +7048,27 @@
 
           if (popupTypeTwo === 'image') {
             let popupBtnImgUrl = '';
-            if (typeof popupImageTwo === "object") {
-              popupBtnImgUrl = URL.createObjectURL(popupImageTwo);
-            } else {
-              popupBtnImgUrl = popupImageTwo
-            }
-            $("#imageUploadEditTwo #previewDivEditTwo").html(`<img src=${popupBtnImgUrl} id="uploadedImgEditTwo" />`);
-          } else if (popupTypeTwo === "pdf") {
-            if(typeof popupTypeTwo === "object"){
-              pdfChosenTwo.textContent = popupPdfTwo.name;
+           if(popupImageTwo[0]=== undefined){
+              if (typeof popupImageTwo === "object") {
+                popupBtnImgUrl = URL.createObjectURL(popupImageTwo);
+              } else {
+                popupBtnImgUrl = popupImageTwo
+              }
+            }else{
+              if (typeof popupImageTwo[0] === "object") {
+                popupBtnImgUrl = URL.createObjectURL(popupImageTwo[0]);
+              } else {
+                 popupBtnImgUrl = popupImageTwo[0];
+              }
             }
             
+            $("#imageUploadEditTwo #previewDivEditTwo").html(`<img src=${popupBtnImgUrl} id="uploadedImgEditTwo" />`);
+          } else if (popupTypeTwo === "pdf") {
+            if(popupPdfTwo[0]===undefined){
+              if(typeof popupTypeTwo === "object"){
+                pdfChosenTwo.textContent = popupPdfTwo.name;
+              }
+            }
           } else if (popupTypeTwo === 'link') {
             var inputTwo = '';
             linksTwo.forEach((l, i) => {
@@ -7996,7 +8006,7 @@
             }
           }
 
-          $(".btn-error-edit").get(0).scrollIntoView({behavior: 'smooth'});
+          $(".btn-error-edit").get(0)?.scrollIntoView({behavior: 'smooth'});
 
           let btnTag = '';
 
@@ -8307,7 +8317,7 @@
           let carouselImage = '';
 
           images.forEach((e, i) => {
-            imageSlideCount += `<button type="button" data-bs-target="#carouselwithIndicators${numb}" data-bs-slide-to="${i}" aria-current="true" class="${i == 0 ? "active" : ""}" aria-label="Slide ${i}"></button>`
+            imageSlideCount += `<button type="button" data-bs-target="#carouselwithIndicators${numb}" style="background-color:${arrowBgColor}" data-bs-slide-to="${i}" aria-current="true" class="${i == 0 ? "active" : ""}" aria-label="Slide ${i}"></button>`
           })
 
           let carouselUrl = '';
@@ -8325,7 +8335,7 @@
           })
 
           let carouselView = `<div class="container main-margin-top">
-            <div id="carouselwithIndicators${numb}" class="carousel slide" data-bs-ride="carousel">
+            <div id="carouselwithIndicators${numb}" class="carousel slide" data-bs-ride="carousel" data-bs-interval="false">
               <div class="carousel-indicators">
                 ${imageSlideCount}
               </div>
