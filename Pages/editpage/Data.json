@@ -41,7 +41,7 @@
       "name": "Button",
       "btnType": "popup",
       "popupType": "image",
-      "image": "../../assets/img/img1.jpg",
+      "image": ["../../assets/img/img1.jpg"],
       "btnLocation": "header",
       "btnPosition": "center",
       "bgColor": "#e67575"
@@ -60,6 +60,65 @@
           "link": "https//aid.com",
           "caption": "fwwwerwer werw",
           "image": ["../../assets/img/img1.jpg"]
+        }
+      ]
+    },
+    {
+      "type": "8",
+      "btnCount": "two",
+      "buttons": [
+        {
+          "name": "Button One",
+          "btnType": "popup",
+          "popupType": "link",
+          "links": [
+            {
+              "name": "Accept",
+              "link": "https://www.google.com/"
+            }
+          ],
+          "bgColor": "#7bf547",
+          "btnLocation": "body",
+          "btnPosition": "center"
+        },
+        {
+          "name": "Button Two Link",
+          "btnType": "popup",
+          "popupType": "link",
+          "links": [
+            {
+              "name": "Accept",
+              "link": "https://www.google.com/"
+            }
+          ],
+          "bgColor": "#c5d643",
+          "btnLocation": "body",
+          "btnPosition": "center"
+        }
+      ]
+    },
+    {
+      "type": "8",
+      "btnCount": "two",
+      "buttons": [
+        {
+          "name": "Button One",
+          "btnType": "popup",
+          "popupType": "image",
+          "image": ["../../assets/img/img1.jpg"],
+          "bgColor": "#61ff88",
+          "btnLocation": "body",
+          "btnPosition": "center"
+        },
+        {
+          "name": "Button Two",
+          "btnType": "popup",
+          "popupType": "text",
+          "text": "<strong>Lorem Ipsum</strong>&nbsp;is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry&#39;s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
+          "textBgColor": "#99ebff",
+          "bgColor": "#56fb87",
+          "btnLocation": "body",
+          "btnPosition": "right"
         }
       ]
     },

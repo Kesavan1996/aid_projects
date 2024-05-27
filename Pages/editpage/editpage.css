@@ -20,6 +20,20 @@ body {
     overflow-x: hidden;
 }
 
+.updatesDivContainer .addButton .updatesBtns::-webkit-scrollbar,
+.modal-body::-webkit-scrollbar
+ {
+    height: 7px;
+    width: 7px;
+  }
+   
+.updatesDivContainer .addButton .updatesBtns::-webkit-scrollbar-thumb, 
+.modal-body::-webkit-scrollbar-thumb 
+{
+    background: #c1c1c1; 
+    border-radius: 5px;
+  }
+
 .container {
     position: relative;
     width: 100%;
@@ -370,14 +384,12 @@ width: 100px;
 
 .createPageDiv .mainContainer{
     width: 700px;
-    /* display: flex; */
     gap: 15px;
 }
 
 .createPageDiv .mainContainer .cards{
     display: flex;
     flex: 7;
-    /*  */
     flex-direction: column;
 }
 .createPageDiv .mainContainer .card{
@@ -387,7 +399,7 @@ width: 100px;
     background-color: #fcfcfc;
     width: 100%;
     gap: 10px;
-    height: 80vh;
+    height: 77vh;
     overflow-y: scroll;
 }
 .createPageDiv .mainContainer .btnContainer{
@@ -1415,7 +1427,7 @@ label.radio {
     gap: 10px;
     flex: 8;
     padding: 0px 10px;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
 .updatesDivContainer .headingDiv{
@@ -1494,6 +1506,12 @@ label.radio {
   font-size: 20px;
 }
 
+.btn-error,
+.btn-error-edit
+{
+    margin-top: 0;
+}
+
 .hyperLinkModalDiv .hyperLinkForm:last-child,
 .stampCardLinkForm:last-child{
     border-bottom: none;
@@ -1546,6 +1564,14 @@ table, th, td {
 
 #popupBtnModalEdit .modal-header{
     border-bottom: none;
+    padding-bottom: 0;
+}
+
+.popup-text-color{
+    display: flex;
+    gap:10px;
+    margin-top: 15px;
+    align-items: center;
 }
 
 .poplink:hover{
@@ -1555,16 +1581,18 @@ table, th, td {
 }
 
 .uploadContainer,
-.uploadContainerEdit
+.uploadContainerEdit,
+.uploadContainerEditTwo
 {
     border: 1px solid rgb(218, 218, 218);
     padding: 10px;
     width: 95% !important;
-    margin: 0 auto;
+    margin: 15px auto;
 }
 
 .uploadContainer label,
-.uploadContainerEdit label
+.uploadContainerEdit label,
+.uploadContainerEditTwo label
 {
     background-color: #585858;
     color: white;
@@ -1574,20 +1602,25 @@ table, th, td {
   }
   
 .uploadContainer #pdfFile,
-.uploadContainerEdit #pdfFileEdit
+.uploadContainerEdit #pdfFileEdit,
+.uploadContainerEditTwo #pdfFileEditTwo
 {
     margin-left: 0.3rem;
   }
 
 .uploadContainer #imageUpload,
-.uploadContainerEdit #imageUploadEdit
+.uploadContainerEdit #imageUploadEdit,
+.uploadContainer #imageUploadTwo,
+.uploadContainerEditTwo #imageUploadEditTwo
 {
     align-items: center;
     gap: 20px;
   }
 
 #previewDiv img,
-#previewDivEdit img
+#previewDivEdit img,
+#previewDivTwo img,
+#previewDivEditTwo img
 {
     height: 50px;
     width: 50px;
