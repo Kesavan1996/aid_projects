@@ -2209,6 +2209,7 @@
           input = document.querySelector('form input');
 
           videoOnChange = (elem) => {
+            $(".video-error").remove();
             files = elem.files[0];
 
             if (files.size < maxAllowedSize) {
@@ -2218,7 +2219,7 @@
               showVideos();
               $("#videoChosen").css("display", "none")
             } else {
-              container.insertAdjacentHTML('afterend', '<p style="color:red">Maximum video size is 10MB</p>');
+              container.insertAdjacentHTML('afterend', '<p style="color:red" class="video-error">Maximum video size is 10MB</p>');
             }
           }
 
@@ -3339,6 +3340,7 @@
           input = document.querySelector('form input');
 
           videoOnChange = (elem) => {
+            $(".video-error").remove();
             files = elem.files[0];
 
             if (files.size < maxAllowedSize) {
@@ -3349,7 +3351,7 @@
               showVideos();
               $("#videoChosen").css("display", "none")
             } else {
-              container.insertAdjacentHTML('afterend', '<p style="color:red">Maximum video size is 10MB</p>');
+              container.insertAdjacentHTML('afterend', '<p style="color:red" class="video-error">Maximum video size is 10MB</p>');
             }
           }
 
@@ -4757,7 +4759,7 @@
           } else {
             let errorElem = document.querySelector(".error")
             if (!errorElem) {
-              inputElem.insertAdjacentHTML('afterend', '<p class="error">Please insert video...!</p>');
+              inputElem.insertAdjacentHTML('afterend', '<p class="error">Please upload the video.</p>');
             }
           }
         }
@@ -5423,7 +5425,7 @@
           openPopupModal = (elem) => {
             modalContent = '';
             let btnAttr = elem.classList[1].split("_")[1];
-            let popupData = tempArray[`${btnAttr}`];
+            let popupData = tempArray[`${btnAttr}`]['buttons'][0];
             let modalType = popupData['popupType'];
 
             if (modalType === "image") {
@@ -6148,8 +6150,8 @@
           $("#videoEditChosen").css("display", "none")
 
           videoOnChangeEdit = (elem) => {
+            $(".video-error-edit").remove();
             videoFile = elem.files[0];
-
             if (videoFile.size < maxVideoSize) {
 
               if (updatesClass === "updatesItems") {
@@ -6165,7 +6167,7 @@
               container.innerHTML = ""
               showEditVideos()
             } else {
-              container.innerHTML = `<p style="color:red">Maximum video size is 10MP </p>`
+              container.innerHTML = `<p style="color:red" class="video-error-edit">Maximum video size is 10MP </p>`
             }
             //
           }

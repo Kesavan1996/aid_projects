@@ -83,6 +83,7 @@
                   Link</button>
                 <button type="button" class="btn btn-primary" onclick="showModal('quiz')">Add Quiz Question</button>
                 <button type="button" class="btn btn-primary" onclick="showModal('updates')">Accordion</button>
+                <button type="button" class="btn btn-primary" onclick="showModal('linkPopup')">Link with Popup</button>
 
                 <button type="button" class="btn btn-primary" onclick="addSpace()">Empty Space</button>
               </div>
@@ -998,6 +999,7 @@
           input = document.querySelector('form input');
 
           videoOnChange = (elem) => {
+            $(".video-error").remove();
             files = elem.files[0];
             if (files.size < maxAllowedSize) {
               videoContainerArrary[`DivvideoContainer${videoContainerId}`] = files
@@ -1006,7 +1008,7 @@
               showVideos();
               $("#videoChosen").css("display", "none")
             } else {
-              container.insertAdjacentHTML('afterend', '<p style="color:red">Maximum video size is 10MB</p>');
+              container.insertAdjacentHTML('afterend', '<p style="color:red" class="video-error">Maximum video size is 10MB</p>');
             }
           }
 
@@ -1091,52 +1093,7 @@
             files.forEach((e, i) => form.append(`file[${i}]`, e))
           })
         }
-        else if (element === 'editHeading') {
-          $('#createModal').modal('show');
-          var modalTitle = document.getElementById("pageTitle")
-          modalTitle.innerText = "Edit Heading"
-          var modalBody = document.getElementById('pageContent')
-          var div = document.createElement('div')
-          div.className = "editHeading"
-          var input = document.createElement('input')
-          input.className = "form-control headingClass"
-          input.value = value.innerText === undefined ? value[0].innerText : value.innerText
-          input.id = value.id === undefined ? value[0].id : value.id
-          div.appendChild(input)
-          modalBody.appendChild(div)
-        }
-        else if (element === 'editSubHeading') {
-          $('#createModal').modal('show');
-          var modalTitle = document.getElementById("pageTitle")
-          modalTitle.innerText = "Edit Subheading"
-          var modalBody = document.getElementById('pageContent')
-          var div = document.createElement('div')
-          div.className = "editSubHeading"
-          var input = document.createElement('input')
-          input.className = "form-control headingClass"
-          input.value = value.innerText === undefined ? value[0].innerText : value.innerText
-          input.id = value.id === undefined ? value[0].id : value.id
-          div.appendChild(input)
-          modalBody.appendChild(div)
-        }
-        else if (element === 'editDescription') {
-          $('#createModal').modal('show');
-          var modalTitle = document.getElementById("pageTitle")
-          modalTitle.innerText = "Edit Description"
-          var modalBody = document.getElementById('pageContent')
-          var div = document.createElement('div')
-          div.className = "editDescription"
-          var input = document.createElement('textarea')
-          input.id = "DescId"
-          input.className = `${value.id}`
-          modalBody.appendChild(input)
-          CKEDITOR.replace(`DescId`, { toolbar: 'Full', toolbarLocation: 'bottom' });
-          CKEDITOR.instances['DescId'].setData(value.innerHTML);
-
-          div.appendChild(input)
-          modalBody.appendChild(div)
-        }
-        else if (element === "pageTitle") {
+else if (element === "pageTitle") {
           $('#createModal').modal('show');
           var modalTitle = document.getElementById("pageTitle")
 
@@ -2310,6 +2267,7 @@
           input = document.querySelector('form input');
 
           videoOnChange = (elem) => {
+            $(".video-error").remove();
             files = elem.files[0];
 
             if (files.size < maxAllowedSize) {
@@ -2320,7 +2278,7 @@
               showVideos();
               $("#videoChosen").css("display", "none")
             } else {
-              container.insertAdjacentHTML('afterend', '<p style="color:red">Maximum video size is 10MP</p>');
+              container.insertAdjacentHTML('afterend', '<p style="color:red" class="video-error">Maximum video size is 10MP</p>');
             }
           }
 
@@ -3793,7 +3751,7 @@
           } else {
             let errorElem = document.querySelector(".error")
             if (!errorElem) {
-              inputElem.insertAdjacentHTML('afterend', '<p class="error">Please insert video...!</p>');
+              inputElem.insertAdjacentHTML('afterend', '<p class="error">Please upload the video.</p>');
             }
           }
         }
@@ -5066,8 +5024,8 @@
           $("#videoEditChosen").css("display", "none")
 
           videoOnChangeEdit = (elem) => {
+            $(".video-error-edit").remove();
             videoFile = elem.files[0];
-
             if (videoFile.size < maxVideoSize) {
 
               if (updatesClass === "updatesItems") {
@@ -5083,7 +5041,7 @@
               container.innerHTML = ""
               showEditVideos()
             } else {
-              container.innerHTML = `<p style="color:red">Maximum video size is 10MP </p>`
+              container.innerHTML = `<p style="color:red" class="video-error-edit">Maximum video size is 10MP </p>`
             }
             //
           }
