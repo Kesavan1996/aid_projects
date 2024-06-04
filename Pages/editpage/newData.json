@@ -43,6 +43,11 @@
       ]
     },
     {
+      "type": "3",
+      "text": "askl faskf as,fb<a href=\"#\" class=\"popup-link\" id=\"link1\" onclick=\"openLinkPopup(this)\"> fkasbf</a>,m asfiuas <a href=\"#\" class=\"popup-link\" id=\"link0\" onclick=\"openLinkPopup(this)\">fajshf</a> asjfg",
+      "bgColor": "#fcfcfc"
+    },
+    {
       "type": "8",
       "btnCount": "one",
       "buttons": [
@@ -157,6 +162,22 @@
             }
           ],
           "updates": "updates0"
+        }
+      ]
+    },
+    {
+      "type": "13",
+      "linkCount": 2,
+      "link0": [
+        {
+          "text": "asufa faskgf",
+          "image": [""]
+        }
+      ],
+      "link1": [
+        {
+          "text": "",
+          "image": ["1714830841_571c3cc07b92aba9883e.jpg"]
         }
       ]
     }

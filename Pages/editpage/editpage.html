@@ -83,6 +83,7 @@
                   Link</button>
                 <button type="button" class="btn btn-primary" onclick="showModal('quiz')">Add Quiz Question</button>
                 <button type="button" class="btn btn-primary" onclick="showModal('updates')">Accordion</button>
+                <button type="button" class="btn btn-primary" onclick="showModal('linkPopup')">Link with Popup</button>
                 <button type="button" class="btn btn-primary" onclick="addSpace()">Empty Space</button>
               </div>
             </div>
@@ -383,6 +384,22 @@
       </div>
     </div>
 
+    <!-- Link Popup Modal -->
+    <div class="modal fade" id="linkPopupModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" onclick="linkPopupUpdate()">Update</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- <script src="https://code.jquery.com/jquery-1.10.2.js"></script> -->
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
@@ -593,6 +610,7 @@
       var hyperLinkId = 0;
       var stampCardId = 0;
       var updatesId = 0;
+      let linkPopupId=0;
 
 
       var delImagesEdit;
@@ -658,6 +676,13 @@
       let popupImageTwo;
       let popupPdfTwo;
       let pageLogoImageTwo;
+      
+      let linkPopupImage='';
+      let linkPopupText="";
+      let popupLinkElem;
+      let linkRange;
+      let selectedElem;
+      let linkChildElem=[];
 
       //Temp Array
 
@@ -839,7 +864,6 @@
             var div = document.createElement('div')
             div.className = "headingDesc dragDiv"
             div.id = `descriptionDiv${headingDescId}`
-            div.draggable = true
             var dropImg = document.createElement("img")
             dropImg.className = "dragImg"
             dropImg.height = 20
@@ -872,6 +896,7 @@
 
             var ckTextValue = data.text
             var elem = document.createElement("p")
+            elem.className="description"
             elem.id = "Description" + headingDescId
             elem.innerHTML = ckTextValue
             div.appendChild(dropImg)
@@ -1725,7 +1750,6 @@
             var div = document.createElement('div')
             div.className = "updatesDivContainer"
             div.id = `updatesDivContainer${updatesId}`
-            div.draggable = true
             var dropImg = document.createElement("img")
             dropImg.className = "dragImg"
             dropImg.height = 20
@@ -1775,6 +1799,7 @@
                   <button type="button" class="btn updatesItems${updatesId}_btn" onclick="showUpdatesModal('button',this,'button')">Button with Link</button>
                   <button type="button" class="btn updatesItems${updatesId}_btn" onclick="showUpdatesModal('button',this,'popup')">Button with Popup</button>
                   <button type="button" class="btn updatesItems${updatesId}_btn" onclick="showUpdatesModal('hyperLink',this)">Image[s] with Caption & Link</button>
+                  <button type="button" class="btn updatesItems${updatesId}_btn" onclick="showUpdatesModal('linkPopup',this)">Link with Popup</button>
                   <button type="button" class="btn updatesItems${updatesId}_btn" onclick="addSpace('updates',this)">Space</button>
                 </div>
                 <div>
@@ -1826,6 +1851,12 @@
             }
 
           }
+          else if(data.type === "13"){
+            linkPopupId=data.linkCount;
+            tempArray['linkPopup']=data;
+            console.log(tempArray,"array")
+          }
+      
         })
       }
 
@@ -3065,7 +3096,63 @@
           modalBody.append(mainContainer)
           changeToRichtext([`updatesHeading`])
         }
+        else if(element === "linkPopup"){
+          $('#createModal').modal('show');
+          linkPopupImage="";
+          linkPopupText="";
+          linkChildElem=[];
+          linkPopupText=getSelectedText();
+          if(linkPopupText !== ""){
+            linkRange = window.getSelection().getRangeAt(0);
+            let childElems=linkRange['commonAncestorContainer']['childNodes']
+            for(let i= 0; i<childElems.length;i++){
+              linkChildElem.push(childElems[i].nodeName);
+            }
+            selectedElem =window.getSelection()['focusNode']['parentNode'];
+            popupLinkElem= selectedElem.closest('.description');
+          }
+         
+          var modalTitle = document.getElementById("pageTitle")
+          modalTitle.innerText = "Add Link Popup"
+          modalTitle.className = ""
+          var modalBody = document.getElementById('pageContent');
+          let linkDiv = `<div class="linkPopupDiv">
+                          <p class="link-text-error" style="display:none">Select the correct text.</p>
+                            <div class="imgUploadDiv">
+                              
+                              <div>
+                                <input type="file" name="" id="linkPopupImage" value="" onchange="linkImageOnchange(this)" accept="image/png, image/jpeg" hidden />
+                                <label class="file-choose-label" for="linkPopupImage" class="col-2">Choose Image</label>
+                              </div>
+                              <div id="linkImgDiv"></div>
+                            </div>
+                            <div>
+                              <input type="text" id="linkPopupDesc" name="" value="" />
+                            </div>
+                        </div>`
 
+            let noSelectElem = `<div class="linkPopupDiv" id="no-select">
+                            Text is not selected.
+                        </div>`
+            if(linkPopupText === ""){
+              $("#pageContent").html(noSelectElem);
+            }else{
+              $("#pageContent").html(linkDiv);
+              changeToRichtext([`linkPopupDesc`])
+            }
+          
+
+          linkImageOnchange = (elem)=>{
+            linkPopupImage = elem.files[0];
+            $("#linkImgDiv").html(`<img src="${URL.createObjectURL(elem.files[0])}" alt=""><span class="img-del-btn" onclick="linkImageDel()">x</span>`)
+          }
+
+          linkImageDel = ()=>{
+            linkPopupImage = "";
+            $("#linkImgDiv").html("");
+          }
+          
+        }
         const errorsModal = document.querySelectorAll('.error');
 
         errorsModal.forEach(error => {
@@ -4172,6 +4259,64 @@
             imgDiv.innerHTML = images
           }
         }
+        
+        else if(element === "linkPopup"){
+          $('#createModal').modal('show');
+          linkPopupImage="";
+          linkPopupText="";
+          linkChildElem=[];
+          linkPopupText=getSelectedText();
+          if(linkPopupText !== ""){
+            linkRange = window.getSelection().getRangeAt(0);
+            let childElems=linkRange['commonAncestorContainer']['childNodes']
+            for(let i= 0; i<childElems.length;i++){
+              linkChildElem.push(childElems[i].nodeName);
+            }
+            selectedElem =window.getSelection()['focusNode']['parentNode'];
+            popupLinkElem= selectedElem.closest('.description');
+          }
+         
+          var modalTitle = document.getElementById("pageTitle")
+          modalTitle.innerText = "Add Link Popup"
+          modalTitle.className = `${updatesDivClass}_modal`
+          var modalBody = document.getElementById('pageContent');
+          let linkDiv = `<div class="linkPopupDiv">
+                          <p class="link-text-error" style="display:none">Select the correct text.</p>
+                            <div class="imgUploadDiv">
+                              
+                              <div>
+                                <input type="file" name="" id="linkPopupImage" value="" onchange="linkImageOnchange(this)" accept="image/png, image/jpeg" hidden />
+                                <label class="file-choose-label" for="linkPopupImage" class="col-2">Choose Image</label>
+                              </div>
+                              <div id="linkImgDiv"></div>
+                            </div>
+                            <div>
+                              <input type="text" id="linkPopupDesc" name="" value="" />
+                            </div>
+                        </div>`
+
+            let noSelectElem = `<div class="linkPopupDiv" id="no-select">
+                            Text is not selected.
+                        </div>`
+            if(linkPopupText === ""){
+              $("#pageContent").html(noSelectElem);
+            }else{
+              $("#pageContent").html(linkDiv);
+              changeToRichtext([`linkPopupDesc`])
+            }
+
+          linkImageOnchange = (elem)=>{
+            linkPopupImage = elem.files[0];
+            $("#linkImgDiv").html(`<img src="${URL.createObjectURL(elem.files[0])}" alt=""><span class="img-del-btn" onclick="linkImageDel()">x</span>`)
+          }
+
+          linkImageDel = ()=>{
+            linkPopupImage = "";
+            $("#linkImgDiv").html("");
+          }
+          
+        }
+        
         const errorsModal = document.querySelectorAll('.error');
 
         errorsModal.forEach(error => {
@@ -4374,7 +4519,6 @@
           var div = document.createElement('div')
           div.className = "headingDesc dragDiv"
           div.id = `descriptionDiv${headingDescId}`
-          div.draggable = true
           var dropImg = document.createElement("img")
           dropImg.className = "dragImg"
           dropImg.height = 20
@@ -4412,6 +4556,7 @@
 
           var ckTextValue = CKEDITOR.instances[modalBody.children[0].id]?.getData()
           var elem = document.createElement("p")
+          elem.className="description"
           elem.id = "Description" + headingDescId
           elem.innerHTML = ckTextValue
           div.appendChild(dropImg)
@@ -5913,7 +6058,6 @@
           var div = document.createElement('div')
           div.className = "updatesDivContainer"
           div.id = `${updateDivId}`
-          div.draggable = true
           var dropImg = document.createElement("img")
           dropImg.className = "dragImg"
           dropImg.height = 20
@@ -5968,6 +6112,7 @@
               <button type="button" class="btn updatesItems${updatesId}_btn" onclick="showUpdatesModal('button',this,'button)">Button with Link</button>
               <button type="button" class="btn updatesItems${updatesId}_btn" onclick="showUpdatesModal('button',this,'popup')">Button with Popup</button>
               <button type="button" class="btn updatesItems${updatesId}_btn" onclick="showUpdatesModal('hyperLink',this)">Image[s] with Caption & Link</button>
+              <button type="button" class="btn updatesItems${updatesId}_btn" onclick="showUpdatesModal('linkPopup',this)">Link with Popup</button>
               <button type="button" class="btn updatesItems${updatesId}_btn" onclick="addSpace('updates',this)">Space</button>
             </div>
             <div>
@@ -6012,7 +6157,181 @@
           }
 
         }
+        else if (modalBody.children[0].className === "linkPopupDiv"){
+          var selectedText = linkPopupText;
+          let linkPopupDesc = CKEDITOR.instances['linkPopupDesc']?.getData();
+          let nodeName = $(selectedElem)[0].nodeName;
+          if(selectedText !==""){
+            if(nodeName !== "A" && !linkChildElem.includes("A")){
+              if(linkPopupDesc !== "" || linkPopupImage !== ""){
+                var range = linkRange;
+                var link = document.createElement('a');
+                link.href = '#';
+                link.className = 'popup-link';
+                link.id='link'+linkPopupId;
+                link.setAttribute("onclick","openLinkPopup(this)");
+                link.appendChild(range.extractContents());
+                range.insertNode(link);
+                
+                let elem=$(popupLinkElem).parent();
+                let currentElem =popupLinkElem;
+                let elemText = currentElem.innerHTML.toString();
+                let descId = $(elem).attr('id')
+                tempArray[`${descId}`]['text']=elemText.toString();
+                descriptionArray[`${descId}`]['text']=elemText.toString();
+                tempArray['linkPopup']={...tempArray['linkPopup'],type:"13",linkCount:linkPopupId+1,[`link${linkPopupId}`]:[{text:linkPopupDesc,image:linkPopupImage}]}
+                linkPopupId +=1;
+                $('#createModal').modal('hide');
+              }
+            }else{
+              $(".link-text-error").css("display","block");
+            }
+          }else{
+            $('#createModal').modal('hide');
+          }
+        }
       }
+
+      openLinkPopup = (elem)=>{
+        let descId = elem.id;
+        let linkData = tempArray['linkPopup'][elem.id][0]
+        let imageElem = "";
+        let descElem = "";
+      
+        if(linkData.image[0]=== undefined){
+          if(linkData.image !==""){
+            imageElem =`<img src="${URL.createObjectURL(linkData.image)}" alt="" />`
+          }
+        }else{
+          if(linkData.image[0] !==""){
+            imageElem =`<img src="${linkData.image[0]}" alt="" />`
+          }
+        }
+
+        if(linkData.text !== ""){
+          descElem = `<p>${linkData.text}</p>`
+        }
+
+        let previewElem=`<div class="link-popup-modal">
+                      ${imageElem} 
+                      ${descElem}
+                    </div>`
+        
+        let editElem = `<div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" value="" id="removeLink" onchange="removeLink(event)">
+                        <label class="form-check-label" for="removeLink">
+                          Remove the link
+                        </label>
+                      </div>
+                    
+                    <div class="linkPopupDiv">
+                      <div class="imgUploadDiv">
+                        <div>
+                          <input type="file" name="" id="linkPopupImageEdit" value="" onchange="linkImageOnchangeEdit(this)" hidden />
+                          <label class="file-choose-label" for="linkPopupImageEdit" class="col-2">Choose Image</label>
+                        </div>
+                        <div id="linkImgDivEdit"></div>
+                      </div>
+                      <div>
+                        <input type="text" id="linkPopupDescEdit" name="" value="" />
+                      </div>
+                  </div>`
+
+        let LinkElem= `<div class="link-popup-edit edit_${descId}">
+                        <ul class="nav nav-tabs" id="linkTab" role="tablist">
+                          <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="profile-tab" data-bs-toggle="tab" data-bs-target="#previewLink" type="button" role="tab" aria-controls="profile" aria-selected="false">Preview</button>
+                          </li>
+                          <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="home-tab" data-bs-toggle="tab" data-bs-target="#editLink" type="button" role="tab" aria-controls="home" aria-selected="true">Edit</button>
+                          </li>
+                        </ul>
+                        <div class="tab-content" id="linkTabContent">
+                          <div class="tab-pane fade" id="editLink" role="tabpanel" aria-labelledby="home-tab">
+                            ${editElem}
+                          </div>
+                          <div class="tab-pane fade show active" id="previewLink" role="tabpanel" aria-labelledby="profile-tab">
+                            ${previewElem}
+                          </div>
+                        </div>
+                      </div>`
+
+        $("#linkPopupModal .modal-body").html(LinkElem);
+        $("#linkPopupModal").modal('show')
+        changeToRichtext([`linkPopupDescEdit`])
+        
+        if(linkData.text !== ""){
+          CKEDITOR.instances[`linkPopupDescEdit`].setData(linkData.text);
+        }
+
+        if(linkData.image[0]=== undefined){
+          if(linkData.image !== ""){
+            linkPopupImage= linkData.image
+            $("#linkImgDivEdit").html(`<img src="${URL.createObjectURL(linkPopupImage)}" alt=""><span class="img-del-btn" onclick="linkImageEditDel()">x</span>`)
+          }
+        }else{
+          if(linkData.image[0] !== ""){
+            linkPopupImage= linkData.image[0]
+            $("#linkImgDivEdit").html(`<img src="${linkPopupImage[0]}" alt=""><span class="img-del-btn" onclick="linkImageEditDel()">x</span>`)
+          }
+        }
+
+        linkImageOnchangeEdit = (elem)=>{
+          linkPopupImage = elem.files[0];
+          $("#linkImgDivEdit").html(`<img src="${URL.createObjectURL(linkPopupImage)}" alt=""><span class="img-del-btn" onclick="linkImageEditDel()">x</span>`)
+        }
+
+        linkImageEditDel = ()=>{
+          linkPopupImage = "";
+          $("#linkImgDivEdit").html("");
+        }
+
+        removeLink = (e)=>{
+          const {checked} = e.target;
+          if(checked){
+            $(".linkPopupDiv").css("pointer-events","none");
+            $(".linkPopupDiv").css("opacity","0.4");
+          }else{
+            $(".linkPopupDiv").css("pointer-events","auto");
+            $(".linkPopupDiv").css("opacity","1");
+          }
+        }
+      }
+
+      linkPopupUpdate = ()=>{
+        let linkPopupID=$(".link-popup-edit")[0].classList[1].split("_")[1];
+        let linkPopupDescEdit = CKEDITOR.instances['linkPopupDescEdit']?.getData();
+        let removeLink =  $('#removeLink').is(':checked');
+        let currentElem = $(`#${linkPopupID}`).closest('.description');
+        let parentElem = $(currentElem).parent();
+        let descId = $(parentElem).attr('id');
+        console.log(linkPopupID,"current")
+        if(removeLink === false){
+          tempArray['linkPopup'][`${linkPopupID}`]=[{text:linkPopupDescEdit,image:linkPopupImage}]
+        }else{
+          delete tempArray['linkPopup'][`${linkPopupID}`];
+          let linkText = $(`#${linkPopupID}`).text();
+          let dataArrayProp= $(`#${linkPopupID}`).parent().parent().attr('id');
+          let parentElem= $(`#${linkPopupID}`).parent().text()
+          $(`#${linkPopupID}`).replaceWith(`${linkText}`);
+          let linkHtmlElem = $(currentElem).html().toString();
+          
+          tempArray[`${descId}`]['text']=linkHtmlElem;
+          descriptionArray[`${descId}`]['text']=linkHtmlElem;
+        }
+       $("#linkPopupModal").modal('hide');
+      }
+
+
+       getSelectedText=()=> {
+        var text = '';
+        if (window.getSelection) {
+            text = window.getSelection().toString();
+        } else if (document.selection && document.selection.type != "Control") {
+            text = document.selection.createRange().text;
+        }
+        return text;
+    }
 
       // Edit Funtion
 
@@ -8721,6 +9040,12 @@
             data.push(tempArray[e])
           }
         })
+
+        if(tempArray['linkPopup']){
+          data.push(tempArray['linkPopup'])
+        }
+
+        console.log(data, "edit")
 
         var action = $('#acionId input:radio:checked').val();
         let urlInput = $("#urlInput").val()

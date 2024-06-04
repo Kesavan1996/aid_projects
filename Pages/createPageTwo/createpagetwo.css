@@ -4,6 +4,7 @@
     padding: 0;
     box-sizing: border-box;
     font-family:sans-serif;
+
 }
 
  :root {
@@ -18,17 +19,24 @@
 body {
     min-height: 100vh;
     overflow-x: hidden;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: -moz-none;
+    -o-user-select: none;
+    user-select: none;
 }
 
 .updatesDivContainer .addButton .updatesBtns::-webkit-scrollbar,
-.modal-body::-webkit-scrollbar
+.modal-body::-webkit-scrollbar,
+#linkPopupModal #linkTabContent::-webkit-scrollbar
  {
     height: 7px;
     width: 7px;
   }
    
 .updatesDivContainer .addButton .updatesBtns::-webkit-scrollbar-thumb, 
-.modal-body::-webkit-scrollbar-thumb 
+.modal-body::-webkit-scrollbar-thumb,
+#linkPopupModal #linkTabContent::-webkit-scrollbar-thumb
 {
     background: #c1c1c1; 
     border-radius: 5px;
@@ -140,6 +148,87 @@ width: 100px;
     justify-content: space-between;
     align-items: center;
     padding: 0 10px;
+}
+
+.link-popup-modal{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.link-popup-modal img{
+    width: 100%;
+    height: 250px;
+}
+
+.link-popup-modal p{
+    margin-bottom: 0;
+    text-align: justify;
+}
+
+#linkPopupModal .modal-header{
+    border-bottom: 0;
+    padding-bottom: 0;
+}
+
+#linkPopupModal .modal-body{
+    overflow-y: hidden;
+}
+#linkPopupModal #linkTabContent{
+    height: 350px;
+    overflow-y: auto;
+}
+
+#linkTabContent{
+    padding: 10px;
+}
+
+#linkTab li{
+    flex: 1;
+}
+
+#linkTab li button{
+    width: 100%;
+}
+
+#linkTab li .nav-link{
+    background-color: #f1f1f3;
+    color: #817e7e;
+    border-radius: 0;
+}
+
+.link-text-error{
+    margin-bottom: 0;
+    color: red;
+}
+
+#linkTab li .nav-link.active{
+    background-color: #5b9aff;
+    color:#ffffff;
+    border: none;
+}
+
+#no-select{
+    font-size: 20px;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 150px;
+    color: #393939;
+
+}
+
+.link-del-btn{
+    color: red;
+    margin-left: 5px;
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.cke_editable .link-del-btn{
+    display: none !important;
 }
 
 .user {
@@ -955,6 +1044,34 @@ box-shadow: inset 2px 2px 9px -6px rgba(0,0,0,0.75);
     padding: 5px;
     margin-bottom: 0;
     text-align: justify;
+    -webkit-user-select: text;
+    -khtml-user-select: text;
+    -moz-user-select: text;
+    -o-user-select: text;
+    user-select: text;
+}
+
+.card .headingDesc p > *{
+    -webkit-user-select: text;
+    -khtml-user-select: text;
+    -moz-user-select: text;
+    -o-user-select: text;
+    user-select: text;
+}
+.card .headingDesc p > span{
+    -webkit-user-select: text;
+    -khtml-user-select: text;
+    -moz-user-select: text;
+    -o-user-select: text;
+    user-select: text;
+}
+
+.card .headingDesc p a{
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: -moz-none;
+    -o-user-select: none;
+    user-select: none;
 }
 
 .actionBtns button{
@@ -1008,6 +1125,51 @@ box-shadow: inset 2px 2px 9px -6px rgba(0,0,0,0.75);
 
 ion-icon {
     font-size: 32px;
+  }
+
+  .linkPopupDiv{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .linkPopupDiv #linkImgDiv,
+  .linkPopupDiv #linkImgDivEdit
+  {
+    position: relative;
+  }
+
+  .linkPopupDiv #linkImgDiv .img-del-btn,
+  .linkPopupDiv #linkImgDivEdit .img-del-btn
+  {
+    position: absolute;
+    right: 2px;
+    top: 2px;
+    color: red;
+    line-height: 0.5;
+    font-weight: bold;
+    background-color: #f1eeeec4;
+    height: 15px;
+    width: 15px;
+    border-radius: 50%;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+
+  .linkPopupDiv #linkImgDiv img,
+  .linkPopupDiv #linkImgDivEdit img
+  {
+    width: 70px;
+    height: 70px;
+  }
+
+
+  .linkPopupDiv .imgUploadDiv{
+    display: flex;
+    justify-content: space-between;
   }
 
 
