@@ -18,8 +18,18 @@
     integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-  <!-- <script src="http://code.jquery.com/jquery.min.js"></script>
-    <script src="http://code.jquery.com/ui/1.8.17/jquery-ui.min.js"></script> -->
+    <!-- Maths fractions -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+      tex2jax: {
+      inlineMath: [["$","$"],["\\(","\\)"]]
+      }
+      });
+      </script>
+    
+    <script type="text/javascript"
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS_HTML-full">
+      </script>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"
     integrity="sha512-Eezs+g9Lq4TCCq0wae01s9PuNWzHYoCMkE97e2qdkYthpI0pzC3UGB03lgEHn2XM85hDOUF6qgqqszs+iXU4UA=="
@@ -428,7 +438,8 @@
 
           { name: 'paragraph', items: ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'] },
 
-          { name: 'styles', items: ['Font', 'FontSize', 'TextColor'] }
+          { name: 'styles', items: ['Font', 'FontSize', 'TextColor'] },
+          { name: 'insert', items: ['Table','Mathjax', 'Sourcedialog','Link','Unlink'] },
         ];
         id_list.forEach(id => {
           // CKEDITOR.plugins.addExternal('custom-list', '/assets/js/plugin/custom-list/', 'plugin.js');
@@ -439,7 +450,8 @@
           CKEDITOR.plugins.addExternal('colordialog', '/assets/js/plugin/colordialog/', 'plugin.js');
           CKEDITOR.plugins.addExternal('liststyle', '/assets/js/plugin/liststyle/', 'plugin.js');
           CKEDITOR.plugins.addExternal('justify', '/assets/js/plugin/justify/', 'plugin.js');
-          CKEDITOR.config.extraPlugins = 'font,colorbutton,panelbutton,floatpanel,colordialog,liststyle,justify';
+          CKEDITOR.config.extraPlugins = 'font,colorbutton,panelbutton,floatpanel,colordialog,liststyle,justify,mathjax,sourcedialog,link';
+          CKEDITOR.config.mathJaxLib = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS_HTML-full';
           CKEDITOR.config.colorButton_enableMore = true;
 
           CKEDITOR.config.enterMode = CKEDITOR.ENTER_BR;
@@ -908,6 +920,8 @@
 
             document.getElementById("emptyPage")?.remove()
             parentContentCards.appendChild(div)
+            var sol_math = document.getElementById(`#Description${headingDescId}`);
+            MathJax.Hub.Queue(["Typeset", MathJax.Hub, sol_math]);
             if (updatesElemId) {
               descriptionArray[`${elemId}`] = { text: ckTextValue, bgColor: elemBgColor, updates: `updates${idCount}` }
               tempArray[`${elemId}`] = { type: "3", text: ckTextValue, bgColor: elemBgColor, updates: `updates${idCount}` }
@@ -4589,15 +4603,14 @@
               var numb = updatesContentId?.match(/\d/g);
               numb = numb?.join("");
               let idCount = numb
-
-
-
               document.getElementById("emptyPage")?.remove()
               descriptionArray[`${elemId}`] = { text: ckTextValue, bgColor: elemBgColor, updates: `updates${idCount}` }
               tempArray[`${elemId}`] = { type: "3", text: ckTextValue, bgColor: elemBgColor, updates: `updates${idCount}` }
               let parentElem = document.getElementById(elemId)
               parentElem.style.backgroundColor = elemBgColor
               submitBtnDiv.style.display = "block"
+              var sol_math = document.getElementById(`#Description${headingDescId}`);
+              MathJax.Hub.Queue(["Typeset", MathJax.Hub, sol_math]);
               headingDescId = headingDescId + 1
 
             } else {
@@ -4610,6 +4623,8 @@
               let parentElem = document.getElementById(elemId)
               parentElem.style.backgroundColor = elemBgColor
               submitBtnDiv.style.display = "block"
+              var sol_math = document.getElementById(`#Description${headingDescId}`);
+              MathJax.Hub.Queue(["Typeset", MathJax.Hub, sol_math]);
               headingDescId = headingDescId + 1
             }
 
@@ -6188,6 +6203,15 @@
             }
           }else{
             $('#createModal').modal('hide');
+          }
+
+          var sel = window.getSelection ? window.getSelection() : document.selection;
+          if (sel) {
+              if (sel.removeAllRanges) {
+                  sel.removeAllRanges();
+              } else if (sel.empty) {
+                  sel.empty();
+              }
           }
         }
       }
@@ -8535,12 +8559,13 @@
           let parentElem = document.getElementById(elemId)
           let updatedElement = parentElem.children[1]
 
-
           if (ckTextValue !== "") {
             //
             $('#editModal').modal('hide');
             updatedElement.innerHTML = ckTextValue
             parentElem.style.backgroundColor = bgColor
+            var sol_math = document.getElementById(`#${updatedElement.id}`);
+            MathJax.Hub.Queue(["Typeset", MathJax.Hub, sol_math]);
             if (updatesClass === "updatesItems") {
               descriptionArray[`${elemId}`] = { text: ckTextValue, bgColor: bgColor, updates: `updates${updatesId}` }
               tempArray[`${elemId}`] = { type: "3", text: ckTextValue, bgColor: bgColor, updates: `updates${updatesId}` }

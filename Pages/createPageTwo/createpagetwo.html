@@ -18,8 +18,17 @@
     integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-  <!-- <script src="http://code.jquery.com/jquery.min.js"></script>
-    <script src="http://code.jquery.com/ui/1.8.17/jquery-ui.min.js"></script> -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+      tex2jax: {
+      inlineMath: [["$","$"],["\\(","\\)"]]
+      }
+      });
+      </script>
+    
+    <script type="text/javascript"
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS_HTML-full">
+      </script>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"
     integrity="sha512-Eezs+g9Lq4TCCq0wae01s9PuNWzHYoCMkE97e2qdkYthpI0pzC3UGB03lgEHn2XM85hDOUF6qgqqszs+iXU4UA=="
@@ -407,7 +416,7 @@
           { name: 'paragraph', items: ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'] },
 
           { name: 'styles', items: ['Font', 'FontSize', 'TextColor'] },
-          { name: 'insert', items: ['Table'] },
+          { name: 'insert', items: ['Table','Mathjax', 'Sourcedialog','Link','Unlink'] },
 
         ];
         id_list.forEach(id => {
@@ -419,7 +428,8 @@
           CKEDITOR.plugins.addExternal('colordialog', '/assets/js/plugin/colordialog/', 'plugin.js');
           CKEDITOR.plugins.addExternal('liststyle', '/assets/js/plugin/liststyle/', 'plugin.js');
           CKEDITOR.plugins.addExternal('justify', '/assets/js/plugin/justify/', 'plugin.js');
-          CKEDITOR.config.extraPlugins = 'font,colorbutton,panelbutton,floatpanel,colordialog,liststyle,justify';
+          CKEDITOR.config.extraPlugins = 'font,colorbutton,panelbutton,floatpanel,colordialog,liststyle,justify,mathjax,sourcedialog,link';
+          CKEDITOR.config.mathJaxLib = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS_HTML-full';
           CKEDITOR.config.colorButton_enableMore = true;
 
           CKEDITOR.config.enterMode = CKEDITOR.ENTER_BR;
@@ -3575,6 +3585,8 @@
               let parentElem = document.getElementById(elemId)
               parentElem.style.backgroundColor = elemBgColor
               submitBtnDiv.style.display = "block"
+              var sol_math = document.getElementById(`#Description${headingDescId}`);
+              MathJax.Hub.Queue(["Typeset", MathJax.Hub, sol_math]);
               headingDescId = headingDescId + 1
 
             } else {
@@ -3587,6 +3599,8 @@
               let parentElem = document.getElementById(elemId)
               parentElem.style.backgroundColor = elemBgColor
               submitBtnDiv.style.display = "block"
+              var sol_math = document.getElementById(`#Description${headingDescId}`);
+              MathJax.Hub.Queue(["Typeset", MathJax.Hub, sol_math]);
               headingDescId = headingDescId + 1
             }
 
@@ -5025,7 +5039,7 @@
         else if (modalBody.children[0].className === "linkPopupDiv"){
           var selectedText = linkPopupText;
           let linkPopupDesc = CKEDITOR.instances['linkPopupDesc']?.getData();
-          let nodeName = $(selectedElem)[0].nodeName;
+          let nodeName = $(selectedElem)[0]?.nodeName;
           if(selectedText !==""){
             if(nodeName !== "A" && !linkChildElem.includes("A")){
               if(linkPopupDesc !== "" || linkPopupImage !== ""){
@@ -5055,6 +5069,14 @@
             }
           }else{
             $('#createModal').modal('hide');
+          }
+          var sel = window.getSelection ? window.getSelection() : document.selection;
+          if (sel) {
+              if (sel.removeAllRanges) {
+                  sel.removeAllRanges();
+              } else if (sel.empty) {
+                  sel.empty();
+              }
           }
         }
         
@@ -5179,13 +5201,17 @@
 
 
        getSelectedText=()=> {
-        var text = '';
+        let textSelect = '';
         if (window.getSelection) {
-            text = window.getSelection().toString();
+          textSelect = window.getSelection().toString();
+          console.log("select")
+          console.log(textSelect,"select")
         } else if (document.selection && document.selection.type != "Control") {
-            text = document.selection.createRange().text;
+          textSelect = document.selection.createRange().text;
+          console.log("not select")
+          console.log(textSelect,"not select")
         }
-        return text;
+        return textSelect;
     }
 
 
@@ -7361,12 +7387,19 @@
           let parentElem = document.getElementById(elemId)
           let updatedElement = parentElem.children[1]
 
+          console.log(updatedElement)
+          console.log(updatedElement.id)
+
+          
+
 
           if (ckTextValue !== "") {
             //
             $('#editModal').modal('hide');
             updatedElement.innerHTML = ckTextValue
             parentElem.style.backgroundColor = bgColor
+            var sol_math = document.getElementById(`#${updatedElement.id}`);
+              MathJax.Hub.Queue(["Typeset", MathJax.Hub, sol_math]);
             if (updatesClass === "updatesItems") {
               descriptionArray[`${elemId}`] = { text: ckTextValue, bgColor: bgColor, updates: `updates${updatesId}` }
               tempArray[`${elemId}`] = { type: "3", text: ckTextValue, bgColor: bgColor, updates: `updates${updatesId}` }
