@@ -121,6 +121,17 @@ height: 100px;
 width: 100px;
 }
 
+.description a,
+.modal-body a
+{
+    color: #007bff;
+    text-decoration: none;
+}
+
+.description a:hover,
+.modal-body a:hover{
+    text-decoration: underline;
+}
 
 /* Main */
 

@@ -141,6 +141,18 @@ width: 100px;
     left: 80px;
 }
 
+.description a,
+.modal-body a
+{
+    color: #007bff;
+    text-decoration: none;
+}
+
+.description a:hover,
+.modal-body a:hover{
+    text-decoration: underline;
+}
+
 .topbar {
     width: 100%;
     height: 60px;
