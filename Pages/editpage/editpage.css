@@ -726,6 +726,140 @@ box-shadow: inset 2px 2px 9px -6px rgba(0,0,0,0.75);
     color: #878a9a;
  }
 
+ .videoCard .video-link-container{
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    gap: 15px;
+ }
+
+ .video-link-container .input-div label{
+     flex: 3;
+ }
+ .video-link-container .input-div .video-input{
+     flex: 7;
+ }
+
+ .videoCard .video-link-container .video-thumbnail-container{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+ }
+
+ .videoCard .video-link-container .video-thumbnail-container p{
+    flex: 3;
+    margin-bottom: 0;
+ }
+
+ .videoCard .video-link-container .video-thumbnail-container .thumbnail-input{
+    flex: 5;
+    margin-bottom: 0;
+ }
+
+ .video-link-container .video-thumbnail-container #thumbnailImageDiv,
+ .video-link-container .video-thumbnail-container #thumbnailImageDivEdit{
+    flex: 2;
+ }
+
+ #thumbnailImageDiv img,
+ #thumbnailImageDivEdit img
+ {
+    height: 60px;
+    width: 60px;
+ }
+
+ .videosDiv .video-thumbnail{
+    position: relative;
+    cursor: pointer;
+ }
+
+ .videosDiv .video-thumbnail span{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    filter: drop-shadow(0 0 0.25rem #333333);
+    background-color: #ff4343;
+    border-radius: 50%;
+ }
+
+ .videosDiv .video-thumbnail span i{
+    font-size: 50px;
+    color: #e4e4e4;
+    border-radius: 50%;
+ }
+
+ #videoPopupModal .modal-header{
+    border-bottom: 0;
+    padding-bottom: 0;
+ }
+
+ #videoPopupModal .modal-dialog{
+    min-width: 75% !important;
+ }
+
+ #videoPopupModal .modal-content{
+    height: 80vh;
+ }
+
+ #videoPopupModal .modal-body {
+    min-height: 90% !important;
+    overflow: hidden;
+ }
+
+ #videoPopupModal .modal-body iframe{
+    width: 100%;
+    height: 100%;
+ }
+
+ .videosDiv .video-thumbnail img{
+    height: 300px;
+    width: 100%;
+ }
+
+ .video-option fieldset{
+    display: flex;
+    gap: 10px;
+ }
+
+ .video-option fieldset legend{
+    flex: 3;
+ }
+
+ .video-option fieldset .video-option-div{
+    flex: 7;
+ }
+
+ .menu-btns-conatiner .menu-btns:last-child{
+    border-bottom: none;
+ }
+
+ .menu-btns-conatiner .menu-btns{
+    display: flex;
+    gap: 10px;
+    border-bottom: 1px solid #dee2e6;
+}
+
+ .menu-btns-conatiner .menu-btns .add-more-btn button{
+    border: none;
+    outline: none;
+    background-color: var(--blue);
+    padding: 5px 10px;
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+ .menu-btns-conatiner .menu-btns .delete-menu-btn button{
+    border: none;
+    outline: none;
+    background-color: red;
+    padding: 5px 10px;
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: bold;
+}
+
  .imgCard .top button,
  .videoCard .top button,
  .animationCard .top button
@@ -1984,5 +2118,8 @@ table, th, td {
 .linkInputDiv .linkText,
 .linkInputDiv .linkInput{
     flex: 5 !important;
+}
+#videoPopupModal .modal-content{
+    height: 55vh;
 }
 }

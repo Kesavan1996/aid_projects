@@ -371,6 +371,20 @@
       </div>
     </div>
 
+    <!-- Video Popup Modal -->
+  
+    <div class="modal fade" id="videoPopupModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="btn-close" onclick="closeVideoModal('videoPopupModal')"></button>
+          </div>
+          <div class="modal-body">
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Link Popup Modal -->
     <div class="modal fade" id="linkPopupModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog">
@@ -447,6 +461,11 @@
 
       //Parent link change
       let parentLinkImageFile = '';
+
+      closeVideoModal = (modalElem)=>{
+        $(`#${modalElem}`).modal("hide");
+        $(`#${modalElem} iframe`).attr("src","");
+      }
 
       const openParentLink = () => {
         $('#parentLinkModal').modal('show');
@@ -648,6 +667,8 @@
       let popupImageTwo;
       let popupPdfTwo;
       let pageLogoImageTwo;
+
+      let thumbnailImage="";
 
       let linkPopupImage='';
       let linkPopupText="";
@@ -1008,17 +1029,88 @@
           cardDiv.className = "videoCard"
           cardDiv.id = "videoContainer" + videoContainerId
 
-          //
-          cardDiv.innerHTML = `<div class="top">
-                </div>
-                <form action="" method="post" class="dragover">
-                    <input name="file" type="file" class="file" id="videoInputField" onchange="videoOnChange(this)" accept="video/mp4" hidden />
-                    <label class="file-choose-label" for="videoInputField">Choose Video</label>
-                    <span id="videoChosen">No video chosen</span>
-                </form>
+          thumbnailImage="";
+
+          cardDiv.innerHTML = `<div class="video-option mb-3">
+                              <fieldset>
+                              <legend class="col-form-label pt-0">Video Type:</legend>
+                              <div class="video-option-div">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="radio" name="videoType" id="videoUpload" value="upload" onchange="videoTypeChange(this)" checked>
+                                  <label class="form-check-label" for="videoUpload">
+                                    Upload
+                                  </label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="radio" name="videoType" id="videoLink" value="link" onchange="videoTypeChange(this)" >
+                                  <label class="form-check-label" for="videoLink">
+                                    Link
+                                  </label>
+                                </div>
+                              </div>
+                          </fieldset>
+                          </div>
+                      <form action="" method="post" class="dragover" id="videoUploadDiv">
+                          <input name="file" type="file" class="file" id="videoInputField" onchange="videoOnChange(this)" accept="video/mp4" hidden />
+                          <label class="file-choose-label" for="videoInputField">Choose Video</label>
+                          <span id="videoChosen">No video chosen</span>
+                      </form>
+                      <div class="video-link-container" id="videoLinkDiv" style="display:none">
+                        <div class="input-div">
+                          <label>Video Link:</label>
+                          <div class="video-input">
+                            <input class="form-control" type="text" id="videoLinkInput" onkeyup="inputVerify(this)" />
+                          </div>
+                        </div>
+                        <div class="video-thumbnail-container">
+                          <p>Thumbnail:</p>
+                          <div class="thumbnail-input">
+                            <label class="file-choose-label" for="videoThumbnail">Choose Image</label>
+                            <input type="file" id="videoThumbnail" onchange="videoThumbChange(this)" accept="image/png, image/jpeg" hidden />
+                          </div>
+                          <div id="thumbnailImageDiv"></div>
+                        </div>
+                      </div>
                 <div class="videoModalContainer"></div>`
 
-          modalBody.appendChild(cardDiv)
+          modalBody.appendChild(cardDiv);
+          $(".video-link-error").remove();
+
+          inputVerify = (e)=>{
+            let videoLink= $(e).val();
+            var ValidateUrlExp = /^(ftp|http|https|chrome|:\/\/|\.|@){2,}(localhost|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|\S*:\w*@)*([a-zA-Z]|(\d{1,3}|\.){7}){1,}(\w|\.{2,}|\.[a-zA-Z]{2,3}|\/|\?|&|:\d|@|=|\/|\(.*\)|#|-|%)*$/gum
+            let linkUrlValidate = ValidateUrlExp.test(videoLink)
+
+            $(".video-link-error").remove();
+            if(linkUrlValidate === false){
+              $(e).after('<p class="error video-link-error">Please enter the valid URL.</p>')
+            }else{
+              $(".video-link-error").remove();
+            }
+          }
+
+          videoTypeChange = (elem)=>{
+            let videoTypeOption = $(elem).val();
+            if(videoTypeOption === "upload"){
+              $("#videoUploadDiv").css("display","flex");
+              $("#videoLinkDiv").css("display","none");
+            }else{
+              $("#videoUploadDiv").css("display","none");
+              $("#videoLinkDiv").css("display","flex");
+              $(".videoModalContainer").html("");
+            }
+          }
+
+          videoThumbChange = (elem)=>{
+            $(".thumbnail-error").remove();
+            let sizeInMb = elem.files[0].size / (1024 * 1024);
+            if(sizeInMb < 5){
+              thumbnailImage = elem.files[0];
+              $("#thumbnailImageDiv").html(`<img src="${URL.createObjectURL(thumbnailImage)}" />`);
+            }else{
+              $(elem).after('<p class="error thumbnail-error">Image should be less than 5MB.</p>');
+            }
+          }
 
           const maxAllowedSize = 10 * 1024 * 1024;
 
@@ -1190,10 +1282,16 @@
                                     Double
                                   </label>
                                 </div>
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="radio" name="buttonCount" id="menu" value="menu" onchange="buttonCountChange(this)" >
+                                  <label class="form-check-label" for="menu">
+                                    Menu
+                                  </label>
+                                </div>
                               </div>
                           </fieldset>
                         </div>
-                                <div class="d-flex gap-3 flex-column">
+                                <div class="gap-3 flex-column" id="firstBtnDiv" style="display:flex">
                                       <div class="col-12">
                                         <fieldset class="row">
                                           <legend class="col-form-label col-4 pt-0">Button Type:</legend>
@@ -1487,6 +1585,61 @@
                                   </div>  
                              </div>`
 
+         
+         
+          let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="display:none">
+                            <div class="menu-btns">
+                              <form class="row gap-3" class="menuBtnForm" id="menuBtn0">
+                               <div class="col-12">
+                                    <input type="text" class="form-control" name="btnName" placeholder="Name">
+                                  </div>
+                                  <div class="col-12">
+                                    <input type="text" class="form-control" name="link" placeholder="Link">
+                                  </div>
+                                  <div class="col-12">
+                                    <div class="row align-items-center">
+                                    <label for="colorPickerId" class="form-label col-6">Background Color</label>
+                                    <div class="col-4">
+                                      <input type="color" class="form-control form-control-color" name="bgColor" value="#b3b3b3">
+                                    </div>
+                                  </div>
+                                  </div>
+                                  <div class="col-12">
+                                    <fieldset class="row mb-2 mt-2">
+                                      <legend class="col-form-label col-sm-2 pt-0">Position:</legend>
+                                      <div class="col-sm-10">
+                                        <div class="form-check form-check-inline">
+                                          <input class="form-check-input" type="radio" name="menuBtnPosition" id="menuLeft0" value="left">
+                                          <label class="form-check-label" for="menuLeft0">
+                                            Left
+                                          </label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                          <input class="form-check-input" type="radio" name="menuBtnPosition" id="menuCenter0" value="center" checked>
+                                          <label class="form-check-label" for="menuCenter0">
+                                            Center
+                                          </label>
+                                        </div>
+    
+                                        <div class="form-check form-check-inline">
+                                          <input class="form-check-input" type="radio" name="menuBtnPosition" id="menuRight0" value="right">
+                                          <label class="form-check-label" for="menuRight0">
+                                            Right
+                                          </label>
+                                        </div>
+                                      </div>
+                                    </fieldset>
+                                  </div>
+                                </form>
+                                  <div class="add-more-btn">
+                                    <button type="button" onclick="addMoreBtn()">
+                                      <i class="fa-solid fa-plus"></i>
+                                    </button>
+                                  </div>
+                                   </div>
+                                </div>
+                                  `
+
           let buttonDiv = document.createElement("div")
           buttonDiv.id = "btnLink"
           buttonDiv.className = "row g-3"
@@ -1496,7 +1649,91 @@
           mainDiv.id = `btnLinkDiv${buttonId}`;
           mainDiv.innerHTML = buttonInput;
           mainDiv.innerHTML += buttonInputTwo;
+          mainDiv.innerHTML += menuBtnsElem;
           modalBody.appendChild(mainDiv);
+
+          let menuBtnCount = 1;
+
+          addMoreBtn = ()=>{
+            let menuAddElem=`<div class="menu-btns mt-3">
+              <form class="row gap-3" class="menuBtnForm" id="menuBtn${menuBtnCount}">
+               <div class="col-12">
+                    <input type="text" class="form-control" name="btnName" placeholder="Name">
+                  </div>
+                  <div class="col-12">
+                    <input type="text" class="form-control" name="link" placeholder="Link">
+                  </div>
+                  <div class="col-12">
+                    <div class="row align-items-center">
+                    <label for="bgColor" class="form-label col-6">Background Color</label>
+                    <div class="col-4">
+                      <input type="color" class="form-control form-control-color" name="bgColor" value="#b3b3b3">
+                    </div>
+                  </div>
+                  </div>
+                  <div class="col-12">
+                    <fieldset class="row mb-2 mt-2">
+                      <legend class="col-form-label col-sm-2 pt-0">Position:</legend>
+                      <div class="col-sm-10">
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="radio" name="menuBtnPosition" id="left${menuBtnCount}" value="left">
+                          <label class="form-check-label" for="left${menuBtnCount}">
+                            Left
+                          </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="radio" name="menuBtnPosition" id="center${menuBtnCount}" value="center" checked>
+                          <label class="form-check-label" for="center${menuBtnCount}">
+                            Center
+                          </label>
+                        </div>
+
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="radio" name="menuBtnPosition" id="right${menuBtnCount}" value="right">
+                          <label class="form-check-label" for="right${menuBtnCount}">
+                            Right
+                          </label>
+                        </div>
+                      </div>
+                    </fieldset>
+                  </div>
+                </form>
+                  <div class="delete-menu-btn">
+                    <button type="button" onclick="deleteMenuBtn(this)">
+                      <i class="fa-solid fa-minus"></i>
+                    </button>
+                  </div>
+                   </div>`
+
+            let formsLength = $(".menu-btns").length;
+
+            if(formsLength < 3){
+              $("#menuBtnsDiv").append(menuAddElem);
+            }
+            menuBtnCount+=1;
+            
+           
+            /*
+            let menuPosition = $('input[name="menuBtnPosition"]:checked').val()
+
+            var elements = document.getElementById("menuBtn0").elements;
+            var obj ={};
+            for(var i = 0 ; i < elements.length ; i++){
+                var item = elements.item(i);
+                if(item.name !==""){
+                  obj[item.name] = item.value;
+                  obj['menuBtnPosition'] = menuPosition;
+                }
+            }
+
+            console.log(obj,"obj")
+            */
+        
+          }
+
+          deleteMenuBtn = (elem)=>{
+            $(elem).closest('.menu-btns').remove();
+          }
 
           changeToRichtext([`popupText`])
           changeToRichtext([`popupTextTwo`])
@@ -1552,18 +1789,28 @@
             let btnCountOption = $(elem).val();
             if (btnCountOption === "one") {
               $("#secondBtnDiv").css("display", "none");
+              $("#firstBtnDiv").css("display", "flex");
+              $("#menuBtnsDiv").css("display", "none");
               $(`input[name=btnLocation][value=header]`).parent().css("pointer-events", "auto");
               $(`input[name=btnLocation][value=header]`).parent().css("opacity", "1");
               $(`input[name=btnLocationTwo][value=header]`).parent().css("pointer-events", "auto");
               $(`input[name=btnLocationTwo][value=header]`).parent().css("opacity", "1");
-            } else {
+            } else if(btnCountOption === "two") {
               $("#secondBtnDiv").css("display", "flex");
+              $("#firstBtnDiv").css("display", "flex");
+              $("#menuBtnsDiv").css("display", "none");
               $(`input[name=btnLocation][value=header]`).parent().css("pointer-events", "none");
               $(`input[name=btnLocation][value=header]`).parent().css("opacity", "0.4");
               $(`input[name=btnLocationTwo][value=header]`).parent().css("pointer-events", "none");
               $(`input[name=btnLocationTwo][value=header]`).parent().css("opacity", "0.4");
               $(`input[name=btnLocation][value=body]`).prop("checked", true);
               $(`input[name=btnLocationTwo][value=body]`).prop("checked", true);
+            }else if(btnCountOption === "menu"){
+              $("#firstBtnDiv").css("display", "none");
+              $("#secondBtnDiv").css("display", "none");
+              $("#menuBtnsDiv").css("display", "block");
+              $("#popupDiv").css("display", "none");
+
             }
           }
 
@@ -2335,17 +2582,88 @@
           cardDiv.className = "videoCard"
           cardDiv.id = "videoContainer" + videoContainerId
 
-          //
-          cardDiv.innerHTML = `<div class="top">
-                </div>
-                <form action="" method="post" class="dragover">
+          thumbnailImage="";
+
+          cardDiv.innerHTML = `<div class="video-option mb-3">
+                              <fieldset>
+                              <legend class="col-form-label pt-0">Video Type:</legend>
+                              <div class="video-option-div">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="radio" name="videoType" id="videoUpload" value="upload" onchange="videoTypeChange(this)" checked>
+                                  <label class="form-check-label" for="videoUpload">
+                                    Upload
+                                  </label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="radio" name="videoType" id="videoLink" value="link" onchange="videoTypeChange(this)" >
+                                  <label class="form-check-label" for="videoLink">
+                                    Link
+                                  </label>
+                                </div>
+                              </div>
+                          </fieldset>
+                          </div>
+                <form action="" method="post" class="dragover" id="videoUploadDiv">
                     <input name="file" type="file" class="file" id="videoInputField" onchange="videoOnChange(this)" accept="video/mp4" hidden />
                     <label class="file-choose-label" for="videoInputField">Choose Video</label>
                     <span id="videoChosen">No video chosen</span>
                 </form>
+                 <div class="video-link-container" id="videoLinkDiv" style="display:none">
+                        <div class="input-div">
+                          <label>Video Link:</label>
+                          <div class="video-input">
+                            <input class="form-control" type="text" id="videoLinkInput" onkeyup="inputVerify(this)" />
+                          </div>
+                        </div>
+                        <div class="video-thumbnail-container">
+                          <p>Thumbnail:</p>
+                          <div class="thumbnail-input">
+                            <label class="file-choose-label" for="videoThumbnail">Choose Image</label>
+                            <input type="file" id="videoThumbnail" onchange="videoThumbChange(this)" accept="image/png, image/jpeg" hidden />
+                          </div>
+                          <div id="thumbnailImageDiv"></div>
+                        </div>
+                      </div>
                 <div class="videoModalContainer"></div>`
 
           modalBody.appendChild(cardDiv)
+          $(".video-link-error").remove();
+
+          inputVerify = (e)=>{
+            let videoLink= $(e).val();
+            var ValidateUrlExp = /^(ftp|http|https|chrome|:\/\/|\.|@){2,}(localhost|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|\S*:\w*@)*([a-zA-Z]|(\d{1,3}|\.){7}){1,}(\w|\.{2,}|\.[a-zA-Z]{2,3}|\/|\?|&|:\d|@|=|\/|\(.*\)|#|-|%)*$/gum
+            let linkUrlValidate = ValidateUrlExp.test(videoLink)
+
+            $(".video-link-error").remove();
+            if(linkUrlValidate === false){
+              $(e).after('<p class="error video-link-error">Please enter the valid URL.</p>')
+            }else{
+              $(".video-link-error").remove();
+            }
+          }
+
+          videoTypeChange = (elem)=>{
+            let videoTypeOption = $(elem).val();
+            if(videoTypeOption === "upload"){
+              $("#videoUploadDiv").css("display","flex");
+              $("#videoLinkDiv").css("display","none");
+            }else{
+              $("#videoUploadDiv").css("display","none");
+              $("#videoLinkDiv").css("display","flex");
+              $(".videoModalContainer").html("");
+            }
+          }
+
+          videoThumbChange = (elem)=>{
+            $(".thumbnail-error").remove();
+            let sizeInMb = elem.files[0].size / (1024 * 1024);
+            if(sizeInMb < 5){
+              thumbnailImage = elem.files[0];
+              $("#thumbnailImageDiv").html(`<img src="${URL.createObjectURL(thumbnailImage)}" />`);
+            }else{
+              $(elem).after('<p class="error thumbnail-error">Image should be less than 5MB.</p>');
+            }
+          }
 
           const maxAllowedSize = 10 * 1024 * 1024;
 
@@ -3468,7 +3786,6 @@
 
           if (ckTextValue !== "") {
 
-            //  
             $('#createModal').modal('hide');
             document.getElementById("emptyPage")?.remove()
 
@@ -3797,10 +4114,12 @@
 
           let keyId = modalBody.children[0].id
 
+          let videoType = $('input[name="videoType"]:checked').val();
+          let videoLink=$("#videoLinkInput").val();
+
           var div = document.createElement('div')
           div.className = "videoContainer dragDiv"
           div.id = `Div${keyId}`
-          div.draggable = true
           var dropImg = document.createElement("img")
           dropImg.className = "dragImg"
           dropImg.height = 20
@@ -3826,15 +4145,49 @@
           var videoSrc = videoDIv?.children[0].src
 
           var videoLocalSrc;
+          let updateName="";
 
           if (pageTitle !== "") {
-            videoLocalSrc = videoContainerArrary[`Div${parentContainerVideo[0].id}`]["files"]
+            if(videoType === 'upload'){
+              videoLocalSrc = videoContainerArrary[`Div${parentContainerVideo[0].id}`]["files"]
+          }
+           let updateClassName = document.querySelector('#createModal .modal-header h5').className;
+           updateClassName= updateClassName.split("_")[0]
+           var updateNum = updateClassName?.match(/\d/g);
+           updateNum = updateNum?.join("");
+            updateName = `updates${updateNum}`;
           } else {
-            videoLocalSrc = videoContainerArrary[`Div${parentContainerVideo[0].id}`]
+              if(videoType === 'upload'){
+                videoLocalSrc = videoContainerArrary[`Div${parentContainerVideo[0].id}`]
+            }
+          }
+
+          tempArray[`Div${parentContainerVideo[0].id}`]={...tempArray[`Div${parentContainerVideo[0].id}`],videoType}
+
+          $(".video-link-error").remove();
+          $(".thumbnail-error").remove();
+
+          let videoPopupElem="";
+
+          if(videoType === "link"){
+            var ValidateUrlExp = /^(ftp|http|https|chrome|:\/\/|\.|@){2,}(localhost|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|\S*:\w*@)*([a-zA-Z]|(\d{1,3}|\.){7}){1,}(\w|\.{2,}|\.[a-zA-Z]{2,3}|\/|\?|&|:\d|@|=|\/|\(.*\)|#|-|%)*$/gum
+            let linkUrlValidate = ValidateUrlExp.test(videoLink)
+            if(thumbnailImage ==""){
+              $("#videoThumbnail").after('<p class="error thumbnail-error">Please Upload the image.</p>');
+            }
+            if(videoLink !== "" && linkUrlValidate){
+              if(thumbnailImage !==""){
+                videoPopupElem=  `<div class="video-thumbnail" onclick="videoPopupOpen(this)" id="video_Div${parentContainerVideo[0].id}">
+                                        <img src="${URL.createObjectURL(thumbnailImage)}" alt="" />
+                                        <span><i class="fa-regular fa-circle-play"></i></span>
+                                    </div>`
+              }
+            }else{
+              $("#videoLinkInput").after('<p class="error video-link-error">Please enter the valid URL.</p>');
+            }
           }
 
           var videoName = videoLocalSrc?.name
-          var videoType = videoLocalSrc?.type
 
           var videoContainer = document.createElement("div")
           videoContainer.className = "videosDiv"
@@ -3860,9 +4213,15 @@
           let videos = '';
 
           videos = `<video class="video-js vjs-big-play-centered vjs-show-big-play-button-on-pause" controls  preload="auto" alt="video">
-                <source src=${videoSrc} type=${videoType} />
+                <source src=${videoSrc} />
             </video>`
-          videoContainer.innerHTML = videos
+
+            if(videoType === "link"){
+              videoContainer.innerHTML= videoPopupElem
+            }else{
+              videoContainer.innerHTML = videos
+            }
+          
 
           //
           videoTempId = parentContainerVideo[0].id;
@@ -3878,36 +4237,66 @@
             parentDivId = updatesContentId.split("").pop()
           }
 
+          let videoParentElem= document.createElement('div');
+          videoParentElem.className= "videoContainer"
+          videoParentElem.innerHTML=videoPopupElem;
+
+          div.appendChild(dropImg)
+          div.appendChild(videoContainer)
+          div.appendChild(clickTag)
+          div.appendChild(deleteTag)
 
           let inputElem = document.querySelector(".videoModalContainer")
 
-          if (inputElem.innerHTML !== "") {
+          if(videoType === "upload"){
+            if (inputElem.innerHTML !== "") {
 
-            if (pageTitle !== "") {
-              $('#createModal').modal('hide');
-              document.getElementById("emptyPage")?.remove()
-              div.appendChild(dropImg)
-              div.appendChild(videoContainer)
-              div.appendChild(clickTag)
-              div.appendChild(deleteTag)
-              updatesContent.appendChild(div)
+              if (pageTitle !== "") {
+                $('#createModal').modal('hide');
+                document.getElementById("emptyPage")?.remove()
+                updatesContent.appendChild(div)
+              } else {
+                $('#createModal').modal('hide');
+                document.getElementById("emptyPage")?.remove()
+                contentCards.appendChild(div)
+              }
+              submitBtnDiv.style.display = "block"
+              videoContainerId += 1
             } else {
-              $('#createModal').modal('hide');
-              document.getElementById("emptyPage")?.remove()
-              div.appendChild(dropImg)
-              div.appendChild(videoContainer)
-              div.appendChild(clickTag)
-              div.appendChild(deleteTag)
-              contentCards.appendChild(div)
+              let errorElem = document.querySelector(".error")
+              if (!errorElem) {
+                inputElem.insertAdjacentHTML('afterend', '<p class="error">Please upload the video.</p>');
+              }
             }
-            submitBtnDiv.style.display = "block"
-            videoContainerId += 1
-          } else {
-            let errorElem = document.querySelector(".error")
-            if (!errorElem) {
-              inputElem.insertAdjacentHTML('afterend', '<p class="error">Please upload the video.</p>');
+           
+          }else{
+            var ValidateUrlExp = /^(ftp|http|https|chrome|:\/\/|\.|@){2,}(localhost|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|\S*:\w*@)*([a-zA-Z]|(\d{1,3}|\.){7}){1,}(\w|\.{2,}|\.[a-zA-Z]{2,3}|\/|\?|&|:\d|@|=|\/|\(.*\)|#|-|%)*$/gum
+            let linkUrlValidate = ValidateUrlExp.test(videoLink)
+            if(videoLink !== "" && linkUrlValidate){
+              if(thumbnailImage !==""){
+                submitBtnDiv.style.display = "block"
+                $('#createModal').modal('hide');
+                if (pageTitle !== "") {
+                  tempArray[`Div${parentContainerVideo[0].id}`]={...tempArray[`Div${parentContainerVideo[0].id}`],type:"5",link:videoLink,image:thumbnailImage, updates:updateName}
+                  updatesContent.appendChild(div)
+                }else{
+                  tempArray[`Div${parentContainerVideo[0].id}`]={...tempArray[`Div${parentContainerVideo[0].id}`],type:"5",link:videoLink,image:thumbnailImage}
+                  contentCards.appendChild(div)
+                }
+                videoContainerId += 1
+              }
             }
           }
+
+          videoPopupOpen= (elem)=>{
+            let videoData = elem.id.split("_")[1];
+            let videoLinkData = tempArray[`${videoData}`].link
+            let videoelem = `<iframe height="345" src="${videoLinkData}?rel=0&amp;autoplay=1" allow="autoplay">
+                            </iframe>`
+            $("#videoPopupModal .modal-body").html(videoelem)
+            $("#videoPopupModal").modal('show')
+          }
+
         }
         else if (modalBody.children[0].className === "formClass") {
 
@@ -4293,81 +4682,69 @@
 
           let hasEmptyValue = [];
           var links = [];
+          let menuBtnData= [];
 
-          $(".btn-error").remove();
-          if (btnName === "") {
-            $("#btnName").after('<p class="error btn-error">Please enter the button name.</p>');
-            hasEmptyValue.push(true);
-          } else {
-            hasEmptyValue.push(false);
-          }
-          if (btnType === "popup") {
-            if (popupType === "link") {
-              var result = Array.from(forms).map((a, i) => {
-                var obj = {};
-                Array.from(a.querySelectorAll("[name]")).forEach((b, j) => {
-                  obj[b.getAttribute("name")] = b.value;
-                  if (b.value === "") {
-                    $(b).after(`<div class="error btn-error">Please enter the value.</div>`);
-                    hasEmptyValue.push(true);
-                  } else {
-                    hasEmptyValue.push(false);
-                  }
-                });
-                links.push(obj);
-                return links;
-              });
-            } else if (popupType === "image") {
-              if (popupImage === "") {
-                $("#imageUpload").after(`<div class="error btn-error">Please upload the image.</div>`);
-                hasEmptyValue.push(true);
-              } else {
-                hasEmptyValue.push(false);
-              }
-            } else if (popupType === "pdf") {
-              if (popupPdf === "") {
-                $("#pdfUpload").after(`<div class="error btn-error">Please upload the document.</div>`);
-                hasEmptyValue.push(true);
-              } else {
-                hasEmptyValue.push(false);
-              }
-            }else if(popupType === "text"){
-              if(popupText === ""){
-                $("#cke_popupText").after(`<div class="error btn-error">Please enter the value.</div>`);
-                hasEmptyValue.push(true);
-              } else {
-                hasEmptyValue.push(false);
-              }
-            }
-          } else {
-            var ValidateUrlExp = /^(ftp|http|https|chrome|:\/\/|\.|@){2,}(localhost|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|\S*:\w*@)*([a-zA-Z]|(\d{1,3}|\.){7}){1,}(\w|\.{2,}|\.[a-zA-Z]{2,3}|\/|\?|&|:\d|@|=|\/|\(.*\)|#|-|%)*$/gum
-            let btnLinkValidate = ValidateUrlExp.test(btnLink);
-            if (btnLink === "" || btnLinkValidate === false) {
-              $("#btnLinkId").after('<p class="error btn-error">Please enter the valid URL.</p>');
-              hasEmptyValue.push(true);
-            } else {
-              hasEmptyValue.push(false);
-            }
-          }
-
-          //Button two error handling
           let formsTwo = document.querySelectorAll("#linkFormTwo form");
           var linksTwo = [];
 
-          if (btnCount === "two") {
-            if (btnTwoName === "") {
-              $("#btnNameTwo").after('<p class="error btn-error">Please enter button name.</p>');
+          $(".btn-error").remove();
+
+          if(btnCount === "menu"){
+          let menuForms = document.querySelectorAll("#menuBtnsDiv .menu-btns form");
+
+          $(".menu-error").remove();
+          Array.from(menuForms).forEach((e)=>{
+            let elemID = e.id;
+            let elemCount = elemID?.match(/\d/g);
+            elemCount = elemCount?.join("");
+            var elements = document.getElementById(`${elemID}`).elements;
+            let menuPosition = $(`#${elemID} input[name="menuBtnPosition"]:checked`).val();
+            var obj ={};
+            for(var i = 0 ; i < elements.length ; i++){
+                var item = elements.item(i);
+                if(item.name !==""){
+                  if(item.name=="link"){
+                    var ValidateUrlExp = /^(ftp|http|https|chrome|:\/\/|\.|@){2,}(localhost|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|\S*:\w*@)*([a-zA-Z]|(\d{1,3}|\.){7}){1,}(\w|\.{2,}|\.[a-zA-Z]{2,3}|\/|\?|&|:\d|@|=|\/|\(.*\)|#|-|%)*$/gum
+                    let linkUrlValidate = ValidateUrlExp.test(item.value);
+                    if(linkUrlValidate ===false || item.value === ""){
+                      $(elements[i]).after('<p class="error menu-error mt-0">Please enter the valid URL.</p>')
+                      hasEmptyValue.push(true)
+                    }
+                  }
+
+                  if(item.name === "btnName"){
+                    if(item.value == ""){
+                      $(elements[i]).after('<p class="error menu-error mt-0">Please enter the valid name.</p>') 
+                      hasEmptyValue.push(true)
+                    }
+                  }
+
+                  obj[item.name] = item.value;
+                  obj['menuBtnPosition'] = menuPosition;
+                }
+            }
+
+            menuBtnData.push(obj)
+          })
+
+          console.log(menuBtnData,"menu")
+          console.log(hasEmptyValue,"empty")
+
+          }else{
+
+            if (btnName === "") {
+              $("#btnName").after('<p class="error btn-error">Please enter the button name.</p>');
               hasEmptyValue.push(true);
             } else {
               hasEmptyValue.push(false);
             }
 
-            if (btnTypeTwo === "popup") {
-              if (popupTypeTwo === "link") {
-                var resultTwo = Array.from(formsTwo).map((a, i) => {
-                  var objTwo = {};
+            if (btnType === "popup") {
+              if (popupType === "link") {
+                var result = Array.from(forms).map((a, i) => {
+                  var obj = {};
                   Array.from(a.querySelectorAll("[name]")).forEach((b, j) => {
-                    objTwo[b.getAttribute("name")] = b.value;
+                    obj[b.getAttribute("name")] = b.value;
                     if (b.value === "") {
                       $(b).after(`<div class="error btn-error">Please enter the value.</div>`);
                       hasEmptyValue.push(true);
@@ -4375,44 +4752,107 @@
                       hasEmptyValue.push(false);
                     }
                   });
-                  linksTwo.push(objTwo);
-                  return linksTwo;
+                  links.push(obj);
+                  return links;
                 });
-              } else if (popupTypeTwo === "image") {
-                if (popupImageTwo === "") {
-                  $("#imageUploadTwo").after(`<div class="error btn-error">Please upload the image.</div>`);
+              } else if (popupType === "image") {
+                if (popupImage === "") {
+                  $("#imageUpload").after(`<div class="error btn-error">Please upload the image.</div>`);
                   hasEmptyValue.push(true);
                 } else {
                   hasEmptyValue.push(false);
                 }
-              } else if (popupTypeTwo === "pdf") {
-                if (popupPdfTwo === "") {
-                  $("#pdfUploadTwo").after(`<div class="error btn-error">Please upload the document.</div>`);
+              } else if (popupType === "pdf") {
+                if (popupPdf === "") {
+                  $("#pdfUpload").after(`<div class="error btn-error">Please upload the document.</div>`);
                   hasEmptyValue.push(true);
                 } else {
                   hasEmptyValue.push(false);
                 }
-              }else if(popupTypeTwo === "text"){
-                if(popupTextTwo === ""){
-                  $("#cke_popupTextTwo").after(`<div class="error btn-error">Please enter the value.</div>`);
+              }else if(popupType === "text"){
+                if(popupText === ""){
+                  $("#cke_popupText").after(`<div class="error btn-error">Please enter the value.</div>`);
                   hasEmptyValue.push(true);
                 } else {
                   hasEmptyValue.push(false);
                 }
               }
             } else {
-              let ValidateUrlExp = /^(ftp|http|https|chrome|:\/\/|\.|@){2,}(localhost|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|\S*:\w*@)*([a-zA-Z]|(\d{1,3}|\.){7}){1,}(\w|\.{2,}|\.[a-zA-Z]{2,3}|\/|\?|&|:\d|@|=|\/|\(.*\)|#|-|%)*$/gum
-              let btnLinkTwoValidate = ValidateUrlExp.test(btnTwoLink);
-              if (btnTwoLink === "" || btnLinkTwoValidate === false) {
-                $("#btnLinkIdTwo").after('<p class="error btn-error">Please enter the valid URL.</p>');
+              var ValidateUrlExp = /^(ftp|http|https|chrome|:\/\/|\.|@){2,}(localhost|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|\S*:\w*@)*([a-zA-Z]|(\d{1,3}|\.){7}){1,}(\w|\.{2,}|\.[a-zA-Z]{2,3}|\/|\?|&|:\d|@|=|\/|\(.*\)|#|-|%)*$/gum
+              let btnLinkValidate = ValidateUrlExp.test(btnLink);
+              if (btnLink === "" || btnLinkValidate === false) {
+                $("#btnLinkId").after('<p class="error btn-error">Please enter the valid URL.</p>');
                 hasEmptyValue.push(true);
               } else {
                 hasEmptyValue.push(false);
               }
             }
+
+                   //Button two error handling
+                  
+            if (btnCount === "two") {
+              if (btnTwoName === "") {
+                $("#btnNameTwo").after('<p class="error btn-error">Please enter button name.</p>');
+                hasEmptyValue.push(true);
+              } else {
+                hasEmptyValue.push(false);
+              }
+  
+              if (btnTypeTwo === "popup") {
+                if (popupTypeTwo === "link") {
+                  var resultTwo = Array.from(formsTwo).map((a, i) => {
+                    var objTwo = {};
+                    Array.from(a.querySelectorAll("[name]")).forEach((b, j) => {
+                      objTwo[b.getAttribute("name")] = b.value;
+                      if (b.value === "") {
+                        $(b).after(`<div class="error btn-error">Please enter the value.</div>`);
+                        hasEmptyValue.push(true);
+                      } else {
+                        hasEmptyValue.push(false);
+                      }
+                    });
+                    linksTwo.push(objTwo);
+                    return linksTwo;
+                  });
+                } else if (popupTypeTwo === "image") {
+                  if (popupImageTwo === "") {
+                    $("#imageUploadTwo").after(`<div class="error btn-error">Please upload the image.</div>`);
+                    hasEmptyValue.push(true);
+                  } else {
+                    hasEmptyValue.push(false);
+                  }
+                } else if (popupTypeTwo === "pdf") {
+                  if (popupPdfTwo === "") {
+                    $("#pdfUploadTwo").after(`<div class="error btn-error">Please upload the document.</div>`);
+                    hasEmptyValue.push(true);
+                  } else {
+                    hasEmptyValue.push(false);
+                  }
+                }else if(popupTypeTwo === "text"){
+                  if(popupTextTwo === ""){
+                    $("#cke_popupTextTwo").after(`<div class="error btn-error">Please enter the value.</div>`);
+                    hasEmptyValue.push(true);
+                  } else {
+                    hasEmptyValue.push(false);
+                  }
+                }
+              } else {
+                let ValidateUrlExp = /^(ftp|http|https|chrome|:\/\/|\.|@){2,}(localhost|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|\S*:\w*@)*([a-zA-Z]|(\d{1,3}|\.){7}){1,}(\w|\.{2,}|\.[a-zA-Z]{2,3}|\/|\?|&|:\d|@|=|\/|\(.*\)|#|-|%)*$/gum
+                let btnLinkTwoValidate = ValidateUrlExp.test(btnTwoLink);
+                if (btnTwoLink === "" || btnLinkTwoValidate === false) {
+                  $("#btnLinkIdTwo").after('<p class="error btn-error">Please enter the valid URL.</p>');
+                  hasEmptyValue.push(true);
+                } else {
+                  hasEmptyValue.push(false);
+                }
+              }
+            }
+  
           }
 
+
           $(".btn-error").get(0)?.scrollIntoView({behavior: 'smooth'});
+          $(".menu-error").get(0)?.scrollIntoView({behavior: 'smooth'});
 
           let parentId = modalBody.children[0].id
 
@@ -4452,18 +4892,23 @@
           let linkDiv = document.createElement("div");
           linkDiv.className = "linkDiv";
           linkDiv.id = "btnLink" + buttonId;
+
+          console.log(btnCount,"count")
           if (btnCount === "one") {
             linkDiv.style.textAlign = `${btnPosition}`;
-          } else {
+          } else if(btnCount === "two") {
             linkDiv.style.display = "grid";
             linkDiv.style.gridTemplateColumns = "repeat(2, 1fr)";
+            linkDiv.style.gap = "10px";
+          }else if(btnCount === 'menu'){
+            linkDiv.style.display = "flex";
             linkDiv.style.gap = "10px";
           }
 
 
           clickTag.setAttribute("onclick", `editModal("editButton",this.previousElementSibling.id,this.parentElement.id)`)
 
-          let btnTag;
+          let btnTag="";
 
           if (btnCount === "two") {
             if (btnType === "link") {
@@ -4485,47 +4930,60 @@
                         <a href="#" id="linkTag${buttonId}_1" class="linkBtn link_${parentId}" onclick="openPopupTwoModal(this)" style="background-color:${btnColorTwo}">${btnTwoName}</a>
                       </div>`
             }
-          } else {
+          } else if(btnCount === "one") {
             if (btnType === "link") {
               btnTag = `<a href="${btnLink}" id="linkTag${buttonId}0" target="_blank" class="linkBtn" style="background-color:${btnColor}">${btnName}</a>`;
             } else if (btnType === "popup") {
               btnTag = `<a href="#" id="linkTag${buttonId}1" class="linkBtn link_${parentId}" onclick="openPopupModal(this)" style="background-color:${btnColor}">${btnName}</a>`;
             }
+          }else if(btnCount==="menu"){
+            menuBtnData.forEach((btn)=>{
+              btnTag += `<div style="text-align:${btn.menuBtnPosition};flex:1">
+                        <a href="${btn.link}" class="linkBtn" target="_blank" style="background-color:${btn.bgColor}">${btn.btnName}</a>
+                      </div>`;
+            });
           }
 
 
           let buttonOneInfo;
           let buttonTwoInfo;
+          let menuBtnInfo;
 
-          if (btnType === "link") {
-            buttonOneInfo = { name: btnName, btnType, link: btnLink, btnPosition, bgColor: btnColor }
-          } else {
-            if (popupType === "link") {
-              buttonOneInfo = { name: btnName, btnType, popupType, links, bgColor: btnColor, btnLocation, btnPosition };
-            } else if (popupType === "image") {
-              buttonOneInfo = { name: btnName, btnType, popupType, image: popupImage, bgColor: btnColor, btnLocation, btnPosition };
-            } else if(popupType === "pdf"){
-              buttonOneInfo = { name: btnName, btnType, popupType, pdf: popupPdf, bgColor: btnColor, btnLocation, btnPosition };
-            }else if(popupType === "text"){
-              buttonOneInfo = { name: btnName, btnType, popupType, text: popupText,textBgColor:popupTextColor, bgColor: btnColor, btnLocation, btnPosition };
-            }
-          }
 
-          if (btnCount === "two") {
-            if (btnTypeTwo === "link") {
-              buttonTwoInfo = { name: btnTwoName, btnType: btnTypeTwo, link: btnTwoLink, btnPosition: btnPositionTwo, bgColor: btnColorTwo }
+          if(btnCount === "menu"){
+            menuBtnInfo = menuBtnData;
+          }else{
+            if (btnType === "link") {
+              buttonOneInfo = { name: btnName, btnType, link: btnLink, btnPosition, bgColor: btnColor }
             } else {
-              if (popupTypeTwo === "link") {
-                buttonTwoInfo = { name: btnTwoName, btnType: btnTypeTwo, popupType: popupTypeTwo, links: linksTwo, bgColor: btnColorTwo, btnLocation: btnLocationTwo, btnPosition: btnPositionTwo };
-              } else if (popupTypeTwo === "image") {
-                buttonTwoInfo = { name: btnTwoName, btnType: btnTypeTwo, popupType: popupTypeTwo, image: popupImageTwo, bgColor: btnColorTwo, btnLocation: btnLocationTwo, btnPosition: btnPositionTwo };
-              } else if(popupTypeTwo === "pdf") {
-                buttonTwoInfo = { name: btnTwoName, btnType: btnTypeTwo, popupType: popupTypeTwo, pdf: popupPdfTwo, bgColor: btnColorTwo, btnLocation: btnLocationTwo, btnPosition: btnPositionTwo };
-              }else if(popupTypeTwo === "text"){
-                buttonTwoInfo = { name: btnTwoName, btnType: btnTypeTwo, popupType: popupTypeTwo, text: popupTextTwo,textBgColor:popupTextColorTwo, bgColor: btnColorTwo, btnLocation: btnLocationTwo, btnPosition: btnPositionTwo };
+              if (popupType === "link") {
+                buttonOneInfo = { name: btnName, btnType, popupType, links, bgColor: btnColor, btnLocation, btnPosition };
+              } else if (popupType === "image") {
+                buttonOneInfo = { name: btnName, btnType, popupType, image: popupImage, bgColor: btnColor, btnLocation, btnPosition };
+              } else if(popupType === "pdf"){
+                buttonOneInfo = { name: btnName, btnType, popupType, pdf: popupPdf, bgColor: btnColor, btnLocation, btnPosition };
+              }else if(popupType === "text"){
+                buttonOneInfo = { name: btnName, btnType, popupType, text: popupText,textBgColor:popupTextColor, bgColor: btnColor, btnLocation, btnPosition };
+              }
+            }
+  
+            if (btnCount === "two") {
+              if (btnTypeTwo === "link") {
+                buttonTwoInfo = { name: btnTwoName, btnType: btnTypeTwo, link: btnTwoLink, btnPosition: btnPositionTwo, bgColor: btnColorTwo }
+              } else {
+                if (popupTypeTwo === "link") {
+                  buttonTwoInfo = { name: btnTwoName, btnType: btnTypeTwo, popupType: popupTypeTwo, links: linksTwo, bgColor: btnColorTwo, btnLocation: btnLocationTwo, btnPosition: btnPositionTwo };
+                } else if (popupTypeTwo === "image") {
+                  buttonTwoInfo = { name: btnTwoName, btnType: btnTypeTwo, popupType: popupTypeTwo, image: popupImageTwo, bgColor: btnColorTwo, btnLocation: btnLocationTwo, btnPosition: btnPositionTwo };
+                } else if(popupTypeTwo === "pdf") {
+                  buttonTwoInfo = { name: btnTwoName, btnType: btnTypeTwo, popupType: popupTypeTwo, pdf: popupPdfTwo, bgColor: btnColorTwo, btnLocation: btnLocationTwo, btnPosition: btnPositionTwo };
+                }else if(popupTypeTwo === "text"){
+                  buttonTwoInfo = { name: btnTwoName, btnType: btnTypeTwo, popupType: popupTypeTwo, text: popupTextTwo,textBgColor:popupTextColorTwo, bgColor: btnColorTwo, btnLocation: btnLocationTwo, btnPosition: btnPositionTwo };
+                }
               }
             }
           }
+
 
           let buttons = [];
 
@@ -5297,6 +5755,17 @@
           $('#editModal').modal('show');
           var paramId = id
           let videosList = videoContainerArrary[`${parentId}`]
+          let videoType = tempArray[`${parentId}`]['videoType']===undefined?"upload":tempArray[`${parentId}`]['videoType'];
+          let videoLink="";
+          thumbnailImage="";
+
+          if(videoType === "link"){
+            thumbnailImage=tempArray[`${parentId}`]['image'];
+            videoLink= tempArray[`${parentId}`]['link'];
+          }
+
+          console.log(tempArray,"temp")
+          
           var modalTitle = document.getElementById("EditPageTitle")
           modalTitle.innerText = "Edit Video"
 
@@ -5311,21 +5780,108 @@
           cardDiv.className = "videoCard"
           //
           cardDiv.id = parentId
-          cardDiv.innerHTML = `<div class="top">
-                </div>
-                <form action="" method="post" class="dragover">
+          cardDiv.innerHTML = `<div class="video-option mb-3">
+                              <fieldset>
+                              <legend class="col-form-label pt-0">Video Type:</legend>
+                              <div class="video-option-div">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="radio" name="videoTypeEdit" id="videoUploadEdit" value="upload" onchange="videoTypeChangeEdit(this)" checked>
+                                  <label class="form-check-label" for="videoUploadEdit">
+                                    Upload
+                                  </label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="radio" name="videoTypeEdit" id="videoLinkEdit" value="link" onchange="videoTypeChangeEdit(this)" >
+                                  <label class="form-check-label" for="videoLinkEdit">
+                                    Link
+                                  </label>
+                                </div>
+                              </div>
+                          </fieldset>
+                          </div>
+                <form action="" method="post" class="dragover" id="videoUploadDivEdit">
                     <input name="file" type="file" class="file" id="videoInputEditId" onchange="videoOnChangeEdit(this)" accept="video/mp4" hidden />
                     <label class="file-choose-label" for="videoInputEditId">Choose Video</label>
                     <span id="videoEditChosen">No video chosen</span>
                 </form>
+                 <div class="video-link-container" id="videoLinkDivEdit" style="display:none">
+                        <div class="input-div">
+                          <label>Video Link:</label>
+                          <div class="video-input">
+                            <input class="form-control" type="text" id="videoLinkInputEdit" onkeyup="inputVerifyEdit(this)" />
+                          </div>
+                        </div>
+                        <div class="video-thumbnail-container">
+                          <p>Thumbnail:</p>
+                          <div class="thumbnail-input">
+                            <label class="file-choose-label" for="videoThumbnailEdit">Choose Image</label>
+                            <input type="file" id="videoThumbnailEdit" onchange="videoThumbChangeEdit(this)" accept="image/png, image/jpeg" hidden />
+                          </div>
+                          <div id="thumbnailImageDivEdit"></div>
+                        </div>
+                      </div>
                 <div class="videoModalContainerEdit" id=${paramId}>
                 </div>`
 
           modalBody.appendChild(cardDiv)
 
-          //
+          inputVerifyEdit = (e)=>{
+            let videoLink= $(e).val();
+            var ValidateUrlExp = /^(ftp|http|https|chrome|:\/\/|\.|@){2,}(localhost|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|\S*:\w*@)*([a-zA-Z]|(\d{1,3}|\.){7}){1,}(\w|\.{2,}|\.[a-zA-Z]{2,3}|\/|\?|&|:\d|@|=|\/|\(.*\)|#|-|%)*$/gum
+            let linkUrlValidate = ValidateUrlExp.test(videoLink)
+
+            $(".video-link-error").remove();
+            if(linkUrlValidate === false){
+              $(e).after('<p class="error video-link-error">Please enter the valid URL.</p>')
+            }else{
+              $(".video-link-error").remove();
+            }
+          }
+          
+          videoTypeChangeEdit = (elem)=>{
+            let videoTypeOption = $(elem).val();
+            if(videoTypeOption === "upload"){
+              $("#videoUploadDivEdit").css("display","flex");
+              $("#videoLinkDivEdit").css("display","none");
+            }else{
+              $("#videoUploadDivEdit").css("display","none");
+              $("#videoLinkDivEdit").css("display","flex");
+              $(".videoModalContainerEdit").html("");
+            }
+          }
+
+          videoThumbChangeEdit = (elem)=>{
+            $(".thumbnail-error").remove();
+            let sizeInMb = elem.files[0].size / (1024 * 1024);
+            if(sizeInMb < 5){
+              thumbnailImage = elem.files[0];
+              $("#thumbnailImageDivEdit").html(`<img src="${URL.createObjectURL(thumbnailImage)}" />`);
+            }else{
+              $(elem).after('<p class="error thumbnail-error">Image should be less than 5MB.</p>');
+            }
+          }
+
+          $(`input[name=videoTypeEdit][value=${videoType}]`).prop("checked", true);
+
+          if(videoType === "link"){
+            $("#videoUploadDivEdit").css("display","none");
+            $("#videoLinkDivEdit").css("display","flex");
+            $(".videoModalContainerEdit").html("");
+            $("#videoLinkInputEdit").val(videoLink);
+            let thumbnailURL = "";
+            console.log(thumbnailImage,"image")
+            if(typeof thumbnailImage === "object"){
+              thumbnailURL = URL.createObjectURL(thumbnailImage);
+            }else{
+              thumbnailURL = thumbnailImage;
+            }
+            $("#thumbnailImageDivEdit").html(`<img src="${thumbnailURL}" />`);
+          }else{
+            $("#videoUploadDivEdit").css("display","flex");
+            $("#videoLinkDivEdit").css("display","none");
+          }
+
           const maxVideoSize = 10 * 1024 * 1024;
-          //
 
           let button = document.querySelector('.top button'),
             form = document.querySelector('form'),
@@ -5336,11 +5892,13 @@
 
           var videoFile = []
 
+          if(videoType == "upload"){
           if (updatesClass === "updatesItems") {
             videoFile = videoContainerArrary[`${parentId}`]['files']
           } else {
             videoFile = videoContainerArrary[`${parentId}`]
-          }
+          }              
+        }
 
           let files = []
 
@@ -5371,6 +5929,7 @@
             //
           }
 
+
           let showEditVideos = () => {
             if (updatesClass === "updatesItems") {
               videoFile = videoContainerArrary[`${parentId}`]['files']
@@ -5394,7 +5953,13 @@
             showEditVideos()
           }
 
-          showEditVideos()
+          if(videoType === "upload"){
+            showEditVideos()
+          }
+          
+          if(videoType === "link"){
+            $(".videoModalContainerEdit").html("");
+          }
 
         }
         else if (element === "editAnimation") {
@@ -5502,9 +6067,6 @@
           let titleText = document.getElementById(id).innerText
 
           let bgColor = cardbgColor
-
-
-
 
           var pageTitle = ` <div class="col-md-12">
               <label for="pageTitle" class="form-label">Title</label>
@@ -6939,23 +7501,95 @@
 
         }
         else if (modalBody.children[0].className === "videoCard") {
+          let videoType = $('input[name="videoTypeEdit"]:checked').val();
+          let videoLink=$("#videoLinkInputEdit").val();
 
-
-          //
           var updatedElement = modalBody.children[0].id
           var editedElement = document.querySelector(".videoModalContainerEdit")
 
-          var videoSrc
+          tempArray[`${updatedElement}`]={...tempArray[`${updatedElement}`],videoType}
 
-          if (updatesClass === "updatesItems") {
-            videoSrc = videoContainerArrary[updatedElement]['files']
-          } else {
-            videoSrc = videoContainerArrary[updatedElement]
+          $(".video-link-error").remove();
+          $(".thumbnail-error").remove();
+
+          let videoPopupElem="";
+
+          if(videoType === "link"){
+            var ValidateUrlExp = /^(ftp|http|https|chrome|:\/\/|\.|@){2,}(localhost|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|\S*:\w*@)*([a-zA-Z]|(\d{1,3}|\.){7}){1,}(\w|\.{2,}|\.[a-zA-Z]{2,3}|\/|\?|&|:\d|@|=|\/|\(.*\)|#|-|%)*$/gum
+            let linkUrlValidate = ValidateUrlExp.test(videoLink)
+            if(thumbnailImage ==""){
+              $("#videoThumbnailEdit").after('<p class="error thumbnail-error">Please Upload the image.</p>');
+            }
+            if(videoLink !== "" && linkUrlValidate){
+              if(thumbnailImage !==""){
+                let thumbnailEditURL="";
+                if( typeof thumbnailImage === "object"){
+                  thumbnailEditURL = URL.createObjectURL(thumbnailImage)
+                }else{
+                  thumbnailEditURL = thumbnailImage;
+                }
+
+                videoPopupElem=  `<div class="video-thumbnail" onclick="videoPopupOpenEdit(this)" id="video_${updatedElement}">
+                                        <img src="${thumbnailEditURL}" alt="" />
+                                        <span><i class="fa-regular fa-circle-play"></i></span>
+                                    </div>`
+              }
+            }else{
+              $("#videoLinkInputEdit").after('<p class="error video-link-error">Please enter the valid URL.</p>');
+            }
           }
 
-          console.log(videoSrc, "src")
-          document.getElementById(editedElement.id).innerHTML = `<video src="${URL.createObjectURL(videoSrc)}" alt="" controls>`
-          $('#editModal').modal('hide');
+          var videoSrc;
+          let updateName = "";
+          if (updatesClass === "updatesItems") {
+            if(videoType === 'upload'){
+              videoSrc = videoContainerArrary[updatedElement]['files']
+              }
+            let updateClassName = document.querySelector('#createModal .modal-header h5').className;
+            updateClassName= updateClassName.split("_")[0];
+            var updateNum = updateClassName?.match(/\d/g);
+            updateNum = updateNum?.join("");
+            updateName = `updates${updateNum}`;
+          } else {
+            if(videoType === 'upload'){
+              videoSrc = videoContainerArrary[updatedElement]                    
+          }
+          }
+
+          let uploadVideoElem;
+
+          if(videoType === "link"){
+            document.getElementById(editedElement.id).innerHTML = videoPopupElem;
+          }else{
+            uploadVideoElem = `<video src="${URL.createObjectURL(videoSrc)}" alt="" controls>`;
+            document.getElementById(editedElement.id).innerHTML = uploadVideoElem;
+          }
+         
+          if (videoType==="link"){
+            var ValidateUrlExp = /^(ftp|http|https|chrome|:\/\/|\.|@){2,}(localhost|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|\S*:\w*@)*([a-zA-Z]|(\d{1,3}|\.){7}){1,}(\w|\.{2,}|\.[a-zA-Z]{2,3}|\/|\?|&|:\d|@|=|\/|\(.*\)|#|-|%)*$/gum
+            let linkUrlValidate = ValidateUrlExp.test(videoLink)
+            if(videoLink !== "" && linkUrlValidate){
+              if(thumbnailImage !==""){
+                if (updatesClass === "updatesItems") {
+                  tempArray[`${updatedElement}`]={...tempArray[`${updatedElement}`],type:"5",link:videoLink,image:thumbnailImage,updates:updateName}
+                  }else{
+                    tempArray[`${updatedElement}`]={...tempArray[`${updatedElement}`],type:"5",link:videoLink,image:thumbnailImage}
+                }
+                $('#editModal').modal('hide');
+              }
+            }
+          }
+          
+            $('#editModal').modal('hide');
+
+            videoPopupOpenEdit= (elem)=>{
+              let videoData = elem.id.split("_")[1];
+              let videoLinkData = tempArray[`${videoData}`].link
+              let videoelem = `<iframe height="345" src="${videoLinkData}?rel=0&amp;autoplay=1" allow="autoplay">
+                              </iframe>`
+              $("#videoPopupModal .modal-body").html(videoelem)
+              $("#videoPopupModal").modal('show')
+            }
         }
         else if (modalBody.children[0].className === "animationCard") {
 

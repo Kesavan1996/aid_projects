@@ -227,6 +227,19 @@
       </div>
     </div>
 
+        <!-- Video Popup Modal -->
+        <div class="modal fade" id="videoPopupModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="btn-close" onclick="closeVideoModal('videoPopupModal')" ></button>
+              </div>
+              <div class="modal-body">
+              </div>
+            </div>
+          </div>
+        </div>
+
     <!-- Modal -->
     <div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog">
@@ -420,7 +433,7 @@
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 
-    <script src="/assets/js/ckeditor/ckeditor.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.15.1/ckeditor.js"></script>
 
     <script>
       CKEDITOR.replace('editor');
@@ -479,6 +492,11 @@
 
       //Parent link change
       let parentLinkImageFile = '';
+
+      closeVideoModal = (modalElem)=>{
+        $(`#${modalElem}`).modal("hide");
+        $(`#${modalElem} iframe`).attr("src","");
+      }
 
       const openParentLink = () => {
         $('#parentLinkModal').modal('show');
@@ -688,6 +706,8 @@
       let popupImageTwo;
       let popupPdfTwo;
       let pageLogoImageTwo;
+
+      let thumbnailImage = '';
       
       let linkPopupImage='';
       let linkPopupText="";
@@ -1083,14 +1103,39 @@
 
             var videoArry = data.video
             var videoSrc = data.video
+            let videoType =  data.videoType ===  undefined ? 'upload':data.videoType;
+            let link="";
+
+            if(videoType === "link"){
+              link=data.link;
+              thumbnailImage = data.image[0];
+            }
 
             if (updatesElemId) {
-              videoContainerArrary[`DivvideoContainer${videoContainerId}`] = { video: videoArry, updates: `updates${idCount}` }
-              tempArray[`DivvideoContainer${videoContainerId}`] = { type: "5", video: videoArry, updates: `updates${idCount}` }
-            } else {
+              if(videoType === "upload"){
+                videoContainerArrary[`DivvideoContainer${videoContainerId}`] = { video: videoArry, updates: `updates${idCount}` }
+                tempArray[`DivvideoContainer${videoContainerId}`] = { type: "5", video: videoArry, videoType, updates: `updates${idCount}` }
+              }else{
+                tempArray[`DivvideoContainer${videoContainerId}`] = { type: "5", videoType, link, image:thumbnailImage, updates: `updates${idCount}` }
+              }
 
-              videoContainerArrary[`DivvideoContainer${videoContainerId}`] = videoArry
-              tempArray[`DivvideoContainer${videoContainerId}`] = { type: "5", video: videoArry }
+            } else {
+              if(videoType === "upload"){
+                videoContainerArrary[`DivvideoContainer${videoContainerId}`] = videoArry
+                tempArray[`DivvideoContainer${videoContainerId}`] = { type: "5",videoType, video: videoArry }
+              }else{
+                tempArray[`DivvideoContainer${videoContainerId}`] = { type: "5",link, videoType,image:thumbnailImage}
+              }
+
+            }
+
+            let videoPopupElem="";
+
+            if(videoType === "link"){
+                  videoPopupElem=  `<div class="video-thumbnail" onclick="videoPopupOpen(this)" id="video_DivvideoContainer${videoContainerId}">
+                                          <img src="${thumbnailImage}" alt="" />
+                                          <span><i class="fa-regular fa-circle-play"></i></span>
+                                      </div>`
             }
 
             var videoContainer = document.createElement("div")
@@ -1116,7 +1161,12 @@
             videos = `<video class="" controls  preload="auto" alt="video">
                     <source src=${videoSrc} />
                 </video>`
-            videoContainer.innerHTML = videos
+            if(videoType === "link"){
+              videoContainer.innerHTML= videoPopupElem
+            }else{
+              videoContainer.innerHTML = videos
+            }
+              
             let inputElem = document.querySelector(".videoModalContainer")
 
             $('#createModal').modal('hide');
@@ -1129,6 +1179,17 @@
             //
             submitBtnDiv.style.display = "block"
             videoContainerId += 1
+
+            videoPopupOpen= (elem)=>{
+              let videoData = elem.id.split("_")[1];
+              console.log(videoData,"data")
+              let videoLinkData = tempArray[`${videoData}`].link
+              console.log(videoLinkData,"data")
+              let videoelem = `<iframe height="345" src="${videoLinkData}?rel=0&amp;autoplay=1" allow="autoplay">
+                              </iframe>`
+              $("#videoPopupModal .modal-body").html(videoelem)
+              $("#videoPopupModal").modal('show')
+            }
           }
           /* else if(data.type==="6"){
              var div = document.createElement('div')
@@ -2230,17 +2291,90 @@
           cardDiv.className = "videoCard"
           cardDiv.id = "videoContainer" + videoContainerId
 
-          //
-          cardDiv.innerHTML = `<div class="top">
-                </div>
-                <form action="" method="post" class="dragover">
-                  <input name="file" type="file" class="file" id="videoInputField" onchange="videoOnChange(this)" accept="video/mp4" hidden />
-                    <label class="file-choose-label" for="videoInputField">Choose Video</label>
-                    <span id="videoChosen">No video chosen</span>
-                </form>
-                <div class="videoModalContainer"></div>`
+          thumbnailImage="";
+
+          cardDiv.innerHTML = `<div class="video-option mb-3">
+                          <fieldset>
+                          <legend class="col-form-label pt-0">Video Type:</legend>
+                          <div class="video-option-div">
+                            <div class="form-check form-check-inline">
+                              <input class="form-check-input" type="radio" name="videoType" id="videoUpload" value="upload" onchange="videoTypeChange(this)" checked>
+                              <label class="form-check-label" for="videoUpload">
+                                Upload
+                              </label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                              <input class="form-check-input" type="radio" name="videoType" id="videoLink" value="link" onchange="videoTypeChange(this)" >
+                              <label class="form-check-label" for="videoLink">
+                                Link
+                              </label>
+                            </div>
+                          </div>
+                      </fieldset>
+                      </div>
+                  <form action="" method="post" class="dragover" id="videoUploadDiv">
+                      <input name="file" type="file" class="file" id="videoInputField" onchange="videoOnChange(this)" accept="video/mp4" hidden />
+                      <label class="file-choose-label" for="videoInputField">Choose Video</label>
+                      <span id="videoChosen">No video chosen</span>
+                  </form>
+                  <div class="video-link-container" id="videoLinkDiv" style="display:none">
+                    <div class="input-div">
+                      <label>Video Link:</label>
+                      <div class="video-input">
+                        <input class="form-control" type="text" id="videoLinkInput" onkeyup="inputVerify(this)" />
+                      </div>
+                    </div>
+                    <div class="video-thumbnail-container">
+                      <p>Thumbnail:</p>
+                      <div class="thumbnail-input">
+                        <label class="file-choose-label" for="videoThumbnail">Choose Image</label>
+                        <input type="file" id="videoThumbnail" onchange="videoThumbChange(this)" accept="image/png, image/jpeg" hidden />
+                      </div>
+                      <div id="thumbnailImageDiv"></div>
+                    </div>
+                  </div>
+              <div class="videoModalContainer"></div>`
 
           modalBody.appendChild(cardDiv)
+
+          $(".video-link-error").remove();
+
+          inputVerify = (e)=>{
+            let videoLink= $(e).val();
+            var ValidateUrlExp = /^(ftp|http|https|chrome|:\/\/|\.|@){2,}(localhost|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|\S*:\w*@)*([a-zA-Z]|(\d{1,3}|\.){7}){1,}(\w|\.{2,}|\.[a-zA-Z]{2,3}|\/|\?|&|:\d|@|=|\/|\(.*\)|#|-|%)*$/gum
+            let linkUrlValidate = ValidateUrlExp.test(videoLink)
+
+            $(".video-link-error").remove();
+            if(linkUrlValidate === false){
+              $(e).after('<p class="error video-link-error">Please enter the valid URL.</p>')
+            }else{
+              $(".video-link-error").remove();
+            }
+          }
+
+          videoTypeChange = (elem)=>{
+            let videoTypeOption = $(elem).val();
+            if(videoTypeOption === "upload"){
+              $("#videoUploadDiv").css("display","flex");
+              $("#videoLinkDiv").css("display","none");
+            }else{
+              $("#videoUploadDiv").css("display","none");
+              $("#videoLinkDiv").css("display","flex");
+              $(".videoModalContainer").html("");
+            }
+          }
+
+          videoThumbChange = (elem)=>{
+            $(".thumbnail-error").remove();
+            let sizeInMb = elem.files[0].size / (1024 * 1024);
+            if(sizeInMb < 5){
+              thumbnailImage = elem.files[0];
+              $("#thumbnailImageDiv").html(`<img src="${URL.createObjectURL(thumbnailImage)}" />`);
+            }else{
+              $(elem).after('<p class="error thumbnail-error">Image should be less than 5MB.</p>');
+            }
+          }
+
 
           const maxAllowedSize = 10 * 1024 * 1024;
 
@@ -3417,17 +3551,89 @@
           cardDiv.className = "videoCard"
           cardDiv.id = "videoContainer" + videoContainerId
 
-          //
-          cardDiv.innerHTML = `<div class="top">
-                </div>
-                <form action="" method="post" class="dragover">
-                    <input name="file" type="file" class="file" id="videoInputField" onchange="videoOnChange(this)" accept="video/mp4" hidden />
-                    <label class="file-choose-label" for="videoInputField">Choose Video</label>
-                    <span id="videoChosen">No video chosen</span>
+          thumbnailImage="";
+          cardDiv.innerHTML = `<div class="video-option mb-3">
+                            <fieldset>
+                            <legend class="col-form-label pt-0">Video Type:</legend>
+                            <div class="video-option-div">
+                              <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="videoType" id="videoUpload" value="upload" onchange="videoTypeChange(this)" checked>
+                                <label class="form-check-label" for="videoUpload">
+                                  Upload
+                                </label>
+                              </div>
+                              <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="videoType" id="videoLink" value="link" onchange="videoTypeChange(this)" >
+                                <label class="form-check-label" for="videoLink">
+                                  Link
+                                </label>
+                              </div>
+                            </div>
+                        </fieldset>
+                        </div>
+                <form action="" method="post" class="dragover" id="videoUploadDiv">
+                  <input name="file" type="file" class="file" id="videoInputField" onchange="videoOnChange(this)" accept="video/mp4" hidden />
+                  <label class="file-choose-label" for="videoInputField">Choose Video</label>
+                  <span id="videoChosen">No video chosen</span>
                 </form>
+                <div class="video-link-container" id="videoLinkDiv" style="display:none">
+                      <div class="input-div">
+                        <label>Video Link:</label>
+                        <div class="video-input">
+                          <input class="form-control" type="text" id="videoLinkInput" onkeyup="inputVerify(this)" />
+                        </div>
+                      </div>
+                      <div class="video-thumbnail-container">
+                        <p>Thumbnail:</p>
+                        <div class="thumbnail-input">
+                          <label class="file-choose-label" for="videoThumbnail">Choose Image</label>
+                          <input type="file" id="videoThumbnail" onchange="videoThumbChange(this)" accept="image/png, image/jpeg" hidden />
+                        </div>
+                        <div id="thumbnailImageDiv"></div>
+                      </div>
+                    </div>
                 <div class="videoModalContainer"></div>`
 
+
           modalBody.appendChild(cardDiv)
+          $(".video-link-error").remove();
+
+          inputVerify = (e)=>{
+            let videoLink= $(e).val();
+            var ValidateUrlExp = /^(ftp|http|https|chrome|:\/\/|\.|@){2,}(localhost|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|\S*:\w*@)*([a-zA-Z]|(\d{1,3}|\.){7}){1,}(\w|\.{2,}|\.[a-zA-Z]{2,3}|\/|\?|&|:\d|@|=|\/|\(.*\)|#|-|%)*$/gum
+            let linkUrlValidate = ValidateUrlExp.test(videoLink)
+
+            $(".video-link-error").remove();
+            if(linkUrlValidate === false){
+              $(e).after('<p class="error video-link-error">Please enter the valid URL.</p>')
+            }else{
+              $(".video-link-error").remove();
+            }
+          }
+
+          videoTypeChange = (elem)=>{
+            let videoTypeOption = $(elem).val();
+            if(videoTypeOption === "upload"){
+              $("#videoUploadDiv").css("display","flex");
+              $("#videoLinkDiv").css("display","none");
+            }else{
+              $("#videoUploadDiv").css("display","none");
+              $("#videoLinkDiv").css("display","flex");
+              $(".videoModalContainer").html("");
+            }
+          }
+
+          videoThumbChange = (elem)=>{
+            $(".thumbnail-error").remove();
+            let sizeInMb = elem.files[0].size / (1024 * 1024);
+            if(sizeInMb < 5){
+              thumbnailImage = elem.files[0];
+              $("#thumbnailImageDiv").html(`<img src="${URL.createObjectURL(thumbnailImage)}" />`);
+            }else{
+              $(elem).after('<p class="error thumbnail-error">Image should be less than 5MB.</p>');
+            }
+          }
+
 
           const maxAllowedSize = 10 * 1024 * 1024;
 
@@ -4811,10 +5017,12 @@
 
           let keyId = modalBody.children[0].id
 
+          let videoType = $('input[name="videoType"]:checked').val();
+          let videoLink=$("#videoLinkInput").val();
+
           var div = document.createElement('div')
           div.className = "videoContainer dragDiv"
           div.id = `Div${keyId}`
-          div.draggable = true
           var dropImg = document.createElement("img")
           dropImg.className = "dragImg"
           dropImg.height = 20
@@ -4840,15 +5048,50 @@
           var videoSrc = videoDIv?.children[0].src
 
           var videoLocalSrc;
+          let updateName="";
 
           if (pageTitle !== "") {
-            videoLocalSrc = videoContainerArrary[`Div${parentContainerVideo[0].id}`]["files"]
+            if(videoType === 'upload'){
+              videoLocalSrc = videoContainerArrary[`Div${parentContainerVideo[0].id}`]["files"]
+          }
+           let updateClassName = document.querySelector('#createModal .modal-header h5').className;
+           updateClassName= updateClassName.split("_")[0]
+           var updateNum = updateClassName?.match(/\d/g);
+           updateNum = updateNum?.join("");
+            updateName = `updates${updateNum}`;
           } else {
-            videoLocalSrc = videoContainerArrary[`Div${parentContainerVideo[0].id}`]
+            if(videoType === 'upload'){
+              videoLocalSrc = videoContainerArrary[`Div${parentContainerVideo[0].id}`]
+          }
           }
 
+          tempArray[`Div${parentContainerVideo[0].id}`]={...tempArray[`Div${parentContainerVideo[0].id}`],videoType}
+
+          $(".video-link-error").remove();
+          $(".thumbnail-error").remove();
+
+          let videoPopupElem="";
+
+          if(videoType === "link"){
+            var ValidateUrlExp = /^(ftp|http|https|chrome|:\/\/|\.|@){2,}(localhost|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|\S*:\w*@)*([a-zA-Z]|(\d{1,3}|\.){7}){1,}(\w|\.{2,}|\.[a-zA-Z]{2,3}|\/|\?|&|:\d|@|=|\/|\(.*\)|#|-|%)*$/gum
+            let linkUrlValidate = ValidateUrlExp.test(videoLink)
+            if(thumbnailImage ==""){
+              $("#videoThumbnail").after('<p class="error thumbnail-error">Please Upload the image.</p>');
+            }
+            if(videoLink !== "" && linkUrlValidate){
+              if(thumbnailImage !==""){
+                videoPopupElem=  `<div class="video-thumbnail" onclick="videoPopupOpen(this)" id="video_Div${parentContainerVideo[0].id}">
+                                        <img src="${URL.createObjectURL(thumbnailImage)}" alt="" />
+                                        <span><i class="fa-regular fa-circle-play"></i></span>
+                                    </div>`
+              }
+            }else{
+              $("#videoLinkInput").after('<p class="error video-link-error">Please enter the valid URL.</p>');
+            }
+          }
+
+
           var videoName = videoLocalSrc?.name
-          var videoType = videoLocalSrc?.type
 
           var videoContainer = document.createElement("div")
           videoContainer.className = "videosDiv"
@@ -4874,9 +5117,14 @@
           let videos = '';
 
           videos = `<video class="video-js vjs-big-play-centered vjs-show-big-play-button-on-pause" controls  preload="auto" alt="video">
-                <source src=${videoSrc} type=${videoType} />
+                <source src=${videoSrc} />
             </video>`
-          videoContainer.innerHTML = videos
+
+            if(videoType === "link"){
+              videoContainer.innerHTML= videoPopupElem
+            }else{
+              videoContainer.innerHTML = videos
+            }
 
           //
           videoTempId = parentContainerVideo[0].id;
@@ -4892,26 +5140,29 @@
             parentDivId = updatesContentId.split("").pop()
           }
 
+          let videoParentElem= document.createElement('div');
+          videoParentElem.className= "videoContainer"
+          videoParentElem.innerHTML=videoPopupElem;
+
+          div.appendChild(dropImg)
+          div.appendChild(videoContainer)
+          div.appendChild(clickTag)
+          div.appendChild(deleteTag)
+
 
           let inputElem = document.querySelector(".videoModalContainer")
+
+          if(videoType === "upload"){
 
           if (inputElem.innerHTML !== "") {
 
             if (pageTitle !== "") {
               $('#createModal').modal('hide');
               document.getElementById("emptyPage")?.remove()
-              div.appendChild(dropImg)
-              div.appendChild(videoContainer)
-              div.appendChild(clickTag)
-              div.appendChild(deleteTag)
               updatesContent.appendChild(div)
             } else {
               $('#createModal').modal('hide');
               document.getElementById("emptyPage")?.remove()
-              div.appendChild(dropImg)
-              div.appendChild(videoContainer)
-              div.appendChild(clickTag)
-              div.appendChild(deleteTag)
               contentCards.appendChild(div)
             }
             submitBtnDiv.style.display = "block"
@@ -4922,6 +5173,34 @@
               inputElem.insertAdjacentHTML('afterend', '<p class="error">Please upload the video.</p>');
             }
           }
+            
+        }else{
+          var ValidateUrlExp = /^(ftp|http|https|chrome|:\/\/|\.|@){2,}(localhost|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|\S*:\w*@)*([a-zA-Z]|(\d{1,3}|\.){7}){1,}(\w|\.{2,}|\.[a-zA-Z]{2,3}|\/|\?|&|:\d|@|=|\/|\(.*\)|#|-|%)*$/gum
+          let linkUrlValidate = ValidateUrlExp.test(videoLink)
+          if(videoLink !== "" && linkUrlValidate){
+            if(thumbnailImage !==""){
+              submitBtnDiv.style.display = "block"
+              $('#createModal').modal('hide');
+              if (pageTitle !== "") {
+                tempArray[`Div${parentContainerVideo[0].id}`]={...tempArray[`Div${parentContainerVideo[0].id}`],type:"5",link:videoLink,image:thumbnailImage, updates:updateName}
+                updatesContent.appendChild(div)
+              }else{
+                tempArray[`Div${parentContainerVideo[0].id}`]={...tempArray[`Div${parentContainerVideo[0].id}`],type:"5",link:videoLink,image:thumbnailImage}
+                contentCards.appendChild(div)
+              }
+              videoContainerId += 1
+            }
+          }
+        }
+
+        videoPopupOpen= (elem)=>{
+          let videoData = elem.id.split("_")[1];
+          let videoLinkData = tempArray[`${videoData}`].link
+          let videoelem = `<iframe height="345" src="${videoLinkData}?rel=0&amp;autoplay=1" allow="autoplay">
+                          </iframe>`
+          $("#videoPopupModal .modal-body").html(videoelem)
+          $("#videoPopupModal").modal('show')
+        }
         }
         else if (modalBody.children[0].className === "formClass") {
 
@@ -6442,6 +6721,14 @@
           $('#editModal').modal('show');
           var paramId = id
           let videosList = videoContainerArrary[`${parentId}`]
+          let videoType = tempArray[`${parentId}`]['videoType']===undefined?"upload":tempArray[`${parentId}`]['videoType'];
+          let videoLink="";
+          thumbnailImage="";
+
+          if(videoType === "link"){
+            thumbnailImage=tempArray[`${parentId}`]['image'];
+            videoLink= tempArray[`${parentId}`]['link'];
+          }
           var modalTitle = document.getElementById("EditPageTitle")
           modalTitle.innerText = "Edit Video"
 
@@ -6456,17 +6743,105 @@
           cardDiv.className = "videoCard"
           //
           cardDiv.id = parentId
-          cardDiv.innerHTML = `<div class="top">
+          cardDiv.innerHTML = `<div class="video-option mb-3">
+            <fieldset>
+            <legend class="col-form-label pt-0">Video Type:</legend>
+            <div class="video-option-div">
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="videoTypeEdit" id="videoUploadEdit" value="upload" onchange="videoTypeChangeEdit(this)" checked>
+                <label class="form-check-label" for="videoUploadEdit">
+                  Upload
+                </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="videoTypeEdit" id="videoLinkEdit" value="link" onchange="videoTypeChangeEdit(this)" >
+                <label class="form-check-label" for="videoLinkEdit">
+                  Link
+                </label>
+              </div>
+            </div>
+        </fieldset>
+        </div>
+        <form action="" method="post" class="dragover" id="videoUploadDivEdit">
+          <input name="file" type="file" class="file" id="videoInputEditId" onchange="videoOnChangeEdit(this)" accept="video/mp4" hidden />
+          <label class="file-choose-label" for="videoInputEditId">Choose Video</label>
+          <span id="videoEditChosen">No video chosen</span>
+        </form>
+        <div class="video-link-container" id="videoLinkDivEdit" style="display:none">
+              <div class="input-div">
+                <label>Video Link:</label>
+                <div class="video-input">
+                  <input class="form-control" type="text" id="videoLinkInputEdit" onkeyup="inputVerifyEdit(this)" />
                 </div>
-                <form action="" method="post" class="dragover">
-                    <input name="file" type="file" class="file" id="videoInputEditId" onchange="videoOnChangeEdit(this)" accept="video/mp4" hidden />
-                    <label class="file-choose-label" for="videoInputEditId">Choose Video</label>
-                    <span id="videoEditChosen">No video chosen</span>
-                </form>
-                <div class="videoModalContainerEdit" id=${paramId}>
-                </div>`
+              </div>
+              <div class="video-thumbnail-container">
+                <p>Thumbnail:</p>
+                <div class="thumbnail-input">
+                  <label class="file-choose-label" for="videoThumbnailEdit">Choose Image</label>
+                  <input type="file" id="videoThumbnailEdit" onchange="videoThumbChangeEdit(this)" accept="image/png, image/jpeg" hidden />
+                </div>
+                <div id="thumbnailImageDivEdit"></div>
+              </div>
+            </div>
+        <div class="videoModalContainerEdit" id=${paramId}>
+        </div>`
 
           modalBody.appendChild(cardDiv)
+
+          inputVerifyEdit = (e)=>{
+            let videoLink= $(e).val();
+            var ValidateUrlExp = /^(ftp|http|https|chrome|:\/\/|\.|@){2,}(localhost|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|\S*:\w*@)*([a-zA-Z]|(\d{1,3}|\.){7}){1,}(\w|\.{2,}|\.[a-zA-Z]{2,3}|\/|\?|&|:\d|@|=|\/|\(.*\)|#|-|%)*$/gum
+            let linkUrlValidate = ValidateUrlExp.test(videoLink)
+
+            $(".video-link-error").remove();
+            if(linkUrlValidate === false){
+              $(e).after('<p class="error video-link-error">Please enter the valid URL.</p>')
+            }else{
+              $(".video-link-error").remove();
+            }
+          }
+          
+          videoTypeChangeEdit = (elem)=>{
+            let videoTypeOption = $(elem).val();
+            if(videoTypeOption === "upload"){
+              $("#videoUploadDivEdit").css("display","flex");
+              $("#videoLinkDivEdit").css("display","none");
+            }else{
+              $("#videoUploadDivEdit").css("display","none");
+              $("#videoLinkDivEdit").css("display","flex");
+              $(".videoModalContainerEdit").html("");
+            }
+          }
+
+          videoThumbChangeEdit = (elem)=>{
+            $(".thumbnail-error").remove();
+            let sizeInMb = elem.files[0].size / (1024 * 1024);
+            if(sizeInMb < 5){
+              thumbnailImage = elem.files[0];
+              $("#thumbnailImageDivEdit").html(`<img src="${URL.createObjectURL(thumbnailImage)}" />`);
+            }else{
+              $(elem).after('<p class="error thumbnail-error">Image should be less than 5MB.</p>');
+            }
+          }
+
+          $(`input[name=videoTypeEdit][value=${videoType}]`).prop("checked", true);
+
+          if(videoType === "link"){
+            $("#videoUploadDivEdit").css("display","none");
+            $("#videoLinkDivEdit").css("display","flex");
+            $(".videoModalContainerEdit").html("");
+            $("#videoLinkInputEdit").val(videoLink);
+            let thumbnailURL = "";
+            if(typeof thumbnailImage === "object"){
+              thumbnailURL = URL.createObjectURL(thumbnailImage);
+            }else{
+              thumbnailURL = thumbnailImage;
+            }
+            $("#thumbnailImageDivEdit").html(`<img src="${thumbnailURL}" />`);
+          }else{
+            $("#videoUploadDivEdit").css("display","flex");
+            $("#videoLinkDivEdit").css("display","none");
+          }
 
           //
           const maxVideoSize = 10 * 1024 * 1024;
@@ -6480,12 +6855,13 @@
           var inputFile = document.querySelector('form input')
 
           var videoFile = []
-
+          if(videoType == "upload"){
           if (updatesClass === "updatesItems") {
             videoFile = videoContainerArrary[`${parentId}`]['video'][0]
           } else {
             videoFile = videoContainerArrary[`${parentId}`]
           }
+        }
 
           let files = []
 
@@ -6540,7 +6916,13 @@
             showEditVideos()
           }
 
-          showEditVideos()
+          if(videoType === "upload"){
+            showEditVideos()
+          }
+
+          if(videoType === "link"){
+            $(".videoModalContainerEdit").html("");
+          }
 
         }
         else if (element === "editAnimation") {
@@ -8121,18 +8503,94 @@
         }
         else if (modalBody.children[0].className === "videoCard") {
 
+          let videoType = $('input[name="videoTypeEdit"]:checked').val();
+          let videoLink=$("#videoLinkInputEdit").val();
+
           var updatedElement = modalBody.children[0].id
           var editedElement = document.querySelector(".videoModalContainerEdit")
 
-          var videoSrc
+         
+          tempArray[`${updatedElement}`]={...tempArray[`${updatedElement}`],videoType}
 
-          if (updatesClass === "updatesItems") {
-            videoSrc = videoContainerArrary[updatedElement]['files']
-          } else {
-            videoSrc = videoContainerArrary[updatedElement]
+          $(".video-link-error").remove();
+          $(".thumbnail-error").remove();
+
+          let videoPopupElem="";
+
+          if(videoType === "link"){
+            var ValidateUrlExp = /^(ftp|http|https|chrome|:\/\/|\.|@){2,}(localhost|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|\S*:\w*@)*([a-zA-Z]|(\d{1,3}|\.){7}){1,}(\w|\.{2,}|\.[a-zA-Z]{2,3}|\/|\?|&|:\d|@|=|\/|\(.*\)|#|-|%)*$/gum
+            let linkUrlValidate = ValidateUrlExp.test(videoLink)
+            if(thumbnailImage ==""){
+              $("#videoThumbnailEdit").after('<p class="error thumbnail-error">Please Upload the image.</p>');
+            }
+            if(videoLink !== "" && linkUrlValidate){
+              if(thumbnailImage !==""){
+                let thumbnailEditURL="";
+                if( typeof thumbnailImage === "object"){
+                  thumbnailEditURL = URL.createObjectURL(thumbnailImage)
+                }else{
+                  thumbnailEditURL = thumbnailImage;
+                }
+
+                videoPopupElem=  `<div class="video-thumbnail" onclick="videoPopupOpenEdit(this)" id="video_${updatedElement}">
+                                        <img src="${thumbnailEditURL}" alt="" />
+                                        <span><i class="fa-regular fa-circle-play"></i></span>
+                                    </div>`
+              }
+            }else{
+              $("#videoLinkInputEdit").after('<p class="error video-link-error">Please enter the valid URL.</p>');
+            }
           }
-          document.getElementById(editedElement.id).innerHTML = `<video src="${URL.createObjectURL(videoSrc)}" alt="" controls>`
+
+          var videoSrc;
+          let updateName = "";
+          if (updatesClass === "updatesItems") {
+            if(videoType === 'upload'){
+              videoSrc = videoContainerArrary[updatedElement]['files']
+              }
+            let updateClassName = document.querySelector('#createModal .modal-header h5').className;
+            updateClassName= updateClassName.split("_")[0];
+            var updateNum = updateClassName?.match(/\d/g);
+            updateNum = updateNum?.join("");
+            updateName = `updates${updateNum}`;
+          } else {
+              if(videoType === 'upload'){
+                videoSrc = videoContainerArrary[updatedElement]                    
+            }
+          }
+          let uploadVideoElem;
+
+          if(videoType === "link"){
+            document.getElementById(editedElement.id).innerHTML = videoPopupElem;
+          }else{
+            uploadVideoElem = `<video src="${URL.createObjectURL(videoSrc)}" alt="" controls>`;
+            document.getElementById(editedElement.id).innerHTML = uploadVideoElem;
+          }
+         
+          if (videoType==="link"){
+            var ValidateUrlExp = /^(ftp|http|https|chrome|:\/\/|\.|@){2,}(localhost|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|\S*:\w*@)*([a-zA-Z]|(\d{1,3}|\.){7}){1,}(\w|\.{2,}|\.[a-zA-Z]{2,3}|\/|\?|&|:\d|@|=|\/|\(.*\)|#|-|%)*$/gum
+            let linkUrlValidate = ValidateUrlExp.test(videoLink)
+            if(videoLink !== "" && linkUrlValidate){
+              if(thumbnailImage !==""){
+                if (updatesClass === "updatesItems") {
+                  tempArray[`${updatedElement}`]={...tempArray[`${updatedElement}`],type:"5",link:videoLink,image:thumbnailImage,updates:updateName}
+                  }else{
+                    tempArray[`${updatedElement}`]={...tempArray[`${updatedElement}`],type:"5",link:videoLink,image:thumbnailImage}
+                }
+                $('#editModal').modal('hide');
+              }
+            }
+          }
           $('#editModal').modal('hide');
+
+          videoPopupOpenEdit= (elem)=>{
+            let videoData = elem.id.split("_")[1];
+            let videoLinkData = tempArray[`${videoData}`].link
+            let videoelem = `<iframe height="345" src="${videoLinkData}?rel=0&amp;autoplay=1" allow="autoplay">
+                            </iframe>`
+            $("#videoPopupModal .modal-body").html(videoelem)
+            $("#videoPopupModal").modal('show')
+          }
         }
         else if (modalBody.children[0].className === "animationCard") {
 

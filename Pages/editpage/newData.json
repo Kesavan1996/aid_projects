@@ -48,6 +48,12 @@
       "bgColor": "#fcfcfc"
     },
     {
+      "videoType": "link",
+      "type": "5",
+      "link": "https://www.youtube.com/embed/K4TOrB7at0Y?si=RSimAeHJ6uV692x-",
+      "image": ["../../assets/img/img3.jpg"]
+    },
+    {
       "type": "8",
       "btnCount": "one",
       "buttons": [
