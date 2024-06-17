@@ -2009,6 +2009,11 @@ label.radio {
     display: flex;
     gap: 10px;
 }
+.sub-text{
+    margin-bottom: 0;
+    font-size: 14px;
+    color: grey;
+}
 
 .input-div .add-more-btn,
 .input-div .delete-btn{

@@ -702,6 +702,13 @@
         Animation: 10
       })
 
+      function matchYoutubeUrl(url) {
+        var p = /^(?:https?:\/\/)?(?:m\.|www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/;
+        if(url.match(p)){
+            return url.match(p)[1];
+        }
+        return false;
+    }
 
 
 
@@ -1060,6 +1067,7 @@
                           <label>Video Link:</label>
                           <div class="video-input">
                             <input class="form-control" type="text" id="videoLinkInput" onkeyup="inputVerify(this)" />
+                            <p class="sub-text">(Ex:https://www.youtube.com/embed/video_id)</p>
                           </div>
                         </div>
                         <div class="video-thumbnail-container">
@@ -1078,8 +1086,7 @@
 
           inputVerify = (e)=>{
             let videoLink= $(e).val();
-            var ValidateUrlExp = /^(ftp|http|https|chrome|:\/\/|\.|@){2,}(localhost|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|\S*:\w*@)*([a-zA-Z]|(\d{1,3}|\.){7}){1,}(\w|\.{2,}|\.[a-zA-Z]{2,3}|\/|\?|&|:\d|@|=|\/|\(.*\)|#|-|%)*$/gum
-            let linkUrlValidate = ValidateUrlExp.test(videoLink)
+            let linkUrlValidate = matchYoutubeUrl(videoLink)
 
             $(".video-link-error").remove();
             if(linkUrlValidate === false){
@@ -2613,6 +2620,7 @@
                           <label>Video Link:</label>
                           <div class="video-input">
                             <input class="form-control" type="text" id="videoLinkInput" onkeyup="inputVerify(this)" />
+                            <p class="sub-text">(Ex:https://www.youtube.com/embed/video_id)</p>
                           </div>
                         </div>
                         <div class="video-thumbnail-container">
@@ -2632,7 +2640,7 @@
           inputVerify = (e)=>{
             let videoLink= $(e).val();
             var ValidateUrlExp = /^(ftp|http|https|chrome|:\/\/|\.|@){2,}(localhost|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|\S*:\w*@)*([a-zA-Z]|(\d{1,3}|\.){7}){1,}(\w|\.{2,}|\.[a-zA-Z]{2,3}|\/|\?|&|:\d|@|=|\/|\(.*\)|#|-|%)*$/gum
-            let linkUrlValidate = ValidateUrlExp.test(videoLink)
+            let linkUrlValidate = matchYoutubeUrl(videoLink)
 
             $(".video-link-error").remove();
             if(linkUrlValidate === false){
@@ -4171,7 +4179,7 @@
 
           if(videoType === "link"){
             var ValidateUrlExp = /^(ftp|http|https|chrome|:\/\/|\.|@){2,}(localhost|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|\S*:\w*@)*([a-zA-Z]|(\d{1,3}|\.){7}){1,}(\w|\.{2,}|\.[a-zA-Z]{2,3}|\/|\?|&|:\d|@|=|\/|\(.*\)|#|-|%)*$/gum
-            let linkUrlValidate = ValidateUrlExp.test(videoLink)
+            let linkUrlValidate = matchYoutubeUrl(videoLink)
             if(thumbnailImage ==""){
               $("#videoThumbnail").after('<p class="error thumbnail-error">Please Upload the image.</p>');
             }
@@ -4271,7 +4279,7 @@
            
           }else{
             var ValidateUrlExp = /^(ftp|http|https|chrome|:\/\/|\.|@){2,}(localhost|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|\S*:\w*@)*([a-zA-Z]|(\d{1,3}|\.){7}){1,}(\w|\.{2,}|\.[a-zA-Z]{2,3}|\/|\?|&|:\d|@|=|\/|\(.*\)|#|-|%)*$/gum
-            let linkUrlValidate = ValidateUrlExp.test(videoLink)
+            let linkUrlValidate = matchYoutubeUrl(videoLink)
             if(videoLink !== "" && linkUrlValidate){
               if(thumbnailImage !==""){
                 submitBtnDiv.style.display = "block"
@@ -4950,6 +4958,7 @@
           let menuBtnInfo;
 
 
+
           if(btnCount === "menu"){
             menuBtnInfo = menuBtnData;
           }else{
@@ -4987,11 +4996,15 @@
 
           let buttons = [];
 
-          buttons.push(buttonOneInfo);
-
-          if (btnCount === "two") {
+          if(btnCount === "one"){
+            buttons.push(buttonOneInfo);
+          }else if (btnCount === "two") {
+            buttons.push(buttonOneInfo);
             buttons.push(buttonTwoInfo);
+          }else{
+            buttons=[...menuBtnInfo.map(obj=>obj)];
           }
+
           linkDiv.innerHTML = btnTag;
 
           let updatesContent;
@@ -5026,8 +5039,6 @@
             $('#createModal').modal('hide');
             buttonId += 1;
           }
-
-          console.log(tempArray,"temp")
 
 
           let modalContent = '';
@@ -5809,6 +5820,7 @@
                           <label>Video Link:</label>
                           <div class="video-input">
                             <input class="form-control" type="text" id="videoLinkInputEdit" onkeyup="inputVerifyEdit(this)" />
+                             <p class="sub-text">(Ex:https://www.youtube.com/embed/video_id)</p>
                           </div>
                         </div>
                         <div class="video-thumbnail-container">
@@ -5828,7 +5840,7 @@
           inputVerifyEdit = (e)=>{
             let videoLink= $(e).val();
             var ValidateUrlExp = /^(ftp|http|https|chrome|:\/\/|\.|@){2,}(localhost|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|\S*:\w*@)*([a-zA-Z]|(\d{1,3}|\.){7}){1,}(\w|\.{2,}|\.[a-zA-Z]{2,3}|\/|\?|&|:\d|@|=|\/|\(.*\)|#|-|%)*$/gum
-            let linkUrlValidate = ValidateUrlExp.test(videoLink)
+            let linkUrlValidate = matchYoutubeUrl(videoLink)
 
             $(".video-link-error").remove();
             if(linkUrlValidate === false){
@@ -6210,9 +6222,16 @@
                                           Double
                                         </label>
                                       </div>
+                                        <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="radio" name="buttonCountEdit" id="menuEdit" value="menu" onchange="buttonCountChangeEdit(this)" >
+                                  <label class="form-check-label" for="menu">
+                                    Menu
+                                  </label>
+                                </div>
                                     </div>
                                 </fieldset>
                               </div>
+                              <div class="gap-3 flex-column" id="firstBtnDiv" style="display:flex">
                                 <div class="col-12">
                                   <fieldset class="row">
                                     <legend class="col-form-label col-4 pt-0">Button Type:</legend>
@@ -6344,6 +6363,7 @@
                                 <div id="linkFormEdit">
                                 </div>
                               </div>
+                            </div>
                             </div>
                           </div>
                         </div>`
@@ -6487,6 +6507,60 @@
                         </div>
                     </div>`
 
+                    let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDivEdit" style="display:none">
+                      <div class="menu-btns">
+                        <form class="row gap-3" class="menuBtnForm" id="menuBtnEdit0">
+                         <div class="col-12">
+                              <input type="text" class="form-control" name="btnName" placeholder="Name">
+                            </div>
+                            <div class="col-12">
+                              <input type="text" class="form-control" name="link" placeholder="Link">
+
+                            </div>
+                            <div class="col-12">
+                              <div class="row align-items-center">
+                              <label for="colorPickerId" class="form-label col-6">Background Color</label>
+                              <div class="col-4">
+                                <input type="color" class="form-control form-control-color" name="bgColor" value="#b3b3b3">
+                              </div>
+                            </div>
+                            </div>
+                            <div class="col-12">
+                              <fieldset class="row mb-2 mt-2">
+                                <legend class="col-form-label col-sm-2 pt-0">Position:</legend>
+                                <div class="col-sm-10">
+                                  <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="menuBtnPosition" id="menuLeftEdit0" value="left">
+                                    <label class="form-check-label" for="menuLeftEdit0">
+                                      Left
+                                    </label>
+                                  </div>
+                                  <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="menuBtnPosition" id="menuCenterEdit0" value="center" checked>
+                                    <label class="form-check-label" for="menuCenterEdit0">
+                                      Center
+                                    </label>
+                                  </div>
+
+                                  <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="menuBtnPosition" id="menuRightEdit0" value="right">
+                                    <label class="form-check-label" for="menuRightEdit0">
+                                      Right
+                                    </label>
+                                  </div>
+                                </div>
+                              </fieldset>
+                            </div>
+                          </form>
+                            <div class="add-more-btn">
+                              <button type="button" onclick="addMoreBtn()">
+                                <i class="fa-solid fa-plus"></i>
+                              </button>
+                            </div>
+                             </div>
+                          </div>
+                            `
+
 
           let mainDiv = document.createElement("div")
           mainDiv.className = "linkBtnDiv"
@@ -6505,6 +6579,8 @@
           //button two set values
           if (btnCount === "two") {
             $("#secondBtnDivEdit").css("display", "flex");
+            $("#menuBtnsDivEdit").css("display", "none");
+          
             $(`input[name=btnLocationEdit][value=header]`).parent().css("pointer-events", "none");
             $(`input[name=btnLocationEdit][value=header]`).parent().css("opacity", "0.4");
             $(`input[name=btnLocationEditTwo][value=header]`).parent().css("pointer-events", "none");
@@ -6531,6 +6607,13 @@
             }
           }
 
+          if(btnCount==="menu"){
+            $("#secondBtnDivEdit").css("display", "none");
+            $("#menuBtnsDivEdit").css("display", "block");
+            $("#firstBtnDivEdit").css("display", "none");
+            
+          }
+
           //button count option set value  
           $(`input[name=buttonCountEdit][value=${btnCount}]`).prop("checked", true);
 
@@ -6543,7 +6626,7 @@
               $(`input[name=btnLocationEdit][value=header]`).parent().css("opacity", "1");
               $(`input[name=btnLocationEditTwo][value=header]`).parent().css("pointer-events", "auto");
               $(`input[name=btnLocationEditTwo][value=header]`).parent().css("opacity", "1");
-            } else {
+            } else if(btnCountOptionEdit === "two"){
               $("#secondBtnDivEdit").css("display", "flex");
               $(`input[name=btnLocationEdit][value=header]`).parent().css("pointer-events", "none");
               $(`input[name=btnLocationEdit][value=header]`).parent().css("opacity", "0.4");
@@ -6551,28 +6634,34 @@
               $(`input[name=btnLocationEditTwo][value=header]`).parent().css("opacity", "0.4");
               $(`input[name=btnLocationEdit][value=body]`).prop("checked", true);
               $(`input[name=btnLocationEditTwo][value=body]`).prop("checked", true);
+            }else if(btnCountOptionEdit === "menu"){
+              $("#firstBtnDivEdit").css("display", "none");
+              $("#secondBtnDivEdit").css("display", "none");
+              $("#menuBtnsDivEdit").css("display", "block");
             }
           }
 
+if(btnCount === ""){
+  if (popupType !== "link") {
+    let firstForm = `  <form class="input-div">
+                  <div class="links">
+                    <input type='text' class="form-control" name='name' placeholder="Name">
+                    <input type="text" class="form-control" name="link" placeholder="Link">
+                  </div>
+                  <div class="btn-div">
+                    <button type="button" id="addInputFieldButtonEdit" class='add-more-btn'><i class="fa-solid fa-plus"></i></button>
+                  </div>
+                </form> `;
+    $("#linkFormEdit").html(firstForm);
 
-          if (popupType !== "link") {
-            let firstForm = `  <form class="input-div">
-                          <div class="links">
-                            <input type='text' class="form-control" name='name' placeholder="Name">
-                            <input type="text" class="form-control" name="link" placeholder="Link">
-                          </div>
-                          <div class="btn-div">
-                            <button type="button" id="addInputFieldButtonEdit" class='add-more-btn'><i class="fa-solid fa-plus"></i></button>
-                          </div>
-                        </form> `;
-            $("#linkFormEdit").html(firstForm);
+    $("#linkUploadEdit").css("display", "none")
+  }
 
-            $("#linkUploadEdit").css("display", "none")
-          }
+  if (btnType === "link") {
+    $("#imageUploadEdit").css("display", "flex")
+  }
+}
 
-          if (btnType === "link") {
-            $("#imageUploadEdit").css("display", "flex")
-          }
 
           var linkBtnOption = document.getElementById('linkBtnEdit');
           var imageBtnOption = document.getElementById('imageBtnEdit');
@@ -7516,7 +7605,7 @@
 
           if(videoType === "link"){
             var ValidateUrlExp = /^(ftp|http|https|chrome|:\/\/|\.|@){2,}(localhost|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|\S*:\w*@)*([a-zA-Z]|(\d{1,3}|\.){7}){1,}(\w|\.{2,}|\.[a-zA-Z]{2,3}|\/|\?|&|:\d|@|=|\/|\(.*\)|#|-|%)*$/gum
-            let linkUrlValidate = ValidateUrlExp.test(videoLink)
+            let linkUrlValidate = matchYoutubeUrl(videoLink)
             if(thumbnailImage ==""){
               $("#videoThumbnailEdit").after('<p class="error thumbnail-error">Please Upload the image.</p>');
             }
@@ -7567,7 +7656,7 @@
          
           if (videoType==="link"){
             var ValidateUrlExp = /^(ftp|http|https|chrome|:\/\/|\.|@){2,}(localhost|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|\S*:\w*@)*([a-zA-Z]|(\d{1,3}|\.){7}){1,}(\w|\.{2,}|\.[a-zA-Z]{2,3}|\/|\?|&|:\d|@|=|\/|\(.*\)|#|-|%)*$/gum
-            let linkUrlValidate = ValidateUrlExp.test(videoLink)
+            let linkUrlValidate = matchYoutubeUrl(videoLink)
             if(videoLink !== "" && linkUrlValidate){
               if(thumbnailImage !==""){
                 if (updatesClass === "updatesItems") {

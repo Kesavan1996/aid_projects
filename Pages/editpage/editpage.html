@@ -737,7 +737,13 @@
         Animation: 350,
       })
 
-
+      function matchYoutubeUrl(url) {
+        var p = /^(?:https?:\/\/)?(?:m\.|www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/;
+        if(url.match(p)){
+            return url.match(p)[1];
+        }
+        return false;
+    }
 
       // Page onload function
 
@@ -1108,7 +1114,7 @@
 
             if(videoType === "link"){
               link=data.link;
-              thumbnailImage = data.image[0];
+              thumbnailImage = data.image;
             }
 
             if (updatesElemId) {
@@ -1133,7 +1139,7 @@
 
             if(videoType === "link"){
                   videoPopupElem=  `<div class="video-thumbnail" onclick="videoPopupOpen(this)" id="video_DivvideoContainer${videoContainerId}">
-                                          <img src="${thumbnailImage}" alt="" />
+                                          <img src="${thumbnailImage[0]}" alt="" />
                                           <span><i class="fa-regular fa-circle-play"></i></span>
                                       </div>`
             }
@@ -2322,6 +2328,7 @@
                       <label>Video Link:</label>
                       <div class="video-input">
                         <input class="form-control" type="text" id="videoLinkInput" onkeyup="inputVerify(this)" />
+                        <p class="sub-text">(Ex:https://www.youtube.com/embed/video_id)</p>
                       </div>
                     </div>
                     <div class="video-thumbnail-container">
@@ -2342,7 +2349,7 @@
           inputVerify = (e)=>{
             let videoLink= $(e).val();
             var ValidateUrlExp = /^(ftp|http|https|chrome|:\/\/|\.|@){2,}(localhost|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|\S*:\w*@)*([a-zA-Z]|(\d{1,3}|\.){7}){1,}(\w|\.{2,}|\.[a-zA-Z]{2,3}|\/|\?|&|:\d|@|=|\/|\(.*\)|#|-|%)*$/gum
-            let linkUrlValidate = ValidateUrlExp.test(videoLink)
+            let linkUrlValidate = matchYoutubeUrl(videoLink)
 
             $(".video-link-error").remove();
             if(linkUrlValidate === false){
@@ -3581,6 +3588,7 @@
                         <label>Video Link:</label>
                         <div class="video-input">
                           <input class="form-control" type="text" id="videoLinkInput" onkeyup="inputVerify(this)" />
+                          <p class="sub-text">(Ex:https://www.youtube.com/embed/video_id)</p>
                         </div>
                       </div>
                       <div class="video-thumbnail-container">
@@ -3601,7 +3609,7 @@
           inputVerify = (e)=>{
             let videoLink= $(e).val();
             var ValidateUrlExp = /^(ftp|http|https|chrome|:\/\/|\.|@){2,}(localhost|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|\S*:\w*@)*([a-zA-Z]|(\d{1,3}|\.){7}){1,}(\w|\.{2,}|\.[a-zA-Z]{2,3}|\/|\?|&|:\d|@|=|\/|\(.*\)|#|-|%)*$/gum
-            let linkUrlValidate = ValidateUrlExp.test(videoLink)
+            let linkUrlValidate = matchYoutubeUrl(videoLink)
 
             $(".video-link-error").remove();
             if(linkUrlValidate === false){
@@ -5074,7 +5082,7 @@
 
           if(videoType === "link"){
             var ValidateUrlExp = /^(ftp|http|https|chrome|:\/\/|\.|@){2,}(localhost|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|\S*:\w*@)*([a-zA-Z]|(\d{1,3}|\.){7}){1,}(\w|\.{2,}|\.[a-zA-Z]{2,3}|\/|\?|&|:\d|@|=|\/|\(.*\)|#|-|%)*$/gum
-            let linkUrlValidate = ValidateUrlExp.test(videoLink)
+            let linkUrlValidate = matchYoutubeUrl(videoLink)
             if(thumbnailImage ==""){
               $("#videoThumbnail").after('<p class="error thumbnail-error">Please Upload the image.</p>');
             }
@@ -5176,11 +5184,16 @@
             
         }else{
           var ValidateUrlExp = /^(ftp|http|https|chrome|:\/\/|\.|@){2,}(localhost|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|\S*:\w*@)*([a-zA-Z]|(\d{1,3}|\.){7}){1,}(\w|\.{2,}|\.[a-zA-Z]{2,3}|\/|\?|&|:\d|@|=|\/|\(.*\)|#|-|%)*$/gum
-          let linkUrlValidate = ValidateUrlExp.test(videoLink)
+          let linkUrlValidate = matchYoutubeUrl(videoLink)
           if(videoLink !== "" && linkUrlValidate){
             if(thumbnailImage !==""){
               submitBtnDiv.style.display = "block"
               $('#createModal').modal('hide');
+              if(typeof thumbnailImage === "string"){
+                thumbnailImage = [thumbnailImage]
+              }else{
+                thumbnailImage = thumbnailImage;
+              }
               if (pageTitle !== "") {
                 tempArray[`Div${parentContainerVideo[0].id}`]={...tempArray[`Div${parentContainerVideo[0].id}`],type:"5",link:videoLink,image:thumbnailImage, updates:updateName}
                 updatesContent.appendChild(div)
@@ -6729,6 +6742,7 @@
             thumbnailImage=tempArray[`${parentId}`]['image'];
             videoLink= tempArray[`${parentId}`]['link'];
           }
+          console.log(thumbnailImage, "img")
           var modalTitle = document.getElementById("EditPageTitle")
           modalTitle.innerText = "Edit Video"
 
@@ -6772,6 +6786,7 @@
                 <label>Video Link:</label>
                 <div class="video-input">
                   <input class="form-control" type="text" id="videoLinkInputEdit" onkeyup="inputVerifyEdit(this)" />
+                  <p class="sub-text">(Ex:https://www.youtube.com/embed/video_id)</p>
                 </div>
               </div>
               <div class="video-thumbnail-container">
@@ -6791,7 +6806,7 @@
           inputVerifyEdit = (e)=>{
             let videoLink= $(e).val();
             var ValidateUrlExp = /^(ftp|http|https|chrome|:\/\/|\.|@){2,}(localhost|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|\S*:\w*@)*([a-zA-Z]|(\d{1,3}|\.){7}){1,}(\w|\.{2,}|\.[a-zA-Z]{2,3}|\/|\?|&|:\d|@|=|\/|\(.*\)|#|-|%)*$/gum
-            let linkUrlValidate = ValidateUrlExp.test(videoLink)
+            let linkUrlValidate = matchYoutubeUrl(videoLink)
 
             $(".video-link-error").remove();
             if(linkUrlValidate === false){
@@ -6832,11 +6847,19 @@
             $(".videoModalContainerEdit").html("");
             $("#videoLinkInputEdit").val(videoLink);
             let thumbnailURL = "";
+            if(thumbnailImage[0] === undefined){
             if(typeof thumbnailImage === "object"){
               thumbnailURL = URL.createObjectURL(thumbnailImage);
             }else{
               thumbnailURL = thumbnailImage;
             }
+          }else{
+            if(typeof thumbnailImage[0] === "object"){
+              thumbnailURL = URL.createObjectURL(thumbnailImage[0]);
+            }else{
+              thumbnailURL = thumbnailImage[0];
+            }
+          }
             $("#thumbnailImageDivEdit").html(`<img src="${thumbnailURL}" />`);
           }else{
             $("#videoUploadDivEdit").css("display","flex");
@@ -8519,19 +8542,27 @@
 
           if(videoType === "link"){
             var ValidateUrlExp = /^(ftp|http|https|chrome|:\/\/|\.|@){2,}(localhost|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|\S*:\w*@)*([a-zA-Z]|(\d{1,3}|\.){7}){1,}(\w|\.{2,}|\.[a-zA-Z]{2,3}|\/|\?|&|:\d|@|=|\/|\(.*\)|#|-|%)*$/gum
-            let linkUrlValidate = ValidateUrlExp.test(videoLink)
+            let linkUrlValidate = matchYoutubeUrl(videoLink)
             if(thumbnailImage ==""){
               $("#videoThumbnailEdit").after('<p class="error thumbnail-error">Please Upload the image.</p>');
             }
             if(videoLink !== "" && linkUrlValidate){
               if(thumbnailImage !==""){
                 let thumbnailEditURL="";
+                if(thumbnailImage[0] === undefined){
                 if( typeof thumbnailImage === "object"){
                   thumbnailEditURL = URL.createObjectURL(thumbnailImage)
                 }else{
                   thumbnailEditURL = thumbnailImage;
                 }
-
+              }else{
+                if( typeof thumbnailImage[0] === "object"){
+                  thumbnailEditURL = URL.createObjectURL(thumbnailImage[0])
+                }else{
+                  thumbnailEditURL = thumbnailImage[0];
+                }
+              }
+              console.log(thumbnailEditURL,"url")
                 videoPopupElem=  `<div class="video-thumbnail" onclick="videoPopupOpenEdit(this)" id="video_${updatedElement}">
                                         <img src="${thumbnailEditURL}" alt="" />
                                         <span><i class="fa-regular fa-circle-play"></i></span>
@@ -8569,9 +8600,14 @@
          
           if (videoType==="link"){
             var ValidateUrlExp = /^(ftp|http|https|chrome|:\/\/|\.|@){2,}(localhost|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|\S*:\w*@)*([a-zA-Z]|(\d{1,3}|\.){7}){1,}(\w|\.{2,}|\.[a-zA-Z]{2,3}|\/|\?|&|:\d|@|=|\/|\(.*\)|#|-|%)*$/gum
-            let linkUrlValidate = ValidateUrlExp.test(videoLink)
+            let linkUrlValidate = matchYoutubeUrl(videoLink)
             if(videoLink !== "" && linkUrlValidate){
               if(thumbnailImage !==""){
+                if(typeof thumbnailImage === "string"){
+                  thumbnailImage = [thumbnailImage]
+                }else{
+                  thumbnailImage = thumbnailImage;
+                }
                 if (updatesClass === "updatesItems") {
                   tempArray[`${updatedElement}`]={...tempArray[`${updatedElement}`],type:"5",link:videoLink,image:thumbnailImage,updates:updateName}
                   }else{
@@ -8591,6 +8627,7 @@
             $("#videoPopupModal .modal-body").html(videoelem)
             $("#videoPopupModal").modal('show')
           }
+          console.log(tempArray)
         }
         else if (modalBody.children[0].className === "animationCard") {
 

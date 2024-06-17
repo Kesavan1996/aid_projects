@@ -1097,6 +1097,11 @@ box-shadow: inset 2px 2px 9px -6px rgba(0,0,0,0.75);
 #contentCard .titleDiv p{
     margin-bottom: 0;
 }
+.sub-text{
+    margin-bottom: 0;
+    font-size: 14px;
+    color: grey;
+}
 
 #contentCard .btnDiv{
     display: flex;
