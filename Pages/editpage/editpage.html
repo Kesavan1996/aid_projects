@@ -1394,7 +1394,7 @@
             let popupText="";
             let popupTextColor="";
          
-            if(btnCount ==="one"){
+            if(btnCount !=="menu"){
               buttonOneData = data['buttons'] === undefined ? data : data['buttons'][0];
               btnName = buttonOneData.name;
               btnLink = buttonOneData.link && buttonOneData.link;
@@ -1406,15 +1406,14 @@
               links = buttonOneData.links;
               popupText = buttonOneData['text']===undefined ? "": buttonOneData['text'];
               popupTextColor = buttonOneData['textBgColor']===undefined ? "#b3b3b3": buttonOneData['textBgColor'];
-            }
 
-            if(btnCount ==="one"){
               if (popupType == "image") {
                 popupImage = buttonOneData['image'];
               } else if (popupType === "pdf") {
                 popupPdf = buttonOneData['pdf'];
               }
             }
+
              //Button two
           let buttonTwoData = "";
           let btnTwoName = "";

@@ -34,6 +34,26 @@
       ]
     },
     {
+      "type": "8",
+      "btnCount": "two",
+      "buttons": [
+        {
+          "name": "Button Three",
+          "btnType": "link",
+          "link": "https://www.google.com/",
+          "btnPosition": "center",
+          "bgColor": "#f47171"
+        },
+        {
+          "name": "Button Two",
+          "btnType": "link",
+          "link": "https://www.google.com/",
+          "btnPosition": "center",
+          "bgColor": "#f75555"
+        }
+      ]
+    },
+    {
       "type": "4",
       "images": [
         "1714830841_8ba185147a797c8972b1.jpeg",
