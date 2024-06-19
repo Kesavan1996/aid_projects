@@ -1485,7 +1485,7 @@
             deleteTag.append(deleteImg)
 
             let btnDiv = document.createElement("div")
-            btnDiv.className = "btnDiv dragDiv"
+            btnDiv.className = `btnDiv dragDiv ${btnCount == 'menu'?' menu-button':''}`
             btnDiv.id = `btnLinkDiv${buttonId}`
 
             let linkDiv = document.createElement("div")
@@ -6130,7 +6130,7 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
 
           clickTag.setAttribute("onclick", `editModal("editButton",this.previousElementSibling.id,this.parentElement.id)`)
 
-          let btnTag;
+          let btnTag="";
 
           if (btnCount === "two") {
             if (btnType === "link") {
@@ -6803,7 +6803,7 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
               <button type="button" class="btn updatesItems${updatesId}_btn" onclick="showUpdatesModal('animation',this)">Gif Animation</button>
               <button type="button" class="btn updatesItems${updatesId}_btn" onclick="showUpdatesModal('quiz',this)">Add Quiz Question</button>
               <button type="button" class="btn updatesItems${updatesId}_btn" onclick="showUpdatesModal('link',this)">Image with Link</button>
-              <button type="button" class="btn updatesItems${updatesId}_btn" onclick="showUpdatesModal('button',this,'button)">Button with Link</button>
+              <button type="button" class="btn updatesItems${updatesId}_btn" onclick="showUpdatesModal('button',this,'button')">Button with Link</button>
               <button type="button" class="btn updatesItems${updatesId}_btn" onclick="showUpdatesModal('button',this,'popup')">Button with Popup</button>
               <button type="button" class="btn updatesItems${updatesId}_btn" onclick="showUpdatesModal('hyperLink',this)">Image[s] with Caption & Link</button>
               <button type="button" class="btn updatesItems${updatesId}_btn" onclick="showUpdatesModal('linkPopup',this)">Link with Popup</button>
