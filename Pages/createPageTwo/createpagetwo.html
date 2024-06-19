@@ -5081,7 +5081,7 @@
 
           if(btnCount === "menu"){
             menuBtnInfo = menuBtnData;
-          }else if(btnCount === "one"){
+          }else{
             if (btnType === "link") {
               buttonOneInfo = { name: btnName, btnType, link: btnLink, btnPosition, bgColor: btnColor }
             } else {
@@ -5095,7 +5095,7 @@
                 buttonOneInfo = { name: btnName, btnType, popupType, text: popupText,textBgColor:popupTextColor, bgColor: btnColor, btnLocation, btnPosition };
               }
             }
-          }
+          
             if (btnCount === "two") {
               if (btnTypeTwo === "link") {
                 buttonTwoInfo = { name: btnTwoName, btnType: btnTypeTwo, link: btnTwoLink, btnPosition: btnPositionTwo, bgColor: btnColorTwo }
@@ -5111,8 +5111,7 @@
                 }
               }
             }
-        
-
+          }
 
           let buttons = [];
 

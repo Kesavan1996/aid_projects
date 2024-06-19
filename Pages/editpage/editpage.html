@@ -1547,7 +1547,7 @@
 
           if(btnCount === "menu"){
             menuBtnInfo = menuBtnData;
-          }else if(btnCount === "one"){
+          }else {
             if (btnType === "link") {
               buttonOneInfo = { name: btnName, btnType, link: btnLink, btnPosition, bgColor: btnColor }
             } else {
@@ -1561,8 +1561,7 @@
                 buttonOneInfo = { name: btnName, btnType, popupType, text: popupText,textBgColor:popupTextColor, bgColor: btnColor, btnLocation, btnPosition };
               }
             }
-          }
-
+          
           if (btnCount === "two") {
             if (btnTypeTwo === "link") {
               buttonTwoInfo = { name: btnTwoName, btnType: btnTypeTwo, link: btnTwoLink, btnPosition: btnPositionTwo, bgColor: btnColorTwo }
@@ -1578,7 +1577,7 @@
               }
             }
           }
-
+        }
           let buttons = [];
 
           if(btnCount === "one"){
@@ -6172,7 +6171,7 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
 
           if(btnCount === "menu"){
             menuBtnInfo = menuBtnData;
-          }else if(btnCount === "one"){
+          }else{
           if (btnType === "link") {
             buttonOneInfo = { name: btnName, btnType, link: btnLink, btnPosition, bgColor: btnColor }
           } else {
@@ -6186,7 +6185,6 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
               buttonOneInfo = { name: btnName, btnType, popupType, text: popupText, textBgColor: popupTextColor, bgColor: btnColor, btnLocation, btnPosition };
             }
           }
-        }
           if (btnCount === "two") {
             if (btnTypeTwo === "link") {
               buttonTwoInfo = { name: btnTwoName, btnType: btnTypeTwo, link: btnTwoLink, btnPosition: btnPositionTwo, bgColor: btnColorTwo }
@@ -6202,7 +6200,7 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
               }
             }
           }
-
+        }
           let buttons = [];
 
           if(btnCount === "one"){
@@ -9575,19 +9573,19 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
           let menuBtnInfo;
 
           if(btnCount !== "menu"){
-          if (btnType === "link") {
-            buttonOneInfo = { name: btnName, btnType, link: btnLink, btnPosition, bgColor: btnColor }
-          } else {
-            if (popupType === "link") {
-              buttonOneInfo = { name: btnName, btnType, popupType, links, bgColor: btnColor, btnLocation, btnPosition };
-            } else if (popupType === "image") {
-              buttonOneInfo = { name: btnName, btnType, popupType, image: popupImage, bgColor: btnColor, btnLocation, btnPosition };
-            } else if(popupType === "pdf") {
-              buttonOneInfo = { name: btnName, btnType, popupType, pdf: popupPdf, bgColor: btnColor, btnLocation, btnPosition };
-            }else if(popupType === "text"){
-              buttonOneInfo = { name: btnName, btnType, popupType, text: popupText,textBgColor:popupTextColor, bgColor: btnColor, btnLocation, btnPosition };
+            if (btnType === "link") {
+              buttonOneInfo = { name: btnName, btnType, link: btnLink, btnPosition, bgColor: btnColor }
+            } else {
+              if (popupType === "link") {
+                buttonOneInfo = { name: btnName, btnType, popupType, links, bgColor: btnColor, btnLocation, btnPosition };
+              } else if (popupType === "image") {
+                buttonOneInfo = { name: btnName, btnType, popupType, image: popupImage, bgColor: btnColor, btnLocation, btnPosition };
+              } else if(popupType === "pdf") {
+                buttonOneInfo = { name: btnName, btnType, popupType, pdf: popupPdf, bgColor: btnColor, btnLocation, btnPosition };
+              }else if(popupType === "text"){
+                buttonOneInfo = { name: btnName, btnType, popupType, text: popupText,textBgColor:popupTextColor, bgColor: btnColor, btnLocation, btnPosition };
+              }
             }
-          }
 
           if (btnCount === "two") {
             if (btnTypeTwo === "link") {
