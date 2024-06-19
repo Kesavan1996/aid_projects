@@ -1379,27 +1379,42 @@
 
           }
           else if (data.type === "8") {
-            let buttonOneData = data['buttons'] === undefined ? data : data['buttons'][0];
-            let btnName = buttonOneData.name;
-            let btnLink = buttonOneData.link && buttonOneData.link;
 
-            let btnType = buttonOneData.btnType === undefined ? "link" : buttonOneData.btnType;
-            let btnLocation = buttonOneData.btnLocation === undefined ? "header" : buttonOneData.btnLocation;
-            let btnPosition = buttonOneData.btnPosition === undefined ? "center" : buttonOneData.btnPosition;
-            let popupType = buttonOneData.popupType === undefined ? "image" : buttonOneData.popupType;
-            let btnColor = buttonOneData.bgColor;
-            let links = buttonOneData.links;
             let btnCount = data['btnCount'] === undefined ? "one" : data['btnCount'];
 
-            let popupText = buttonOneData['text']===undefined ? "": buttonOneData['text'];
-            let popupTextColor = buttonOneData['textBgColor']===undefined ? "#b3b3b3": buttonOneData['textBgColor'];
-
-            if (popupType == "image") {
-              popupImage = buttonOneData['image'];
-            } else if (popupType === "pdf") {
-              popupPdf = buttonOneData['pdf'];
+            let buttonOneData ="";
+            let btnName = "";
+            let btnLink ="";
+            let btnType = "";
+            let btnLocation ="";
+            let btnPosition = "";
+            let popupType = "";
+            let btnColor = "";
+            let links = "";
+            let popupText="";
+            let popupTextColor="";
+         
+            if(btnCount ==="one"){
+              buttonOneData = data['buttons'] === undefined ? data : data['buttons'][0];
+              btnName = buttonOneData.name;
+              btnLink = buttonOneData.link && buttonOneData.link;
+              btnType = buttonOneData.btnType === undefined ? "link" : buttonOneData.btnType;
+              btnLocation = buttonOneData.btnLocation === undefined ? "header" : buttonOneData.btnLocation;
+              btnPosition = buttonOneData.btnPosition === undefined ? "center" : buttonOneData.btnPosition;
+              popupType = buttonOneData.popupType === undefined ? "image" : buttonOneData.popupType;
+              btnColor = buttonOneData.bgColor;
+              links = buttonOneData.links;
+              popupText = buttonOneData['text']===undefined ? "": buttonOneData['text'];
+              popupTextColor = buttonOneData['textBgColor']===undefined ? "#b3b3b3": buttonOneData['textBgColor'];
             }
 
+            if(btnCount ==="one"){
+              if (popupType == "image") {
+                popupImage = buttonOneData['image'];
+              } else if (popupType === "pdf") {
+                popupPdf = buttonOneData['pdf'];
+              }
+            }
              //Button two
           let buttonTwoData = "";
           let btnTwoName = "";
@@ -1412,7 +1427,7 @@
           let linksTwo;
           let popupTextTwo='';
           let popupTextColorTwo='#b3b3b3';
-
+             
           if (btnCount === "two") {
             buttonTwoData = data['buttons'][1];
             btnTwoName = buttonTwoData['name'] === undefined ? '' : buttonTwoData['name'];
@@ -1435,6 +1450,11 @@
                 popupTextColorTwo = buttonTwoData['textBgColor'] === undefined ? '#b3b3b3':buttonTwoData['textBgColor'];
               }
             }
+          }
+
+          let menuBtnData="";
+          if(btnCount === "menu"){
+            menuBtnData = data['buttons'] === undefined ? data : data['buttons'];
           }
 
 
@@ -1473,9 +1493,12 @@
             linkDiv.id = "btnLink" + buttonId;
             if (btnCount === "one") {
               linkDiv.style.textAlign = `${btnPosition}`;
-            } else {
+            } else if(btnCount === "two") {
               linkDiv.style.display = "grid";
               linkDiv.style.gridTemplateColumns = "repeat(2, 1fr)";
+              linkDiv.style.gap = "10px";
+            }else if(btnCount === 'menu'){
+              linkDiv.style.display = "flex";
               linkDiv.style.gap = "10px";
             }
 
@@ -1504,31 +1527,41 @@
                         <a href="#" id="linkTag${buttonId}_1" class="linkBtn link_btnLinkDiv${buttonId}" onclick="openPopupTwoModal(this)" style="background-color:${btnColorTwo}">${btnTwoName}</a>
                       </div>`
             }
-          } else {
+          } else if(btnCount === "one") {
             if (btnType === "link") {
               btnTag = `<a href="${btnLink}" id="linkTag${buttonId}0" target="_blank" class="linkBtn" style="background-color:${btnColor}">${btnName}</a>`;
             } else if (btnType === "popup") {
               btnTag = `<a href="#" id="linkTag${buttonId}1" class="linkBtn link_btnLinkDiv${buttonId}" onclick="openPopupModal(this)" style="background-color:${btnColor}">${btnName}</a>`;
             }
+          }else if(btnCount==="menu"){
+            menuBtnData.forEach((btn)=>{
+              btnTag += `<div style="text-align:${btn.menuBtnPosition};flex:1">
+                        <a href="${btn.link}" class="linkBtn" target="_blank" style="background-color:${btn.bgColor}">${btn.btnName}</a>
+                      </div>`;
+            });
           }
 
           let buttonOneInfo;
           let buttonTwoInfo;
+          let menuBtnInfo;
 
-          if (btnType === "link") {
-            buttonOneInfo = { name: btnName, btnType, link: btnLink, btnPosition, bgColor: btnColor }
-          } else {
-            if (popupType === "link") {
-              buttonOneInfo = { name: btnName, btnType, popupType, links, bgColor: btnColor, btnLocation, btnPosition };
-            } else if (popupType === "image") {
-              buttonOneInfo = { name: btnName, btnType, popupType, image: popupImage, bgColor: btnColor, btnLocation, btnPosition };
-            } else if(popupType === "pdf"){
-              buttonOneInfo = { name: btnName, btnType, popupType, pdf: popupPdf, bgColor: btnColor, btnLocation, btnPosition };
-            }else if(popupType === "text"){
-              buttonOneInfo = { name: btnName, btnType, popupType, text: popupText,textBgColor:popupTextColor, bgColor: btnColor, btnLocation, btnPosition };
+          if(btnCount === "menu"){
+            menuBtnInfo = menuBtnData;
+          }else if(btnCount === "one"){
+            if (btnType === "link") {
+              buttonOneInfo = { name: btnName, btnType, link: btnLink, btnPosition, bgColor: btnColor }
+            } else {
+              if (popupType === "link") {
+                buttonOneInfo = { name: btnName, btnType, popupType, links, bgColor: btnColor, btnLocation, btnPosition };
+              } else if (popupType === "image") {
+                buttonOneInfo = { name: btnName, btnType, popupType, image: popupImage, bgColor: btnColor, btnLocation, btnPosition };
+              } else if(popupType === "pdf"){
+                buttonOneInfo = { name: btnName, btnType, popupType, pdf: popupPdf, bgColor: btnColor, btnLocation, btnPosition };
+              }else if(popupType === "text"){
+                buttonOneInfo = { name: btnName, btnType, popupType, text: popupText,textBgColor:popupTextColor, bgColor: btnColor, btnLocation, btnPosition };
+              }
             }
           }
-
 
           if (btnCount === "two") {
             if (btnTypeTwo === "link") {
@@ -1548,11 +1581,15 @@
 
           let buttons = [];
 
-          buttons.push(buttonOneInfo);
-
-          if (btnCount === "two") {
+          if(btnCount === "one"){
+            buttons.push(buttonOneInfo);
+          }else if (btnCount === "two") {
+            buttons.push(buttonOneInfo);
             buttons.push(buttonTwoInfo);
+          }else{
+            buttons=[...menuBtnInfo.map(obj=>obj)];
           }
+
 
             linkDiv.innerHTML = btnTag;
 
@@ -2556,10 +2593,16 @@
                       Double
                     </label>
                   </div>
+                  <div class="form-check form-check-inline" id="menuBtnOption">
+                    <input class="form-check-input" type="radio" name="buttonCount" id="menu" value="menu" onchange="buttonCountChange(this)" >
+                    <label class="form-check-label" for="menu">
+                      Menu
+                    </label>
+                  </div>
                 </div>
             </fieldset>
           </div>
-                  <div class="d-flex gap-3 flex-column">
+                  <div class="gap-3 flex-column" id="firstBtnDiv" style="display:flex">
                         <div class="col-12">
                           <fieldset class="row">
                             <legend class="col-form-label col-4 pt-0">Button Type:</legend>
@@ -2854,6 +2897,58 @@
 </div>  
 </div>`
 
+let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="display:none">
+  <div class="menu-btns">
+    <form class="row gap-3" class="menuBtnForm" id="menuBtn0">
+     <div class="col-12">
+          <input type="text" class="form-control" name="btnName" placeholder="Name">
+        </div>
+        <div class="col-12">
+          <input type="text" class="form-control" name="link" placeholder="Link">
+        </div>
+        <div class="col-12">
+          <div class="row align-items-center">
+          <label for="colorPickerId" class="form-label col-6">Background Color</label>
+          <div class="col-4">
+            <input type="color" class="form-control form-control-color" name="bgColor" value="#b3b3b3">
+          </div>
+        </div>
+        </div>
+        <div class="col-12">
+          <fieldset class="row mb-2 mt-2">
+            <legend class="col-form-label col-sm-2 pt-0">Position:</legend>
+            <div class="col-sm-10">
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="menuBtnPosition" id="menuLeft0" value="left">
+                <label class="form-check-label" for="menuLeft0">
+                  Left
+                </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="menuBtnPosition" id="menuCenter0" value="center" checked>
+                <label class="form-check-label" for="menuCenter0">
+                  Center
+                </label>
+              </div>
+
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="menuBtnPosition" id="menuRight0" value="right">
+                <label class="form-check-label" for="menuRight0">
+                  Right
+                </label>
+              </div>
+            </div>
+          </fieldset>
+        </div>
+      </form>
+        <div class="add-more-btn">
+          <button type="button" onclick="addMoreBtn()">
+            <i class="fa-solid fa-plus"></i>
+          </button>
+        </div>
+         </div>
+      </div>`
+
 
           let buttonDiv = document.createElement("div")
           buttonDiv.id = "btnLink"
@@ -2864,7 +2959,82 @@
           mainDiv.id = `btnLinkDiv${buttonId}`
           mainDiv.innerHTML = buttonInput;
           mainDiv.innerHTML += buttonInputTwo;
+          mainDiv.innerHTML += menuBtnsElem;
           modalBody.appendChild(mainDiv);
+
+          let menuBtnCheck = $("#contentCard .menu-button").length;
+          if(menuBtnCheck == 0){
+            $("#menuBtnOption").css("pointer-events", "auto");
+            $("#menuBtnOption").css("opacity", "1");
+          }else{
+            $("#menuBtnOption").css("pointer-events", "none");
+            $("#menuBtnOption").css("opacity", "0.4");
+          }
+
+          let menuBtnCount = 1;
+
+          addMoreBtn = ()=>{
+            let menuAddElem=`<div class="menu-btns mt-3">
+              <form class="row gap-3" class="menuBtnForm" id="menuBtn${menuBtnCount}">
+               <div class="col-12">
+                    <input type="text" class="form-control" name="btnName" placeholder="Name">
+                  </div>
+                  <div class="col-12">
+                    <input type="text" class="form-control" name="link" placeholder="Link">
+                  </div>
+                  <div class="col-12">
+                    <div class="row align-items-center">
+                    <label for="bgColor" class="form-label col-6">Background Color</label>
+                    <div class="col-4">
+                      <input type="color" class="form-control form-control-color" name="bgColor" value="#b3b3b3">
+                    </div>
+                  </div>
+                  </div>
+                  <div class="col-12">
+                    <fieldset class="row mb-2 mt-2">
+                      <legend class="col-form-label col-sm-2 pt-0">Position:</legend>
+                      <div class="col-sm-10">
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="radio" name="menuBtnPosition" id="left${menuBtnCount}" value="left">
+                          <label class="form-check-label" for="left${menuBtnCount}">
+                            Left
+                          </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="radio" name="menuBtnPosition" id="center${menuBtnCount}" value="center" checked>
+                          <label class="form-check-label" for="center${menuBtnCount}">
+                            Center
+                          </label>
+                        </div>
+
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="radio" name="menuBtnPosition" id="right${menuBtnCount}" value="right">
+                          <label class="form-check-label" for="right${menuBtnCount}">
+                            Right
+                          </label>
+                        </div>
+                      </div>
+                    </fieldset>
+                  </div>
+                </form>
+                  <div class="delete-menu-btn">
+                    <button type="button" onclick="deleteMenuBtn(this)">
+                      <i class="fa-solid fa-minus"></i>
+                    </button>
+                  </div>
+                   </div>`
+
+            let formsLength = $("#menuBtnsDiv .menu-btns").length;
+            if(formsLength < 3){
+              $("#menuBtnsDiv").append(menuAddElem);
+            }
+            menuBtnCount+=1;
+        
+          }
+
+          deleteMenuBtn = (elem)=>{
+            $(elem).closest('.menu-btns').remove();
+          }
 
           changeToRichtext([`popupText`])
           changeToRichtext([`popupTextTwo`])
@@ -2918,19 +3088,32 @@
           buttonCountChange = (elem) => {
             let btnCountOption = $(elem).val();
             if (btnCountOption === "one") {
+              if (btnPopup === "popup") {
+                $("#linkDiv").css("display", "none");
+                $("#popupDiv").css("display", "block");
+              }
               $("#secondBtnDiv").css("display", "none");
+              $("#firstBtnDiv").css("display", "flex");
+              $("#menuBtnsDiv").css("display", "none");
               $(`input[name=btnLocation][value=header]`).parent().css("pointer-events", "auto");
               $(`input[name=btnLocation][value=header]`).parent().css("opacity", "1");
               $(`input[name=btnLocationTwo][value=header]`).parent().css("pointer-events", "auto");
               $(`input[name=btnLocationTwo][value=header]`).parent().css("opacity", "1");
-            } else {
+            } else if(btnCountOption === "two") {
               $("#secondBtnDiv").css("display", "flex");
+              $("#firstBtnDiv").css("display", "flex");
+              $("#menuBtnsDiv").css("display", "none");
               $(`input[name=btnLocation][value=header]`).parent().css("pointer-events", "none");
               $(`input[name=btnLocation][value=header]`).parent().css("opacity", "0.4");
               $(`input[name=btnLocationTwo][value=header]`).parent().css("pointer-events", "none");
               $(`input[name=btnLocationTwo][value=header]`).parent().css("opacity", "0.4");
               $(`input[name=btnLocation][value=body]`).prop("checked", true);
               $(`input[name=btnLocationTwo][value=body]`).prop("checked", true);
+            }else if(btnCountOption === "menu"){
+              $("#firstBtnDiv").css("display", "none");
+              $("#secondBtnDiv").css("display", "none");
+              $("#menuBtnsDiv").css("display", "block");
+              $("#popupDiv").css("display", "none");
             }
           }
 
@@ -3819,7 +4002,7 @@
                 </div>
             </fieldset>
           </div>
-                  <div class="d-flex gap-3 flex-column">
+                  <div class="gap-3 flex-column" id="firstBtnDiv" style="display:flex">
                         <div class="col-12">
                           <fieldset class="row">
                             <legend class="col-form-label col-4 pt-0">Button Type:</legend>
@@ -4106,6 +4289,59 @@
 </div>  
 </div>`
 
+let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="display:none">
+  <div class="menu-btns">
+    <form class="row gap-3" class="menuBtnForm" id="menuBtn0">
+     <div class="col-12">
+          <input type="text" class="form-control" name="btnName" placeholder="Name">
+        </div>
+        <div class="col-12">
+          <input type="text" class="form-control" name="link" placeholder="Link">
+        </div>
+        <div class="col-12">
+          <div class="row align-items-center">
+          <label for="colorPickerId" class="form-label col-6">Background Color</label>
+          <div class="col-4">
+            <input type="color" class="form-control form-control-color" name="bgColor" value="#b3b3b3">
+          </div>
+        </div>
+        </div>
+        <div class="col-12">
+          <fieldset class="row mb-2 mt-2">
+            <legend class="col-form-label col-sm-2 pt-0">Position:</legend>
+            <div class="col-sm-10">
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="menuBtnPosition" id="menuLeft0" value="left">
+                <label class="form-check-label" for="menuLeft0">
+                  Left
+                </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="menuBtnPosition" id="menuCenter0" value="center" checked>
+                <label class="form-check-label" for="menuCenter0">
+                  Center
+                </label>
+              </div>
+
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="menuBtnPosition" id="menuRight0" value="right">
+                <label class="form-check-label" for="menuRight0">
+                  Right
+                </label>
+              </div>
+            </div>
+          </fieldset>
+        </div>
+      </form>
+        <div class="add-more-btn">
+          <button type="button" onclick="addMoreBtn()">
+            <i class="fa-solid fa-plus"></i>
+          </button>
+        </div>
+         </div>
+      </div>
+        `
+
 
           let buttonDiv = document.createElement("div")
           buttonDiv.id = "btnLink"
@@ -4116,7 +4352,74 @@
           mainDiv.id = `btnLinkDiv${buttonId}`
           mainDiv.innerHTML = buttonInput;
           mainDiv.innerHTML += buttonInputTwo;
+          mainDiv.innerHTML += menuBtnsElem;
           modalBody.appendChild(mainDiv)
+
+          let menuBtnCount = 1;
+
+          addMoreBtn = ()=>{
+            let menuAddElem=`<div class="menu-btns mt-3">
+              <form class="row gap-3" class="menuBtnForm" id="menuBtn${menuBtnCount}">
+               <div class="col-12">
+                    <input type="text" class="form-control" name="btnName" placeholder="Name">
+                  </div>
+                  <div class="col-12">
+                    <input type="text" class="form-control" name="link" placeholder="Link">
+                  </div>
+                  <div class="col-12">
+                    <div class="row align-items-center">
+                    <label for="bgColor" class="form-label col-6">Background Color</label>
+                    <div class="col-4">
+                      <input type="color" class="form-control form-control-color" name="bgColor" value="#b3b3b3">
+                    </div>
+                  </div>
+                  </div>
+                  <div class="col-12">
+                    <fieldset class="row mb-2 mt-2">
+                      <legend class="col-form-label col-sm-2 pt-0">Position:</legend>
+                      <div class="col-sm-10">
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="radio" name="menuBtnPosition" id="left${menuBtnCount}" value="left">
+                          <label class="form-check-label" for="left${menuBtnCount}">
+                            Left
+                          </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="radio" name="menuBtnPosition" id="center${menuBtnCount}" value="center" checked>
+                          <label class="form-check-label" for="center${menuBtnCount}">
+                            Center
+                          </label>
+                        </div>
+
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="radio" name="menuBtnPosition" id="right${menuBtnCount}" value="right">
+                          <label class="form-check-label" for="right${menuBtnCount}">
+                            Right
+                          </label>
+                        </div>
+                      </div>
+                    </fieldset>
+                  </div>
+                </form>
+                  <div class="delete-menu-btn">
+                    <button type="button" onclick="deleteMenuBtn(this)">
+                      <i class="fa-solid fa-minus"></i>
+                    </button>
+                  </div>
+                   </div>`
+
+            let formsLength = $("#menuBtnsDiv .menu-btns").length;
+            if(formsLength < 3){
+              $("#menuBtnsDiv").append(menuAddElem);
+            }
+            menuBtnCount+=1;
+        
+          }
+
+          deleteMenuBtn = (elem)=>{
+            $(elem).closest('.menu-btns').remove();
+          }
+
 
           changeToRichtext([`popupText`])
           changeToRichtext([`popupTextTwo`])
@@ -4171,19 +4474,32 @@
           buttonCountChange = (elem) => {
             let btnCountOption = $(elem).val();
             if (btnCountOption === "one") {
+              if (btnPopup === "popup") {
+                $("#linkDiv").css("display", "none");
+                $("#popupDiv").css("display", "block");
+              }
               $("#secondBtnDiv").css("display", "none");
+              $("#firstBtnDiv").css("display", "flex");
+              $("#menuBtnsDiv").css("display", "none");
               $(`input[name=btnLocation][value=header]`).parent().css("pointer-events", "auto");
               $(`input[name=btnLocation][value=header]`).parent().css("opacity", "1");
               $(`input[name=btnLocationTwo][value=header]`).parent().css("pointer-events", "auto");
               $(`input[name=btnLocationTwo][value=header]`).parent().css("opacity", "1");
-            } else {
+            } else if(btnCountOption === "two") {
               $("#secondBtnDiv").css("display", "flex");
+              $("#firstBtnDiv").css("display", "flex");
+              $("#menuBtnsDiv").css("display", "none");
               $(`input[name=btnLocation][value=header]`).parent().css("pointer-events", "none");
               $(`input[name=btnLocation][value=header]`).parent().css("opacity", "0.4");
               $(`input[name=btnLocationTwo][value=header]`).parent().css("pointer-events", "none");
               $(`input[name=btnLocationTwo][value=header]`).parent().css("opacity", "0.4");
               $(`input[name=btnLocation][value=body]`).prop("checked", true);
               $(`input[name=btnLocationTwo][value=body]`).prop("checked", true);
+            }else if(btnCountOption === "menu"){
+              $("#firstBtnDiv").css("display", "none");
+              $("#secondBtnDiv").css("display", "none");
+              $("#menuBtnsDiv").css("display", "block");
+              $("#popupDiv").css("display", "none");
             }
           }
 
@@ -5597,125 +5913,170 @@
 
           let hasEmptyValue = [];
           var links = [];
+          let menuBtnData= [];
+
           $(".btn-error").remove();
-          if (btnName === "") {
-            $("#btnName").after('<p class="error btn-error">Please enter the button name.</p>');
-            hasEmptyValue.push(true);
-          } else {
-            hasEmptyValue.push(false);
-          }
-          if (btnType === "popup") {
-            if (popupType === "link") {
-              var result = Array.from(forms).map((a, i) => {
-                var obj = {};
-                Array.from(a.querySelectorAll("[name]")).forEach((b, j) => {
-                  obj[b.getAttribute("name")] = b.value;
-                  if (b.value === "") {
-                    $(b).after(`<div class="error btn-error">Please enter the value.</div>`);
+
+          if(btnCount === "menu"){
+            let menuForms = document.querySelectorAll("#menuBtnsDiv .menu-btns form");
+  
+            $(".menu-error").remove();
+            Array.from(menuForms).forEach((e)=>{
+              let elemID = e.id;
+              let elemCount = elemID?.match(/\d/g);
+              elemCount = elemCount?.join("");
+              var elements = document.getElementById(`${elemID}`).elements;
+              let menuPosition = $(`#${elemID} input[name="menuBtnPosition"]:checked`).val();
+              var obj ={};
+              for(var i = 0 ; i < elements.length ; i++){
+                  var item = elements.item(i);
+                  if(item.name !==""){
+                    if(item.name=="link"){
+                      var ValidateUrlExp = /^(ftp|http|https|chrome|:\/\/|\.|@){2,}(localhost|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|\S*:\w*@)*([a-zA-Z]|(\d{1,3}|\.){7}){1,}(\w|\.{2,}|\.[a-zA-Z]{2,3}|\/|\?|&|:\d|@|=|\/|\(.*\)|#|-|%)*$/gum
+                      let linkUrlValidate = ValidateUrlExp.test(item.value);
+                      if(linkUrlValidate ===false || item.value === ""){
+                        $(elements[i]).after('<p class="error menu-error mt-0">Please enter the valid URL.</p>')
+                        hasEmptyValue.push(true)
+                      }
+                    }
+  
+                    if(item.name === "btnName"){
+                      if(item.value == ""){
+                        $(elements[i]).after('<p class="error menu-error mt-0">Please enter the valid name.</p>') 
+                        hasEmptyValue.push(true)
+                      }
+                    }
+  
+                    obj[item.name] = item.value;
+                    obj['menuBtnPosition'] = menuPosition;
+                  }
+              }
+  
+              menuBtnData.push(obj)
+            })
+  
+            }else{
+              if (btnName === "") {
+                $("#btnName").after('<p class="error btn-error">Please enter the button name.</p>');
+                hasEmptyValue.push(true);
+              } else {
+                hasEmptyValue.push(false);
+              }
+              if (btnType === "popup") {
+                if (popupType === "link") {
+                  var result = Array.from(forms).map((a, i) => {
+                    var obj = {};
+                    Array.from(a.querySelectorAll("[name]")).forEach((b, j) => {
+                      obj[b.getAttribute("name")] = b.value;
+                      if (b.value === "") {
+                        $(b).after(`<div class="error btn-error">Please enter the value.</div>`);
+                        hasEmptyValue.push(true);
+                      } else {
+                        hasEmptyValue.push(false);
+                      }
+                    });
+                    links.push(obj);
+                    return links;
+                  });
+                } else if (popupType === "image") {
+                  if (popupImage === "") {
+                    $("#imageUpload").after(`<div class="error btn-error">Please upload the image.</div>`);
                     hasEmptyValue.push(true);
                   } else {
                     hasEmptyValue.push(false);
                   }
-                });
-                links.push(obj);
-                return links;
-              });
-            } else if (popupType === "image") {
-              if (popupImage === "") {
-                $("#imageUpload").after(`<div class="error btn-error">Please upload the image.</div>`);
-                hasEmptyValue.push(true);
+                } else if (popupType === "pdf") {
+                  if (popupPdf === "") {
+                    $("#pdfUpload").after(`<div class="error btn-error">Please upload the document.</div>`);
+                    hasEmptyValue.push(true);
+                  } else {
+                    hasEmptyValue.push(false);
+                  }
+                } else if (popupType === "text") {
+                  if (popupText === "") {
+                    $("#cke_popupText").after(`<div class="error btn-error">Please enter the value.</div>`);
+                    hasEmptyValue.push(true);
+                  } else {
+                    hasEmptyValue.push(false);
+                  }
+                }
               } else {
-                hasEmptyValue.push(false);
+                var ValidateUrlExp = /^(ftp|http|https|chrome|:\/\/|\.|@){2,}(localhost|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|\S*:\w*@)*([a-zA-Z]|(\d{1,3}|\.){7}){1,}(\w|\.{2,}|\.[a-zA-Z]{2,3}|\/|\?|&|:\d|@|=|\/|\(.*\)|#|-|%)*$/gum
+                let btnLinkValidate = ValidateUrlExp.test(btnLink);
+                if (btnLink === "" || btnLinkValidate === false) {
+                  $("#btnLinkId").after('<p class="error btn-error">Please enter the valid URL.</p>');
+                  hasEmptyValue.push(true);
+                } else {
+                  hasEmptyValue.push(false);
+                }
               }
-            } else if (popupType === "pdf") {
-              if (popupPdf === "") {
-                $("#pdfUpload").after(`<div class="error btn-error">Please upload the document.</div>`);
-                hasEmptyValue.push(true);
-              } else {
-                hasEmptyValue.push(false);
-              }
-            } else if (popupType === "text") {
-              if (popupText === "") {
-                $("#cke_popupText").after(`<div class="error btn-error">Please enter the value.</div>`);
-                hasEmptyValue.push(true);
-              } else {
-                hasEmptyValue.push(false);
-              }
-            }
-          } else {
-            var ValidateUrlExp = /^(ftp|http|https|chrome|:\/\/|\.|@){2,}(localhost|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|\S*:\w*@)*([a-zA-Z]|(\d{1,3}|\.){7}){1,}(\w|\.{2,}|\.[a-zA-Z]{2,3}|\/|\?|&|:\d|@|=|\/|\(.*\)|#|-|%)*$/gum
-            let btnLinkValidate = ValidateUrlExp.test(btnLink);
-            if (btnLink === "" || btnLinkValidate === false) {
-              $("#btnLinkId").after('<p class="error btn-error">Please enter the valid URL.</p>');
-              hasEmptyValue.push(true);
-            } else {
-              hasEmptyValue.push(false);
-            }
-          }
-
-          //Button two error handling
-          let formsTwo = document.querySelectorAll("#linkFormTwo form");
-          var linksTwo = [];
-
-          if (btnCount === "two") {
-            if (btnTwoName === "") {
-              $("#btnNameTwo").after('<p class="error btn-error">Please enter button name.</p>');
-              hasEmptyValue.push(true);
-            } else {
-              hasEmptyValue.push(false);
-            }
-
-            if (btnTypeTwo === "popup") {
-              if (popupTypeTwo === "link") {
-                var resultTwo = Array.from(formsTwo).map((a, i) => {
-                  var objTwo = {};
-                  Array.from(a.querySelectorAll("[name]")).forEach((b, j) => {
-                    objTwo[b.getAttribute("name")] = b.value;
-                    if (b.value === "") {
-                      $(b).after(`<div class="error btn-error">Please enter the value.</div>`);
+    
+              //Button two error handling
+              let formsTwo = document.querySelectorAll("#linkFormTwo form");
+              var linksTwo = [];
+    
+              if (btnCount === "two") {
+                if (btnTwoName === "") {
+                  $("#btnNameTwo").after('<p class="error btn-error">Please enter button name.</p>');
+                  hasEmptyValue.push(true);
+                } else {
+                  hasEmptyValue.push(false);
+                }
+    
+                if (btnTypeTwo === "popup") {
+                  if (popupTypeTwo === "link") {
+                    var resultTwo = Array.from(formsTwo).map((a, i) => {
+                      var objTwo = {};
+                      Array.from(a.querySelectorAll("[name]")).forEach((b, j) => {
+                        objTwo[b.getAttribute("name")] = b.value;
+                        if (b.value === "") {
+                          $(b).after(`<div class="error btn-error">Please enter the value.</div>`);
+                          hasEmptyValue.push(true);
+                        } else {
+                          hasEmptyValue.push(false);
+                        }
+                      });
+                      linksTwo.push(objTwo);
+                      return linksTwo;
+                    });
+                  } else if (popupTypeTwo === "image") {
+                    if (popupImageTwo === "") {
+                      $("#imageUploadTwo").after(`<div class="error btn-error">Please upload the image.</div>`);
                       hasEmptyValue.push(true);
                     } else {
                       hasEmptyValue.push(false);
                     }
-                  });
-                  linksTwo.push(objTwo);
-                  return linksTwo;
-                });
-              } else if (popupTypeTwo === "image") {
-                if (popupImageTwo === "") {
-                  $("#imageUploadTwo").after(`<div class="error btn-error">Please upload the image.</div>`);
-                  hasEmptyValue.push(true);
+                  } else if (popupTypeTwo === "pdf") {
+                    if (popupPdfTwo === "") {
+                      $("#pdfUploadTwo").after(`<div class="error btn-error">Please upload the document.</div>`);
+                      hasEmptyValue.push(true);
+                    } else {
+                      hasEmptyValue.push(false);
+                    }
+                  } else if (popupTypeTwo === "text") {
+                    if (popupTextTwo === "") {
+                      $("#cke_popupTextTwo").after(`<div class="error btn-error">Please enter the value.</div>`);
+                      hasEmptyValue.push(true);
+                    } else {
+                      hasEmptyValue.push(false);
+                    }
+                  }
                 } else {
-                  hasEmptyValue.push(false);
-                }
-              } else if (popupTypeTwo === "pdf") {
-                if (popupPdfTwo === "") {
-                  $("#pdfUploadTwo").after(`<div class="error btn-error">Please upload the document.</div>`);
-                  hasEmptyValue.push(true);
-                } else {
-                  hasEmptyValue.push(false);
-                }
-              } else if (popupTypeTwo === "text") {
-                if (popupTextTwo === "") {
-                  $("#cke_popupTextTwo").after(`<div class="error btn-error">Please enter the value.</div>`);
-                  hasEmptyValue.push(true);
-                } else {
-                  hasEmptyValue.push(false);
+                  let ValidateUrlExp = /^(ftp|http|https|chrome|:\/\/|\.|@){2,}(localhost|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|\S*:\w*@)*([a-zA-Z]|(\d{1,3}|\.){7}){1,}(\w|\.{2,}|\.[a-zA-Z]{2,3}|\/|\?|&|:\d|@|=|\/|\(.*\)|#|-|%)*$/gum
+                  let btnLinkTwoValidate = ValidateUrlExp.test(btnTwoLink);
+                  if (btnTwoLink === "" || btnLinkTwoValidate === false) {
+                    $("#btnLinkIdTwo").after('<p class="error btn-error">Please enter the valid URL.</p>');
+                    hasEmptyValue.push(true);
+                  } else {
+                    hasEmptyValue.push(false);
+                  }
                 }
               }
-            } else {
-              let ValidateUrlExp = /^(ftp|http|https|chrome|:\/\/|\.|@){2,}(localhost|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|\S*:\w*@)*([a-zA-Z]|(\d{1,3}|\.){7}){1,}(\w|\.{2,}|\.[a-zA-Z]{2,3}|\/|\?|&|:\d|@|=|\/|\(.*\)|#|-|%)*$/gum
-              let btnLinkTwoValidate = ValidateUrlExp.test(btnTwoLink);
-              if (btnTwoLink === "" || btnLinkTwoValidate === false) {
-                $("#btnLinkIdTwo").after('<p class="error btn-error">Please enter the valid URL.</p>');
-                hasEmptyValue.push(true);
-              } else {
-                hasEmptyValue.push(false);
-              }
+    
             }
-          }
 
           $(".btn-error").get(0)?.scrollIntoView({behavior: 'smooth'});
+          $(".menu-error").get(0)?.scrollIntoView({behavior: 'smooth'});
 
           let parentId = modalBody.children[0].id
 
@@ -5749,7 +6110,7 @@
           deleteTag.append(deleteImg)
 
           let btnDiv = document.createElement("div");
-          btnDiv.className = "btnDiv dragDiv";
+          btnDiv.className = `btnDiv dragDiv ${btnCount == 'menu'?' menu-button':''}`;
           btnDiv.id = parentId;
 
           let linkDiv = document.createElement("div");
@@ -5758,9 +6119,12 @@
 
           if (btnCount === "one") {
             linkDiv.style.textAlign = `${btnPosition}`;
-          } else {
+          } else if(btnCount === "two") {
             linkDiv.style.display = "grid";
             linkDiv.style.gridTemplateColumns = "repeat(2, 1fr)";
+            linkDiv.style.gap = "10px";
+          }else if(btnCount === 'menu'){
+            linkDiv.style.display = "flex";
             linkDiv.style.gap = "10px";
           }
 
@@ -5788,17 +6152,27 @@
                         <a href="#" id="linkTag${buttonId}_1" class="linkBtn link_${parentId}" onclick="openPopupTwoModal(this)" style="background-color:${btnColorTwo}">${btnTwoName}</a>
                       </div>`
             }
-          } else {
+          } else if(btnCount === "one")  {
             if (btnType === "link") {
               btnTag = `<a href="${btnLink}" id="linkTag${buttonId}0" target="_blank" class="linkBtn" style="background-color:${btnColor}">${btnName}</a>`;
             } else if (btnType === "popup") {
               btnTag = `<a href="#" id="linkTag${buttonId}1" class="linkBtn link_${parentId}" onclick="openPopupModal(this)" style="background-color:${btnColor}">${btnName}</a>`;
             }
+          }else if(btnCount==="menu"){
+            menuBtnData.forEach((btn)=>{
+              btnTag += `<div style="text-align:${btn.menuBtnPosition};flex:1">
+                        <a href="${btn.link}" class="linkBtn" target="_blank" style="background-color:${btn.bgColor}">${btn.btnName}</a>
+                      </div>`;
+            });
           }
 
           let buttonOneInfo;
           let buttonTwoInfo;
+          let menuBtnInfo;
 
+          if(btnCount === "menu"){
+            menuBtnInfo = menuBtnData;
+          }else if(btnCount === "one"){
           if (btnType === "link") {
             buttonOneInfo = { name: btnName, btnType, link: btnLink, btnPosition, bgColor: btnColor }
           } else {
@@ -5812,7 +6186,7 @@
               buttonOneInfo = { name: btnName, btnType, popupType, text: popupText, textBgColor: popupTextColor, bgColor: btnColor, btnLocation, btnPosition };
             }
           }
-
+        }
           if (btnCount === "two") {
             if (btnTypeTwo === "link") {
               buttonTwoInfo = { name: btnTwoName, btnType: btnTypeTwo, link: btnTwoLink, btnPosition: btnPositionTwo, bgColor: btnColorTwo }
@@ -5831,10 +6205,13 @@
 
           let buttons = [];
 
-          buttons.push(buttonOneInfo);
-
-          if (btnCount === "two") {
+          if(btnCount === "one"){
+            buttons.push(buttonOneInfo);
+          }else if (btnCount === "two") {
+            buttons.push(buttonOneInfo);
             buttons.push(buttonTwoInfo);
+          }else{
+            buttons=[...menuBtnInfo.map(obj=>obj)];
           }
 
           linkDiv.innerHTML = btnTag;
@@ -5858,14 +6235,24 @@
           btnDiv.appendChild(deleteTag)
 
           if (!hasEmptyValue.includes(true)) {
-            if (pageTitle !== "") {
-              updatesContent.appendChild(btnDiv);
-              btnContainerArray[`${parentId}`] = { btnCount, buttons, updates: `updates${idCount}` }
-              tempArray[`${parentId}`] = { type: "8", btnCount, buttons, updates: `updates${idCount}` }
-            } else {
-              contentCards.appendChild(btnDiv);
-              btnContainerArray[`${parentId}`] = { btnCount, buttons }
+            if(btnCount ==="menu"){
+              let titleCheck = $("#contentCard #title").length;
+              if(titleCheck === 0){
+                $("#contentCard").prepend(btnDiv);
+              }else{
+                $("#contentCard #title").after(btnDiv)
+              }
               tempArray[`${parentId}`] = { type: "8", btnCount, buttons }
+            }else{
+              if (pageTitle !== "") {
+                updatesContent.appendChild(btnDiv);
+                btnContainerArray[`${parentId}`] = { btnCount, buttons, updates: `updates${idCount}` }
+                tempArray[`${parentId}`] = { type: "8", btnCount, buttons, updates: `updates${idCount}` }
+              } else {
+                contentCards.appendChild(btnDiv);
+                btnContainerArray[`${parentId}`] = { btnCount, buttons }
+                tempArray[`${parentId}`] = { type: "8", btnCount, buttons }
+              }
             }
             $('#createModal').modal('hide');
             buttonId += 1;
@@ -7097,8 +7484,14 @@
           popupImage = "";
           popupPdf = "";
           popupPdfTwo = "";
+          let btnCount = tempArray[parentId]['btnCount'] === undefined ? "one" : tempArray[parentId]['btnCount'];
 
           let buttonOneData = tempArray[parentId]['buttons'][0] === undefined ? tempArray[parentId] : tempArray[parentId]['buttons'][0];
+          let menuButtonData;
+          if(btnCount === "menu"){
+            menuButtonData = tempArray[parentId]['buttons'];
+          }
+
           let btnType = buttonOneData['btnType'] === undefined ? 'link' : buttonOneData['btnType'];
 
           var modalTitle = document.getElementById("EditPageTitle")
@@ -7111,10 +7504,15 @@
           }
 
           var modalBody = document.getElementById('editPageContent');
-          let btnCount = tempArray[parentId]['btnCount'] === undefined ? "one" : tempArray[parentId]['btnCount'];
-
-          const { name, bgColor } = buttonOneData;
-          let link = buttonOneData['link'] === undefined ? '' : buttonOneData['link'];
+          
+          let name="";
+          let bgColor = "#b3b3b3";
+          let link ="";
+          if(btnCount !== "menu"){
+            name=buttonOneData['name'];
+            bgColor=buttonOneData['bgColor']
+            link = buttonOneData['link'] === undefined ? '' : buttonOneData['link'];
+          }
 
           let btnPosition = buttonOneData['btnPosition'] === undefined ? 'center' : buttonOneData['btnPosition'];
           let btnName = document.getElementById(`${id}`).children[0].innerText;
@@ -7134,6 +7532,7 @@
           let popupTextTwo = '';
           let popupTextColorTwo = '#b3b3b3';
 
+          if(btnCount !=="menu"){
           if (btnCount === "two") {
             buttonTwoData = tempArray[parentId]['buttons'][1];
             btnNameTwo = buttonTwoData['name'] === undefined ? '' : buttonTwoData['name'];
@@ -7157,13 +7556,14 @@
               }
             }
           }
-
+        }
           let btnLocation = '';
           let popupType = '';
           let links;
           let popupText = '';
           let popupTextColor = '#b3b3b3';
 
+        if(btnCount !=="menu"){
           if (btnType === "popup") {
             btnLocation = buttonOneData['btnLocation'] === undefined ? 'body' : buttonOneData['btnLocation'];
             popupType = buttonOneData['popupType'] === undefined ? 'link' : buttonOneData['popupType'];
@@ -7180,7 +7580,7 @@
               popupTextColor = buttonOneData['textBgColor'];
             }
           }
-
+        }
 
           let nameInput = document.createElement("input")
           nameInput.className = "form-control col-12"
@@ -7193,21 +7593,28 @@
               <fieldset class="row">
                 <legend class="col-form-label col-4 pt-0">Buttons:</legend>
                 <div class="col-8">
-                  <div class="form-check form-check-inline">
+                  <div class="form-check form-check-inline" id="oneBtnOptionEdit">
                     <input class="form-check-input" type="radio" name="buttonCountEdit" id="oneEdit" value="one" onchange="buttonCountChangeEdit(this)" checked>
                     <label class="form-check-label" for="oneEdit">
                       Single
                     </label>
                   </div>
-                  <div class="form-check form-check-inline">
+                  <div class="form-check form-check-inline" id="twoBtnOptionEdit">
                     <input class="form-check-input" type="radio" name="buttonCountEdit" id="twoEdit" value="two" onchange="buttonCountChangeEdit(this)" >
                     <label class="form-check-label" for="twoEdit">
                       Double
                     </label>
                   </div>
+                   <div class="form-check form-check-inline" id="menuBtnOptionEdit">
+                      <input class="form-check-input" type="radio" name="buttonCountEdit" id="menuEdit" value="menu" onchange="buttonCountChangeEdit(this)" >
+                      <label class="form-check-label" for="menu">
+                        Menu
+                      </label>
+                    </div>
                 </div>
             </fieldset>
           </div>
+          <div class="gap-3 flex-column" id="firstBtnDivEdit" style="display:flex">
             <div class="col-12">
               <fieldset class="row">
                 <legend class="col-form-label col-4 pt-0">Button Type:</legend>
@@ -7341,7 +7748,8 @@
           </div>
         </div>
       </div>
-    </div>`
+    </div>
+  </>`
 
           let buttonInputTwo = `<div class="gap-3 flex-column border-top pt-3" id="secondBtnDivEdit" style="display:none">
       <div class="row gap-4">
@@ -7481,14 +7889,220 @@
 </div>
 </div>`
 
+    let menuBtnsElem="";
 
+    if(btnCount === "menu"){
+                    
+                    menuButtonData.forEach((e,i)=>{
+                      menuBtnsElem+=`<div class="menu-btns ${i !== 0 ? "mt-3":""}">
+                        <form class="row gap-3" class="menuBtnForm" id="menuBtnEdit${i}">
+                         <div class="col-12">
+                              <input type="text" class="form-control" name="btnName" placeholder="Name" value="${e.btnName}">
+                            </div>
+                            <div class="col-12">
+                              <input type="text" class="form-control" name="link" placeholder="Link" value="${e.link}">
+
+                            </div>
+                            <div class="col-12">
+                              <div class="row align-items-center">
+                              <label for="colorPickerId" class="form-label col-6">Background Color</label>
+                              <div class="col-4">
+                                <input type="color" class="form-control form-control-color" name="bgColor" value="${e.bgColor}">
+                              </div>
+                            </div>
+                            </div>
+                            <div class="col-12">
+                              <fieldset class="row mb-2 mt-2">
+                                <legend class="col-form-label col-sm-2 pt-0">Position:</legend>
+                                <div class="col-sm-10">
+                                  <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="menuBtnPosition" id="menuLeftEdit${i}" value="left">
+                                    <label class="form-check-label" for="menuLeftEdit${i}">
+                                      Left
+                                    </label>
+                                  </div>
+                                  <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="menuBtnPosition" id="menuCenterEdit${i}" value="center">
+                                    <label class="form-check-label" for="menuCenterEdit${i}">
+                                      Center
+                                    </label>
+                                  </div>
+
+                                  <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="menuBtnPosition" id="menuRightEdit${i}" value="right">
+                                    <label class="form-check-label" for="menuRightEdit${i}">
+                                      Right
+                                    </label>
+                                  </div>
+                                </div>
+                              </fieldset>
+                            </div>
+                          </form>
+                          ${ i == 0 ?` <div class="add-more-btn">
+                              <button type="button" onclick="addMoreBtnEdit()">
+                                <i class="fa-solid fa-plus"></i>
+                              </button>
+                            </div>`
+                             :
+                             `<div class="delete-menu-btn">
+                              <button type="button" onclick="deleteMenuBtnEdit(this)">
+                                <i class="fa-solid fa-minus"></i>
+                              </button>
+                            </div>`
+                          }
+                        </div> ` 
+                    })
+            }
+
+                    let menuBtnsDiv=`<div class="menu-btns-conatiner" id="menuBtnsDivEdit" style="display:none">
+                      ${menuBtnsElem}
+                    </div>`
+
+                    let initialMenuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDivEdit" style="display:none">
+                      <div class="menu-btns">
+                        <form class="row gap-3" class="menuBtnForm" id="menuBtn0">
+                         <div class="col-12">
+                              <input type="text" class="form-control" name="btnName" placeholder="Name">
+                            </div>
+                            <div class="col-12">
+                              <input type="text" class="form-control" name="link" placeholder="Link">
+                            </div>
+                            <div class="col-12">
+                              <div class="row align-items-center">
+                              <label for="colorPickerId" class="form-label col-6">Background Color</label>
+                              <div class="col-4">
+                                <input type="color" class="form-control form-control-color" name="bgColor" value="#b3b3b3">
+                              </div>
+                            </div>
+                            </div>
+                            <div class="col-12">
+                              <fieldset class="row mb-2 mt-2">
+                                <legend class="col-form-label col-sm-2 pt-0">Position:</legend>
+                                <div class="col-sm-10">
+                                  <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="menuBtnPosition" id="menuLeft0" value="left">
+                                    <label class="form-check-label" for="menuLeft0">
+                                      Left
+                                    </label>
+                                  </div>
+                                  <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="menuBtnPosition" id="menuCenter0" value="center" checked>
+                                    <label class="form-check-label" for="menuCenter0">
+                                      Center
+                                    </label>
+                                  </div>
+          
+                                  <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="menuBtnPosition" id="menuRight0" value="right">
+                                    <label class="form-check-label" for="menuRight0">
+                                      Right
+                                    </label>
+                                  </div>
+                                </div>
+                              </fieldset>
+                            </div>
+                          </form>
+                            <div class="add-more-btn">
+                              <button type="button" onclick="addMoreBtn()">
+                                <i class="fa-solid fa-plus"></i>
+                              </button>
+                            </div>
+                             </div>
+                          </div>
+                            `
+          
+          
+                              let menuBtnCount = menuButtonData?.length;
+                              addMoreBtnEdit = ()=>{
+                                let menuAddElem=`<div class="menu-btns mt-3">
+                                  <form class="row gap-3" class="menuBtnForm" id="menuBtnEdit${menuBtnCount}">
+                                   <div class="col-12">
+                                        <input type="text" class="form-control" name="btnName" placeholder="Name">
+                                      </div>
+                                      <div class="col-12">
+                                        <input type="text" class="form-control" name="link" placeholder="Link">
+                                      </div>
+                                      <div class="col-12">
+                                        <div class="row align-items-center">
+                                        <label for="bgColor" class="form-label col-6">Background Color</label>
+                                        <div class="col-4">
+                                          <input type="color" class="form-control form-control-color" name="bgColor" value="#b3b3b3">
+                                        </div>
+                                      </div>
+                                      </div>
+                                      <div class="col-12">
+                                        <fieldset class="row mb-2 mt-2">
+                                          <legend class="col-form-label col-sm-2 pt-0">Position:</legend>
+                                          <div class="col-sm-10">
+                                            <div class="form-check form-check-inline">
+                                              <input class="form-check-input" type="radio" name="menuBtnPosition" id="left${menuBtnCount}" value="left">
+                                              <label class="form-check-label" for="left${menuBtnCount}">
+                                                Left
+                                              </label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                              <input class="form-check-input" type="radio" name="menuBtnPosition" id="center${menuBtnCount}" value="center" checked>
+                                              <label class="form-check-label" for="center${menuBtnCount}">
+                                                Center
+                                              </label>
+                                            </div>
+                    
+                                            <div class="form-check form-check-inline">
+                                              <input class="form-check-input" type="radio" name="menuBtnPosition" id="right${menuBtnCount}" value="right">
+                                              <label class="form-check-label" for="right${menuBtnCount}">
+                                                Right
+                                              </label>
+                                            </div>
+                                          </div>
+                                        </fieldset>
+                                      </div>
+                                    </form>
+                                      <div class="delete-menu-btn">
+                                        <button type="button" onclick="deleteMenuBtn(this)">
+                                          <i class="fa-solid fa-minus"></i>
+                                        </button>
+                                      </div>
+                                       </div>`
+                    
+                                let formsLength = $("#menuBtnsDivEdit .menu-btns").length;
+                                if(formsLength < 3){
+                                  $("#menuBtnsDivEdit").append(menuAddElem);
+                                }
+                                menuBtnCount+=1;
+                            
+                              }
+                    
+          
+                        deleteMenuBtnEdit = (elem)=>{
+                        $(elem).closest('.menu-btns').remove();
+                      }
+                    
 
           let mainDiv = document.createElement("div")
           mainDiv.className = "linkBtnDiv"
           mainDiv.id = parentId;
           mainDiv.innerHTML = buttonInput;
           mainDiv.innerHTML += buttonInputTwo;
+          if(btnCount === "menu"){
+            mainDiv.innerHTML += menuBtnsDiv;
+          }else{
+            mainDiv.innerHTML += initialMenuBtnsElem;
+          }
           modalBody.appendChild(mainDiv);
+
+          if(btnCount === "menu"){
+            menuButtonData.forEach((e,i)=>{
+              $(`#menuBtnEdit${i} input[name=menuBtnPosition][value=${e.menuBtnPosition}]`).prop("checked", true);
+            })
+
+            $("#oneBtnOptionEdit").css("pointer-events", "none");
+            $("#oneBtnOptionEdit").css("opacity", "0.4");
+            $("#twoBtnOptionEdit").css("pointer-events", "none");
+            $("#twoBtnOptionEdit").css("opacity", "0.4");
+          }else{
+            $("#menuBtnOptionEdit").css("pointer-events", "none");
+            $("#menuBtnOptionEdit").css("opacity", "0.4");
+          }
 
           changeToRichtext([`popupTextEdit`]);
           CKEDITOR.instances[`popupTextEdit`].setData(popupText);
@@ -7499,6 +8113,7 @@
           //button two set values
           if (btnCount === "two") {
             $("#secondBtnDivEdit").css("display", "flex");
+            $("#menuBtnsDivEdit").css("display", "none");
             $(`input[name=btnLocationEdit][value=header]`).parent().css("pointer-events", "none");
             $(`input[name=btnLocationEdit][value=header]`).parent().css("opacity", "0.4");
             $(`input[name=btnLocationEditTwo][value=header]`).parent().css("pointer-events", "none");
@@ -7525,6 +8140,13 @@
             }
           }
 
+          if(btnCount==="menu"){
+            $("#secondBtnDivEdit").css("display", "none");
+            $("#menuBtnsDivEdit").css("display", "block");
+            $("#firstBtnDivEdit").css("display", "none");
+            
+          }
+
           //button count option set value  
           $(`input[name=buttonCountEdit][value=${btnCount}]`).prop("checked", true);
 
@@ -7532,22 +8154,35 @@
           buttonCountChangeEdit = (elem) => {
             let btnCountOptionEdit = $(elem).val();
             if (btnCountOptionEdit === "one") {
+              $("#firstBtnDivEdit").css("display", "flex");
+              $("#secondBtnDivEdit").css("display", "none");
+              $("#menuBtnsDivEdit").css("display", "none");
+              if(btnType === "popup"){
+                $("#imageUploadEdit").css("display","block");
+              }
               $("#secondBtnDivEdit").css("display", "none");
               $(`input[name=btnLocationEdit][value=header]`).parent().css("pointer-events", "auto");
               $(`input[name=btnLocationEdit][value=header]`).parent().css("opacity", "1");
               $(`input[name=btnLocationEditTwo][value=header]`).parent().css("pointer-events", "auto");
               $(`input[name=btnLocationEditTwo][value=header]`).parent().css("opacity", "1");
-            } else {
+            } else if(btnCountOptionEdit === "two") {
               $("#secondBtnDivEdit").css("display", "flex");
+              $("#firstBtnDivEdit").css("display", "flex");
+              $("#menuBtnsDivEdit").css("display", "none");
               $(`input[name=btnLocationEdit][value=header]`).parent().css("pointer-events", "none");
               $(`input[name=btnLocationEdit][value=header]`).parent().css("opacity", "0.4");
               $(`input[name=btnLocationEditTwo][value=header]`).parent().css("pointer-events", "none");
               $(`input[name=btnLocationEditTwo][value=header]`).parent().css("opacity", "0.4");
               $(`input[name=btnLocationEdit][value=body]`).prop("checked", true);
               $(`input[name=btnLocationEditTwo][value=body]`).prop("checked", true);
+            }else if(btnCountOptionEdit === "menu"){
+              $("#firstBtnDivEdit").css("display", "none");
+              $("#secondBtnDivEdit").css("display", "none");
+              $("#menuBtnsDivEdit").css("display", "block");
             }
           }
 
+          if(btnCount !== "menu"){  
           if (popupType !== "link") {
             let firstForm = `  <form class="input-div">
                   <div class="links">
@@ -7566,6 +8201,7 @@
           if (btnType === "link") {
             $("#imageUploadEdit").css("display", "flex")
           }
+        }
 
           var linkBtnOption = document.getElementById('linkBtnEdit');
           var imageBtnOption = document.getElementById('imageBtnEdit');
@@ -7639,6 +8275,8 @@
             } else if (buttonOption === "popup") {
               $("#linkDivEdit").css("display", "none");
               $("#popupDivEdit").css("display", "block");
+              $(`input[name=popupTypeEdit][value=image]`).prop("checked", true);
+              $("#imageUploadEdit").css("display","block");
             }
           }
 
@@ -8714,9 +9352,12 @@
           $(updatedElement).removeAttr("style");
           if (btnCount === "one") {
             updatedElement.style.textAlign = `${btnPosition}`
-          } else {
+          } else if(btnCount === "two") {
             updatedElement.style.display = "grid";
             updatedElement.style.gridTemplateColumns = "repeat(2, 1fr)";
+            updatedElement.style.gap = "10px";
+          }else if(btnCount === 'menu'){
+            updatedElement.style.display = "flex";
             updatedElement.style.gap = "10px";
           }
 
@@ -8724,8 +9365,10 @@
 
           let hasEmptyValue = [];
           var links = [];
+          let menuBtnData = [];
 
             $(".btn-error-edit").remove();
+            if(btnCount !=="menu"){
           if (btnName === "") {
             $("#btnNameEdit").after('<p class="error btn-error-edit">Please enter the button name.</p>');
             hasEmptyValue.push(true);
@@ -8846,6 +9489,45 @@
               }
             }
           }
+        }else{
+          let menuForms = document.querySelectorAll("#menuBtnsDivEdit .menu-btns form");
+
+          $(".menu-error").remove();
+          Array.from(menuForms).forEach((e)=>{
+            let elemID = e.id;
+            let elemCount = elemID?.match(/\d/g);
+            elemCount = elemCount?.join("");
+            var elements = document.getElementById(`${elemID}`).elements;
+            let menuPosition = $(`#${elemID} input[name="menuBtnPosition"]:checked`).val();
+            var obj ={};
+            for(var i = 0 ; i < elements.length ; i++){
+                var item = elements.item(i);
+                if(item.name !==""){
+                  if(item.name=="link"){
+                    var ValidateUrlExp = /^(ftp|http|https|chrome|:\/\/|\.|@){2,}(localhost|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|\S*:\w*@)*([a-zA-Z]|(\d{1,3}|\.){7}){1,}(\w|\.{2,}|\.[a-zA-Z]{2,3}|\/|\?|&|:\d|@|=|\/|\(.*\)|#|-|%)*$/gum
+                    let linkUrlValidate = ValidateUrlExp.test(item.value);
+                    if(linkUrlValidate ===false || item.value === ""){
+                      $(elements[i]).after('<p class="error menu-error mt-0">Please enter the valid URL.</p>')
+                      hasEmptyValue.push(true)
+                    }
+                  }
+
+                  if(item.name === "btnName"){
+                    if(item.value == ""){
+                      $(elements[i]).after('<p class="error menu-error mt-0">Please enter the valid name.</p>') 
+                      hasEmptyValue.push(true)
+                    }
+                  }
+
+                  obj[item.name] = item.value;
+                  obj['menuBtnPosition'] = menuPosition;
+                }
+            }
+
+            menuBtnData.push(obj)
+          })
+
+        }
 
           $(".btn-error-edit").get(0)?.scrollIntoView({behavior: 'smooth'});
 
@@ -8871,18 +9553,28 @@
                         <a href="#" id="linkTag${updatesId}_1" class="linkBtn link_${elemId}" onclick="openPopupTwoModal(this)" style="background-color:${btnColorTwo}">${btnTwoName}</a>
                       </div>`
             }
-          } else {
+          }  else if(btnCount === "one") {
             if (btnType === "link") {
               btnTag = `<a href="${btnLink}" id="linkTag${updatesId}_0" target="_blank" class="linkBtn" style="background-color:${btnColor}">${btnName}</a>`;
             } else if (btnType === "popup") {
               btnTag = `<a href="#" id="linkTag${updatesId}_1" class="linkBtn link_${elemId}" onclick="openPopupModal(this)" style="background-color:${btnColor}">${btnName}</a>`;
             }
+          }else if(btnCount === "menu"){
+            menuBtnData.forEach((btn)=>{
+              btnTag += `<div style="text-align:${btn.menuBtnPosition};flex:1">
+                        <a href="${btn.link}" class="linkBtn" target="_blank" style="background-color:${btn.bgColor}">${btn.btnName}</a>
+                      </div>`;
+            });
           }
+
+
           var color = $("#btnEditColor").val();
 
-               let buttonOneInfo;
+          let buttonOneInfo;
           let buttonTwoInfo;
+          let menuBtnInfo;
 
+          if(btnCount !== "menu"){
           if (btnType === "link") {
             buttonOneInfo = { name: btnName, btnType, link: btnLink, btnPosition, bgColor: btnColor }
           } else {
@@ -8912,13 +9604,18 @@
               }
             }
           }
-
+        }else{
+          menuBtnInfo = menuBtnData;
+        }
           let buttons = [];
 
-          buttons.push(buttonOneInfo);
-
-          if (btnCount === "two") {
+          if(btnCount === "one"){
+            buttons.push(buttonOneInfo);
+          }else if (btnCount === "two") {
+            buttons.push(buttonOneInfo);
             buttons.push(buttonTwoInfo);
+          }else{
+            buttons=[...menuBtnInfo.map(obj=>obj)];
           }
 
 

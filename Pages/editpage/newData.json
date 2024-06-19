@@ -16,6 +16,24 @@
       "bgColor": "#fcfcfc"
     },
     {
+      "type": "8",
+      "btnCount": "menu",
+      "buttons": [
+        {
+          "btnName": "Button Three",
+          "menuBtnPosition": "center",
+          "link": "https://www.google.com/",
+          "bgColor": "#ff2424"
+        },
+        {
+          "btnName": "Button Three",
+          "menuBtnPosition": "right",
+          "link": "https://www.youtube.com/",
+          "bgColor": "#54ff0a"
+        }
+      ]
+    },
+    {
       "type": "4",
       "images": [
         "1714830841_8ba185147a797c8972b1.jpeg",
