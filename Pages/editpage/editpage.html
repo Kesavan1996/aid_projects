@@ -425,7 +425,7 @@
 
     <!-- <script src="https://code.jquery.com/jquery-1.10.2.js"></script> -->
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
@@ -744,6 +744,10 @@
         }
         return false;
     }
+
+    $(document).ready(function() {
+      $("body").tooltip({ selector: '[data-bs-toggle=tooltip]' });
+  });
 
       // Page onload function
 
@@ -1452,10 +1456,13 @@
           }
 
           let menuBtnData="";
+          let menuBgColor = "";
+          let menuPosition = "";
           if(btnCount === "menu"){
             menuBtnData = data['buttons'] === undefined ? data : data['buttons'];
+            menuPosition = data['position'];
+            menuBgColor = data['bgColor'];
           }
-
 
             var dropImg = document.createElement("img")
             dropImg.className = "dragImg"
@@ -1498,7 +1505,9 @@
               linkDiv.style.gap = "10px";
             }else if(btnCount === 'menu'){
               linkDiv.style.display = "flex";
-              linkDiv.style.gap = "10px";
+              linkDiv.style.gap = "5px";
+              linkDiv.style.justifyContent = `${menuPosition}`
+              linkDiv.style.backgroundColor = `${menuBgColor}`
             }
 
 
@@ -1534,9 +1543,7 @@
             }
           }else if(btnCount==="menu"){
             menuBtnData.forEach((btn)=>{
-              btnTag += `<div style="text-align:${btn.menuBtnPosition};flex:1">
-                        <a href="${btn.link}" class="linkBtn" target="_blank" style="background-color:${btn.bgColor}">${btn.btnName}</a>
-                      </div>`;
+              btnTag += `<a href="${btn.link}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="${btn.btnName}" class="linkBtn" target="_blank">${btn.btnName}</a>`;
             });
           }
 
@@ -1598,14 +1605,23 @@
             btnDiv.appendChild(deleteTag)
             parentContentCards.appendChild(btnDiv)
 
-             if (updatesElemId) {
-              btnContainerArray[`btnLinkDiv${buttonId}`] = { btnCount, buttons, updates: `updates${idCount}` }
-              tempArray[`btnLinkDiv${buttonId}`] = { type: "8", btnCount, buttons, updates: `updates${idCount}` }
-            } else {
-              btnContainerArray[`btnLinkDiv${buttonId}`] = { btnCount, buttons }
-              tempArray[`btnLinkDiv${buttonId}`] = { type: "8", btnCount, buttons }
+            if(btnCount ==="menu"){
+              let titleCheck = $("#contentCard #title").length;
+              if(titleCheck === 0){
+                $("#contentCard").prepend(btnDiv);
+              }else{
+                $("#contentCard #title").after(btnDiv)
+              }
+              tempArray[`btnLinkDiv${buttonId}`] = { type: "8", btnCount,bgColor:menuBgColor, position:menuPosition, buttons }
+            }else{
+              if (updatesElemId) {
+                btnContainerArray[`btnLinkDiv${buttonId}`] = { btnCount, buttons, updates: `updates${idCount}` }
+                tempArray[`btnLinkDiv${buttonId}`] = { type: "8", btnCount, buttons, updates: `updates${idCount}` }
+              } else {
+                btnContainerArray[`btnLinkDiv${buttonId}`] = { btnCount, buttons }
+                tempArray[`btnLinkDiv${buttonId}`] = { type: "8", btnCount, buttons }
+              }
             }
-
 
             submitBtnDiv.style.display = "block"
 
@@ -2896,6 +2912,41 @@
 </div>`
 
 let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="display:none">
+          <div class="col-12 mb-2">
+          <div class="row align-items-center">
+          <label for="colorPickerId" class="form-label col-6">Background Color</label>
+          <div class="col-4">
+            <input type="color" class="form-control form-control-color" id="menuBgColor" value="#b3b3b3">
+          </div>
+        </div>
+        </div>
+        
+        <div class="col-12">
+          <fieldset class="row mb-2 mt-2">
+            <legend class="col-form-label col-4 pt-0">Position:</legend>
+            <div class="col-8">
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="menuBtnPosition" id="menuLeft" value="left">
+                <label class="form-check-label" for="menuLeft">
+                  Left
+                </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="menuBtnPosition" id="menuCenter" value="center" checked>
+                <label class="form-check-label" for="menuCenter">
+                  Center
+                </label>
+              </div>
+
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="menuBtnPosition" id="menuRight" value="right">
+                <label class="form-check-label" for="menuRight">
+                  Right
+                </label>
+              </div>
+            </div>
+          </fieldset>
+        </div>
   <div class="menu-btns">
     <form class="row gap-3" class="menuBtnForm" id="menuBtn0">
      <div class="col-12">
@@ -2904,43 +2955,9 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
         <div class="col-12">
           <input type="text" class="form-control" name="link" placeholder="Link">
         </div>
-        <div class="col-12">
-          <div class="row align-items-center">
-          <label for="colorPickerId" class="form-label col-6">Background Color</label>
-          <div class="col-4">
-            <input type="color" class="form-control form-control-color" name="bgColor" value="#b3b3b3">
-          </div>
-        </div>
-        </div>
-        <div class="col-12">
-          <fieldset class="row mb-2 mt-2">
-            <legend class="col-form-label col-sm-2 pt-0">Position:</legend>
-            <div class="col-sm-10">
-              <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="menuBtnPosition" id="menuLeft0" value="left">
-                <label class="form-check-label" for="menuLeft0">
-                  Left
-                </label>
-              </div>
-              <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="menuBtnPosition" id="menuCenter0" value="center" checked>
-                <label class="form-check-label" for="menuCenter0">
-                  Center
-                </label>
-              </div>
-
-              <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="menuBtnPosition" id="menuRight0" value="right">
-                <label class="form-check-label" for="menuRight0">
-                  Right
-                </label>
-              </div>
-            </div>
-          </fieldset>
-        </div>
       </form>
         <div class="add-more-btn">
-          <button type="button" onclick="addMoreBtn()">
+          <button type="button" id="addMoreMenuBtn" onclick="addMoreBtn()">
             <i class="fa-solid fa-plus"></i>
           </button>
         </div>
@@ -2980,40 +2997,6 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
                   <div class="col-12">
                     <input type="text" class="form-control" name="link" placeholder="Link">
                   </div>
-                  <div class="col-12">
-                    <div class="row align-items-center">
-                    <label for="bgColor" class="form-label col-6">Background Color</label>
-                    <div class="col-4">
-                      <input type="color" class="form-control form-control-color" name="bgColor" value="#b3b3b3">
-                    </div>
-                  </div>
-                  </div>
-                  <div class="col-12">
-                    <fieldset class="row mb-2 mt-2">
-                      <legend class="col-form-label col-sm-2 pt-0">Position:</legend>
-                      <div class="col-sm-10">
-                        <div class="form-check form-check-inline">
-                          <input class="form-check-input" type="radio" name="menuBtnPosition" id="left${menuBtnCount}" value="left">
-                          <label class="form-check-label" for="left${menuBtnCount}">
-                            Left
-                          </label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                          <input class="form-check-input" type="radio" name="menuBtnPosition" id="center${menuBtnCount}" value="center" checked>
-                          <label class="form-check-label" for="center${menuBtnCount}">
-                            Center
-                          </label>
-                        </div>
-
-                        <div class="form-check form-check-inline">
-                          <input class="form-check-input" type="radio" name="menuBtnPosition" id="right${menuBtnCount}" value="right">
-                          <label class="form-check-label" for="right${menuBtnCount}">
-                            Right
-                          </label>
-                        </div>
-                      </div>
-                    </fieldset>
-                  </div>
                 </form>
                   <div class="delete-menu-btn">
                     <button type="button" onclick="deleteMenuBtn(this)">
@@ -3025,6 +3008,9 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
             let formsLength = $("#menuBtnsDiv .menu-btns").length;
             if(formsLength < 3){
               $("#menuBtnsDiv").append(menuAddElem);
+            }else{
+              $("#addMoreMenuBtn").css("pointer-events", "none");
+              $("#addMoreMenuBtn").css("opacity", "0.4");
             }
             menuBtnCount+=1;
         
@@ -3032,6 +3018,8 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
 
           deleteMenuBtn = (elem)=>{
             $(elem).closest('.menu-btns').remove();
+            $("#addMoreMenuBtn").css("pointer-events", "auto");
+            $("#addMoreMenuBtn").css("opacity", "1");
           }
 
           changeToRichtext([`popupText`])
@@ -5913,9 +5901,14 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
           var links = [];
           let menuBtnData= [];
 
+          let menuBgColor = "";
+          let menuPosition = "";
+
           $(".btn-error").remove();
 
           if(btnCount === "menu"){
+            menuBgColor = $("#menuBgColor").val();
+            menuPosition = $(`input[name="menuBtnPosition"]:checked`).val();
             let menuForms = document.querySelectorAll("#menuBtnsDiv .menu-btns form");
   
             $(".menu-error").remove();
@@ -5924,7 +5917,6 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
               let elemCount = elemID?.match(/\d/g);
               elemCount = elemCount?.join("");
               var elements = document.getElementById(`${elemID}`).elements;
-              let menuPosition = $(`#${elemID} input[name="menuBtnPosition"]:checked`).val();
               var obj ={};
               for(var i = 0 ; i < elements.length ; i++){
                   var item = elements.item(i);
@@ -5946,7 +5938,6 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
                     }
   
                     obj[item.name] = item.value;
-                    obj['menuBtnPosition'] = menuPosition;
                   }
               }
   
@@ -6123,7 +6114,9 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
             linkDiv.style.gap = "10px";
           }else if(btnCount === 'menu'){
             linkDiv.style.display = "flex";
-            linkDiv.style.gap = "10px";
+            linkDiv.style.gap = "5px";
+            linkDiv.style.justifyContent = `${menuPosition}`
+            linkDiv.style.backgroundColor = `${menuBgColor}`
           }
 
           clickTag.setAttribute("onclick", `editModal("editButton",this.previousElementSibling.id,this.parentElement.id)`)
@@ -6158,9 +6151,7 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
             }
           }else if(btnCount==="menu"){
             menuBtnData.forEach((btn)=>{
-              btnTag += `<div style="text-align:${btn.menuBtnPosition};flex:1">
-                        <a href="${btn.link}" class="linkBtn" target="_blank" style="background-color:${btn.bgColor}">${btn.btnName}</a>
-                      </div>`;
+              btnTag += `<a href="${btn.link}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="${btn.btnName}" class="linkBtn" target="_blank">${btn.btnName}</a>`;
             });
           }
 
@@ -6239,7 +6230,7 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
               }else{
                 $("#contentCard #title").after(btnDiv)
               }
-              tempArray[`${parentId}`] = { type: "8", btnCount, buttons }
+              tempArray[`${parentId}`] = { type: "8", btnCount,bgColor:menuBgColor, position:menuPosition, buttons }
             }else{
               if (pageTitle !== "") {
                 updatesContent.appendChild(btnDiv);
@@ -7482,11 +7473,14 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
           popupPdf = "";
           popupPdfTwo = "";
           let btnCount = tempArray[parentId]['btnCount'] === undefined ? "one" : tempArray[parentId]['btnCount'];
-
           let buttonOneData = tempArray[parentId]['buttons'][0] === undefined ? tempArray[parentId] : tempArray[parentId]['buttons'][0];
           let menuButtonData;
+          let menuBgColor="";
+          let menuPosition="";
           if(btnCount === "menu"){
             menuButtonData = tempArray[parentId]['buttons'];
+            menuBgColor = tempArray[parentId]['bgColor'];
+            menuPosition = tempArray[parentId]['position'];
           }
 
           let btnType = buttonOneData['btnType'] === undefined ? 'link' : buttonOneData['btnType'];
@@ -7900,43 +7894,10 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
                               <input type="text" class="form-control" name="link" placeholder="Link" value="${e.link}">
 
                             </div>
-                            <div class="col-12">
-                              <div class="row align-items-center">
-                              <label for="colorPickerId" class="form-label col-6">Background Color</label>
-                              <div class="col-4">
-                                <input type="color" class="form-control form-control-color" name="bgColor" value="${e.bgColor}">
-                              </div>
-                            </div>
-                            </div>
-                            <div class="col-12">
-                              <fieldset class="row mb-2 mt-2">
-                                <legend class="col-form-label col-sm-2 pt-0">Position:</legend>
-                                <div class="col-sm-10">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="menuBtnPosition" id="menuLeftEdit${i}" value="left">
-                                    <label class="form-check-label" for="menuLeftEdit${i}">
-                                      Left
-                                    </label>
-                                  </div>
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="menuBtnPosition" id="menuCenterEdit${i}" value="center">
-                                    <label class="form-check-label" for="menuCenterEdit${i}">
-                                      Center
-                                    </label>
-                                  </div>
-
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="menuBtnPosition" id="menuRightEdit${i}" value="right">
-                                    <label class="form-check-label" for="menuRightEdit${i}">
-                                      Right
-                                    </label>
-                                  </div>
-                                </div>
-                              </fieldset>
-                            </div>
+                            
                           </form>
                           ${ i == 0 ?` <div class="add-more-btn">
-                              <button type="button" onclick="addMoreBtnEdit()">
+                              <button type="button" id="addMoreMenuBtnEdit" onclick="addMoreBtnEdit()">
                                 <i class="fa-solid fa-plus"></i>
                               </button>
                             </div>`
@@ -7952,23 +7913,11 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
             }
 
                     let menuBtnsDiv=`<div class="menu-btns-conatiner" id="menuBtnsDivEdit" style="display:none">
-                      ${menuBtnsElem}
-                    </div>`
-
-                    let initialMenuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDivEdit" style="display:none">
-                      <div class="menu-btns">
-                        <form class="row gap-3" class="menuBtnForm" id="menuBtn0">
-                         <div class="col-12">
-                              <input type="text" class="form-control" name="btnName" placeholder="Name">
-                            </div>
-                            <div class="col-12">
-                              <input type="text" class="form-control" name="link" placeholder="Link">
-                            </div>
-                            <div class="col-12">
+                      <div class="col-12 my-2">
                               <div class="row align-items-center">
                               <label for="colorPickerId" class="form-label col-6">Background Color</label>
                               <div class="col-4">
-                                <input type="color" class="form-control form-control-color" name="bgColor" value="#b3b3b3">
+                                <input type="color" class="form-control form-control-color" id="menuBgColorEdit" value="${menuBgColor}">
                               </div>
                             </div>
                             </div>
@@ -7977,37 +7926,30 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
                                 <legend class="col-form-label col-sm-2 pt-0">Position:</legend>
                                 <div class="col-sm-10">
                                   <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="menuBtnPosition" id="menuLeft0" value="left">
-                                    <label class="form-check-label" for="menuLeft0">
+                                    <input class="form-check-input" type="radio" name="menuBtnPositionEdit" id="menuLeftEdit" value="left">
+                                    <label class="form-check-label" for="menuLeftEdit">
                                       Left
                                     </label>
                                   </div>
                                   <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="menuBtnPosition" id="menuCenter0" value="center" checked>
-                                    <label class="form-check-label" for="menuCenter0">
+                                    <input class="form-check-input" type="radio" name="menuBtnPositionEdit" id="menuCenterEdit" value="center">
+                                    <label class="form-check-label" for="menuCenterEdit">
                                       Center
                                     </label>
                                   </div>
-          
+
                                   <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="menuBtnPosition" id="menuRight0" value="right">
-                                    <label class="form-check-label" for="menuRight0">
+                                    <input class="form-check-input" type="radio" name="menuBtnPositionEdit" id="menuRightEdit" value="right">
+                                    <label class="form-check-label" for="menuRightEdit">
                                       Right
                                     </label>
                                   </div>
                                 </div>
                               </fieldset>
                             </div>
-                          </form>
-                            <div class="add-more-btn">
-                              <button type="button" onclick="addMoreBtn()">
-                                <i class="fa-solid fa-plus"></i>
-                              </button>
-                            </div>
-                             </div>
-                          </div>
-                            `
-          
+                      ${menuBtnsElem}
+                    </div>`
+
           
                               let menuBtnCount = menuButtonData?.length;
                               addMoreBtnEdit = ()=>{
@@ -8019,43 +7961,9 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
                                       <div class="col-12">
                                         <input type="text" class="form-control" name="link" placeholder="Link">
                                       </div>
-                                      <div class="col-12">
-                                        <div class="row align-items-center">
-                                        <label for="bgColor" class="form-label col-6">Background Color</label>
-                                        <div class="col-4">
-                                          <input type="color" class="form-control form-control-color" name="bgColor" value="#b3b3b3">
-                                        </div>
-                                      </div>
-                                      </div>
-                                      <div class="col-12">
-                                        <fieldset class="row mb-2 mt-2">
-                                          <legend class="col-form-label col-sm-2 pt-0">Position:</legend>
-                                          <div class="col-sm-10">
-                                            <div class="form-check form-check-inline">
-                                              <input class="form-check-input" type="radio" name="menuBtnPosition" id="left${menuBtnCount}" value="left">
-                                              <label class="form-check-label" for="left${menuBtnCount}">
-                                                Left
-                                              </label>
-                                            </div>
-                                            <div class="form-check form-check-inline">
-                                              <input class="form-check-input" type="radio" name="menuBtnPosition" id="center${menuBtnCount}" value="center" checked>
-                                              <label class="form-check-label" for="center${menuBtnCount}">
-                                                Center
-                                              </label>
-                                            </div>
-                    
-                                            <div class="form-check form-check-inline">
-                                              <input class="form-check-input" type="radio" name="menuBtnPosition" id="right${menuBtnCount}" value="right">
-                                              <label class="form-check-label" for="right${menuBtnCount}">
-                                                Right
-                                              </label>
-                                            </div>
-                                          </div>
-                                        </fieldset>
-                                      </div>
                                     </form>
                                       <div class="delete-menu-btn">
-                                        <button type="button" onclick="deleteMenuBtn(this)">
+                                        <button type="button" onclick="deleteMenuBtnEdit(this)">
                                           <i class="fa-solid fa-minus"></i>
                                         </button>
                                       </div>
@@ -8064,16 +7972,13 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
                                 let formsLength = $("#menuBtnsDivEdit .menu-btns").length;
                                 if(formsLength < 3){
                                   $("#menuBtnsDivEdit").append(menuAddElem);
+                                }else{
+                                  $("#addMoreMenuBtnEdit").css("pointer-events", "none");
+                                  $("#addMoreMenuBtnEdit").css("opacity", "0.4");
                                 }
                                 menuBtnCount+=1;
                             
-                              }
-                    
-          
-                        deleteMenuBtnEdit = (elem)=>{
-                        $(elem).closest('.menu-btns').remove();
-                      }
-                    
+                              }    
 
           let mainDiv = document.createElement("div")
           mainDiv.className = "linkBtnDiv"
@@ -8082,16 +7987,25 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
           mainDiv.innerHTML += buttonInputTwo;
           if(btnCount === "menu"){
             mainDiv.innerHTML += menuBtnsDiv;
-          }else{
-            mainDiv.innerHTML += initialMenuBtnsElem;
           }
           modalBody.appendChild(mainDiv);
 
-          if(btnCount === "menu"){
-            menuButtonData.forEach((e,i)=>{
-              $(`#menuBtnEdit${i} input[name=menuBtnPosition][value=${e.menuBtnPosition}]`).prop("checked", true);
-            })
+          if(menuBtnCount ===3){
+            $("#addMoreMenuBtnEdit").css("pointer-events", "none");
+            $("#addMoreMenuBtnEdit").css("opacity", "0.4");
+          }else{
+            $("#addMoreMenuBtnEdit").css("pointer-events", "auto");
+            $("#addMoreMenuBtnEdit").css("opacity", "1");
+          }
+          
+          deleteMenuBtnEdit = (elem)=>{
+            $(elem).closest('.menu-btns').remove();
+            $("#addMoreMenuBtnEdit").css("pointer-events", "auto");
+            $("#addMoreMenuBtnEdit").css("opacity", "1");
+          }
 
+          if(btnCount === "menu"){
+            $(`input[name=menuBtnPositionEdit][value=${menuPosition}]`).prop("checked", true);
             $("#oneBtnOptionEdit").css("pointer-events", "none");
             $("#oneBtnOptionEdit").css("opacity", "0.4");
             $("#twoBtnOptionEdit").css("pointer-events", "none");
@@ -9345,6 +9259,14 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
           let popupTextTwo=CKEDITOR.instances['popupTextEditTwo']?.getData();
           let popupTextColorTwo = $("#popupTextColorEditTwo").val();
 
+          let menuBgColor = "";
+          let menuPosition = "";
+
+          if(btnCount === "menu"){
+            menuBgColor = $("#menuBgColorEdit").val();
+            menuPosition = $(`input[name="menuBtnPositionEdit"]:checked`).val();
+          }
+
           let updatedElement = document.getElementById(elemId).children[1];
           $(updatedElement).removeAttr("style");
           if (btnCount === "one") {
@@ -9355,7 +9277,9 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
             updatedElement.style.gap = "10px";
           }else if(btnCount === 'menu'){
             updatedElement.style.display = "flex";
-            updatedElement.style.gap = "10px";
+            updatedElement.style.gap = "5px";
+            updatedElement.style.justifyContent = `${menuPosition}`
+            updatedElement.style.backgroundColor = `${menuBgColor}`
           }
 
           var forms = document.querySelectorAll("#linkFormEdit form");
@@ -9495,7 +9419,6 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
             let elemCount = elemID?.match(/\d/g);
             elemCount = elemCount?.join("");
             var elements = document.getElementById(`${elemID}`).elements;
-            let menuPosition = $(`#${elemID} input[name="menuBtnPosition"]:checked`).val();
             var obj ={};
             for(var i = 0 ; i < elements.length ; i++){
                 var item = elements.item(i);
@@ -9517,7 +9440,6 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
                   }
 
                   obj[item.name] = item.value;
-                  obj['menuBtnPosition'] = menuPosition;
                 }
             }
 
@@ -9558,9 +9480,7 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
             }
           }else if(btnCount === "menu"){
             menuBtnData.forEach((btn)=>{
-              btnTag += `<div style="text-align:${btn.menuBtnPosition};flex:1">
-                        <a href="${btn.link}" class="linkBtn" target="_blank" style="background-color:${btn.bgColor}">${btn.btnName}</a>
-                      </div>`;
+              btnTag += `<a href="${btn.link}" target="_blank" class="linkBtn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="${btn.btnName}">${btn.btnName}</a>`;
             });
           }
 
@@ -9617,14 +9537,17 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
 
 
            if (!hasEmptyValue.includes(true)) {
-
-            if (updatesClass === "updatesItems") {
-              btnContainerArray[`${elemId}`] = { btnCount, buttons, updates: `updates${updatesId}` }
-              tempArray[`${elemId}`] = { type: "8", btnCount, buttons, updates: `updates${updatesId}` }
-            } else {
-              btnContainerArray[`${elemId}`] = { btnCount, buttons }
-              tempArray[`${elemId}`] = { type: "8", btnCount, buttons }
-            }
+              if(btnCount ==="menu"){
+                tempArray[`${elemId}`] = { type: "8", btnCount,bgColor:menuBgColor, position:menuPosition, buttons }
+              }else{
+                if (updatesClass === "updatesItems") {
+                  btnContainerArray[`${elemId}`] = { btnCount, buttons, updates: `updates${updatesId}` }
+                  tempArray[`${elemId}`] = { type: "8", btnCount, buttons, updates: `updates${updatesId}` }
+                } else {
+                  btnContainerArray[`${elemId}`] = { btnCount, buttons }
+                  tempArray[`${elemId}`] = { type: "8", btnCount, buttons }
+                }
+              }
             updatedElement.innerHTML = btnTag;
             $('#editModal').modal('hide');
           }

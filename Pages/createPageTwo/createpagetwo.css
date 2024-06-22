@@ -843,6 +843,10 @@ box-shadow: inset 2px 2px 9px -6px rgba(0,0,0,0.75);
     border-bottom: 1px solid #dee2e6;
 }
 
+.menu-btns-conatiner .menu-btns form{
+    margin-bottom: 15px;
+}
+
  .menu-btns-conatiner .menu-btns .add-more-btn button{
     border: none;
     outline: none;
@@ -1150,7 +1154,7 @@ box-shadow: inset 2px 2px 9px -6px rgba(0,0,0,0.75);
     line-height: 1;
 }
 #contentCard .btnDiv.menu-button .linkDiv a{
-    padding: 10px 25px;
+    padding: 10px 10px;
     border-radius: 5px;
     font-size: 18px;
     font-weight: bold;
@@ -1159,6 +1163,14 @@ box-shadow: inset 2px 2px 9px -6px rgba(0,0,0,0.75);
     display: inline-block;
     text-align: center;
     line-height: 1;
+    width: 110px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#contentCard .btnDiv.menu-button .linkDiv a:hover{
+    text-decoration: underline;
 }
 
 
@@ -2115,6 +2127,9 @@ label.radio {
     }
     .hyperLinksDiv.stampcard{
         grid-template-columns: repeat(2, 1fr);
+    }
+    #contentCard .btnDiv.menu-button .linkDiv a{
+        width: 70px;
     }
 }
 

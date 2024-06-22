@@ -18,18 +18,16 @@
     {
       "type": "8",
       "btnCount": "menu",
+      "bgColor": "#ff7a7a",
+      "position": "left",
       "buttons": [
         {
           "btnName": "Button Three",
-          "menuBtnPosition": "center",
-          "link": "https://www.google.com/",
-          "bgColor": "#ff2424"
+          "link": "https://www.youtube.com/"
         },
         {
           "btnName": "Button Three",
-          "menuBtnPosition": "right",
-          "link": "https://www.youtube.com/",
-          "bgColor": "#54ff0a"
+          "link": "https://www.youtube.com/"
         }
       ]
     },
