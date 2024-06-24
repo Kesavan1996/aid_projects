@@ -93,6 +93,7 @@
                 <button type="button" class="btn btn-primary" onclick="showModal('quiz')">Add Quiz Question</button>
                 <button type="button" class="btn btn-primary" onclick="showModal('updates')">Accordion</button>
                 <button type="button" class="btn btn-primary" onclick="showModal('linkPopup')">Link with Popup</button>
+                <button type="button" class="btn btn-primary" onclick="showModal('heading','donor')">Donor Header</button>
 
                 <button type="button" class="btn btn-primary" onclick="addSpace()">Empty Space</button>
               </div>
@@ -225,7 +226,7 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-primary" onclick="addElement()">Ok</button>
+            <button type="button" class="btn btn-primary" id="createBtn" onclick="addElement()">Ok</button>
           </div>
         </div>
       </div>
@@ -772,13 +773,14 @@
 
 
       function showModal(element, btnPopup) {
+        $("#createBtn").prop('disabled', false);
         let menuToggles = document.querySelector(".menuToggles");
         menuToggles.classList.remove("active");
         document.getElementById("pageContent").innerHTML = ""
         if (element === "heading") {
           $('#createModal').modal('show');
           var modalTitle = document.getElementById("pageTitle")
-          modalTitle.innerText = "Add Header Band"
+          modalTitle.innerText =btnPopup==="donor"?"Add Donor Header":"Add Header Band";
           modalTitle.className = ""
 
           var modalBody = document.getElementById('pageContent')
@@ -787,15 +789,32 @@
           input.className = "form-control headingClass"
           let colorPick = `<div class="col-6">
             <label for="colorPickerId" class="form-label">Choose background Color</label>
-            <input type="color" class="form-control form-control-color" id="colorPickerId" value="${pageBgColor}">
+            <input type="color" class="form-control form-control-color ${btnPopup==="donor"?"donor-color":""}" id="colorPickerId" value="${pageBgColor}">
           </div>`
           let mainDiv = document.createElement("div")
           mainDiv.className = "row g-3 mt-2"
 
           mainDiv.innerHTML = colorPick
-          modalBody.appendChild(input)
-          modalBody.appendChild(mainDiv)
-          changeToRichtext([`headingId${headingDivId}`])
+          let donorExisting = document.createElement('div')
+          donorExisting.innerHTML=`<div class="existing-donor">The donor header is already existing in this page.</div>`
+          let donorCheck = $("#contentCard .donor-class").length;
+
+          if(donorCheck !== 0){
+            if(btnPopup === "donor"){
+              modalBody.appendChild(donorExisting);
+              $("#createBtn").prop('disabled', true);
+            }else{
+              modalBody.appendChild(input)
+              modalBody.appendChild(mainDiv)
+              changeToRichtext([`headingId${headingDivId}`])
+              $("#createBtn").prop('disabled', false);
+            }
+          }else{
+            modalBody.appendChild(input)
+            modalBody.appendChild(mainDiv)
+            changeToRichtext([`headingId${headingDivId}`])
+            $("#createBtn").prop('disabled', false);
+          }
         }
         else if (element === "headingDesc") {
           $('#createModal').modal('show');
@@ -3821,7 +3840,10 @@
         var contentCards = document.getElementById("contentCard")
         if (modalBody.children[0].className === "form-control headingClass") {
           var div = document.createElement('div')
-          div.className = "heading dragDiv"
+          let donorCheck=$("#colorPickerId").hasClass("donor-color");
+
+          let titleCheck = $("#contentCard #title").length;
+          div.className = `heading dragDiv ${donorCheck ?"donor-class":""}`
           div.draggable = true
           div.id = "headingId" + headingDivId
           var dropImg = document.createElement("img")
@@ -3862,7 +3884,7 @@
 
 
 
-          let bgColor = document.getElementById(`colorPickerId`).value
+          let bgColor = document.getElementById(`colorPickerId`)?.value
 
           let paraDiv = document.createElement("div")
           paraDiv.className = "headingDiv"
@@ -3883,6 +3905,8 @@
           let updatesContent;
           let updatesContentId;
           let parentDivId;
+          let donorExisting= $("#contentCard .donor-class").length;
+          console.log(donorExisting,"dot")
 
 
           if (pageTitle !== "") {
@@ -3907,12 +3931,26 @@
               headingDivId = headingDivId + 1;
             }
             else {
-              contentCards.appendChild(div)
-              headingArray[`headingId${headingDivId}`] = { "type": "2", heading: ckTextValue, bgColor: bgColor }
-              tempArray[`headingId${headingDivId}`] = { "type": "2", heading: ckTextValue, bgColor: bgColor }
-              let headingDiv = document.getElementById(`headingId${headingDivId}`)
-              headingDiv.style.backgroundColor = `${bgColor}`
-              headingDivId += 1
+              if(donorCheck){
+                  if(titleCheck === 0){
+                    $("#contentCard").prepend(div);
+                  }else{
+                    $("#contentCard #title").after(div)
+                  }
+                  headingArray[`headingId${headingDivId}`] = { "type": "2", heading: ckTextValue, bgColor: bgColor,donor:true }
+                  tempArray[`headingId${headingDivId}`] = { "type": "2", heading: ckTextValue, bgColor: bgColor,donor:true }
+                  let headingDiv = document.getElementById(`headingId${headingDivId}`)
+                  headingDiv.style.backgroundColor = `${bgColor}`
+                  headingDivId += 1
+              }else{
+                contentCards.appendChild(div)
+                headingArray[`headingId${headingDivId}`] = { "type": "2", heading: ckTextValue, bgColor: bgColor }
+                tempArray[`headingId${headingDivId}`] = { "type": "2", heading: ckTextValue, bgColor: bgColor }
+                let headingDiv = document.getElementById(`headingId${headingDivId}`)
+                headingDiv.style.backgroundColor = `${bgColor}`
+                headingDivId += 1
+              }
+
             }
 
             // heading Data
@@ -5125,10 +5163,15 @@
           if (!hasEmptyValue.includes(true)) {
             if(btnCount ==="menu"){
               let titleCheck = $("#contentCard #title").length;
-              if(titleCheck === 0){
-                $("#contentCard").prepend(btnDiv);
+              let donorCheck = $("#contentCard .donor-class").length;
+              if(donorCheck){
+                $("#contentCard .donor-class").after(btnDiv);
               }else{
-                $("#contentCard #title").after(btnDiv)
+                if(titleCheck === 0){
+                  $("#contentCard").prepend(btnDiv);
+                }else{
+                  $("#contentCard #title").after(btnDiv)
+                }
               }
               tempArray[`${parentId}`] = { type: "8", btnCount,bgColor:menuBgColor, position:menuPosition, buttons }
             }else{
@@ -7221,8 +7264,10 @@
         }
         else if (element === "editHeading") {
           $('#editModal').modal('show');
+          let { bgColor, heading } = headingArray[`${parentId}`]
+          let donorCheck = headingArray[`${parentId}`]['donor']
           var modalTitle = document.getElementById("EditPageTitle")
-          modalTitle.innerText = "Edit Header Band"
+          modalTitle.innerText =donorCheck ?"Edit donor header": "Edit Header Band";
 
           if (updatesClass === "updatesItems") {
             modalTitle.className = `${updatesDivId}_editModal`
@@ -7238,7 +7283,7 @@
 
           // let parentElem= document.getElementById(id).parentElement
 
-          let { bgColor, heading } = headingArray[`${parentId}`]
+          
 
           let colorPick = `<div class="col-6">
             <label for="colorPickerId" class="form-label">Choose background Color</label>
@@ -8400,11 +8445,10 @@
           let id = modalBody.children[0].id
           let updatedElement = document.getElementById(id).children[1]
           let editValue = CKEDITOR.instances['editInput']?.getData()
+          let donorCheck = tempArray[`${id}`]['donor']
 
           let colorInput = document.getElementById("headingColorPickerId").value
           if (CKEDITOR.instances['editInput']?.getData() !== "") {
-
-            //
             $('#editModal').modal('hide');
             document.getElementById("emptyPage")?.remove()
             updatedElement.innerHTML = editValue
@@ -8413,8 +8457,14 @@
               headingArray[`${id}`] = { "type": "2", heading: editValue, bgColor: colorInput, updates: `updates${updatesId}` }
               tempArray[`${id}`] = { "type": "2", heading: editValue, bgColor: colorInput, updates: `updates${updatesId}` }
             } else {
-              headingArray[`${id}`] = { "type": "2", heading: editValue, bgColor: colorInput }
-              tempArray[`${id}`] = { "type": "2", heading: editValue, bgColor: colorInput }
+              if(donorCheck){
+                headingArray[`${id}`] = { "type": "2", heading: editValue, bgColor: colorInput,donor:true }
+                tempArray[`${id}`] = { "type": "2", heading: editValue, bgColor: colorInput,donor:true }
+              }else{
+                headingArray[`${id}`] = { "type": "2", heading: editValue, bgColor: colorInput }
+                tempArray[`${id}`] = { "type": "2", heading: editValue, bgColor: colorInput }
+              }
+
             }
 
           } else {
@@ -8427,7 +8477,7 @@
 
           updatedElement.parentElement.style.backgroundColor = colorInput
 
-
+          console.log(tempArray,"tamp")
 
         }
         else if (modalBody.children[0].className === "DescClass") {

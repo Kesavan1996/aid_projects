@@ -52,6 +52,12 @@
       ]
     },
     {
+      "type": "2",
+      "heading": "Donor first",
+      "bgColor": "#fcfcfc",
+      "donor": true
+    },
+    {
       "type": "4",
       "images": [
         "1714830841_8ba185147a797c8972b1.jpeg",
