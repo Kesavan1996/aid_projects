@@ -194,6 +194,12 @@ width: 100px;
 #linkTabContent{
     padding: 10px;
 }
+.links-container,
+.links-container-edit
+{
+    border:1px solid #dee2e6 ;
+    padding: 5px 10px;
+}
 
 #linkTab li{
     flex: 1;
@@ -845,6 +851,12 @@ box-shadow: inset 2px 2px 9px -6px rgba(0,0,0,0.75);
 
 .menu-btns-conatiner .menu-btns form{
     margin-bottom: 15px;
+    width: 100%;
+}
+
+.drop-down-label{
+    margin-bottom: 15px;
+    width: 100%;
 }
 
  .menu-btns-conatiner .menu-btns .add-more-btn button{
@@ -1151,7 +1163,7 @@ box-shadow: inset 2px 2px 9px -6px rgba(0,0,0,0.75);
 #contentCard .btnDiv .linkDiv{
     width: 90%;
 }
-#contentCard .btnDiv .linkDiv a{
+#contentCard .btnDiv .linkDiv .linkBtn{
     padding: 10px 35px;
     border-radius: 25px;
     font-size: 18px;
@@ -1162,7 +1174,22 @@ box-shadow: inset 2px 2px 9px -6px rgba(0,0,0,0.75);
     text-align: center;
     line-height: 1;
 }
-#contentCard .btnDiv.menu-button .linkDiv a{
+#contentCard .btnDiv.menu-button .linkDiv .linkBtn{
+    padding: 10px 10px;
+    border-radius: 5px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #fff;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+    line-height: 1;
+    width: 110px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+#contentCard .btnDiv.menu-button .linkDiv .dropdown .dropdown-toggle{
     padding: 10px 10px;
     border-radius: 5px;
     font-size: 18px;
@@ -1178,8 +1205,13 @@ box-shadow: inset 2px 2px 9px -6px rgba(0,0,0,0.75);
     text-overflow: ellipsis;
 }
 
-#contentCard .btnDiv.menu-button .linkDiv a:hover{
+#contentCard .btnDiv.menu-button .linkDiv .linkBtn:hover{
     text-decoration: underline;
+}
+
+.menu-button .dropdown-item:hover{
+    text-decoration: underline;
+    background-color: transparent;
 }
 
 
@@ -2137,7 +2169,7 @@ label.radio {
     .hyperLinksDiv.stampcard{
         grid-template-columns: repeat(2, 1fr);
     }
-    #contentCard .btnDiv.menu-button .linkDiv a{
+    #contentCard .btnDiv.menu-button .linkDiv .linkBtn{
         width: 70px;
     }
 }

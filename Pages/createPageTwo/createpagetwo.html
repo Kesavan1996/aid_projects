@@ -14,6 +14,9 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
 
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
     integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -402,23 +405,16 @@
       </div>
     </div>
 
-    <!-- <script src="https://code.jquery.com/jquery-1.10.2.js"></script> -->
-
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
       crossorigin="anonymous"></script>
+
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 
-    <!-- <script src="/assets/js/ckeditor/ckeditor.js"></script> -->
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.15.1/ckeditor.js"></script>
-
-    <!-- <script>
-      CKEDITOR.replace('editor');
-      </script> -->
 
     <script>
       function changeToRichtext(id_list) {
@@ -1610,61 +1606,196 @@
                                     </div>
                                   </div>  
                              </div>`
-
-         
          
           let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="display:none">
                               <div class="col-12 mb-2">
                                 <div class="row align-items-center">
-                                  <label for="colorPickerId" class="form-label col-6">Background Color</label>
+                                  <label for="colorPickerId" class="form-label col-6">Background Color:</label>
                                   <div class="col-4">
                                     <input type="color" class="form-control form-control-color" id="menuBgColor" value="#b3b3b3">
                                   </div>
                                 </div>
                               </div>
+                              <div class="col-12 mb-2">
+                                <div class="row align-items-center">
+                                  <label for="colorPickerId" class="form-label col-6">Font Color:</label>
+                                  <div class="col-4">
+                                    <input type="color" class="form-control form-control-color" id="linkFontColor" value="#ffffff">
+                                  </div>
+                                </div>
+                              </div>
+
+                                <div class="col-12">
+                                    <fieldset class="row mb-2 mt-2">
+                                      <legend class="col-form-label col-4 pt-0">Buttons List:</legend>
+                                      <div class="col-8">
+                                        <div class="form-check form-check-inline">
+                                          <input class="form-check-input" type="checkbox" name="btnListCheck" id="leftBtnCheck" value="left" checked>
+                                          <label class="form-check-label" for="leftBtnCheck">Left</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                          <input class="form-check-input" type="checkbox" name="btnListCheck" id="centerBtnCheck" value="center">
+                                          <label class="form-check-label" for="centerBtnCheck">Center</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                          <input class="form-check-input" type="checkbox" name="btnListCheck" id="rightBtnCheck" value="right">
+                                          <label class="form-check-label" for="rightBtnCheck">Right</label>
+                                        </div>
+                                      </div>
+                                    </fieldset>
+                              </div>
+
                               <div class="col-12">
                                     <fieldset class="row mb-2 mt-2">
                                       <legend class="col-form-label col-4 pt-0">Position:</legend>
                                       <div class="col-8">
                                         <div class="form-check form-check-inline">
-                                          <input class="form-check-input" type="radio" name="menuBtnPosition" id="menuLeft" value="left">
+                                          <input class="form-check-input" type="radio" name="menuBtnPosition" onchange="menuPositionChange(this)" id="menuLeft" value="left" checked>
                                           <label class="form-check-label" for="menuLeft">
                                             Left
                                           </label>
                                         </div>
                                         <div class="form-check form-check-inline">
-                                          <input class="form-check-input" type="radio" name="menuBtnPosition" id="menuCenter" value="center" checked>
+                                          <input class="form-check-input" type="radio" name="menuBtnPosition" onchange="menuPositionChange(this)" id="menuCenter" value="center">
                                           <label class="form-check-label" for="menuCenter">
                                             Center
                                           </label>
                                         </div>
     
                                         <div class="form-check form-check-inline">
-                                          <input class="form-check-input" type="radio" name="menuBtnPosition" id="menuRight" value="right">
+                                          <input class="form-check-input" type="radio" name="menuBtnPosition" onchange="menuPositionChange(this)" id="menuRight" value="right">
                                           <label class="form-check-label" for="menuRight">
                                             Right
                                           </label>
                                         </div>
                                       </div>
                                     </fieldset>
+                              </div>
+
+                            <div class="links-container" id="leftMenuList">
+                              <fieldset class="row mb-2 mt-2">
+                                <legend class="col-form-label col-4 pt-0">Menu Type:</legend>
+                                <div class="col-8">
+                                  <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="leftMenuType" onchange="MenuTypeChange(this,'left')" id="LeftMenuLink" value="link" checked>
+                                    <label class="form-check-label" for="LeftMenuLink">
+                                      Main Menu
+                                    </label>
                                   </div>
-                            <div class="menu-btns">
-                              <form class="row gap-3" class="menuBtnForm" id="menuBtn0">
-                               <div class="col-12">
-                                    <input type="text" class="form-control" name="btnName" placeholder="Name">
+                                  <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="leftMenuType" onchange="MenuTypeChange(this,'left')" id="leftMenuDropDown" value="dropDown">
+                                    <label class="form-check-label" for="leftMenuDropDown">
+                                     Sub Menu
+                                    </label>
+                                  </div>
+                                </div>
+                              </fieldset>
+                              <div class="link-menu menu-value-fields">
+                                <form class="row gap-3" class="menuBtnForm">
+                                  <div class="col-12">
+                                      <input type="text" class="form-control" name="btnName" placeholder="Name">
                                   </div>
                                   <div class="col-12">
                                     <input type="text" class="form-control" name="link" placeholder="Link">
                                   </div>
                                 </form>
+                              </div>
+                              <div class="drop-down-menu menu-value-fields" style="display:none">
+                                <div class="menu-btns">
+                                    <div class="drop-down-label">
+                                        <input type="text" class="form-control" id="leftDropDownName" name="btnName" placeholder="Name">
+                                    </div>
                                   <div class="add-more-btn">
-                                    <button type="button" id="addMoreMenuBtn" onclick="addMoreBtn()">
+                                    <button type="button" id="leftAddMoreMenuBtn" onclick="addMoreBtn('left')">
                                       <i class="fa-solid fa-plus"></i>
                                     </button>
                                   </div>
-                                   </div>
                                 </div>
-                                  `
+                              </div>
+                            </div> 
+                            <div class="links-container" id="centerMenuList" style="display:none">
+                              <fieldset class="row mb-2 mt-2">
+                                <legend class="col-form-label col-4 pt-0">Menu Type:</legend>
+                                <div class="col-8">
+                                  <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="centerMenuType" onchange="MenuTypeChange(this,'center')" id="centerMenuLink" value="link" checked>
+                                    <label class="form-check-label" for="centerMenuLink">
+                                      Main Menu
+                                    </label>
+                                  </div>
+                                  <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="centerMenuType" onchange="MenuTypeChange(this,'center')" id="centerMenuDropDown" value="dropDown">
+                                    <label class="form-check-label" for="centerMenuDropDown">
+                                      Sub Menu
+                                    </label>
+                                  </div>
+                                </div>
+                              </fieldset>
+                              <div class="link-menu menu-value-fields">
+                                <form class="row gap-3" class="menuBtnForm">
+                                  <div class="col-12">
+                                      <input type="text" class="form-control" name="btnName" placeholder="Name">
+                                  </div>
+                                  <div class="col-12">
+                                    <input type="text" class="form-control" name="link" placeholder="Link">
+                                  </div>
+                                </form>
+                              </div>
+                              <div class="drop-down-menu menu-value-fields" style="display:none">
+                                <div class="menu-btns">
+                                  <div class="drop-down-label">
+                                        <input type="text" class="form-control" id="centerDropDownName" name="btnName" placeholder="Name">
+                                  </div>
+                                  <div class="add-more-btn">
+                                    <button type="button" id="centerAddMoreMenuBtn" onclick="addMoreBtn('center')">
+                                      <i class="fa-solid fa-plus"></i>
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>
+                            </div> 
+                            <div class="links-container" id="rightMenuList" style="display:none">
+                              <fieldset class="row mb-2 mt-2">
+                                <legend class="col-form-label col-4 pt-0">Menu Type:</legend>
+                                <div class="col-8">
+                                  <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="rightMenuType" onchange="MenuTypeChange(this,'right')" id="rigtMenuLink" value="link" checked>
+                                    <label class="form-check-label" for="rigtMenuLink">
+                                      Main Menu
+                                    </label>
+                                  </div>
+                                  <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="rightMenuType" onchange="MenuTypeChange(this,'right')" id="rightMenuDropDown" value="dropDown">
+                                    <label class="form-check-label" for="rightMenuDropDown">
+                                      Sub Menu
+                                    </label>
+                                  </div>
+                                </div>
+                              </fieldset>
+                             <div class="link-menu menu-value-fields">
+                                <form class="row gap-3" class="menuBtnForm">
+                                  <div class="col-12">
+                                      <input type="text" class="form-control" name="btnName" placeholder="Name">
+                                  </div>
+                                  <div class="col-12">
+                                    <input type="text" class="form-control" name="link" placeholder="Link">
+                                  </div>
+                                </form>
+                              </div>
+                              <div class="drop-down-menu menu-value-fields" style="display:none">
+                                <div class="menu-btns">
+                                    <div class="drop-down-label">
+                                        <input type="text" class="form-control" id="rightDropDownName" name="btnName" placeholder="Name">
+                                    </div>
+                                    <div class="add-more-btn">
+                                      <button type="button" id="rightAddMoreMenuBtn" onclick="addMoreBtn('right')">
+                                        <i class="fa-solid fa-plus"></i>
+                                      </button>
+                                    </div>
+                                </div>
+                              </div> 
+                          </div>
+                          </div>`
 
           let buttonDiv = document.createElement("div")
           buttonDiv.id = "btnLink"
@@ -1689,7 +1820,7 @@
 
           let menuBtnCount = 1;
 
-          addMoreBtn = ()=>{
+          addMoreBtn = (elem)=>{
             let menuAddElem=`<div class="menu-btns mt-3">
               <form class="row gap-3" class="menuBtnForm" id="menuBtn${menuBtnCount}">
                <div class="col-12">
@@ -1700,27 +1831,27 @@
                   </div>
                 </form>
                   <div class="delete-menu-btn">
-                    <button type="button" onclick="deleteMenuBtn(this)">
+                    <button type="button" onclick="deleteMenuBtn(this,'${elem}')">
                       <i class="fa-solid fa-minus"></i>
                     </button>
                   </div>
                    </div>`
 
-            let formsLength = $("#menuBtnsDiv .menu-btns").length;
-            if(formsLength <= 2){
-              $("#menuBtnsDiv").append(menuAddElem);
-            }else{
-              $("#addMoreMenuBtn").css("pointer-events", "none");
-              $("#addMoreMenuBtn").css("opacity", "0.4");
-            }
+                   let formsLength = $(`#${elem}MenuList .drop-down-menu .menu-btns`).length;
+                   if(formsLength <= 10){
+                     $(`#${elem}MenuList .drop-down-menu`).append(menuAddElem);
+                   }else{
+                     $(`#${elem}AddMoreMenuBtn`).css("pointer-events", "none");
+                     $(`#${elem}AddMoreMenuBtn`).css("opacity", "0.4");
+                   }  
             menuBtnCount+=1;
         
           }
 
-          deleteMenuBtn = (elem)=>{
+          deleteMenuBtn = (elem,position)=>{
             $(elem).closest('.menu-btns').remove();
-            $("#addMoreMenuBtn").css("pointer-events", "auto");
-            $("#addMoreMenuBtn").css("opacity", "1");
+            $(`#${position}AddMoreMenuBtn`).css("pointer-events", "auto");
+            $(`#${position}AddMoreMenuBtn`).css("opacity", "1");
           }
 
           changeToRichtext([`popupText`])
@@ -1802,6 +1933,28 @@
               $("#menuBtnsDiv").css("display", "block");
               $("#popupDiv").css("display", "none");
 
+            }
+          }
+
+          menuPositionChange=(elem)=>{
+            let menuPosition = $(elem).val();
+            $(".links-container").css("display","none");
+            if(menuPosition === "left"){
+              $("#leftMenuList").css("display","block");
+            }else if(menuPosition === "center"){
+              $("#centerMenuList").css("display","block");
+            }else if(menuPosition === "right"){
+             $("#rightMenuList").css("display","block");
+            }
+          }
+
+          MenuTypeChange = (elem,position)=>{
+            let menuType = $(elem).val();
+            $(`#${position}MenuList .menu-value-fields`).css("display","none");
+            if(menuType === "link"){
+              $(`#${position}MenuList .link-menu`).css("display","block");
+            }else if(menuType === "dropDown"){
+              $(`#${position}MenuList .drop-down-menu`).css("display","block");
             }
           }
 
@@ -2332,6 +2485,7 @@
         });
       }
 
+      
 
       function showUpdatesModal(element, updatesDivBox, btnPopup) {
 
@@ -4833,15 +4987,131 @@
 
           let menuBgColor = "";
           let menuPosition = "";
+
+          let linkFontColor = "";
+
+          let leftMenuType = "";
+          let centerMenuType = "";
+          let rightMenuType = "";
+
+          let leftMenuLabel = "";
+          let centerMenuLabel = "";
+          let rightMenuLabel = "";
+
+          let leftMenuBtnData = {};
+          let centerMenuBtnData = [];
+          let rightMenuBtnData = [];
+
+          let menuListData= [];
+
           $(".btn-error").remove();
+          $(".menu-error").remove();
+
+          let menusList=[];
 
           if(btnCount === "menu"){
             menuBgColor = $("#menuBgColor").val();
             menuPosition = $(`input[name="menuBtnPosition"]:checked`).val();
+            linkFontColor = $("#linkFontColor").val();
+             $("input[name=btnListCheck]:checked").map(function () {
+                menusList.push(this.value)
+              })
+            menusList.forEach((m)=>{
+            let leftMenuForms = "";
+            let menuBtnForms = "";
 
+            if(m==="left"){
+              leftMenuType = $(`input[name="leftMenuType"]:checked`).val();
+              if(leftMenuType === "link"){
+                menuBtnForms = document.querySelectorAll(`#leftMenuList .link-menu form`);
+              }else{
+                leftMenuLabel = $("#leftDropDownName").val();
+                if(leftMenuLabel === ""){
+                  hasEmptyValue.push(true);
+                  $("#leftDropDownName").after('<p class="error menu-error mt-0">Please enter the label name.</p>');
+                }
+                menuBtnForms = document.querySelectorAll(`#leftMenuList .drop-down-menu .menu-btns form`);
+              }
+            }else if(m ==="center"){
+              centerMenuType = $(`input[name="centerMenuType"]:checked`).val();
+              if(centerMenuType === "link"){
+                menuBtnForms = document.querySelectorAll(`#centerMenuList .link-menu form`);
+              }else{
+                centerMenuLabel = $("#centerDropDownName").val();
+                if(centerMenuLabel === ""){
+                  hasEmptyValue.push(true);
+                  $("#centerDropDownName").after('<p class="error menu-error mt-0">Please enter the label name.</p>');
+                }
+                menuBtnForms = document.querySelectorAll(`#centerMenuList .drop-down-menu .menu-btns form`);
+              }
+            }else if(m === "right"){
+              rightMenuType = $(`input[name="rightMenuType"]:checked`).val();
+              if(rightMenuType === "link"){
+                menuBtnForms = document.querySelectorAll(`#rightMenuList .link-menu form`);
+              }else{
+                rightMenuLabel = $("#rightDropDownName").val();
+                if(rightMenuLabel === ""){
+                  hasEmptyValue.push(true);
+                  $("#rightDropDownName").after('<p class="error menu-error mt-0">Please enter the label name.</p>');
+                } 
+                menuBtnForms = document.querySelectorAll(`#rightMenuList .drop-down-menu .menu-btns form`);
+              }
+            } 
+
+            menuListData= [];
+              Array.from(menuBtnForms).forEach((e)=>{
+                let elements = e.elements;
+                let obj ={};
+                for(var i = 0 ; i < elements.length ; i++){
+                  var item = elements.item(i);
+                  if(item.name !==""){
+                    if(item.name=="link"){
+                      var ValidateUrlExp = /^(ftp|http|https|chrome|:\/\/|\.|@){2,}(localhost|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|\S*:\w*@)*([a-zA-Z]|(\d{1,3}|\.){7}){1,}(\w|\.{2,}|\.[a-zA-Z]{2,3}|\/|\?|&|:\d|@|=|\/|\(.*\)|#|-|%)*$/gum
+                      let linkUrlValidate = ValidateUrlExp.test(item.value);
+                      if(linkUrlValidate ===false){
+                        $(elements[i]).after('<p class="error menu-error mt-0">Please enter the valid URL.</p>')
+                        hasEmptyValue.push(true)
+                      }
+                    }
+  
+                    if(item.name === "btnName"){
+                      if(item.value == ""){
+                        $(elements[i]).after('<p class="error menu-error mt-0">Please enter the valid name.</p>') 
+                        hasEmptyValue.push(true)
+                      }
+                    }
+  
+                    obj[item.name] = item.value;
+                  }
+              }
+               menuListData.push(obj)
+              })
+              if(m === "left"){
+                if(leftMenuType === "link"){
+                  leftMenuBtnData = {position:"left",type:leftMenuType,links:menuListData}
+                }else{
+                  leftMenuBtnData = {position:"left",label:leftMenuLabel,type:leftMenuType,links:menuListData}
+                }
+                menuBtnData.push(leftMenuBtnData);
+              }else if(m === "right"){
+                if(rightMenuType === "link"){
+                  rightMenuBtnData = {position:"right",type:rightMenuType,links:menuListData}
+                }else{
+                  rightMenuBtnData = {position:"right",label:rightMenuLabel,type:rightMenuType,links:menuListData}
+                }
+                menuBtnData.push(rightMenuBtnData);
+              }else if(m === "center"){
+                if(centerMenuType === "link"){
+                  centerMenuBtnData = {position:"center",type:centerMenuType,links:menuListData}
+                }else{
+                  centerMenuBtnData = {position:"center",label:centerMenuLabel,type:centerMenuType,links:menuListData}
+                }
+                menuBtnData.push(centerMenuBtnData);
+              }
+              
+            })
             let menuForms = document.querySelectorAll("#menuBtnsDiv .menu-btns form");
-
-          $(".menu-error").remove();
+  /*      
           Array.from(menuForms).forEach((e)=>{
             let elemID = e.id;
             let elemCount = elemID?.match(/\d/g);
@@ -4873,7 +5143,7 @@
 
             menuBtnData.push(obj)
           })
-
+ */
           }else{
 
             if (btnName === "") {
@@ -4932,7 +5202,7 @@
               }
             }
 
-                   //Button two error handling
+            //Button two error handling
                   
             if (btnCount === "two") {
               if (btnTwoName === "") {
@@ -5046,7 +5316,7 @@
           }else if(btnCount === 'menu'){
             linkDiv.style.display = "flex";
             linkDiv.style.gap = "5px";
-            linkDiv.style.justifyContent = `${menuPosition}`
+            linkDiv.style.justifyContent = "space-between"
             linkDiv.style.backgroundColor = `${menuBgColor}`
           }
 
@@ -5082,8 +5352,25 @@
               btnTag = `<a href="#" id="linkTag${buttonId}1" class="linkBtn link_${parentId}" onclick="openPopupModal(this)" style="background-color:${btnColor}">${btnName}</a>`;
             }
           }else if(btnCount==="menu"){
-            menuBtnData.forEach((btn)=>{
-              btnTag += `<a href="${btn.link}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="${btn.btnName}" class="linkBtn" target="_blank">${btn.btnName}</a>`;
+            menuBtnData.forEach((btn,i)=>{
+              if(btn.type === "link"){
+                btnTag += `<a href="${btn['links'][0].link}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="${btn['links'][0].btnName}" class="linkBtn" target="_blank" style="color:${linkFontColor}">${btn['links'][0].btnName}</a>`;
+              }else{
+                let linkElem ="";
+                btn['links'].forEach((l)=>{
+                  linkElem += `<li><a class="dropdown-item" target="_blank" href="${l.link}">${l.btnName}</a></li>`
+                  })
+
+                btnTag += `<div class="dropdown">
+                   <a class="btn dropdown-toggle" href="#" role="button" id="dropdownMenuLink${i}" data-bs-toggle="dropdown" aria-expanded="false" style="color:${linkFontColor}">
+                      ${btn.label}
+                   </a>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink${i}">
+                      ${linkElem}
+                    </ul>
+                  </div>`
+              }
+
             });
           }
 
@@ -5137,8 +5424,6 @@
             buttons=[...menuBtnInfo.map(obj=>obj)];
           }
 
-          console.log(buttons,"button")
-
           linkDiv.innerHTML = btnTag;
 
           let updatesContent;
@@ -5173,7 +5458,7 @@
                   $("#contentCard #title").after(btnDiv)
                 }
               }
-              tempArray[`${parentId}`] = { type: "8", btnCount,bgColor:menuBgColor, position:menuPosition, buttons }
+              tempArray[`${parentId}`] = { type: "8",menusList, btnCount,fontColor:linkFontColor, bgColor:menuBgColor, buttons }
             }else{
               if (pageTitle !== "") {
                 updatesContent.appendChild(btnDiv);
@@ -5188,9 +5473,6 @@
             $('#createModal').modal('hide');
             buttonId += 1;
           }
-
-          console.log(tempArray,"temp")
-
 
           let modalContent = '';
           let linkElem = "";
@@ -5227,8 +5509,6 @@
             let btnAttr = elem.classList[1].split("_")[1];
             let popupTwoData = tempArray[`${btnAttr}`]['buttons'][elemIndex];
             let modalTypeTwo = popupTwoData['popupType'];
-
-            console.log(popupTwoData,"data")
 
             if (modalTypeTwo === "image") {
               modalContentTwo = `<img src="${URL.createObjectURL(popupTwoData.image)}" class="popupImage" />`
@@ -6277,10 +6557,14 @@
           let menuButtonData;
           let menuBgColor="";
           let menuPosition="";
+          let menuFontColor = "";
+          let menusList = [];
           if(btnCount === "menu"){
             menuButtonData= tempArray[parentId]['buttons'];
             menuBgColor = tempArray[parentId]['bgColor'];
-            menuPosition = tempArray[parentId]['position'];
+            menuPosition = menuButtonData[0]['position'];
+            menuFontColor = tempArray[parentId]['fontColor'];
+            menusList = tempArray[parentId]['menusList'];
           }
           let btnType = buttonOneData['btnType'] === undefined ? 'link' : buttonOneData['btnType'];
 
@@ -6702,7 +6986,317 @@
                         </div> `
                     })
                   }
-                    let menuBtnsDiv=`<div class="menu-btns-conatiner" id="menuBtnsDivEdit" style="display:none">
+                    
+                let leftMenuBtnData = [];
+                let rightMenuBtnData = [];
+                let centerMenuBtnData = [];
+
+                if(btnCount === "menu"){
+                  menuButtonData.forEach((e)=>{
+                    if(e.position === "left"){
+                      leftMenuBtnData.push(e)
+                    }else if(e.position === "center"){
+                      centerMenuBtnData.push(e);
+                    }else if(e.position === "right"){
+                      rightMenuBtnData.push(e);
+                    }
+                  })
+                }
+
+                  let leftMenuElem = "";
+                  let rightMenuElem = "";
+                  let centerMenuElem = "";
+
+                  if(leftMenuBtnData.length === 0){
+                    leftMenuElem = `<div class="link-menu menu-value-fields">
+                              <form class="row gap-3" class="menuBtnForm">
+                                <div class="col-12">
+                                    <input type="text" class="form-control" name="btnName" placeholder="Name">
+                                </div>
+                                <div class="col-12">
+                                  <input type="text" class="form-control" name="link" placeholder="Link">
+                                </div>
+                              </form>
+                            </div>
+                            <div class="drop-down-menu menu-value-fields" style="display:none">
+                              <div class="menu-btns">
+                                  <div class="drop-down-label">
+                                      <input type="text" class="form-control" id="leftDropDownNameEdit" name="btnName" placeholder="Name">
+                                  </div>
+                                <div class="add-more-btn">
+                                  <button type="button" id="leftAddMoreMenuBtnEdit" onclick="addMoreBtnEdit('left')">
+                                    <i class="fa-solid fa-plus"></i>
+                                  </button>
+                                </div>
+                              </div>
+                            </div>`
+                  }else{
+                        leftMenuBtnData.forEach((e)=>{
+                            if(e.type === "link"){
+                              leftMenuElem = `<div class="link-menu menu-value-fields">
+                                <form class="row gap-3" class="menuBtnForm">
+                            <div class="col-12">
+                                <input type="text" class="form-control" name="btnName" placeholder="Name" value="${e['links'][0].btnName}">
+                            </div>
+                            <div class="col-12">
+                              <input type="text" class="form-control" name="link" placeholder="Link" value="${e['links'][0].link}">
+                            </div>
+                          </form>
+                        </div>
+                        <div class="drop-down-menu menu-value-fields" style="display:none">
+                          <div class="menu-btns">
+                              <div class="drop-down-label">
+                                  <input type="text" class="form-control" id="leftDropDownNameEdit" name="btnName" placeholder="Name">
+                              </div>
+                            <div class="add-more-btn">
+                              <button type="button" id="leftAddMoreMenuBtnEdit" onclick="addMoreBtnEdit('left')">
+                                <i class="fa-solid fa-plus"></i>
+                              </button>
+                            </div>
+                          </div>
+                        </div>`
+                      }else if(e.type === "dropDown"){
+                        let dropDownElem = "";
+
+                        e.links.forEach((l,i)=>{
+                          dropDownElem += `<div class="menu-btns mt-3">
+                                <form class="row gap-3" class="menuBtnForm">
+                                <div class="col-12">
+                                      <input type="text" class="form-control" name="btnName" placeholder="Name" value="${l.btnName}">
+                                    </div>
+                                    <div class="col-12">
+                                      <input type="text" class="form-control" name="link" placeholder="Link" value="${l.link}">
+                                    </div>
+                                  </form>
+                                    <div class="delete-menu-btn">
+                                      <button type="button" onclick="deleteMenuBtnEdit(this,'left')">
+                                        <i class="fa-solid fa-minus"></i>
+                                      </button>
+                                    </div>
+                                    </div>`
+                        })
+
+                        leftMenuElem = `<div class="link-menu menu-value-fields" style="display:none">
+                          <form class="row gap-3" class="menuBtnForm">
+                            <div class="col-12">
+                                <input type="text" class="form-control" name="btnName" placeholder="Name">
+                            </div>
+                            <div class="col-12">
+                              <input type="text" class="form-control" name="link" placeholder="Link">
+                            </div>
+                          </form>
+                        </div>
+                        <div class="drop-down-menu menu-value-fields">
+                          <div class="menu-btns">
+                            <div class="drop-down-label">
+                                <input type="text" class="form-control" id="leftDropDownNameEdit" name="btnName" placeholder="Name" value="${e.label}">
+                            </div>
+                            <div class="add-more-btn">
+                              <button type="button" id="leftAddMoreMenuBtnEdit" onclick="addMoreBtnEdit('left')">
+                                <i class="fa-solid fa-plus"></i>
+                              </button>
+                            </div>
+                          </div>
+                          ${dropDownElem}
+                        </div>`
+                      }
+                    })
+                    }
+                    
+                    if(rightMenuBtnData.length === 0){
+                      rightMenuElem = `<div class="link-menu menu-value-fields">
+                                <form class="row gap-3" class="menuBtnForm">
+                                  <div class="col-12">
+                                      <input type="text" class="form-control" name="btnName" placeholder="Name">
+                                  </div>
+                                  <div class="col-12">
+                                    <input type="text" class="form-control" name="link" placeholder="Link">
+                                  </div>
+                                </form>
+                              </div>
+                              <div class="drop-down-menu menu-value-fields" style="display:none">
+                                <div class="menu-btns">
+                                    <div class="drop-down-label">
+                                        <input type="text" class="form-control" id="rightDropDownNameEdit" name="btnName" placeholder="Name">
+                                    </div>
+                                  <div class="add-more-btn">
+                                    <button type="button" id="rightAddMoreMenuBtnEdit" onclick="addMoreBtnEdit('right')">
+                                      <i class="fa-solid fa-plus"></i>
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>`
+                    }else{ 
+                        rightMenuBtnData.forEach((e)=>{
+                            if(e.type === "link"){
+                              rightMenuElem = `<div class="link-menu menu-value-fields">
+                                <form class="row gap-3" class="menuBtnForm">
+                                  <div class="col-12">
+                                      <input type="text" class="form-control" name="btnName" placeholder="Name" value="${e['links'][0].btnName}">
+                                  </div>
+                                  <div class="col-12">
+                                    <input type="text" class="form-control" name="link" placeholder="Link" value="${e['links'][0].link}">
+                                  </div>
+                                </form>
+                              </div>
+                              <div class="drop-down-menu menu-value-fields" style="display:none">
+                                <div class="menu-btns">
+                                    <div class="drop-down-label">
+                                        <input type="text" class="form-control" id="rightDropDownNameEdit" name="btnName" placeholder="Name">
+                                    </div>
+                                  <div class="add-more-btn">
+                                    <button type="button" id="rightAddMoreMenuBtnEdit" onclick="addMoreBtnEdit('right')">
+                                      <i class="fa-solid fa-plus"></i>
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>`
+                      }else if(e.type === "dropDown"){
+                        let dropDownElem = "";
+                        e.links.forEach((l,i)=>{
+                          dropDownElem += `<div class="menu-btns mt-3">
+                                <form class="row gap-3" class="menuBtnForm">
+                                <div class="col-12">
+                                      <input type="text" class="form-control" name="btnName" placeholder="Name" value="${l.btnName}">
+                                    </div>
+                                    <div class="col-12">
+                                      <input type="text" class="form-control" name="link" placeholder="Link" value="${l.link}">
+                                    </div>
+                                  </form>
+                                    <div class="delete-menu-btn">
+                                      <button type="button" onclick="deleteMenuBtnEdit(this,'right')">
+                                        <i class="fa-solid fa-minus"></i>
+                                      </button>
+                                    </div>
+                                    </div>`
+                        })
+
+                        rightMenuElem = `<div class="link-menu menu-value-fields" style="display:none">
+                          <form class="row gap-3" class="menuBtnForm">
+                            <div class="col-12">
+                                <input type="text" class="form-control" name="btnName" placeholder="Name">
+                            </div>
+                            <div class="col-12">
+                              <input type="text" class="form-control" name="link" placeholder="Link">
+                            </div>
+                          </form>
+                        </div>
+                        <div class="drop-down-menu menu-value-fields" >
+                          <div class="menu-btns">
+                            <div class="drop-down-label">
+                                <input type="text" class="form-control" id="rightDropDownNameEdit" name="btnName" placeholder="Name" value="${e.label}">
+                            </div>
+                            <div class="add-more-btn">
+                              <button type="button" id="rightAddMoreMenuBtnEdit" onclick="addMoreBtnEdit('right')">
+                                <i class="fa-solid fa-plus"></i>
+                              </button>
+                            </div>
+                          </div>
+                          ${dropDownElem}
+                        </div>`
+                      }
+                    }) 
+                    }
+                   
+                  
+                    if(centerMenuBtnData.length === 0){
+                      centerMenuElem = `<div class="link-menu menu-value-fields">
+                                <form class="row gap-3" class="menuBtnForm">
+                                  <div class="col-12">
+                                      <input type="text" class="form-control" name="btnName" placeholder="Name">
+                                  </div>
+                                  <div class="col-12">
+                                    <input type="text" class="form-control" name="link" placeholder="Link">
+                                  </div>
+                                </form>
+                              </div>
+                              <div class="drop-down-menu menu-value-fields" style="display:none">
+                                <div class="menu-btns">
+                                    <div class="drop-down-label">
+                                        <input type="text" class="form-control" id="centerDropDownNameEdit" name="btnName" placeholder="Name">
+                                    </div>
+                                  <div class="add-more-btn">
+                                    <button type="button" id="centerAddMoreMenuBtnEdit" onclick="addMoreBtnEdit('center')">
+                                      <i class="fa-solid fa-plus"></i>
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>`
+                    }else{
+                      centerMenuBtnData.forEach((e)=>{
+                      if(e.type === "link"){
+                        centerMenuElem = `<div class="link-menu menu-value-fields">
+                          <form class="row gap-3" class="menuBtnForm">
+                            <div class="col-12">
+                                <input type="text" class="form-control" name="btnName" placeholder="Name" value="${e['links'][0].btnName}">
+                            </div>
+                            <div class="col-12">
+                              <input type="text" class="form-control" name="link" placeholder="Link" value="${e['links'][0].link}">
+                            </div>
+                          </form>
+                        </div>
+                        <div class="drop-down-menu menu-value-fields" style="display:none">
+                          <div class="menu-btns">
+                              <div class="drop-down-label">
+                                  <input type="text" class="form-control" id="centerDropDownNameEdit" name="btnName" placeholder="Name">
+                              </div>
+                            <div class="add-more-btn">
+                              <button type="button" id="centerAddMoreMenuBtnEdit" onclick="addMoreBtnEdit('center')">
+                                <i class="fa-solid fa-plus"></i>
+                              </button>
+                            </div>
+                          </div>
+                        </div>`
+                      }else if(e.type === "dropDown"){
+                        let dropDownElem = "";
+
+                        e.links.forEach((l,i)=>{
+                          dropDownElem += `<div class="menu-btns mt-3">
+                                <form class="row gap-3" class="menuBtnForm">
+                                <div class="col-12">
+                                      <input type="text" class="form-control" name="btnName" placeholder="Name" value="${l.btnName}">
+                                    </div>
+                                    <div class="col-12">
+                                      <input type="text" class="form-control" name="link" placeholder="Link" value="${l.link}">
+                                    </div>
+                                  </form>
+                                    <div class="delete-menu-btn">
+                                      <button type="button" onclick="deleteMenuBtnEdit(this,'center')">
+                                        <i class="fa-solid fa-minus"></i>
+                                      </button>
+                                    </div>
+                                    </div>`
+                        })
+
+                        centerMenuElem = `<div class="link-menu menu-value-fields" style="display:none">
+                          <form class="row gap-3" class="menuBtnForm">
+                            <div class="col-12">
+                                <input type="text" class="form-control" name="btnName" placeholder="Name">
+                            </div>
+                            <div class="col-12">
+                              <input type="text" class="form-control" name="link" placeholder="Link">
+                            </div>
+                          </form>
+                        </div>
+                        <div class="drop-down-menu menu-value-fields">
+                          <div class="menu-btns">
+                            <div class="drop-down-label">
+                                <input type="text" class="form-control" id="centerDropDownNameEdit" name="btnName" placeholder="Name" value="${e.label}">
+                            </div>
+                            <div class="add-more-btn">
+                              <button type="button" id="centerAddMoreMenuBtnEdit" onclick="addMoreBtnEdit('center')">
+                                <i class="fa-solid fa-plus"></i>
+                              </button>
+                            </div>
+                          </div>
+                          ${dropDownElem}
+                        </div>`
+                      }
+                    }) 
+                    }
+                   
+                  
+                  let menuBtnsDiv=`<div class="menu-btns-conatiner" id="menuBtnsDivEdit" style="display:none">
                        <div class="col-12 my-2">
                               <div class="row align-items-center">
                               <label for="colorPickerId" class="form-label col-6">Background Color</label>
@@ -6711,24 +7305,51 @@
                               </div>
                         </div>
                       </div>
+                      <div class="col-12 mb-2">
+                          <div class="row align-items-center">
+                            <label for="colorPickerId" class="form-label col-6">Font Color:</label>
+                            <div class="col-4">
+                              <input type="color" class="form-control form-control-color" id="linkFontColorEdit" value="${menuFontColor}">
+                            </div>
+                          </div>
+                      </div>
+                       <div class="col-12">
+                          <fieldset class="row mb-2 mt-2">
+                            <legend class="col-form-label col-4 pt-0">Buttons List:</legend>
+                            <div class="col-8">
+                              <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" name="btnListCheckEdit" id="leftBtnCheckEdit" value="left">
+                                <label class="form-check-label" for="leftBtnCheckEdit">Left</label>
+                              </div>
+                              <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" name="btnListCheckEdit" id="centerBtnCheckEdit" value="center">
+                                <label class="form-check-label" for="centerBtnCheckEdit">Center</label>
+                              </div>
+                              <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" name="btnListCheckEdit" id="rightBtnCheckEdit" value="right">
+                                <label class="form-check-label" for="rightBtnCheckEdit">Right</label>
+                              </div>
+                            </div>
+                          </fieldset>
+                        </div>
                       <div class="col-12">
                               <fieldset class="row mb-2 mt-2">
-                                <legend class="col-form-label col-sm-2 pt-0">Position:</legend>
-                                <div class="col-sm-10">
+                                <legend class="col-form-label col-4 pt-0">Position:</legend>
+                                <div class="col-8">
                                   <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="menuBtnPositionEdit" id="menuLeftEdit" value="left">
+                                    <input class="form-check-input" type="radio" name="menuBtnPositionEdit" onchange="menuPositionChangeEdit(this)" id="menuLeftEdit" value="left">
                                     <label class="form-check-label" for="menuLeftEdit">
                                       Left
                                     </label>
                                   </div>
                                   <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="menuBtnPositionEdit" id="menuCenterEdit" value="center">
+                                    <input class="form-check-input" type="radio" name="menuBtnPositionEdit" onchange="menuPositionChangeEdit(this)" id="menuCenterEdit" value="center">
                                     <label class="form-check-label" for="menuCenterEdit">
                                       Center
                                     </label>
                                   </div>
                                   <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="menuBtnPositionEdit" id="menuRightEdit" value="right">
+                                    <input class="form-check-input" type="radio" name="menuBtnPositionEdit" onchange="menuPositionChangeEdit(this)" id="menuRightEdit" value="right">
                                     <label class="form-check-label" for="menuRightEdit">
                                       Right
                                     </label>
@@ -6736,7 +7357,68 @@
                                 </div>
                               </fieldset>
                             </div>
-                      ${menuBtnsElem}
+                            <div class="links-container-edit" id="leftMenuListEdit" style="display:none">
+                              <fieldset class="row mb-2 mt-2">
+                                <legend class="col-form-label col-4 pt-0">Menu Type:</legend>
+                                <div class="col-8">
+                                  <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="leftMenuTypeEdit" onchange="MenuTypeChangeEdit(this,'left')" id="LeftMenuLinkEdit" value="link" checked>
+                                    <label class="form-check-label" for="LeftMenuLinkEdit">
+                                      Main Menu
+                                    </label>
+                                  </div>
+                                  <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="leftMenuTypeEdit" onchange="MenuTypeChangeEdit(this,'left')" id="leftMenuDropDownEdit" value="dropDown">
+                                    <label class="form-check-label" for="leftMenuDropDownEdit">
+                                     Sub Menu
+                                    </label>
+                                  </div>
+                                </div>
+                              </fieldset>
+                              ${leftMenuElem}
+                            </div> 
+
+                            <div class="links-container-edit" id="centerMenuListEdit" style="display:none">
+                              <fieldset class="row mb-2 mt-2">
+                                <legend class="col-form-label col-4 pt-0">Menu Type:</legend>
+                                <div class="col-8">
+                                  <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="centerMenuTypeEdit" onchange="MenuTypeChangeEdit(this,'center')" id="centerMenuLinkEdit" value="link" checked>
+                                    <label class="form-check-label" for="centerMenuLinkEdit">
+                                      Main Menu
+                                    </label>
+                                  </div>
+                                  <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="centerMenuTypeEdit" onchange="MenuTypeChangeEdit(this,'center')" id="centerMenuDropDownEdit" value="dropDown">
+                                    <label class="form-check-label" for="centerMenuDropDownEdit">
+                                      Sub Menu
+                                    </label>
+                                  </div>
+                                </div>
+                              </fieldset>
+                                ${centerMenuElem}
+                            </div> 
+
+                            <div class="links-container-edit" id="rightMenuListEdit" style="display:none">
+                              <fieldset class="row mb-2 mt-2">
+                                <legend class="col-form-label col-4 pt-0">Menu Type:</legend>
+                                <div class="col-8">
+                                  <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="rightMenuTypeEdit" onchange="MenuTypeChangeEdit(this,'right')" id="rigtMenuLinkEdit" value="link" checked>
+                                    <label class="form-check-label" for="rigtMenuLinkEdit">
+                                      Main Menu
+                                    </label>
+                                  </div>
+                                  <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="rightMenuTypeEdit" onchange="MenuTypeChangeEdit(this,'right')" id="rightMenuDropDownEdit" value="dropDown">
+                                    <label class="form-check-label" for="rightMenuDropDownEdit">
+                                      Sub Menu
+                                    </label>
+                                  </div>
+                                </div>
+                              </fieldset>
+                              ${rightMenuElem}
+                          </div>
                     </div>`
 
                
@@ -6796,9 +7478,9 @@
 
                     let menuBtnCount = menuButtonData?.length;
              
-                    addMoreBtnEdit = ()=>{
+                    addMoreBtnEdit = (elem)=>{
                       let menuAddElem=`<div class="menu-btns mt-3">
-                        <form class="row gap-3" class="menuBtnForm" id="menuBtnEdit${menuBtnCount}">
+                        <form class="row gap-3" class="menuBtnForm">
                          <div class="col-12">
                               <input type="text" class="form-control" name="btnName" placeholder="Name">
                             </div>
@@ -6807,23 +7489,28 @@
                             </div>
                           </form>
                             <div class="delete-menu-btn">
-                              <button type="button" onclick="deleteMenuBtnEdit(this)">
+                              <button type="button" onclick="deleteMenuBtnEdit(this,'${elem}')">
                                 <i class="fa-solid fa-minus"></i>
                               </button>
                             </div>
                              </div>`
           
-                      let formsLength = $("#menuBtnsDivEdit .menu-btns").length;
-                      if(formsLength < 3){
-                        $("#menuBtnsDivEdit").append(menuAddElem);
+                      let formsLength = $(`#${elem}MenuListEdit .drop-down-menu .menu-btns`).length;
+                      if(formsLength <=10){
+                        $(`#${elem}MenuListEdit .drop-down-menu`).append(menuAddElem);
                       }else{
-                        $("#addMoreMenuBtnEdit").css("pointer-events", "none");
-                        $("#addMoreMenuBtnEdit").css("opacity", "0.4");
+                        $(`#${elem}AddMoreMenuBtnEdit`).css("pointer-events", "none");
+                        $(`#${elem}AddMoreMenuBtnEdit`).css("opacity", "0.4");
                       }
                       menuBtnCount+=1;
                   
                     }
         
+              deleteMenuBtnEdit = (elem,position)=>{
+                $(elem).closest('.menu-btns').remove();
+                $(`#${position}AddMoreMenuBtnEdit`).css("pointer-events", "auto");
+                $(`#${position}AddMoreMenuBtnEdit`).css("opacity", "1");
+              }
 
           let mainDiv = document.createElement("div")
           mainDiv.className = "linkBtnDiv"
@@ -6835,20 +7522,52 @@
           }
           
           modalBody.appendChild(mainDiv);
-
-          if(menuBtnCount ===3){
-            $("#addMoreMenuBtnEdit").css("pointer-events", "none");
-            $("#addMoreMenuBtnEdit").css("opacity", "0.4");
-          }else{
-            $("#addMoreMenuBtnEdit").css("pointer-events", "auto");
-            $("#addMoreMenuBtnEdit").css("opacity", "1");
-          }
           
-          deleteMenuBtnEdit = (elem)=>{
-            $(elem).closest('.menu-btns').remove();
-            $("#addMoreMenuBtnEdit").css("pointer-events", "auto");
-            $("#addMoreMenuBtnEdit").css("opacity", "1");
+          $(`#${menusList[0]}MenuListEdit`).css("display","block");
+
+          menuPositionChangeEdit = (elem)=>{
+            let menuPosition = $(elem).val();
+            $(".links-container-edit").css("display","none");
+            if(menuPosition === "left"){
+              $("#leftMenuListEdit").css("display","block");
+            }else if(menuPosition === "center"){
+              $("#centerMenuListEdit").css("display","block");
+            }else if(menuPosition === "right"){
+             $("#rightMenuListEdit").css("display","block");
+            }
           }
+
+          menusList.forEach((menu)=>{
+            $(`input[name='btnListCheckEdit'][value='${menu}']`).prop("checked", true);
+          })
+
+          MenuTypeChangeEdit = (elem,position)=>{
+            let menuType = $(elem).val();
+            $(`#${position}MenuListEdit .menu-value-fields`).css("display","none");
+            if(menuType === "link"){
+              $(`#${position}MenuListEdit .link-menu`).css("display","block");
+            }else if(menuType === "dropDown"){
+              $(`#${position}MenuListEdit .drop-down-menu`).css("display","block");
+            }
+          }
+
+          menuButtonData.forEach((btn)=>{
+            if(btn.position === "left"){
+              $(`input[name=leftMenuTypeEdit][value=${btn.type}]`).prop("checked", true);
+            }else if(btn.position === "center"){
+              $(`input[name=centerMenuTypeEdit][value=${btn.type}]`).prop("checked", true);
+            }else if(btn.position === "right"){
+              $(`input[name=rightMenuTypeEdit][value=${btn.type}]`).prop("checked", true);
+            }
+          })
+
+          menusList.map((elem)=>{
+            let formsLength = $(`#${elem}MenuListEdit .drop-down-menu .menu-btns`).length;
+            if(formsLength >= 10){
+              $(`#${elem}AddMoreMenuBtnEdit`).css("pointer-events", "none");
+              $(`#${elem}AddMoreMenuBtnEdit`).css("opacity", "0.4");
+            }
+          })
 
           if(btnCount === "menu"){
             $(`input[name=menuBtnPositionEdit][value=${menuPosition}]`).prop("checked", true);
@@ -8067,10 +8786,31 @@
 
           let menuBgColor = "";
           let menuPosition = "";
+          let linkFontColor = ""; 
 
+          
+          let leftMenuType = "";
+          let centerMenuType = "";
+          let rightMenuType = "";
+
+          let leftMenuLabel = "";
+          let centerMenuLabel = "";
+          let rightMenuLabel = "";
+
+          let leftMenuBtnData = {};
+          let centerMenuBtnData = [];
+          let rightMenuBtnData = [];
+
+          let menuListData= [];
+
+          let menusList=[];
           if(btnCount === "menu"){
             menuBgColor = $("#menuBgColorEdit").val();
             menuPosition = $(`input[name="menuBtnPositionEdit"]:checked`).val();
+            linkFontColor = $("#linkFontColorEdit").val();
+            $("input[name=btnListCheckEdit]:checked").map(function () {
+              menusList.push(this.value)
+            })
           }
 
           let updatedElement = document.getElementById(elemId).children[1];
@@ -8084,7 +8824,7 @@
           }else if(btnCount === 'menu'){
             updatedElement.style.display = "flex";
             updatedElement.style.gap = "5px";
-            updatedElement.style.justifyContent = `${menuPosition}`
+            updatedElement.style.justifyContent = "space-between"
             updatedElement.style.backgroundColor = `${menuBgColor}`
           }
 
@@ -8095,6 +8835,9 @@
           let menuBtnData = [];
 
           $(".btn-error-edit").remove();
+          $(".menu-error").remove();
+
+         
 
           if(btnCount !=="menu"){
 
@@ -8220,7 +8963,100 @@
         }else{
           let menuForms = document.querySelectorAll("#menuBtnsDivEdit .menu-btns form");
 
-          $(".menu-error").remove();
+          menusList.forEach((m)=>{
+            let leftMenuForms = "";
+            let menuBtnForms = "";
+
+            if(m==="left"){
+              leftMenuType = $(`input[name="leftMenuTypeEdit"]:checked`).val();
+              if(leftMenuType === "link"){
+                menuBtnForms = document.querySelectorAll(`#leftMenuListEdit .link-menu form`);
+              }else{
+                leftMenuLabel = $("#leftDropDownNameEdit").val();
+                if(leftMenuLabel === ""){
+                  hasEmptyValue.push(true);
+                  $("#leftDropDownNameEdit").after('<p class="error menu-error mt-0">Please enter the label name.</p>');
+                }
+                menuBtnForms = document.querySelectorAll(`#leftMenuListEdit .drop-down-menu .menu-btns form`);
+              }
+            }else if(m ==="center"){
+              centerMenuType = $(`input[name="centerMenuTypeEdit"]:checked`).val();
+              if(centerMenuType === "link"){
+                menuBtnForms = document.querySelectorAll(`#centerMenuListEdit .link-menu form`);
+              }else{
+                centerMenuLabel = $("#centerDropDownNameEdit").val();
+                if(centerMenuLabel === ""){
+                  hasEmptyValue.push(true);
+                  $("#centerDropDownNameEdit").after('<p class="error menu-error mt-0">Please enter the label name.</p>');
+                }
+                menuBtnForms = document.querySelectorAll(`#centerMenuListEdit .drop-down-menu .menu-btns form`);
+              }
+            }else if(m === "right"){
+              rightMenuType = $(`input[name="rightMenuTypeEdit"]:checked`).val();
+              if(rightMenuType === "link"){
+                menuBtnForms = document.querySelectorAll(`#rightMenuListEdit .link-menu form`);
+              }else{
+                rightMenuLabel = $("#rightDropDownNameEdit").val();
+                if(rightMenuLabel === ""){
+                  hasEmptyValue.push(true);
+                  $("#rightDropDownNameEdit").after('<p class="error menu-error mt-0">Please enter the label name.</p>');
+                } 
+                menuBtnForms = document.querySelectorAll(`#rightMenuListEdit .drop-down-menu .menu-btns form`);
+              }
+            } 
+
+            menuListData= [];
+            Array.from(menuBtnForms).forEach((e)=>{
+              let elements = e.elements;
+              let obj ={};
+              for(var i = 0 ; i < elements.length ; i++){
+                var item = elements.item(i);
+                if(item.name !==""){
+                  if(item.name=="link"){
+                    var ValidateUrlExp = /^(ftp|http|https|chrome|:\/\/|\.|@){2,}(localhost|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|\S*:\w*@)*([a-zA-Z]|(\d{1,3}|\.){7}){1,}(\w|\.{2,}|\.[a-zA-Z]{2,3}|\/|\?|&|:\d|@|=|\/|\(.*\)|#|-|%)*$/gum
+                    let linkUrlValidate = ValidateUrlExp.test(item.value);
+                    if(linkUrlValidate ===false){
+                      $(elements[i]).after('<p class="error menu-error mt-0">Please enter the valid URL.</p>')
+                      hasEmptyValue.push(true)
+                    }
+                  }
+
+                  if(item.name === "btnName"){
+                    if(item.value == ""){
+                      $(elements[i]).after('<p class="error menu-error mt-0">Please enter the valid name.</p>') 
+                      hasEmptyValue.push(true)
+                    }
+                  }
+
+                  obj[item.name] = item.value;
+                }
+            }
+             menuListData.push(obj)
+            })
+            if(m === "left"){
+              if(leftMenuType === "link"){
+                leftMenuBtnData = {position:"left",type:leftMenuType,links:menuListData}
+              }else{
+                leftMenuBtnData = {position:"left",label:leftMenuLabel,type:leftMenuType,links:menuListData}
+              }
+              menuBtnData.push(leftMenuBtnData);
+            }else if(m === "right"){
+              if(rightMenuType === "link"){
+                rightMenuBtnData = {position:"right",type:rightMenuType,links:menuListData}
+              }else{
+                rightMenuBtnData = {position:"right",label:rightMenuLabel,type:rightMenuType,links:menuListData}
+              }
+              menuBtnData.push(rightMenuBtnData);
+            }else if(m === "center"){
+              if(centerMenuType === "link"){
+                centerMenuBtnData = {position:"center",type:centerMenuType,links:menuListData}
+              }else{
+                centerMenuBtnData = {position:"center",label:centerMenuLabel,type:centerMenuType,links:menuListData}
+              }
+              menuBtnData.push(centerMenuBtnData);
+            }
+          })
+        /*  
           Array.from(menuForms).forEach((e)=>{
             let elemID = e.id;
             let elemCount = elemID?.match(/\d/g);
@@ -8252,7 +9088,7 @@
 
             menuBtnData.push(obj)
           })
-
+          */
         }
 
           $(".btn-error-edit").get(0)?.scrollIntoView({behavior: 'smooth'});
@@ -8286,8 +9122,25 @@
               btnTag = `<a href="#" id="linkTag${updatesId}_1" class="linkBtn link_${elemId}" onclick="openPopupModal(this)" style="background-color:${btnColor}">${btnName}</a>`;
             }
           }else if(btnCount === "menu"){
-            menuBtnData.forEach((btn)=>{
-              btnTag += `<a href="${btn.link}" target="_blank" class="linkBtn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="${btn.btnName}">${btn.btnName}</a>`;
+            menuBtnData.forEach((btn,i)=>{
+              if(btn.type === "link"){
+                btnTag += `<a href="${btn['links'][0].link}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="${btn['links'][0].btnName}" class="linkBtn" target="_blank" style="color:${linkFontColor}">${btn['links'][0].btnName}</a>`;
+              }else{
+                let linkElem ="";
+                btn['links'].forEach((l)=>{
+                  linkElem += `<li><a class="dropdown-item" target="_blank" href="${l.link}">${l.btnName}</a></li>`
+                  })
+
+                btnTag += `<div class="dropdown">
+                   <a class="btn dropdown-toggle" href="#" role="button" id="dropdownMenuLinkEdit${i}" data-bs-toggle="dropdown" aria-expanded="false" style="color:${linkFontColor}">
+                      ${btn.label}
+                   </a>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuLinkEdit${i}">
+                      ${linkElem}
+                    </ul>
+                  </div>`
+              }
+
             });
           }
 
@@ -8342,7 +9195,7 @@
 
           if (!hasEmptyValue.includes(true)) {
             if(btnCount ==="menu"){
-              tempArray[`${elemId}`] = { type: "8", btnCount,bgColor:menuBgColor, position:menuPosition, buttons }
+              tempArray[`${elemId}`] = { type: "8", menusList, btnCount, fontColor:linkFontColor,bgColor:menuBgColor, buttons }
             }else{
               if (updatesClass === "updatesItems") {
                 btnContainerArray[`${elemId}`] = { btnCount, buttons, updates: `updates${updatesId}` }
@@ -8356,8 +9209,6 @@
             updatedElement.innerHTML = btnTag;
             $('#editModal').modal('hide');
           }
-
-          console.log(tempArray,"array")
 
           let modalContent = '';
           let linkElem = "";

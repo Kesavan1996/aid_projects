@@ -17,37 +17,45 @@
     },
     {
       "type": "8",
+      "menusList": ["left", "center", "right"],
       "btnCount": "menu",
-      "bgColor": "#ff7a7a",
-      "position": "left",
+      "fontColor": "#ffffff",
+      "bgColor": "#b3b3b3",
       "buttons": [
         {
-          "btnName": "Button Three",
-          "link": "https://www.youtube.com/"
+          "position": "left",
+          "type": "link",
+          "links": [
+            {
+              "btnName": "Button One",
+              "link": "https://www.youtube.com/"
+            }
+          ]
         },
         {
-          "btnName": "Button Three",
-          "link": "https://www.youtube.com/"
-        }
-      ]
-    },
-    {
-      "type": "8",
-      "btnCount": "two",
-      "buttons": [
-        {
-          "name": "Button Three",
-          "btnType": "link",
-          "link": "https://www.google.com/",
-          "btnPosition": "center",
-          "bgColor": "#f47171"
+          "position": "center",
+          "type": "link",
+          "links": [
+            {
+              "btnName": "Button two",
+              "link": "https://www.youtube.com/"
+            }
+          ]
         },
         {
-          "name": "Button Two",
-          "btnType": "link",
-          "link": "https://www.google.com/",
-          "btnPosition": "center",
-          "bgColor": "#f75555"
+          "position": "right",
+          "label": "Label",
+          "type": "dropDown",
+          "links": [
+            {
+              "btnName": "Button two",
+              "link": "https://www.google.com/"
+            },
+            {
+              "btnName": "Button Three",
+              "link": "https://www.google.com/"
+            }
+          ]
         }
       ]
     },
