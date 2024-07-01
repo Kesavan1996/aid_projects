@@ -496,6 +496,7 @@ width: 100px;
     grid-gap: 20px;
     padding: 20px;
     justify-content: center;
+    background-size: cover;
 }
 
 
@@ -722,6 +723,44 @@ box-shadow: inset 2px 2px 9px -6px rgba(0,0,0,0.75);
      overflow: hidden;
      background: #fafbff;
  }
+
+ #mainImgContainer,
+#mainImgContainerEdit
+{
+    margin-top: 10px;
+    position: relative;
+    height: 100px;
+    width: 100px;
+}
+
+#mainImgContainer img,
+#mainImgContainerEdit img
+{
+    height: 100%;
+    width: 100%;
+}
+
+#mainImgContainerEdit span,
+#mainImgContainer span
+{
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    background-color: #fff;
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+#mainImgContainerEdit span i,
+#mainImgContainer span i
+{
+ color: red;
+}
 
  .imgCard .top,
  .videoCard .top,
@@ -1134,6 +1173,27 @@ box-shadow: inset 2px 2px 9px -6px rgba(0,0,0,0.75);
 .drop-down-label{
     margin-bottom: 15px;
     width: 100%;
+}
+
+#contentCard .btnDiv.menu-button .linkDiv .dropdown .dropdown-toggle span{
+    border-radius: 5px;
+    font-size: 18px;
+    font-weight: bold;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+    line-height: 1;
+    max-width: 110px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#contentCard .btnDiv.menu-button .linkDiv .dropdown .dropdown-toggle::after{
+    border-top: .5em solid;
+    border-right: .5em solid transparent;
+    border-bottom: 0;
+    border-left: .5em solid transparent;
 }
 
 #contentCard .btnDiv.menu-button .linkDiv .linkBtn{
@@ -2110,6 +2170,9 @@ table, th, td {
     }
     #contentCard .btnDiv.menu-button .linkDiv .linkBtn{
         width: 70px;
+    }
+    #contentCard .btnDiv.menu-button .linkDiv .dropdown .dropdown-toggle span{
+        max-width: 70px;
     }
 }
 

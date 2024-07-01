@@ -650,6 +650,8 @@
 
       var delImagesEdit;
 
+      let pageBgImage="";
+
       var showImages;
       var showEditImages;
       //var showAnimations;
@@ -720,6 +722,7 @@
       let linkRange;
       let selectedElem;
       let linkChildElem=[];
+      let textureImageIndex=0;
 
       //Temp Array
 
@@ -782,6 +785,20 @@
           if (data.type === "1") {
             parentContentCards.style.backgroundColor = data.bgColor
             cardbgColor = data.bgColor
+            let textureType= data['textureType'] ===  undefined ? 'color':data['textureType'];
+            let textureColor = "";
+
+            if(textureType === "existing" || textureType === "new" ){
+              pageBgImage = data['bgImage'] === undefined || "" ? "":data['bgImage']
+            }
+
+            if(textureType === "existing"){
+              textureImageIndex = data['imageIndex']
+            }
+
+            if(textureType === "color"){
+              textureColor = data['textureColor'] === undefined ? "#ffffff":data['textureColor'];
+            }
 
             var dropImg = document.createElement("img")
             dropImg.height = 20
@@ -828,13 +845,29 @@
 
             clickTag.setAttribute("onclick", `editModal("editTitle","pageHeadingId")`)
 
-            document.getElementById("emptyPage")?.remove()
-            //contentCards.appendChild(titleDiv)
+            document.getElementById("emptyPage")?.remove();
+
+            if(textureType === "existing"){
+              $(".createPageDiv").css('background-image',`url(${pageBgImage})`);
+            titleArray["title"] = { "type": "1", title: ckTextValue,textureType, bgColor: cardbgColor,imageIndex:textureImageIndex, bgImage:pageBgImage }
+            tempArray["title"] = { "type": "1", title: ckTextValue,textureType, bgColor: cardbgColor,imageIndex:textureImageIndex, bgImage:pageBgImage }
+          }else if(textureType === "color"){
+            $(".createPageDiv").css('background-image','');
+            $(".createPageDiv").css('background-color',`${textureColor}`);
+            titleArray["title"] = { "type": "1", title: ckTextValue,textureType, bgColor: cardbgColor, textureColor }
+            tempArray["title"] = { "type": "1", title: ckTextValue,textureType, bgColor: cardbgColor, textureColor }
+          }else if(textureType === "new"){
+            if(pageBgImage !== ""){
+              $(".createPageDiv").css('background-image',`url(${URL.createObjectURL(pageBgImage)})`);
+            }
+            titleArray["title"] = { "type": "1", title: ckTextValue,textureType, bgColor: cardbgColor, bgImage:pageBgImage }
+            tempArray["title"] = { "type": "1", title: ckTextValue,textureType, bgColor: cardbgColor, bgImage:pageBgImage }
+          }
             parentContentCards.insertBefore(titleDiv, parentContentCards.firstChild);
-            titleArray["title"] = { "type": "1", title: ckTextValue, bgColor: cardbgColor }
-            tempArray["title"] = { "type": "1", title: ckTextValue, bgColor: cardbgColor }
             //
             submitBtnDiv.style.display = "block"
+
+            console.log(tempArray['title'],"title")
 
           }
           else if (data.type === "2") {
@@ -1568,7 +1601,7 @@
           }else if(btnCount==="menu"){
             menuBtnData.forEach((btn,i)=>{
               if(btn.type === "link"){
-                btnTag += `<a href="${btn['links'][0].link}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="${btn['links'][0].btnName}" class="linkBtn" target="_blank" style="color:${linkFontColor}">${btn['links'][0].btnName}</a>`;
+                btnTag += `<a href="${btn['links'][0].link}" data-bs-toggle="tooltip" data-bs-placement="top" title="${btn['links'][0].btnName}" class="linkBtn" target="_blank" style="color:${linkFontColor}">${btn['links'][0].btnName}</a>`;
               }else{
                 let linkElem ="";
                 btn['links'].forEach((l)=>{
@@ -1576,7 +1609,7 @@
                   })
 
                 btnTag += `<div class="dropdown">
-                   <a class="btn dropdown-toggle" href="#" role="button" id="dropdownMenuLink${i}" data-bs-toggle="dropdown" aria-expanded="false" style="color:${linkFontColor}">
+                   <a class="btn dropdown-toggle" href="#" role="button" id="dropdownMenuLink${i}" data-bs-toggle="tooltip" data-bs-placement="top" title="${btn.label}" data-bs-toggle="dropdown" aria-expanded="false" style="color:${linkFontColor}">
                       ${btn.label}
                    </a>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink${i}">
@@ -2607,36 +2640,124 @@
         else if (element === "pageTitle") {
           $('#createModal').modal('show');
           var modalTitle = document.getElementById("pageTitle")
-
+          let titleCheck = $("#contentCard #title")
           modalTitle.innerText = "Add Page Title & Color"
           var modalBody = document.getElementById('pageContent')
           var pageTitle = ` <div class="col-md-12">
-              <input type="text" class="form-control" id="pageTitleField">
+            <input type="text" class="form-control" id="pageTitleField">
+          </div>
+          <div class="col-12">
+            <div class="row">
+              <label for="colorPickerId" class="form-label col-6">Background Color</label>
+              <input type="color" class="form-control form-control-color col-6" id="colorPickerId" value="#fcfcfc">
             </div>
-            <div class="col-md-6">
-              <label for="colorId" class="form-label">Color</label>
-              <input type="text" class="form-control" id="colorId" value="#fcfcfc">
+          </div>
+          <div class="col-12 mt-3">
+            <div class="row">
+              <label class="col-4">
+               Choose Texture:
+              </label>
+              <div class="col-8">
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="textureOption" id="existingTexture" onchange="textureChange(this)" value="existing" checked>
+                  <label class="form-check-label" for="existingTexture">Existing Texture</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="textureOption" id="newTexture" onchange="textureChange(this)" value="new" >
+                  <label class="form-check-label" for="newTexture">New Texture</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="textureOption" id="textureColor" onchange="textureChange(this)" value="color">
+                  <label class="form-check-label" for="textureColor">Bg Color</label>
+                </div>
+              </div>
             </div>
-            <div class="col-6">
-              <label for="colorPickerId" class="form-label">Choose Color</label>
-              <input type="color" class="form-control form-control-color" id="colorPickerId" value="#fcfcfc">
-            </div>`
+          </div>
+          <div class="col-12 textures-options" id="existingTextureList">
+          </div>
+          <div class="col-12 textures-options gap-3" id="textureUpload" style="display:none">
+            <div>
+              <input class="form-control" type="file" id="mainBgImage" accept="image/png, image/jpeg" onchange="bgImageonChange(this)" hidden />
+              <label class="file-choose-label" for="mainBgImage">Choose Image</label>
+            </div>
+            <div id="mainImgContainer" style="display:none"></div>
+          </div>
+          <div class="col-12 textures-options" id="textureColorDiv" style="display:none">
+            <div class="row">
+              <div class="col-4"></div>
+            <input type="color" class="form-control form-control-color col-8" id="textureBgColor" value="#ffffff">
+            </div>
+          </div>
+          `
+          let existingElem = `<div style="height:100px" class="d-flex align-items-center justify-content-center">
+                              <p>Page Title is already existing in this page.</p>
+                          </div>`
+        
+          let textureImages=['../../assets/img/texture1.jpg','../../assets/img/texture2.jpg','../../assets/img/texture3.jpg'];
 
           var parentDiv = document.createElement("div")
           parentDiv.className = "row g-3 pageTitle"
           parentDiv.id = "pageTitleId"
-          parentDiv.innerHTML = pageTitle
+          if(titleCheck.length === 0){
+            parentDiv.innerHTML = pageTitle;
+          }else{
+            parentDiv.innerHTML = existingElem;
+            $("#createBtn").prop('disabled', true);
+          }
+          
           modalBody.appendChild(parentDiv)
+
+          textureImages.forEach((image,i)=>{
+            $("#existingTextureList").append(`<div class="form-check form-check-inline existing-list-img">
+                    <input class="form-check-input" type="radio" name="textureImgOption" id="existingImg${i}" onchange="textureImgChoose(${i})" ${i==0?"checked":""}>
+                    <label for="existingImg${i}">
+                      <img src="${image}" />
+                    </label>
+                  </div>`)
+          })
+
+          pageBgImage = textureImages[0];
+
+          textureImgChoose = (index)=>{
+            pageBgImage = textureImages[index];
+            textureImageIndex=index;
+          }
+
+          bgImageonChange = (elem)=>{
+            $(".texture-img-error").remove();
+            let fileSizeInMB = elem.files[0].size / (1024 * 1024);
+            if(fileSizeInMB > 20){
+              $("#mainImgContainer").parent().after("<p class='error texture-img-error'>Please upload an image less than 20MB.</p>")
+            }else{
+              pageBgImage = elem.files[0];
+              $("#mainImgContainer").html(`<img src="${URL.createObjectURL(elem.files[0])}" /><span onclick="deltextureImg()"><i class="fa-solid fa-xmark"></i></span>`)
+              $("#mainImgContainer").css("display","block");
+            }
+          }
+
+          deltextureImg = () =>{
+            $("#mainImgContainer").html("");
+            pageBgImage="";
+            $("#mainImgContainer").css("display","none");
+          }
+
+          textureChange=(elem)=>{
+            $(".textures-options").css("display","none")
+            let textOption = $(elem).val();
+            if(textOption==="existing"){
+              $(`#existingTextureList`).css("display","block");
+            }else if(textOption === "new"){
+              $(`#textureUpload`).css("display","flex");
+            }else if(textOption === "color"){
+              $(`#textureColorDiv`).css("display","block");
+            }
+            
+          }
 
           var colorPickerField = document.getElementById("colorPickerId")
           let colorInputField = document.getElementById("colorId")
 
-          colorPickerField.addEventListener("change", (event) => {
-            colorInputField.value = colorPickerField.value
-          });
-
           changeToRichtext([`pageTitleField`])
-
 
         }
         else if (element === 'button') {
@@ -2992,19 +3113,19 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
 
                   <div class="col-12">
                       <fieldset class="row mb-2 mt-2">
-                        <legend class="col-form-label col-4 pt-0">Buttons List:</legend>
+                        <legend class="col-form-label col-4 pt-0">Manu List:</legend>
                         <div class="col-8">
                           <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" name="btnListCheck" id="leftBtnCheck" value="left" checked>
-                            <label class="form-check-label" for="leftBtnCheck">Left</label>
+                            <input class="form-check-input" type="checkbox" name="btnListCheck" id="leftBtnCheck" onchange="buttonListChange(this,'left')" value="left" checked>
+                            <label class="form-check-label" for="leftBtnCheck">Menu One</label>
                           </div>
                           <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" name="btnListCheck" id="centerBtnCheck" value="center">
-                            <label class="form-check-label" for="centerBtnCheck">Center</label>
+                            <input class="form-check-input" type="checkbox" name="btnListCheck" id="centerBtnCheck" onchange="buttonListChange(this,'center')" value="center">
+                            <label class="form-check-label" for="centerBtnCheck">Menu Two</label>
                           </div>
                           <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" name="btnListCheck" id="rightBtnCheck" value="right">
-                            <label class="form-check-label" for="rightBtnCheck">Right</label>
+                            <input class="form-check-input" type="checkbox" name="btnListCheck" id="rightBtnCheck" onchange="buttonListChange(this,'right')" value="right">
+                            <label class="form-check-label" for="rightBtnCheck">Menu Three</label>
                           </div>
                         </div>
                       </fieldset>
@@ -3012,24 +3133,24 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
 
                 <div class="col-12">
                       <fieldset class="row mb-2 mt-2">
-                        <legend class="col-form-label col-4 pt-0">Position:</legend>
+                        <legend class="col-form-label col-4 pt-0">Manu Position in Page:</legend>
                         <div class="col-8">
                           <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="menuBtnPosition" onchange="menuPositionChange(this)" id="menuLeft" value="left" checked>
-                            <label class="form-check-label" for="menuLeft">
+                            <input class="form-check-input" type="radio" name="menuBtnPosition" onchange="menuPositionChange(this)" id="leftMenu" value="left" checked>
+                            <label class="form-check-label" for="leftMenu">
                               Left
                             </label>
                           </div>
                           <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="menuBtnPosition" onchange="menuPositionChange(this)" id="menuCenter" value="center">
-                            <label class="form-check-label" for="menuCenter">
+                            <input class="form-check-input" type="radio" name="menuBtnPosition" onchange="menuPositionChange(this)" id="centerMenu" value="center">
+                            <label class="form-check-label" for="centerMenu">
                               Center
                             </label>
                           </div>
 
                           <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="menuBtnPosition" onchange="menuPositionChange(this)" id="menuRight" value="right">
-                            <label class="form-check-label" for="menuRight">
+                            <input class="form-check-input" type="radio" name="menuBtnPosition" onchange="menuPositionChange(this)" id="rightMenu" value="right">
+                            <label class="form-check-label" for="rightMenu">
                               Right
                             </label>
                           </div>
@@ -3174,6 +3295,16 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
           mainDiv.innerHTML += buttonInputTwo;
           mainDiv.innerHTML += menuBtnsElem;
           modalBody.appendChild(mainDiv);
+
+          buttonListChange = (elem,pos) =>{
+            if ($(`#${elem.id}`).is(":checked") == false){
+              $(`#${pos}Menu`).parent().css("pointer-events", "none");
+              $(`#${pos}Menu`).parent().css("opacity", "0.4");
+            }else{
+              $(`#${pos}Menu`).parent().css("pointer-events", "auto");
+              $(`#${pos}Menu`).parent().css("opacity", "1");
+            }   
+          }
 
           let menuBtnCheck = $("#contentCard .menu-button").length;
           if(menuBtnCheck == 0){
@@ -6026,7 +6157,9 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
         }
         else if (modalBody.children[0].id === "pageTitleId") {
           let pageTitle = document.getElementById("pageTitleField").value
-          let colorPick = document.getElementById("colorId").value
+          let colorPick = document.getElementById("colorPickerId").value
+          let textureType = $('input[name="textureOption"]:checked').val();
+          let textureColor = $("#textureBgColor").val();
           contentCards.style.backgroundColor = colorPick
 
           cardbgColor = colorPick
@@ -6082,17 +6215,26 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
           clickTag.setAttribute("onclick", `editModal("editTitle","pageHeadingId")`)
 
           if (ckTextValue !== "") {
-
-
-            //
             $('#createModal').modal('hide');
             document.getElementById("emptyPage")?.remove()
-            //contentCards.appendChild(titleDiv)
-            contentCards.insertBefore(titleDiv, contentCards.firstChild);
-            pageBgColor = cardbgColor
-            titleArray["title"] = { "type": "1", title: ckTextValue, bgColor: cardbgColor }
-            tempArray["title"] = { "type": "1", title: ckTextValue, bgColor: cardbgColor }
-            //
+              contentCards.insertBefore(titleDiv, contentCards.firstChild);
+              pageBgColor = cardbgColor
+              if(textureType === "existing"){
+                $(".createPageDiv").css('background-image',`url(${pageBgImage})`);
+              titleArray["title"] = { "type": "1", title: ckTextValue,textureType, bgColor: cardbgColor,imageIndex:textureImageIndex, bgImage:pageBgImage }
+              tempArray["title"] = { "type": "1", title: ckTextValue,textureType, bgColor: cardbgColor,imageIndex:textureImageIndex, bgImage:pageBgImage }
+            }else if(textureType === "color"){
+              $(".createPageDiv").css('background-image','');
+              $(".createPageDiv").css('background-color',`${textureColor}`);
+              titleArray["title"] = { "type": "1", title: ckTextValue,textureType, bgColor: cardbgColor, textureColor }
+              tempArray["title"] = { "type": "1", title: ckTextValue,textureType, bgColor: cardbgColor, textureColor }
+            }else if(textureType === "new"){
+              if(pageBgImage !== ""){
+                $(".createPageDiv").css('background-image',`url(${URL.createObjectURL(pageBgImage)})`);
+              }
+              titleArray["title"] = { "type": "1", title: ckTextValue,textureType, bgColor: cardbgColor, bgImage:pageBgImage }
+              tempArray["title"] = { "type": "1", title: ckTextValue,textureType, bgColor: cardbgColor, bgImage:pageBgImage }
+            }
             submitBtnDiv.style.display = "block"
           } else {
             let inputElem = document.getElementById("cke_pageTitleField")
@@ -6472,7 +6614,7 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
           }else if(btnCount==="menu"){
             menuBtnData.forEach((btn,i)=>{
               if(btn.type === "link"){
-                btnTag += `<a href="${btn['links'][0].link}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="${btn['links'][0].btnName}" class="linkBtn" target="_blank" style="color:${linkFontColor}">${btn['links'][0].btnName}</a>`;
+                btnTag += `<a href="${btn['links'][0].link}" data-bs-toggle="tooltip" data-bs-placement="top" title="${btn['links'][0].btnName}" class="linkBtn" target="_blank" style="color:${linkFontColor}">${btn['links'][0].btnName}</a>`;
               }else{
                 let linkElem ="";
                 btn['links'].forEach((l)=>{
@@ -6480,8 +6622,8 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
                   })
 
                 btnTag += `<div class="dropdown">
-                   <a class="btn dropdown-toggle" href="#" role="button" id="dropdownMenuLink${i}" data-bs-toggle="dropdown" aria-expanded="false" style="color:${linkFontColor}">
-                      ${btn.label}
+                   <a class="btn dropdown-toggle" href="#" role="button" id="dropdownMenuLink${i}" data-bs-toggle="dropdown" data-bs-toggle="tooltip" data-bs-placement="top" title="${btn.label}" aria-expanded="false" style="color:${linkFontColor}">
+                      <span>${btn.label}</span> 
                    </a>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink${i}">
                       ${linkElem}
@@ -6585,6 +6727,7 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
               }
             }
             $('#createModal').modal('hide');
+            document.getElementById("emptyPage")?.remove()
             buttonId += 1;
           }
 
@@ -7766,27 +7909,72 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
           var modalTitle = document.getElementById("EditPageTitle")
           modalTitle.innerText = "Edit Page Title & Color"
           var modalBody = document.getElementById('editPageContent')
+          let pageTitleContent = tempArray["title"]['title'];
+          pageBgImage = "";
 
+          let contentBgColor = tempArray["title"]['bgColor'];
+          let textureType = tempArray["title"]['textureType'];
           let titleText = document.getElementById(id).innerText
+          let textureColor = "#ffffff";
+          if(textureType === "existing"){
+            pageBgImage = tempArray["title"]['bgImage']
+            textureImageIndex = tempArray["title"]['imageIndex']
+          }else if(textureType === "new"){
+            pageBgImage = tempArray["title"]['bgImage']
+          }else if(textureType === "color"){
+            textureColor = tempArray["title"]['textureColor'];
+          }
 
           let bgColor = cardbgColor
 
-
-
-
           var pageTitle = ` <div class="col-md-12">
-              <label for="pageTitle" class="form-label">Title</label>
-              <input type="text" class="form-control inputField" id="pageTitleFieldEdit">
+            <label for="pageTitle" class="form-label">Title</label>
+            <input type="text" class="form-control inputField" id="pageTitleFieldEdit">
+          </div>
+          <div class="col-12">
+            <div class="row">
+                <label for="colorPickerIdEdit" class="form-label col-6">Background Color</label>
+                <input type="color" class="form-control form-control-color col-6" id="colorPickerIdEdit" value=${contentBgColor}>
             </div>
-            <div class="col-md-6">
-              <label for="colorId" class="form-label">Color</label>
-              <input type="text" class="form-control" id="colorEditId" value=${bgColor}>
+          </div>
+          <div class="col-12 mt-3">
+            <div class="row">
+              <label class="col-4">
+               Choose Texture:
+              </label>
+              <div class="col-8">
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="textureOptionEdit" id="existingTextureEdit" onchange="textureChangeEdit(this)" value="existing" checked>
+                  <label class="form-check-label" for="existingTextureEdit">Existing Texture</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="textureOptionEdit" id="newTextureEdit" onchange="textureChangeEdit(this)" value="new" >
+                  <label class="form-check-label" for="newTextureEdit">New Texture</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="textureOptionEdit" id="textureColorEdit" onchange="textureChangeEdit(this)" value="color">
+                  <label class="form-check-label" for="textureColorEdit">Bg Color</label>
+                </div>
+              </div>
             </div>
-            <div class="col-6">
-              <label for="colorPickerId" class="form-label">Choose Color</label>
-              <input type="color" class="form-control form-control-color" id="colorPickerEditId" value=${bgColor}>
-            </div>`
-
+          </div>
+          <div class="col-12 textures-optionsEdit" id="existingTextureListEdit">
+          </div>
+           <div class="col-12 textures-optionsEdit gap-3 mt-3" id="textureUploadEdit" style="display:none">
+                <div>
+                  <input class="form-control" type="file" id="mainBgImageEdit" accept="image/png, image/jpeg" onchange="bgImageonChangeEdit(this)" hidden />
+                  <label class="file-choose-label" for="mainBgImageEdit">Choose Image</label>
+                </div>
+                <div id="mainImgContainerEdit" style="display:none"></div>
+          </div>
+          <div class="col-12 textures-optionsEdit" id="textureColorDivEdit" style="display:none">
+            <div class="row">
+              <div class="col-4"></div>
+            <input type="color" class="form-control form-control-color col-8" id="textureBgColorEdit" value="${textureColor}">
+            </div>
+          </div>
+          `
+          let textureImages=['../../assets/img/texture1.jpg','../../assets/img/texture2.jpg','../../assets/img/texture3.jpg'];
 
           var parentDiv = document.createElement("div")
           parentDiv.className = "row g-3 pageTitle"
@@ -7796,17 +7984,88 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
           let elemValue = document.getElementById(id)
           modalBody.appendChild(parentDiv)
 
+          $(`input[name=textureOptionEdit][value=${textureType}]`).prop("checked", true);
+
+          textureImages.forEach((image,i)=>{
+            $("#existingTextureListEdit").append(`<div class="form-check form-check-inline existing-list-img">
+                    <input class="form-check-input" type="radio" name="textureImgOptionEdit" id="existingImgEdit${i}" onchange="textureImgChooseEdit(${i})">
+                    <label for="existingImgEdit${i}">
+                      <img src="${image}" />
+                    </label>
+                  </div>`)
+          })
+
+          $(".textures-optionsEdit").css("display","none")
+
+          if(textureType === "existing"){
+            $(`input[name='textureImgOptionEdit']:eq(${textureImageIndex})`).prop("checked", true);
+            $(`#existingTextureListEdit`).css("display","block");
+          }else if(textureType === "new"){
+          
+            let pgImageUrl = "";
+
+            if(pageBgImage[0]===undefined){
+              if(typeof pageBgImage === "object"){
+                pgImageUrl = URL.createObjectURL(pageBgImage);
+              }else{
+                pgImageUrl = pageBgImage
+              }
+            }else{
+              if(typeof pageBgImage[0] === "object"){
+                pgImageUrl = URL.createObjectURL(pageBgImage[0]);
+              }else{
+                pgImageUrl = pageBgImage[0]
+              }
+            }
+            $("#mainImgContainerEdit").html(`<img src="${pgImageUrl}" /><span onclick="deltextureImgEdit()"><i class="fa-solid fa-xmark"></i></span>`)
+            $("#mainImgContainerEdit").css("display","block");
+            $("#textureUploadEdit").css("display","flex");
+          }else if(textureType === "color"){
+            $(`#textureColorDivEdit`).css("display","block");
+          }
+
+          textureImgChooseEdit = (index)=>{
+            pageBgImage = textureImages[index];
+            textureImageIndex=index;
+          }
+
+          textureChangeEdit=(elem)=>{
+            $(".textures-optionsEdit").css("display","none")
+            let textOption = $(elem).val();
+            if(textOption==="existing"){
+              $(`#existingTextureListEdit`).css("display","block");
+            }else if(textOption === "new"){
+              $(`#textureUploadEdit`).css("display","flex");
+            }else if(textOption === "color"){
+              $(`#textureColorDivEdit`).css("display","block");
+            }
+            
+          }
+
+          bgImageonChangeEdit = (elem)=>{
+            $(".texture-img-error").remove();
+            let fileSizeInMB = elem.files[0].size / (1024 * 1024);
+            if(fileSizeInMB > 20){
+              $("#mainImgContainerEdit").parent().after("<p class='error texture-img-error'>Please upload an image less than 20MB.</p>")
+            }else{
+            pageBgImage = elem.files[0];
+              $("#mainImgContainerEdit").html(`<img src="${URL.createObjectURL(elem.files[0])}" /><span onclick="deltextureImgEdit()"><i class="fa-solid fa-xmark"></i></span>`)
+              $("#mainImgContainerEdit").css("display","block");
+            }
+          }
+
+          deltextureImgEdit = () =>{
+            $("#mainImgContainerEdit").html("");
+            pageBgImage="";
+            $("#mainImgContainerEdit").css("display","none");
+          }
+
           changeToRichtext([`pageTitleFieldEdit`])
 
-          CKEDITOR.instances[`pageTitleFieldEdit`].setData(elemValue.innerHTML);
+          CKEDITOR.instances[`pageTitleFieldEdit`].setData(pageTitleContent);
 
           var colorPickerField = document.getElementById("colorPickerEditId")
           let colorInputField = document.getElementById("colorEditId")
-
-          colorPickerField.addEventListener("change", (event) => {
-            colorInputField.value = colorPickerField.value
-            cardbgColor = colorPickerField.value
-          });
         }
         else if (element === "editButton") {
           $('#editModal').modal('show');
@@ -8587,42 +8846,42 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
                   </div>
                    <div class="col-12">
                       <fieldset class="row mb-2 mt-2">
-                        <legend class="col-form-label col-4 pt-0">Buttons List:</legend>
+                        <legend class="col-form-label col-4 pt-0">Menu List:</legend>
                         <div class="col-8">
                           <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" name="btnListCheckEdit" id="leftBtnCheckEdit" value="left">
-                            <label class="form-check-label" for="leftBtnCheckEdit">Left</label>
+                            <input class="form-check-input" type="checkbox" name="btnListCheckEdit" id="leftBtnCheckEdit" onchange="buttonListChangeEdit(this,'left')" value="left">
+                            <label class="form-check-label" for="leftBtnCheckEdit">Menu One</label>
                           </div>
                           <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" name="btnListCheckEdit" id="centerBtnCheckEdit" value="center">
-                            <label class="form-check-label" for="centerBtnCheckEdit">Center</label>
+                            <input class="form-check-input" type="checkbox" name="btnListCheckEdit" id="centerBtnCheckEdit" onchange="buttonListChangeEdit(this,'center')" value="center">
+                            <label class="form-check-label" for="centerBtnCheckEdit">Menu Two</label>
                           </div>
                           <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" name="btnListCheckEdit" id="rightBtnCheckEdit" value="right">
-                            <label class="form-check-label" for="rightBtnCheckEdit">Right</label>
+                            <input class="form-check-input" type="checkbox" name="btnListCheckEdit" id="rightBtnCheckEdit" onchange="buttonListChangeEdit(this,'right')" value="right">
+                            <label class="form-check-label" for="rightBtnCheckEdit">Menu Three</label>
                           </div>
                         </div>
                       </fieldset>
                     </div>
                   <div class="col-12">
                           <fieldset class="row mb-2 mt-2">
-                            <legend class="col-form-label col-4 pt-0">Position:</legend>
+                            <legend class="col-form-label col-4 pt-0">Menu Position in Page:</legend>
                             <div class="col-8">
-                              <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="menuBtnPositionEdit" onchange="menuPositionChangeEdit(this)" id="menuLeftEdit" value="left">
-                                <label class="form-check-label" for="menuLeftEdit">
+                              <div class="form-check form-check-inline buttons-check-div">
+                                <input class="form-check-input" type="radio" name="menuBtnPositionEdit" onchange="menuPositionChangeEdit(this)" id="leftMenuEdit" value="left">
+                                <label class="form-check-label" for="leftMenuEdit">
                                   Left
                                 </label>
                               </div>
-                              <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="menuBtnPositionEdit" onchange="menuPositionChangeEdit(this)" id="menuCenterEdit" value="center">
-                                <label class="form-check-label" for="menuCenterEdit">
+                              <div class="form-check form-check-inline buttons-check-div">
+                                <input class="form-check-input" type="radio" name="menuBtnPositionEdit" onchange="menuPositionChangeEdit(this)" id="centerMenuEdit" value="center">
+                                <label class="form-check-label" for="centerMenuEdit">
                                   Center
                                 </label>
                               </div>
-                              <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="menuBtnPositionEdit" onchange="menuPositionChangeEdit(this)" id="menuRightEdit" value="right">
-                                <label class="form-check-label" for="menuRightEdit">
+                              <div class="form-check form-check-inline buttons-check-div">
+                                <input class="form-check-input" type="radio" name="menuBtnPositionEdit" onchange="menuPositionChangeEdit(this)" id="rightMenuEdit" value="right">
+                                <label class="form-check-label" for="rightMenuEdit">
                                   Right
                                 </label>
                               </div>
@@ -8754,9 +9013,24 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
             }
           }
 
+          $(".buttons-check-div").css("pointer-events", "none");
+          $(".buttons-check-div").css("opacity", "0.4");
+
           menusList.forEach((menu)=>{
             $(`input[name='btnListCheckEdit'][value='${menu}']`).prop("checked", true);
+            $(`#${menu}MenuEdit`).parent().css("pointer-events", "auto");
+            $(`#${menu}MenuEdit`).parent().css("opacity", "1");
           })
+
+          buttonListChangeEdit = (elem,pos) =>{
+            if ($(`#${elem.id}`).is(":checked") == false){
+              $(`#${pos}MenuEdit`).parent().css("pointer-events", "none");
+              $(`#${pos}MenuEdit`).parent().css("opacity", "0.4");
+            }else{
+              $(`#${pos}MenuEdit`).parent().css("pointer-events", "auto");
+              $(`#${pos}MenuEdit`).parent().css("opacity", "1");
+            }   
+          }
 
           MenuTypeChangeEdit = (elem,position)=>{
             let menuType = $(elem).val();
@@ -9998,16 +10272,32 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
           var ckTextValue = CKEDITOR.instances['pageTitleFieldEdit']?.getData()
           let updatedElement = document.getElementById("pageHeadingId")
           let inputValue = document.querySelector(".inputField").value
+          let contentBgColor = $('#colorPickerIdEdit').val()
+          let textureType = $('input[name="textureOptionEdit"]:checked').val();
+          let textureColor = $("#textureBgColorEdit").val();
 
           if (ckTextValue !== "") {
             //
             $('#editModal').modal('hide');
-            pageBgColor = cardbgColor
-            parentContentCard.style.backgroundColor = `${cardbgColor}`
+            pageBgColor = contentBgColor
+            parentContentCard.style.backgroundColor = `${contentBgColor}`
             updatedElement.innerHTML = ckTextValue
-            titleArray["title"] = { "type": "1", title: ckTextValue, bgColor: cardbgColor }
-            tempArray["title"] = { "type": "1", title: ckTextValue, bgColor: cardbgColor }
-
+            if(textureType === "existing"){
+              $(".createPageDiv").css('background-image',`url(${pageBgImage})`);
+              titleArray["title"] = { "type": "1", title: ckTextValue,textureType, bgColor: cardbgColor,imageIndex:textureImageIndex, bgImage:pageBgImage }
+              tempArray["title"] = { "type": "1", title: ckTextValue,textureType, bgColor: cardbgColor,imageIndex:textureImageIndex, bgImage:pageBgImage }
+            }else if(textureType === "color"){
+              $(".createPageDiv").css('background-image','');
+              $(".createPageDiv").css('background-color',`${textureColor}`);
+              titleArray["title"] = { "type": "1", title: ckTextValue,textureType, bgColor: cardbgColor, textureColor }
+              tempArray["title"] = { "type": "1", title: ckTextValue,textureType, bgColor: cardbgColor, textureColor }
+            }else if(textureType === "new"){
+              if(pageBgImage !== ""){
+                $(".createPageDiv").css('background-image',`url(${URL.createObjectURL(pageBgImage)})`);
+              }
+              titleArray["title"] = { "type": "1", title: ckTextValue,textureType, bgColor: cardbgColor, bgImage:pageBgImage }
+              tempArray["title"] = { "type": "1", title: ckTextValue,textureType, bgColor: cardbgColor, bgImage:pageBgImage }
+            }
           } else {
             let inputElem = document.getElementById("cke_pageTitleFieldEdit")
             let errorElem = document.querySelector(".error")
@@ -10348,7 +10638,7 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
           }else if(btnCount === "menu"){
             menuBtnData.forEach((btn,i)=>{
               if(btn.type === "link"){
-                btnTag += `<a href="${btn['links'][0].link}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="${btn['links'][0].btnName}" class="linkBtn" target="_blank" style="color:${linkFontColor}">${btn['links'][0].btnName}</a>`;
+                btnTag += `<a href="${btn['links'][0].link}" data-bs-toggle="tooltip" data-bs-placement="top" title="${btn['links'][0].btnName}" class="linkBtn" target="_blank" style="color:${linkFontColor}">${btn['links'][0].btnName}</a>`;
               }else{
                 let linkElem ="";
                 btn['links'].forEach((l)=>{
@@ -10356,8 +10646,8 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
                   })
 
                 btnTag += `<div class="dropdown">
-                   <a class="btn dropdown-toggle" href="#" role="button" id="dropdownMenuLinkEdit${i}" data-bs-toggle="dropdown" aria-expanded="false" style="color:${linkFontColor}">
-                      ${btn.label}
+                   <a class="btn dropdown-toggle" href="#" role="button" id="dropdownMenuLinkEdit${i}" data-bs-toggle="tooltip" data-bs-placement="top" title="${btn.label}" data-bs-toggle="dropdown" aria-expanded="false" style="color:${linkFontColor}">
+                      <span>${btn.label}</span> 
                    </a>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuLinkEdit${i}">
                       ${linkElem}

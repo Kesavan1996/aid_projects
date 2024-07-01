@@ -8,7 +8,16 @@
     {
       "type": "1",
       "title": "Page Title",
-      "bgColor": "#fcfcfc"
+      "bgColor": "#fcfcfc",
+      "bgImage": ["../../assets/img/texture2.jpg"]
+    },
+    {
+      "type": "1",
+      "title": "Title",
+      "textureType": "existing",
+      "bgColor": "#fcfcfc",
+      "imageIndex": 2,
+      "bgImage": "../../assets/img/texture3.jpg"
     },
     {
       "type": "2",
