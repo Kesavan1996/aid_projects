@@ -2673,7 +2673,7 @@
               </div>
             </div>
           </div>
-          <div class="col-12 textures-options" id="existingTextureList">
+          <div class="col-12 textures-options" id="existingTextureList" style="display:flex">
           </div>
           <div class="col-12 textures-options gap-3" id="textureUpload" style="display:none">
             <div>
@@ -2745,7 +2745,7 @@
             $(".textures-options").css("display","none")
             let textOption = $(elem).val();
             if(textOption==="existing"){
-              $(`#existingTextureList`).css("display","block");
+              $(`#existingTextureList`).css("display","flex");
             }else if(textOption === "new"){
               $(`#textureUpload`).css("display","flex");
             }else if(textOption === "color"){
@@ -6232,8 +6232,8 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
               if(pageBgImage !== ""){
                 $(".createPageDiv").css('background-image',`url(${URL.createObjectURL(pageBgImage)})`);
               }
-              titleArray["title"] = { "type": "1", title: ckTextValue,textureType, bgColor: cardbgColor, bgImage:pageBgImage }
-              tempArray["title"] = { "type": "1", title: ckTextValue,textureType, bgColor: cardbgColor, bgImage:pageBgImage }
+              titleArray["title"] = { "type": "1", title: ckTextValue,textureType, bgColor: cardbgColor, bgImage:pageBgImage,imageIndex:textureImageIndex+1  }
+              tempArray["title"] = { "type": "1", title: ckTextValue,textureType, bgColor: cardbgColor, bgImage:pageBgImage,imageIndex:textureImageIndex+1  }
             }
             submitBtnDiv.style.display = "block"
           } else {
@@ -6622,7 +6622,7 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
                   })
 
                 btnTag += `<div class="dropdown">
-                   <a class="btn dropdown-toggle" href="#" role="button" id="dropdownMenuLink${i}" data-bs-toggle="dropdown" data-bs-toggle="tooltip" data-bs-placement="top" title="${btn.label}" aria-expanded="false" style="color:${linkFontColor}">
+                   <a class="btn dropdown-toggle" href="#" role="button" id="dropdownMenuLink${i}" onclick="dropDownChange(this)" data-bs-toggle="dropdown" aria-expanded="false" data-bs-toggle="tooltip" data-bs-placement="top" title="${btn.label}"  style="color:${linkFontColor}">
                       <span>${btn.label}</span> 
                    </a>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink${i}">
@@ -6729,6 +6729,10 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
             $('#createModal').modal('hide');
             document.getElementById("emptyPage")?.remove()
             buttonId += 1;
+          }
+
+          dropDownChange = (elem)=>{
+            $(`#${elem.id}`).dropdown('toggle')
           }
 
           let modalContent = '';
@@ -7921,6 +7925,7 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
             textureImageIndex = tempArray["title"]['imageIndex']
           }else if(textureType === "new"){
             pageBgImage = tempArray["title"]['bgImage']
+            textureImageIndex = tempArray["title"]['imageIndex']
           }else if(textureType === "color"){
             textureColor = tempArray["title"]['textureColor'];
           }
@@ -7999,7 +8004,7 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
 
           if(textureType === "existing"){
             $(`input[name='textureImgOptionEdit']:eq(${textureImageIndex})`).prop("checked", true);
-            $(`#existingTextureListEdit`).css("display","block");
+            $(`#existingTextureListEdit`).css("display","flex");
           }else if(textureType === "new"){
           
             let pgImageUrl = "";
@@ -8033,7 +8038,7 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
             $(".textures-optionsEdit").css("display","none")
             let textOption = $(elem).val();
             if(textOption==="existing"){
-              $(`#existingTextureListEdit`).css("display","block");
+              $(`#existingTextureListEdit`).css("display","flex");
             }else if(textOption === "new"){
               $(`#textureUploadEdit`).css("display","flex");
             }else if(textOption === "color"){
@@ -10295,8 +10300,8 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
               if(pageBgImage !== ""){
                 $(".createPageDiv").css('background-image',`url(${URL.createObjectURL(pageBgImage)})`);
               }
-              titleArray["title"] = { "type": "1", title: ckTextValue,textureType, bgColor: cardbgColor, bgImage:pageBgImage }
-              tempArray["title"] = { "type": "1", title: ckTextValue,textureType, bgColor: cardbgColor, bgImage:pageBgImage }
+              titleArray["title"] = { "type": "1", title: ckTextValue,textureType, bgColor: cardbgColor, bgImage:pageBgImage,imageIndex:textureImageIndex+1  }
+              tempArray["title"] = { "type": "1", title: ckTextValue,textureType, bgColor: cardbgColor, bgImage:pageBgImage,imageIndex:textureImageIndex+1  }
             }
           } else {
             let inputElem = document.getElementById("cke_pageTitleFieldEdit")
@@ -10646,7 +10651,7 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
                   })
 
                 btnTag += `<div class="dropdown">
-                   <a class="btn dropdown-toggle" href="#" role="button" id="dropdownMenuLinkEdit${i}" data-bs-toggle="tooltip" data-bs-placement="top" title="${btn.label}" data-bs-toggle="dropdown" aria-expanded="false" style="color:${linkFontColor}">
+                   <a class="btn dropdown-toggle" href="#" role="button" id="dropdownMenuLinkEdit${i}" onclick="dropDownChangeEdit(this)" data-bs-toggle="dropdown" aria-expanded="false" data-bs-toggle="tooltip" data-bs-placement="top" title="${btn.label}" style="color:${linkFontColor}">
                       <span>${btn.label}</span> 
                    </a>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuLinkEdit${i}">
@@ -10724,6 +10729,10 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
               }
             updatedElement.innerHTML = btnTag;
             $('#editModal').modal('hide');
+          }
+
+          dropDownChangeEdit = (elem)=>{
+            $(`#${elem.id}`).dropdown('toggle')
           }
 
           let modalContent = '';
@@ -11360,6 +11369,15 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
         if(tempArray['linkPopup']){
           data.push(tempArray['linkPopup'])
         }
+
+        data = data.map((item) => {
+          if (item.type == "1") {
+            if(item.textureType == "new"){
+              item.textureType = "existing";
+            }
+          }
+          return item;
+        });
 
         console.log(data, "edit")
 

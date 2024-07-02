@@ -3,20 +3,14 @@
 
 <head>
   <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
   <title>Page Create</title>
-  <link rel="stylesheet" type="text/css" href="createpagetwo.css">
-
-  <link href="//vjs.zencdn.net/8.3.0/video-js.min.css" rel="stylesheet">
-
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
-
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
-
+    <link rel="stylesheet" type="text/css" href="createpagetwo.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
     integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -405,15 +399,11 @@
       </div>
     </div>
 
+    
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
       crossorigin="anonymous"></script>
-
-    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.15.1/ckeditor.js"></script>
 
     <script>
@@ -449,7 +439,6 @@
             height: "15vh",
             allowedContent: true
           });
-
         });
       }
 
@@ -662,7 +651,7 @@
       let popupImageTwo;
       let popupPdfTwo;
       let pageLogoImageTwo;
-      
+
       let pageBgImage="";
 
       let thumbnailImage="";
@@ -708,8 +697,15 @@
         return false;
     }
 
-    $(document).ready(function() {
-      $("body").tooltip({ selector: '[data-bs-toggle=tooltip]' });
+    $(document).ready(function () {
+      [].slice.call(document.querySelectorAll('a[data-bs-toggle="tooltip"]')).map(function (tooltipTriggerEl) {
+          return new bootstrap.Tooltip(tooltipTriggerEl, {
+              'customClass': 'custom-tooltip',
+              animated: 'fade',
+              placement: 'bottom',
+              trigger: 'click'
+          })
+      })
   });
 
       function addSpace(element, updates) {
@@ -1279,7 +1275,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-12 textures-options" id="existingTextureList">
+            <div class="col-12 textures-options" id="existingTextureList" style="display:flex">
             </div>
             <div class="col-12 textures-options gap-3" id="textureUpload" style="display:none">
               <div>
@@ -1354,7 +1350,7 @@
             $(".textures-options").css("display","none")
             let textOption = $(elem).val();
             if(textOption==="existing"){
-              $(`#existingTextureList`).css("display","block");
+              $(`#existingTextureList`).css("display","flex");
             }else if(textOption === "new"){
               $(`#textureUpload`).css("display","flex");
             }else if(textOption === "color"){
@@ -5054,8 +5050,8 @@
               if(pageBgImage !== ""){
                 $(".createPageDiv").css('background-image',`url(${URL.createObjectURL(pageBgImage)})`);
               }
-              titleArray["title"] = { "type": "1", title: ckTextValue,textureType, bgColor: cardbgColor, bgImage:pageBgImage }
-              tempArray["title"] = { "type": "1", title: ckTextValue,textureType, bgColor: cardbgColor, bgImage:pageBgImage }
+              titleArray["title"] = { "type": "1", title: ckTextValue,textureType, bgColor: cardbgColor, bgImage:pageBgImage, imageIndex:textureImageIndex+1}
+              tempArray["title"] = { "type": "1", title: ckTextValue,textureType, bgColor: cardbgColor, bgImage:pageBgImage,imageIndex:textureImageIndex+1 }
             }
             //
             submitBtnDiv.style.display = "block"
@@ -5488,7 +5484,7 @@
                   })
 
                 btnTag += `<div class="dropdown">
-                   <a class="btn dropdown-toggle" href="#" role="button" id="dropdownMenuLink${i}" data-bs-toggle="dropdown" data-bs-toggle="tooltip" data-bs-placement="top" title="${btn.label}" aria-expanded="false" style="color:${linkFontColor}">
+                   <a class="btn dropdown-toggle" href="#" role="button" id="dropdownMenuLink${i}" onclick="dropDownChange(this)" data-bs-toggle="dropdown" aria-expanded="false"  data-bs-toggle="tooltip" data-bs-placement="top" title="${btn.label}" style="color:${linkFontColor}">
                      <span>${btn.label}</span> 
                    </a>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink${i}">
@@ -5599,6 +5595,10 @@
             $('#createModal').modal('hide');
             document.getElementById("emptyPage")?.remove()
             buttonId += 1;
+          }
+
+          dropDownChange = (elem)=>{
+            $(`#${elem.id}`).dropdown('toggle')
           }
 
           let modalContent = '';
@@ -6725,7 +6725,7 @@
 
           if(textureType === "existing"){
             $(`input[name='textureImgOptionEdit']:eq(${textureImageIndex})`).prop("checked", true);
-            $(`#existingTextureListEdit`).css("display","block");
+            $(`#existingTextureListEdit`).css("display","flex");
           }else if(textureType === "new"){
             let pageImgUrl = "";
             if(typeof pageBgImage === "object"){
@@ -6749,7 +6749,7 @@
             $(".textures-optionsEdit").css("display","none")
             let textOption = $(elem).val();
             if(textOption==="existing"){
-              $(`#existingTextureListEdit`).css("display","block");
+              $(`#existingTextureListEdit`).css("display","flex");
             }else if(textOption === "new"){
               $(`#textureUploadEdit`).css("display","flex");
             }else if(textOption === "color"){
@@ -9014,8 +9014,8 @@
               if(pageBgImage !== ""){
                 $(".createPageDiv").css('background-image',`url(${URL.createObjectURL(pageBgImage)})`);
               }
-              titleArray["title"] = { "type": "1", title: ckTextValue,textureType, bgColor: cardbgColor, bgImage:pageBgImage }
-              tempArray["title"] = { "type": "1", title: ckTextValue,textureType, bgColor: cardbgColor, bgImage:pageBgImage }
+              titleArray["title"] = { "type": "1", title: ckTextValue,textureType, bgColor: cardbgColor, bgImage:pageBgImage,imageIndex:textureImageIndex+1 }
+              tempArray["title"] = { "type": "1", title: ckTextValue,textureType, bgColor: cardbgColor, bgImage:pageBgImage,imageIndex:textureImageIndex+1 }
             }
           } else {
             let inputElem = document.getElementById("cke_pageTitleFieldEdit")
@@ -9400,7 +9400,7 @@
                   })
 
                 btnTag += `<div class="dropdown">
-                   <a class="btn dropdown-toggle" href="#" role="button" id="dropdownMenuLinkEdit${i}" data-bs-toggle="tooltip" data-bs-placement="top" title="${btn.label}"  data-bs-toggle="dropdown" aria-expanded="false" style="color:${linkFontColor}">
+                   <a class="btn dropdown-toggle" href="#" role="button" onclick="dropDownChangeEdit(this)" id="dropdownMenuLinkEdit${i}" data-bs-toggle="tooltip" data-bs-placement="top" title="${btn.label}"  data-bs-toggle="dropdown" aria-expanded="false" style="color:${linkFontColor}">
                       <span>${btn.label}</span> 
                    </a>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuLinkEdit${i}">
@@ -9476,6 +9476,10 @@
 
             updatedElement.innerHTML = btnTag;
             $('#editModal').modal('hide');
+          }
+
+          dropDownChangeEdit = (elem)=>{
+            $(`#${elem.id}`).dropdown('toggle')
           }
 
           let modalContent = '';
@@ -10089,7 +10093,19 @@
           data.push(tempArray['linkPopup'])
         }
 
+        data = data.map((item) => {
+          if (item.type == "1") {
+            if(item.textureType == "new"){
+              item.textureType = "existing";
+            }
+          }
+          return item;
+        });
+
+       // data.find(dataObject => dataObject.type == '1').textureType == "new" ? data.find(dataObject => dataObject.type == '1').textureType = "existing":"";
+
         console.log(data,"data")
+
 
         var action = $('#acionId input:radio:checked').val();
         let urlInput = $("#urlInput").val()

@@ -28,7 +28,9 @@ body {
 
 .updatesDivContainer .addButton .updatesBtns::-webkit-scrollbar,
 .modal-body::-webkit-scrollbar,
-#linkPopupModal #linkTabContent::-webkit-scrollbar
+#linkPopupModal #linkTabContent::-webkit-scrollbar,
+#existingTextureList::-webkit-scrollbar,
+#existingTextureListEdit::-webkit-scrollbar
  {
     height: 7px;
     width: 7px;
@@ -36,7 +38,9 @@ body {
    
 .updatesDivContainer .addButton .updatesBtns::-webkit-scrollbar-thumb, 
 .modal-body::-webkit-scrollbar-thumb,
-#linkPopupModal #linkTabContent::-webkit-scrollbar-thumb
+#linkPopupModal #linkTabContent::-webkit-scrollbar-thumb,
+#existingTextureList::-webkit-scrollbar-thumb,
+#existingTextureListEdit::-webkit-scrollbar-thumb
 {
     background: #c1c1c1; 
     border-radius: 5px;
@@ -146,6 +150,12 @@ width: 100px;
 {
     color: #007bff;
     text-decoration: none;
+}
+
+#existingTextureList,
+#existingTextureListEdit
+{
+    overflow-x: auto;
 }
 
 .description a:hover,
