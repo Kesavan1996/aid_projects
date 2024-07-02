@@ -858,10 +858,10 @@
             tempArray["title"] = { "type": "1", title: ckTextValue,textureType, bgColor: cardbgColor, textureColor }
           }else if(textureType === "new"){
             if(pageBgImage !== ""){
-              $(".createPageDiv").css('background-image',`url(${URL.createObjectURL(pageBgImage)})`);
+              $(".createPageDiv").css('background-image',`url(${pageBgImage})`);
             }
-            titleArray["title"] = { "type": "1", title: ckTextValue,textureType, bgColor: cardbgColor, bgImage:pageBgImage }
-            tempArray["title"] = { "type": "1", title: ckTextValue,textureType, bgColor: cardbgColor, bgImage:pageBgImage }
+            titleArray["title"] = { "type": "1", title: ckTextValue,textureType, bgColor: cardbgColor, bgImage:pageBgImage,existing:true  }
+            tempArray["title"] = { "type": "1", title: ckTextValue,textureType, bgColor: cardbgColor, bgImage:pageBgImage,existing:true  }
           }
             parentContentCards.insertBefore(titleDiv, parentContentCards.firstChild);
             //
@@ -6220,6 +6220,7 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
               contentCards.insertBefore(titleDiv, contentCards.firstChild);
               pageBgColor = cardbgColor
               if(textureType === "existing"){
+                $(".createPageDiv").css('background-color',`#ffffff`);
                 $(".createPageDiv").css('background-image',`url(${pageBgImage})`);
               titleArray["title"] = { "type": "1", title: ckTextValue,textureType, bgColor: cardbgColor,imageIndex:textureImageIndex, bgImage:pageBgImage }
               tempArray["title"] = { "type": "1", title: ckTextValue,textureType, bgColor: cardbgColor,imageIndex:textureImageIndex, bgImage:pageBgImage }
@@ -6230,6 +6231,7 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
               tempArray["title"] = { "type": "1", title: ckTextValue,textureType, bgColor: cardbgColor, textureColor }
             }else if(textureType === "new"){
               if(pageBgImage !== ""){
+                $(".createPageDiv").css('background-color',`#ffffff`);
                 $(".createPageDiv").css('background-image',`url(${URL.createObjectURL(pageBgImage)})`);
               }
               titleArray["title"] = { "type": "1", title: ckTextValue,textureType, bgColor: cardbgColor, bgImage:pageBgImage,imageIndex:textureImageIndex+1  }
@@ -7919,6 +7921,7 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
           let contentBgColor = tempArray["title"]['bgColor'];
           let textureType = tempArray["title"]['textureType'];
           let titleText = document.getElementById(id).innerText
+          let existingCheck = "";
           let textureColor = "#ffffff";
           if(textureType === "existing"){
             pageBgImage = tempArray["title"]['bgImage']
@@ -7926,6 +7929,7 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
           }else if(textureType === "new"){
             pageBgImage = tempArray["title"]['bgImage']
             textureImageIndex = tempArray["title"]['imageIndex']
+            existingCheck = tempArray["title"]['existing'];
           }else if(textureType === "color"){
             textureColor = tempArray["title"]['textureColor'];
           }
@@ -7989,7 +7993,15 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
           let elemValue = document.getElementById(id)
           modalBody.appendChild(parentDiv)
 
-          $(`input[name=textureOptionEdit][value=${textureType}]`).prop("checked", true);
+          if(textureType === "new"){
+            if(existingCheck !== undefined){
+                $(`input[name=textureOptionEdit][value=existing]`).prop("checked", true);
+            }else{
+                $(`input[name=textureOptionEdit][value=new]`).prop("checked", true);
+            }
+        }else{
+            $(`input[name=textureOptionEdit][value=${textureType}]`).prop("checked", true);
+        }
 
           textureImages.forEach((image,i)=>{
             $("#existingTextureListEdit").append(`<div class="form-check form-check-inline existing-list-img">
@@ -8007,8 +8019,11 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
             $(`#existingTextureListEdit`).css("display","flex");
           }else if(textureType === "new"){
           
+            if(existingCheck !== undefined){
+              $(`input[name='textureImgOptionEdit']:eq(${textureImageIndex})`).prop("checked", true);
+              $(`#existingTextureListEdit`).css("display","flex");
+          }else{
             let pgImageUrl = "";
-
             if(pageBgImage[0]===undefined){
               if(typeof pageBgImage === "object"){
                 pgImageUrl = URL.createObjectURL(pageBgImage);
@@ -8025,6 +8040,8 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
             $("#mainImgContainerEdit").html(`<img src="${pgImageUrl}" /><span onclick="deltextureImgEdit()"><i class="fa-solid fa-xmark"></i></span>`)
             $("#mainImgContainerEdit").css("display","block");
             $("#textureUploadEdit").css("display","flex");
+          }
+            
           }else if(textureType === "color"){
             $(`#textureColorDivEdit`).css("display","block");
           }
@@ -10288,6 +10305,7 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
             parentContentCard.style.backgroundColor = `${contentBgColor}`
             updatedElement.innerHTML = ckTextValue
             if(textureType === "existing"){
+              $(".createPageDiv").css('background-color',`#ffffff`);
               $(".createPageDiv").css('background-image',`url(${pageBgImage})`);
               titleArray["title"] = { "type": "1", title: ckTextValue,textureType, bgColor: cardbgColor,imageIndex:textureImageIndex, bgImage:pageBgImage }
               tempArray["title"] = { "type": "1", title: ckTextValue,textureType, bgColor: cardbgColor,imageIndex:textureImageIndex, bgImage:pageBgImage }
@@ -10298,6 +10316,7 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
               tempArray["title"] = { "type": "1", title: ckTextValue,textureType, bgColor: cardbgColor, textureColor }
             }else if(textureType === "new"){
               if(pageBgImage !== ""){
+                $(".createPageDiv").css('background-color',`#ffffff`);
                 $(".createPageDiv").css('background-image',`url(${URL.createObjectURL(pageBgImage)})`);
               }
               titleArray["title"] = { "type": "1", title: ckTextValue,textureType, bgColor: cardbgColor, bgImage:pageBgImage,imageIndex:textureImageIndex+1  }

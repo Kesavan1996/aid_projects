@@ -107,6 +107,11 @@ body {
     font-weight: bold;
 }
 
+.existing-list-img img{
+    height: 70px;
+    width: 70px;
+}
+
 .header-btns .logoBtn{
     background-color: #f7c600;
 }

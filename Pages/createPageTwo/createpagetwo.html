@@ -1740,7 +1740,7 @@
                                       <legend class="col-form-label col-4 pt-0">Manu Position in Page:</legend>
                                       <div class="col-8">
                                         <div class="form-check form-check-inline">
-                                          <input class="form-check-input" type="radio" name="menuBtnPosition" onchange="menuPositionChange(this)" id="leftMenu" value="left">
+                                          <input class="form-check-input" type="radio" name="menuBtnPosition" onchange="menuPositionChange(this)" id="leftMenu" value="left" checked>
                                           <label class="form-check-label" for="leftMenu">
                                             Left
                                           </label>
@@ -1762,7 +1762,7 @@
                                     </fieldset>
                               </div>
 
-                            <div class="links-container" id="leftMenuList" style="display:none">
+                            <div class="links-container" id="leftMenuList">
                               <fieldset class="row mb-2 mt-2">
                                 <legend class="col-form-label col-4 pt-0">Menu Type:</legend>
                                 <div class="col-8">
@@ -5038,6 +5038,7 @@
             contentCards.insertBefore(titleDiv, contentCards.firstChild);
             pageBgColor = cardbgColor;
             if(textureType === "existing"){
+              $(".createPageDiv").css('background-color',`#ffffff`);
                 $(".createPageDiv").css('background-image',`url(${pageBgImage})`);
               titleArray["title"] = { "type": "1", title: ckTextValue,textureType, bgColor: cardbgColor,imageIndex:textureImageIndex, bgImage:pageBgImage }
               tempArray["title"] = { "type": "1", title: ckTextValue,textureType, bgColor: cardbgColor,imageIndex:textureImageIndex, bgImage:pageBgImage }
@@ -5048,6 +5049,7 @@
               tempArray["title"] = { "type": "1", title: ckTextValue,textureType, bgColor: cardbgColor, textureColor }
             }else if(textureType === "new"){
               if(pageBgImage !== ""){
+                $(".createPageDiv").css('background-color',`#ffffff`);
                 $(".createPageDiv").css('background-image',`url(${URL.createObjectURL(pageBgImage)})`);
               }
               titleArray["title"] = { "type": "1", title: ckTextValue,textureType, bgColor: cardbgColor, bgImage:pageBgImage, imageIndex:textureImageIndex+1}
@@ -9002,6 +9004,7 @@
             parentContentCard.style.backgroundColor = `${contentBgColor}`
             updatedElement.innerHTML = ckTextValue
             if(textureType === "existing"){
+              $(".createPageDiv").css('background-color',`#ffffff`);
               $(".createPageDiv").css('background-image',`url(${pageBgImage})`);
               titleArray["title"] = { "type": "1", title: ckTextValue,textureType, bgColor: cardbgColor,imageIndex:textureImageIndex, bgImage:pageBgImage }
               tempArray["title"] = { "type": "1", title: ckTextValue,textureType, bgColor: cardbgColor,imageIndex:textureImageIndex, bgImage:pageBgImage }
@@ -9012,6 +9015,7 @@
               tempArray["title"] = { "type": "1", title: ckTextValue,textureType, bgColor: cardbgColor, textureColor }
             }else if(textureType === "new"){
               if(pageBgImage !== ""){
+                $(".createPageDiv").css('background-color',`#ffffff`);
                 $(".createPageDiv").css('background-image',`url(${URL.createObjectURL(pageBgImage)})`);
               }
               titleArray["title"] = { "type": "1", title: ckTextValue,textureType, bgColor: cardbgColor, bgImage:pageBgImage,imageIndex:textureImageIndex+1 }
