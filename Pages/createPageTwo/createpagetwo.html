@@ -1761,7 +1761,9 @@
                                       </div>
                                     </fieldset>
                               </div>
+                              <div class="col-12">
 
+                              </div>
                             <div class="links-container" id="leftMenuList">
                               <fieldset class="row mb-2 mt-2">
                                 <legend class="col-form-label col-4 pt-0">Menu Type:</legend>
@@ -5064,8 +5066,6 @@
               inputElem.insertAdjacentHTML('afterend', '<p class="error">Please enter the field...!</p>');
             }
           }
-
-          console.log(tempArray,"array")
 
         }
         else if (modalBody.children[0].className === "linkBtnDiv") {
@@ -9006,20 +9006,20 @@
             if(textureType === "existing"){
               $(".createPageDiv").css('background-color',`#ffffff`);
               $(".createPageDiv").css('background-image',`url(${pageBgImage})`);
-              titleArray["title"] = { "type": "1", title: ckTextValue,textureType, bgColor: cardbgColor,imageIndex:textureImageIndex, bgImage:pageBgImage }
-              tempArray["title"] = { "type": "1", title: ckTextValue,textureType, bgColor: cardbgColor,imageIndex:textureImageIndex, bgImage:pageBgImage }
+              titleArray["title"] = { "type": "1", title: ckTextValue,textureType, bgColor: contentBgColor,imageIndex:textureImageIndex, bgImage:pageBgImage }
+              tempArray["title"] = { "type": "1", title: ckTextValue,textureType, bgColor: contentBgColor,imageIndex:textureImageIndex, bgImage:pageBgImage }
             }else if(textureType === "color"){
               $(".createPageDiv").css('background-image','');
               $(".createPageDiv").css('background-color',`${textureColor}`);
-              titleArray["title"] = { "type": "1", title: ckTextValue,textureType, bgColor: cardbgColor, textureColor }
-              tempArray["title"] = { "type": "1", title: ckTextValue,textureType, bgColor: cardbgColor, textureColor }
+              titleArray["title"] = { "type": "1", title: ckTextValue,textureType, bgColor: contentBgColor, textureColor }
+              tempArray["title"] = { "type": "1", title: ckTextValue,textureType, bgColor: contentBgColor, textureColor }
             }else if(textureType === "new"){
               if(pageBgImage !== ""){
                 $(".createPageDiv").css('background-color',`#ffffff`);
                 $(".createPageDiv").css('background-image',`url(${URL.createObjectURL(pageBgImage)})`);
               }
-              titleArray["title"] = { "type": "1", title: ckTextValue,textureType, bgColor: cardbgColor, bgImage:pageBgImage,imageIndex:textureImageIndex+1 }
-              tempArray["title"] = { "type": "1", title: ckTextValue,textureType, bgColor: cardbgColor, bgImage:pageBgImage,imageIndex:textureImageIndex+1 }
+              titleArray["title"] = { "type": "1", title: ckTextValue,textureType, bgColor: contentBgColor, bgImage:pageBgImage,imageIndex:textureImageIndex+1 }
+              tempArray["title"] = { "type": "1", title: ckTextValue,textureType, bgColor: contentBgColor, bgImage:pageBgImage,imageIndex:textureImageIndex+1 }
             }
           } else {
             let inputElem = document.getElementById("cke_pageTitleFieldEdit")

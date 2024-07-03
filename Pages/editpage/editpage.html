@@ -14,10 +14,6 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
 
-  
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
-
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
     integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -783,8 +779,8 @@
         pageData.map((data, i) => {
 
           if (data.type === "1") {
-            parentContentCards.style.backgroundColor = data.bgColor
             cardbgColor = data.bgColor
+            $("#contentCard").css("background-color",`${cardbgColor}`)
             let textureType= data['textureType'] ===  undefined ? 'color':data['textureType'];
             let textureColor = "";
 
@@ -1609,7 +1605,7 @@
                   })
 
                 btnTag += `<div class="dropdown">
-                   <a class="btn dropdown-toggle" href="#" role="button" id="dropdownMenuLink${i}" data-bs-toggle="tooltip" data-bs-placement="top" title="${btn.label}" data-bs-toggle="dropdown" aria-expanded="false" style="color:${linkFontColor}">
+                   <a class="btn dropdown-toggle" href="#" role="button" id="dropdownMenuLink${i}" onclick="dropDownChange(this)" data-bs-toggle="dropdown" aria-expanded="false" data-bs-toggle="tooltip" data-bs-placement="top" title="${btn.label}" style="color:${linkFontColor}">
                       ${btn.label}
                    </a>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink${i}">
@@ -1680,11 +1676,11 @@
             parentContentCards.appendChild(btnDiv)
 
             if(btnCount ==="menu"){
-              let titleCheck = $("#contentCard #title").length;
+              let titleCheck = $("#contentCard .donor-class").length;
               if(titleCheck === 0){
-                $("#contentCard").prepend(btnDiv);
-              }else{
                 $("#contentCard #title").after(btnDiv)
+              }else{
+                $("#contentCard .donor-class").after(btnDiv)
               }
               tempArray[`btnLinkDiv${buttonId}`] = { type: "8",menusList, btnCount,fontColor:linkFontColor,bgColor:menuBgColor, buttons }
             }else{
@@ -1698,6 +1694,10 @@
             }
 
             submitBtnDiv.style.display = "block"
+
+            dropDownChange = (elem)=>{
+              $(`#${elem.id}`).dropdown('toggle')
+          }
 
             let modalContent = '';
             let linkElem = "";
@@ -10307,20 +10307,20 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
             if(textureType === "existing"){
               $(".createPageDiv").css('background-color',`#ffffff`);
               $(".createPageDiv").css('background-image',`url(${pageBgImage})`);
-              titleArray["title"] = { "type": "1", title: ckTextValue,textureType, bgColor: cardbgColor,imageIndex:textureImageIndex, bgImage:pageBgImage }
-              tempArray["title"] = { "type": "1", title: ckTextValue,textureType, bgColor: cardbgColor,imageIndex:textureImageIndex, bgImage:pageBgImage }
+              titleArray["title"] = { "type": "1", title: ckTextValue,textureType, bgColor: contentBgColor,imageIndex:textureImageIndex, bgImage:pageBgImage }
+              tempArray["title"] = { "type": "1", title: ckTextValue,textureType, bgColor: contentBgColor,imageIndex:textureImageIndex, bgImage:pageBgImage }
             }else if(textureType === "color"){
               $(".createPageDiv").css('background-image','');
               $(".createPageDiv").css('background-color',`${textureColor}`);
-              titleArray["title"] = { "type": "1", title: ckTextValue,textureType, bgColor: cardbgColor, textureColor }
-              tempArray["title"] = { "type": "1", title: ckTextValue,textureType, bgColor: cardbgColor, textureColor }
+              titleArray["title"] = { "type": "1", title: ckTextValue,textureType, bgColor: contentBgColor, textureColor }
+              tempArray["title"] = { "type": "1", title: ckTextValue,textureType, bgColor: contentBgColor, textureColor }
             }else if(textureType === "new"){
               if(pageBgImage !== ""){
                 $(".createPageDiv").css('background-color',`#ffffff`);
                 $(".createPageDiv").css('background-image',`url(${URL.createObjectURL(pageBgImage)})`);
               }
-              titleArray["title"] = { "type": "1", title: ckTextValue,textureType, bgColor: cardbgColor, bgImage:pageBgImage,imageIndex:textureImageIndex+1  }
-              tempArray["title"] = { "type": "1", title: ckTextValue,textureType, bgColor: cardbgColor, bgImage:pageBgImage,imageIndex:textureImageIndex+1  }
+              titleArray["title"] = { "type": "1", title: ckTextValue,textureType, bgColor: contentBgColor, bgImage:pageBgImage,imageIndex:textureImageIndex+1  }
+              tempArray["title"] = { "type": "1", title: ckTextValue,textureType, bgColor: contentBgColor, bgImage:pageBgImage,imageIndex:textureImageIndex+1  }
             }
           } else {
             let inputElem = document.getElementById("cke_pageTitleFieldEdit")
