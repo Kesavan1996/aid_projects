@@ -697,15 +697,20 @@
         return false;
     }
 
-    $(document).ready(function () {
-      [].slice.call(document.querySelectorAll('a[data-bs-toggle="tooltip"]')).map(function (tooltipTriggerEl) {
-          return new bootstrap.Tooltip(tooltipTriggerEl, {
-              'customClass': 'custom-tooltip',
-              animated: 'fade',
-              placement: 'bottom',
-              trigger: 'click'
-          })
-      })
+    window.onclick = function(event) {
+      if (!event.target.matches('.dropbtn')) {
+        var dropdowns = document.getElementsByClassName("dropdown-content");
+        for (var i = 0; i < dropdowns.length; i++) {
+          var openDropdown = dropdowns[i];
+          if (openDropdown.classList.contains('show')) {
+            openDropdown.classList.remove('show');
+          }
+        }
+      }
+    }
+
+    $(document).ready(function() {
+      $("body").tooltip({ selector: '[data-bs-toggle=tooltip]' });
   });
 
       function addSpace(element, updates) {
@@ -765,6 +770,8 @@
         }
         emptySpaceCount += 1;
       }
+
+ 
 
 
       function showModal(element, btnPopup) {
@@ -1714,73 +1721,26 @@
                                   </div>
                                 </div>
                               </div>
-
-                                <div class="col-12">
-                                    <fieldset class="row mb-2 mt-2">
-                                      <legend class="col-form-label col-4 pt-0">Manu List:</legend>
-                                      <div class="col-8">
-                                        <div class="form-check form-check-inline">
-                                          <input class="form-check-input" type="checkbox" name="btnListCheck" id="leftBtnCheck" onchange="buttonListChange(this,'left')" value="left" checked>
-                                          <label class="form-check-label" for="leftBtnCheck">Menu One</label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                          <input class="form-check-input" type="checkbox" name="btnListCheck" id="centerBtnCheck" onchange="buttonListChange(this,'center')" value="center" checked>
-                                          <label class="form-check-label" for="centerBtnCheck">Menu Two</label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                          <input class="form-check-input" type="checkbox" name="btnListCheck" id="rightBtnCheck" onchange="buttonListChange(this,'right')" value="right" checked>
-                                          <label class="form-check-label" for="rightBtnCheck">Menu Three</label>
-                                        </div>
-                                      </div>
-                                    </fieldset>
-                              </div>
-
-                              <div class="col-12">
-                                    <fieldset class="row mb-2 mt-2">
-                                      <legend class="col-form-label col-4 pt-0">Manu Position in Page:</legend>
-                                      <div class="col-8">
-                                        <div class="form-check form-check-inline">
-                                          <input class="form-check-input" type="radio" name="menuBtnPosition" onchange="menuPositionChange(this)" id="leftMenu" value="left" checked>
-                                          <label class="form-check-label" for="leftMenu">
-                                            Left
-                                          </label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                          <input class="form-check-input" type="radio" name="menuBtnPosition" onchange="menuPositionChange(this)" id="centerMenu" value="center">
-                                          <label class="form-check-label" for="centerMenu">
-                                            Center
-                                          </label>
-                                        </div>
-    
-                                        <div class="form-check form-check-inline">
-                                          <input class="form-check-input" type="radio" name="menuBtnPosition" onchange="menuPositionChange(this)" id="rightMenu" value="right">
-                                          <label class="form-check-label" for="rightMenu">
-                                            Right
-                                          </label>
-                                        </div>
-                                      </div>
-                                    </fieldset>
-                              </div>
-                              <div class="col-12">
-
+                              <div class="col-12 mt-3">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" name="btnListCheck" id="leftBtnCheck" onchange="buttonListChange(this,'left')" value="left" checked>
+                                    <label class="form-check-label" for="leftBtnCheck">Menu 1</label>
+                                </div>
                               </div>
                             <div class="links-container" id="leftMenuList">
-                              <fieldset class="row mb-2 mt-2">
-                                <legend class="col-form-label col-4 pt-0">Menu Type:</legend>
-                                <div class="col-8">
-                                  <div class="form-check form-check-inline">
+                              <fieldset class="row mb-2 mt-2 px-2">
+                                  <div class="form-check form-check-inline col-12">
                                     <input class="form-check-input" type="radio" name="leftMenuType" onchange="MenuTypeChange(this,'left')" id="LeftMenuLink" value="link" checked>
                                     <label class="form-check-label" for="LeftMenuLink">
                                       Main Menu
                                     </label>
                                   </div>
-                                  <div class="form-check form-check-inline">
+                                  <div class="form-check form-check-inline col-12">
                                     <input class="form-check-input" type="radio" name="leftMenuType" onchange="MenuTypeChange(this,'left')" id="leftMenuDropDown" value="dropDown">
                                     <label class="form-check-label" for="leftMenuDropDown">
                                      Sub Menu
                                     </label>
                                   </div>
-                                </div>
                               </fieldset>
                               <div class="link-menu menu-value-fields">
                                 <form class="row gap-3" class="menuBtnForm">
@@ -1805,23 +1765,28 @@
                                 </div>
                               </div>
                             </div> 
+
+                            <div class="col-12 mt-3">
+                                <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" name="btnListCheck" id="centerBtnCheck" onchange="buttonListChange(this,'center')" value="center">
+                                <label class="form-check-label" for="centerBtnCheck">Menu 2</label>
+                                </div>
+                            </div>
+
                             <div class="links-container" id="centerMenuList" style="display:none">
-                              <fieldset class="row mb-2 mt-2">
-                                <legend class="col-form-label col-4 pt-0">Menu Type:</legend>
-                                <div class="col-8">
-                                  <div class="form-check form-check-inline">
+                              <fieldset class="row mb-2 mt-2 px-2">
+                                  <div class="form-check form-check-inline col-12">
                                     <input class="form-check-input" type="radio" name="centerMenuType" onchange="MenuTypeChange(this,'center')" id="centerMenuLink" value="link" checked>
                                     <label class="form-check-label" for="centerMenuLink">
                                       Main Menu
                                     </label>
                                   </div>
-                                  <div class="form-check form-check-inline">
+                                  <div class="form-check form-check-inline col-12">
                                     <input class="form-check-input" type="radio" name="centerMenuType" onchange="MenuTypeChange(this,'center')" id="centerMenuDropDown" value="dropDown">
                                     <label class="form-check-label" for="centerMenuDropDown">
                                       Sub Menu
                                     </label>
                                   </div>
-                                </div>
                               </fieldset>
                               <div class="link-menu menu-value-fields">
                                 <form class="row gap-3" class="menuBtnForm">
@@ -1846,23 +1811,28 @@
                                 </div>
                               </div>
                             </div> 
-                            <div class="links-container" id="rightMenuList" style="display:none">
-                              <fieldset class="row mb-2 mt-2">
-                                <legend class="col-form-label col-4 pt-0">Menu Type:</legend>
-                                <div class="col-8">
+
+                             <div class="col-12 mt-3">
                                   <div class="form-check form-check-inline">
+                                          <input class="form-check-input" type="checkbox" name="btnListCheck" id="rightBtnCheck" onchange="buttonListChange(this,'right')" value="right">
+                                          <label class="form-check-label" for="rightBtnCheck">Menu 3</label>
+                                  </div>
+                              </div>
+
+                            <div class="links-container" id="rightMenuList" style="display:none">
+                              <fieldset class="row mb-2 mt-2 px-2">
+                                  <div class="form-check form-check-inline col-12">
                                     <input class="form-check-input" type="radio" name="rightMenuType" onchange="MenuTypeChange(this,'right')" id="rigtMenuLink" value="link" checked>
                                     <label class="form-check-label" for="rigtMenuLink">
                                       Main Menu
                                     </label>
                                   </div>
-                                  <div class="form-check form-check-inline">
+                                  <div class="form-check form-check-inline col-12">
                                     <input class="form-check-input" type="radio" name="rightMenuType" onchange="MenuTypeChange(this,'right')" id="rightMenuDropDown" value="dropDown">
                                     <label class="form-check-label" for="rightMenuDropDown">
                                       Sub Menu
                                     </label>
                                   </div>
-                                </div>
                               </fieldset>
                              <div class="link-menu menu-value-fields">
                                 <form class="row gap-3" class="menuBtnForm">
@@ -1901,14 +1871,20 @@
           mainDiv.innerHTML += menuBtnsElem;
           modalBody.appendChild(mainDiv);
 
+          let menuListArray=['left']
+
           buttonListChange = (elem,pos) =>{
             if ($(`#${elem.id}`).is(":checked") == false){
-              $(`#${pos}Menu`).parent().css("pointer-events", "none");
-              $(`#${pos}Menu`).parent().css("opacity", "0.4");
+              $(`#${pos}MenuList`).css("display", "none");
+              $(`#${pos}MenuList`).find('input:text').val(''); 
+              $(`#${pos}MenuList .menu-error`).remove();
+              menuListArray = menuListArray.filter(function(item) {
+                return item !== pos
+            })
             }else{
-              $(`#${pos}Menu`).parent().css("pointer-events", "auto");
-              $(`#${pos}Menu`).parent().css("opacity", "1");
-            }   
+              $(`#${pos}MenuList`).css("display", "block");
+              menuListArray.push(pos);
+            } 
           }
 
           let menuBtnCheck = $("#contentCard .menu-button").length;
@@ -2035,18 +2011,6 @@
               $("#menuBtnsDiv").css("display", "block");
               $("#popupDiv").css("display", "none");
 
-            }
-          }
-
-          menuPositionChange=(elem)=>{
-            let menuPosition = $(elem).val();
-            $(".links-container").css("display","none");
-            if(menuPosition === "left"){
-              $("#leftMenuList").css("display","block");
-            }else if(menuPosition === "center"){
-              $("#centerMenuList").css("display","block");
-            }else if(menuPosition === "right"){
-             $("#rightMenuList").css("display","block");
             }
           }
 
@@ -5441,6 +5405,7 @@
             linkDiv.style.gap = "5px";
             linkDiv.style.justifyContent = "space-between"
             linkDiv.style.backgroundColor = `${menuBgColor}`
+            linkDiv.style.alignItems = "center"
           }
 
 
@@ -5484,15 +5449,16 @@
                 btn['links'].forEach((l)=>{
                   linkElem += `<li><a class="dropdown-item" target="_blank" href="${l.link}">${l.btnName}</a></li>`
                   })
-
                 btnTag += `<div class="dropdown">
-                   <a class="btn dropdown-toggle" href="#" role="button" id="dropdownMenuLink${i}" onclick="dropDownChange(this)" data-bs-toggle="dropdown" aria-expanded="false"  data-bs-toggle="tooltip" data-bs-placement="top" title="${btn.label}" style="color:${linkFontColor}">
-                     <span>${btn.label}</span> 
-                   </a>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink${i}">
-                      ${linkElem}
-                    </ul>
-                  </div>`
+                          <div class="sub-menu" data-bs-toggle="tooltip" data-bs-placement="top" title="${btn.label}" style="color:${linkFontColor}">
+                             <button onclick="toggleDropdown('${i}')" class="dropbtn" style="color:${linkFontColor}" >
+                           ${btn.label}
+                          </button>
+                          </div>
+                            <div id="linkDropDown${i}" class="dropdown-content">
+                             ${linkElem}
+                            </div>
+                          </div>`
               }
 
             });
@@ -5569,20 +5535,30 @@
           btnDiv.appendChild(clickTag)
           btnDiv.appendChild(deleteTag)
 
+          $(".menu-list-error").remove();
+
           if (!hasEmptyValue.includes(true)) {
             if(btnCount ==="menu"){
-              let titleCheck = $("#contentCard #title").length;
-              let donorCheck = $("#contentCard .donor-class").length;
-              if(donorCheck){
-                $("#contentCard .donor-class").after(btnDiv);
-              }else{
-                if(titleCheck === 0){
-                  $("#contentCard").prepend(btnDiv);
+              if(menusList.length !== 0){
+                let titleCheck = $("#contentCard #title").length;
+                let donorCheck = $("#contentCard .donor-class").length;
+                if(donorCheck){
+                  $("#contentCard .donor-class").after(btnDiv);
                 }else{
-                  $("#contentCard #title").after(btnDiv)
+                  if(titleCheck === 0){
+                    $("#contentCard").prepend(btnDiv);
+                  }else{
+                    $("#contentCard #title").after(btnDiv)
+                  }
                 }
+                tempArray[`${parentId}`] = { type: "8",menusList, btnCount,fontColor:linkFontColor, bgColor:menuBgColor, buttons }
+                $('#createModal').modal('hide');
+                document.getElementById("emptyPage")?.remove()
+                buttonId += 1;
+              }else{
+                $("#menuBtnsDiv").append("<p class='error menu-list-error'>Please add at least one link.</p>")
               }
-              tempArray[`${parentId}`] = { type: "8",menusList, btnCount,fontColor:linkFontColor, bgColor:menuBgColor, buttons }
+
             }else{
               if (pageTitle !== "") {
                 updatesContent.appendChild(btnDiv);
@@ -5593,10 +5569,23 @@
                 btnContainerArray[`${parentId}`] = { btnCount, buttons }
                 tempArray[`${parentId}`] = { type: "8", btnCount, buttons }
               }
+              $('#createModal').modal('hide');
+              document.getElementById("emptyPage")?.remove()
+              buttonId += 1;
             }
-            $('#createModal').modal('hide');
-            document.getElementById("emptyPage")?.remove()
-            buttonId += 1;
+       
+          }
+
+          toggleDropdown =(index)=> {
+            var dropdowns = document.querySelectorAll(`.dropdown-content:not(#linkDropDown${index})`);
+            for (var i = 0; i < dropdowns.length; i++) {
+              var openDropdown = dropdowns[i];
+              if (openDropdown.classList.contains('show')) {
+                openDropdown.classList.remove('show');
+              }
+            }
+            var dropdown = document.getElementById(`linkDropDown${index}`);
+            dropdown.classList.toggle("show");
           }
 
           dropDownChange = (elem)=>{
@@ -7554,109 +7543,74 @@
                             </div>
                           </div>
                       </div>
-                       <div class="col-12">
-                          <fieldset class="row mb-2 mt-2">
-                            <legend class="col-form-label col-4 pt-0">Menu List:</legend>
-                            <div class="col-8">
+                            <div class="col-12 mt-3">
                               <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="checkbox" name="btnListCheckEdit" id="leftBtnCheckEdit" onchange="buttonListChangeEdit(this,'left')" value="left">
                                 <label class="form-check-label" for="leftBtnCheckEdit">Menu One</label>
                               </div>
-                              <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="checkbox" name="btnListCheckEdit" id="centerBtnCheckEdit" onchange="buttonListChangeEdit(this,'center')" value="center">
-                                <label class="form-check-label" for="centerBtnCheckEdit">Menu Two</label>
                               </div>
-                              <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="checkbox" name="btnListCheckEdit" id="rightBtnCheckEdit" onchange="buttonListChangeEdit(this,'right')" value="right">
-                                <label class="form-check-label" for="rightBtnCheckEdit">Menu Three</label>
-                              </div>
-                            </div>
-                          </fieldset>
-                        </div>
-                      <div class="col-12">
-                              <fieldset class="row mb-2 mt-2">
-                                <legend class="col-form-label col-4 pt-0">Menu Position in Page:</legend>
-                                <div class="col-8">
-                                  <div class="form-check form-check-inline buttons-check-div">
-                                    <input class="form-check-input" type="radio" name="menuBtnPositionEdit" onchange="menuPositionChangeEdit(this)" id="leftMenuEdit" value="left">
-                                    <label class="form-check-label" for="leftMenuEdit">
-                                      Left
-                                    </label>
-                                  </div>
-                                  <div class="form-check form-check-inline buttons-check-div">
-                                    <input class="form-check-input" type="radio" name="menuBtnPositionEdit" onchange="menuPositionChangeEdit(this)" id="centerMenuEdit" value="center">
-                                    <label class="form-check-label" for="centerMenuEdit">
-                                      Center
-                                    </label>
-                                  </div>
-                                  <div class="form-check form-check-inline buttons-check-div">
-                                    <input class="form-check-input" type="radio" name="menuBtnPositionEdit" onchange="menuPositionChangeEdit(this)" id="rightMenuEdit" value="right">
-                                    <label class="form-check-label" for="rightMenuEdit">
-                                      Right
-                                    </label>
-                                  </div>
-                                </div>
-                              </fieldset>
-                            </div>
                             <div class="links-container-edit" id="leftMenuListEdit" style="display:none">
-                              <fieldset class="row mb-2 mt-2">
-                                <legend class="col-form-label col-4 pt-0">Menu Type:</legend>
-                                <div class="col-8">
-                                  <div class="form-check form-check-inline">
+                              <fieldset class="row mb-2 mt-2 px-2">
+                                  <div class="form-check form-check-inline col-12">
                                     <input class="form-check-input" type="radio" name="leftMenuTypeEdit" onchange="MenuTypeChangeEdit(this,'left')" id="LeftMenuLinkEdit" value="link" checked>
                                     <label class="form-check-label" for="LeftMenuLinkEdit">
                                       Main Menu
                                     </label>
                                   </div>
-                                  <div class="form-check form-check-inline">
+                                  <div class="form-check form-check-inline col-12">
                                     <input class="form-check-input" type="radio" name="leftMenuTypeEdit" onchange="MenuTypeChangeEdit(this,'left')" id="leftMenuDropDownEdit" value="dropDown">
                                     <label class="form-check-label" for="leftMenuDropDownEdit">
                                      Sub Menu
                                     </label>
                                   </div>
-                                </div>
                               </fieldset>
                               ${leftMenuElem}
                             </div> 
 
+                            <div class="col-12 mt-3">
+                                <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" name="btnListCheckEdit" id="centerBtnCheckEdit" onchange="buttonListChangeEdit(this,'center')" value="center">
+                                <label class="form-check-label" for="centerBtnCheckEdit">Menu Two</label>
+                                </div>
+                            </div>
                             <div class="links-container-edit" id="centerMenuListEdit" style="display:none">
-                              <fieldset class="row mb-2 mt-2">
-                                <legend class="col-form-label col-4 pt-0">Menu Type:</legend>
-                                <div class="col-8">
-                                  <div class="form-check form-check-inline">
+                              <fieldset class="row mb-2 mt-2 px-2">
+                                  <div class="form-check form-check-inline col-12">
                                     <input class="form-check-input" type="radio" name="centerMenuTypeEdit" onchange="MenuTypeChangeEdit(this,'center')" id="centerMenuLinkEdit" value="link" checked>
                                     <label class="form-check-label" for="centerMenuLinkEdit">
                                       Main Menu
                                     </label>
                                   </div>
-                                  <div class="form-check form-check-inline">
+                                  <div class="form-check form-check-inline col-12">
                                     <input class="form-check-input" type="radio" name="centerMenuTypeEdit" onchange="MenuTypeChangeEdit(this,'center')" id="centerMenuDropDownEdit" value="dropDown">
                                     <label class="form-check-label" for="centerMenuDropDownEdit">
                                       Sub Menu
                                     </label>
                                   </div>
-                                </div>
                               </fieldset>
                                 ${centerMenuElem}
                             </div> 
 
+                            <div class="col-12 mt-3">
+                              <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" name="btnListCheckEdit" id="rightBtnCheckEdit" onchange="buttonListChangeEdit(this,'right')" value="right">
+                                <label class="form-check-label" for="rightBtnCheckEdit">Menu Three</label>
+                              </div>
+                              </div>
                             <div class="links-container-edit" id="rightMenuListEdit" style="display:none">
-                              <fieldset class="row mb-2 mt-2">
-                                <legend class="col-form-label col-4 pt-0">Menu Type:</legend>
-                                <div class="col-8">
-                                  <div class="form-check form-check-inline">
+                              <fieldset class="row mb-2 mt-2 px-2">
+                                  <div class="form-check form-check-inline col-12">
                                     <input class="form-check-input" type="radio" name="rightMenuTypeEdit" onchange="MenuTypeChangeEdit(this,'right')" id="rigtMenuLinkEdit" value="link" checked>
                                     <label class="form-check-label" for="rigtMenuLinkEdit">
                                       Main Menu
                                     </label>
                                   </div>
-                                  <div class="form-check form-check-inline">
+                                  <div class="form-check form-check-inline col-12">
                                     <input class="form-check-input" type="radio" name="rightMenuTypeEdit" onchange="MenuTypeChangeEdit(this,'right')" id="rightMenuDropDownEdit" value="dropDown">
                                     <label class="form-check-label" for="rightMenuDropDownEdit">
                                       Sub Menu
                                     </label>
                                   </div>
-                                </div>
                               </fieldset>
                               ${rightMenuElem}
                           </div>
@@ -7778,21 +7732,19 @@
             }
           }
 
-          $(".buttons-check-div").css("pointer-events", "none");
-          $(".buttons-check-div").css("opacity", "0.4");
+          $(".links-container-edit").css("display","none")
           menusList.forEach((menu)=>{
             $(`input[name='btnListCheckEdit'][value='${menu}']`).prop("checked", true);
-            $(`#${menu}MenuEdit`).parent().css("pointer-events", "auto");
-            $(`#${menu}MenuEdit`).parent().css("opacity", "1");
+            $(`#${menu}MenuListEdit`).css("display","block");
           })
 
           buttonListChangeEdit = (elem,pos) =>{
             if ($(`#${elem.id}`).is(":checked") == false){
-              $(`#${pos}MenuEdit`).parent().css("pointer-events", "none");
-              $(`#${pos}MenuEdit`).parent().css("opacity", "0.4");
+              $(`#${pos}MenuListEdit`).css("display", "none");
+              $(`#${pos}MenuListEdit`).find('input:text').val(''); 
+              $(`#${pos}MenuListEdit .menu-error`).remove();
             }else{
-              $(`#${pos}MenuEdit`).parent().css("pointer-events", "auto");
-              $(`#${pos}MenuEdit`).parent().css("opacity", "1");
+              $(`#${pos}MenuListEdit`).css("display", "block");
             }   
           }
 
@@ -9098,6 +9050,7 @@
             updatedElement.style.gap = "5px";
             updatedElement.style.justifyContent = "space-between"
             updatedElement.style.backgroundColor = `${menuBgColor}`
+            updatedElement.style.alignItems = "center"
           }
 
           var forms = document.querySelectorAll("#linkFormEdit form");
@@ -9402,15 +9355,16 @@
                 btn['links'].forEach((l)=>{
                   linkElem += `<li><a class="dropdown-item" target="_blank" href="${l.link}">${l.btnName}</a></li>`
                   })
-
                 btnTag += `<div class="dropdown">
-                   <a class="btn dropdown-toggle" href="#" role="button" onclick="dropDownChangeEdit(this)" id="dropdownMenuLinkEdit${i}" data-bs-toggle="tooltip" data-bs-placement="top" title="${btn.label}"  data-bs-toggle="dropdown" aria-expanded="false" style="color:${linkFontColor}">
-                      <span>${btn.label}</span> 
-                   </a>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuLinkEdit${i}">
-                      ${linkElem}
-                    </ul>
-                  </div>`
+                          <div class="sub-menu" data-bs-toggle="tooltip" data-bs-placement="top" title="${btn.label}" style="color:${linkFontColor}">
+                             <button onclick="toggleDropdownEdit('${i}')" class="dropbtn" style="color:${linkFontColor}" >
+                           ${btn.label}
+                          </button>
+                          </div>
+                            <div id="linkDropDownEdit${i}" class="dropdown-content">
+                             ${linkElem}
+                            </div>
+                          </div>`
               }
 
             });
@@ -9465,9 +9419,16 @@
             buttons=[...menuBtnInfo.map(obj=>obj)];
           }
 
+          $(".menu-list-edit-error").remove();
           if (!hasEmptyValue.includes(true)) {
             if(btnCount ==="menu"){
-              tempArray[`${elemId}`] = { type: "8", menusList, btnCount, fontColor:linkFontColor,bgColor:menuBgColor, buttons }
+              if(menusList.length !== 0){
+                tempArray[`${elemId}`] = { type: "8", menusList, btnCount, fontColor:linkFontColor,bgColor:menuBgColor, buttons }
+                updatedElement.innerHTML = btnTag;
+                $('#editModal').modal('hide');
+              }else{
+                $("#menuBtnsDivEdit").append("<p class='error menu-list-edit-error'>Please add at least one link.</p>")
+              }
             }else{
               if (updatesClass === "updatesItems") {
                 btnContainerArray[`${elemId}`] = { btnCount, buttons, updates: `updates${updatesId}` }
@@ -9476,10 +9437,23 @@
                 btnContainerArray[`${elemId}`] = { btnCount, buttons }
                 tempArray[`${elemId}`] = { type: "8", btnCount, buttons }
               }
+              updatedElement.innerHTML = btnTag;
+              $('#editModal').modal('hide');
             }
 
-            updatedElement.innerHTML = btnTag;
-            $('#editModal').modal('hide');
+            
+          }
+
+          toggleDropdownEdit =(index)=> {
+            var dropdowns = document.querySelectorAll(`.dropdown-content:not(#linkDropDownEdit${index})`);
+            for (var i = 0; i < dropdowns.length; i++) {
+              var openDropdown = dropdowns[i];
+              if (openDropdown.classList.contains('show')) {
+                openDropdown.classList.remove('show');
+              }
+            }
+            var dropdown = document.getElementById(`linkDropDownEdit${index}`);
+            dropdown.classList.toggle("show");
           }
 
           dropDownChangeEdit = (elem)=>{

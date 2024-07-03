@@ -195,7 +195,7 @@ width: 100px;
 .links-container-edit
 {
     border:1px solid #dee2e6 ;
-    padding: 5px 10px;
+    padding: 10px 10px;
 }
 
 .link-popup-modal img{
@@ -319,6 +319,77 @@ width: 100px;
 }
 
 
+/* Dropdown start */
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .dropbtn {
+    padding: 12px 5px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    background-color: transparent;
+    display: flex;
+  }
+
+  .dropdown .sub-menu{
+    display: flex;
+    align-items: center;
+  }
+
+  .dropdown .sub-menu::after{ 
+    content: '\f0d7';
+    font-family: FontAwesome;
+    font-weight: normal;
+    font-style: normal;
+    margin:0px 0px 0px 5px;
+    text-decoration:none;
+ } 
+  
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    width: min-content;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+  }
+
+  .dropdown-content li{
+    list-style: none;
+  }
+
+  .dropbtn{
+    display: inline-block;
+    max-width: 110px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+  }
+
+  .dropdown-content a:hover {background-color: #f1f1f1}
+
+  .dropdown-content.show{
+    display: block;
+  }
+
+/* Dropdown stop */
+
+.menu-btns-conatiner input[type=checkbox].form-check-input:checked{
+    background-color: #0bd80b !important;
+    border: #0bd80b !important;
+  }
 
 .cardHeader {
     display: flex;
@@ -2189,6 +2260,9 @@ table, th, td {
     #contentCard .btnDiv.menu-button .linkDiv .dropdown .dropdown-toggle span{
         max-width: 70px;
     }
+    .dropbtn{
+        max-width: 70px;
+    }
 }
 
 @media(max-width:576px){
@@ -2238,7 +2312,12 @@ table, th, td {
     #submitBtnDiv{
         width: 100%;
     }
+    .createPageDiv .mainContainer{
+        width: 100%;
+    }
 }
+
+
 
 @media(max-width:480px){
 .cardBox{
