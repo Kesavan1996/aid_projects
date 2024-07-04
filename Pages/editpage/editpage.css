@@ -327,8 +327,9 @@ width: 100px;
   }
   
   .dropbtn {
-    padding: 12px 5px;
-    font-size: 16px;
+    padding: 5px;
+    font-size: 18px;
+    font-weight: bold;
     border: none;
     cursor: pointer;
     background-color: transparent;
@@ -1283,7 +1284,7 @@ box-shadow: inset 2px 2px 9px -6px rgba(0,0,0,0.75);
 }
 
 #contentCard .btnDiv.menu-button .linkDiv .linkBtn{
-    padding: 10px 10px;
+    padding: 5px;
     border-radius: 5px;
     font-size: 18px;
     font-weight: bold;

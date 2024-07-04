@@ -5404,7 +5404,7 @@
             linkDiv.style.display = "flex";
             linkDiv.style.gap = "5px";
             linkDiv.style.justifyContent = "space-between"
-            linkDiv.style.backgroundColor = `${menuBgColor}`
+            btnDiv.style.backgroundColor = `${menuBgColor}`
             linkDiv.style.alignItems = "center"
           }
 
@@ -9038,6 +9038,7 @@
           }
 
           let updatedElement = document.getElementById(elemId).children[1];
+          let elemParentDiv = document.getElementById(elemId);
           $(updatedElement).removeAttr("style");
           if (btnCount === "one") {
             updatedElement.style.textAlign = `${btnPosition}`
@@ -9049,7 +9050,7 @@
             updatedElement.style.display = "flex";
             updatedElement.style.gap = "5px";
             updatedElement.style.justifyContent = "space-between"
-            updatedElement.style.backgroundColor = `${menuBgColor}`
+            elemParentDiv.style.backgroundColor = `${menuBgColor}`
             updatedElement.style.alignItems = "center"
           }
 
