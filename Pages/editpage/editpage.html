@@ -1571,7 +1571,7 @@
             }else if(btnCount === 'menu'){
               linkDiv.style.display = "flex";
               linkDiv.style.gap = "5px";
-              linkDiv.style.justifyContent = "space-between"
+              linkDiv.style.justifyContent = menuBtnData.length === 1?"center": "space-between";
               btnDiv.style.backgroundColor = `${menuBgColor}`
               linkDiv.style.alignItems = "center"
             }
@@ -6554,7 +6554,7 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
           }else if(btnCount === 'menu'){
             linkDiv.style.display = "flex";
             linkDiv.style.gap = "5px";
-            linkDiv.style.justifyContent =  "space-between"
+            linkDiv.style.justifyContent =  menuBtnData.length === 1?"center": "space-between";
              btnDiv.style.backgroundColor = `${menuBgColor}`
             linkDiv.style.alignItems = "center"
           }
@@ -10356,7 +10356,7 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
           }else if(btnCount === 'menu'){
             updatedElement.style.display = "flex";
             updatedElement.style.gap = "5px";
-            updatedElement.style.justifyContent = "space-between"
+            updatedElement.style.justifyContent = menusList.length === 1?"center": "space-between";
             elemParentDiv.style.backgroundColor = `${menuBgColor}`
             updatedElement.style.alignItems = "center"
           }
