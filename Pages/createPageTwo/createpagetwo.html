@@ -710,7 +710,7 @@
     }
 
     $(document).ready(function() {
-      $("body").tooltip({ selector: '[data-bs-toggle=tooltip]' });
+      $("body").tooltip({ selector: '[data-bs-toggle=tooltip]',trigger: 'hover' });
   });
 
       function addSpace(element, updates) {
@@ -1277,7 +1277,7 @@
                   </div>
                   <div class="form-check form-check-inline">
                     <input class="form-check-input" type="radio" name="textureOption" id="textureColor" onchange="textureChange(this)" value="color">
-                    <label class="form-check-label" for="textureColor">Bg Color</label>
+                    <label class="form-check-label" for="textureColor">Texture Color</label>
                   </div>
                 </div>
               </div>
@@ -5447,7 +5447,7 @@
               }else{
                 let linkElem ="";
                 btn['links'].forEach((l)=>{
-                  linkElem += `<li><a class="dropdown-item" target="_blank" href="${l.link}">${l.btnName}</a></li>`
+                  linkElem += `<li><a class="dropdown-item" target="_blank" data-bs-toggle="tooltip" data-bs-placement="top" title="${l.btnName}" href="${l.link}">${l.btnName}</a></li>`
                   })
                 btnTag += `<div class="dropdown">
                           <div class="sub-menu" data-bs-toggle="tooltip" data-bs-placement="top" title="${btn.label}" style="color:${linkFontColor}">
@@ -6670,7 +6670,7 @@
                   </div>
                   <div class="form-check form-check-inline">
                     <input class="form-check-input" type="radio" name="textureOptionEdit" id="textureColorEdit" onchange="textureChangeEdit(this)" value="color">
-                    <label class="form-check-label" for="textureColorEdit">Bg Color</label>
+                    <label class="form-check-label" for="textureColorEdit">Texture Color</label>
                   </div>
                 </div>
               </div>
@@ -9354,7 +9354,7 @@
               }else{
                 let linkElem ="";
                 btn['links'].forEach((l)=>{
-                  linkElem += `<li><a class="dropdown-item" target="_blank" href="${l.link}">${l.btnName}</a></li>`
+                  linkElem += `<li><a class="dropdown-item" target="_blank" data-bs-toggle="tooltip" data-bs-placement="top" title="${l.btnName}" href="${l.link}">${l.btnName}</a></li>`
                   })
                 btnTag += `<div class="dropdown">
                           <div class="sub-menu" data-bs-toggle="tooltip" data-bs-placement="top" title="${btn.label}" style="color:${linkFontColor}">
