@@ -26,6 +26,7 @@ body {
     user-select: none;
 }
 
+
 .updatesDivContainer .addButton .updatesBtns::-webkit-scrollbar,
 .modal-body::-webkit-scrollbar,
 #linkPopupModal #linkTabContent::-webkit-scrollbar,
@@ -97,6 +98,10 @@ body {
     display: flex;
     justify-content: space-between;
     margin-bottom: 10px;
+}
+
+.header-btns select{
+    width: auto;
 }
 
 .header-btns button{
@@ -199,6 +204,57 @@ width: 100px;
 #linkPopupModal #linkTabContent{
     height: 350px;
     overflow-y: auto;
+}
+
+#imageslibraryDiv button{
+    padding: 10px;
+    background-color: #1b8bc9;
+    color: #fff;
+    cursor: pointer;
+    border: none;
+    outline: none;
+}
+
+.image-library .gallery {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 10px;
+}
+
+.image-library .gallery-item {
+    position: relative;
+    width: calc(33.333% - 20px);
+    margin-bottom: 10px;
+}
+
+.image-library .gallery-item img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.gallery-item video{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.image-library .select-checkbox,
+.select-radio
+{
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background: white;
+    border: 2px solid black;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+.image-library .select-checkbox:checked {
+    background: rgba(0, 0, 0, 0.5);
 }
 
 #linkTabContent{
@@ -1061,14 +1117,10 @@ box-shadow: inset 2px 2px 9px -6px rgba(0,0,0,0.75);
  .videoCard form,
  .animationCard form
  {
-    width: 100%;
-    border-radius: 5px;
-    border: 2px dashed #d5d5e1;
     color:#c8c9dd;
     font-size: 0.9rem;
     font-weight: 500;
     position: relative;
-    background: #dfe3f259;
     display: flex;
     align-items: center;
     user-select: none;
@@ -1117,7 +1169,8 @@ box-shadow: inset 2px 2px 9px -6px rgba(0,0,0,0.75);
  .imgContainer,
  .imgContainerEdit,
  .animationContainer,
- .animationEditContainer
+ .animationEditContainer,
+ .imgGalleryContainer
  {
     width: 100%;
     display: flex;
@@ -1126,7 +1179,8 @@ box-shadow: inset 2px 2px 9px -6px rgba(0,0,0,0.75);
     flex-wrap: wrap;
     position: relative;
     height: auto;
-    margin-top: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
     max-height: 300px;
     overflow-y: auto;
  }
@@ -1147,6 +1201,7 @@ box-shadow: inset 2px 2px 9px -6px rgba(0,0,0,0.75);
 
  .imgContainer .image,
  .imgContainerEdit .image,
+ .imgGalleryContainer .image,
  .videoModalContainer .video,
  .videoModalContainerEdit .video,
  .animationContainer .animation,
@@ -1174,6 +1229,7 @@ box-shadow: inset 2px 2px 9px -6px rgba(0,0,0,0.75);
 
  .imgContainer .image img,
  .imgContainerEdit .image img,
+ .imgGalleryContainer .image img,
  .videoModalContainer .video video,
  .videoModalContainerEdit .video video,
  .animationContainer .animation img,
@@ -1185,6 +1241,7 @@ box-shadow: inset 2px 2px 9px -6px rgba(0,0,0,0.75);
 
  .imgContainer .image span,
  .imgContainerEdit .image span,
+ .imgGalleryContainer .image span,
  .videoModalContainer .video span,
  .videoModalContainerEdit .video span,
  .animationContainer .animation span,
@@ -1201,6 +1258,7 @@ box-shadow: inset 2px 2px 9px -6px rgba(0,0,0,0.75);
 
  .imgContainer .image span:hover,
  .imgContainerEdit .image span:hover,
+ .imgGalleryContainer .image span:hover,
  .animationContainer .animation span:hover,
  .animationEditContainer .animation span:hover,
  .videoModalContainer .video span:hover,
@@ -1246,6 +1304,12 @@ box-shadow: inset 2px 2px 9px -6px rgba(0,0,0,0.75);
   object-fit: cover;
   object-position: center;
   width: 40%;
+ }
+
+ .image-label{
+    color: gray;
+    font-size: 14px;
+    margin-bottom: 0;
  }
 
  .videosDiv video
@@ -2301,6 +2365,30 @@ label.radio {
     height: 40px;
     width: 40px;
 }
+
+.image-select-div,
+.video-select-div,
+.video-select-div-edit
+{
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.image-select-div button,
+.video-select-div button,
+.video-select-div-edit button
+{
+    padding: 10px;
+    background-color: #1b8bc9;
+    color: #fff;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    font-size: 0.9rem;
+}
+
 @media screen and (max-width: 480px) {
     .hyperLink {
        width:calc(100% - 1em);
@@ -2380,6 +2468,10 @@ label.radio {
     .createPageDiv .mainContainer{
         width: 100%;
     }
+
+    #imageLibraryModal .gallery-item {
+        width: calc(50% - 20px);
+    }
 }
 
 @media(max-width:480px){
@@ -2404,5 +2496,8 @@ label.radio {
 }
 #videoPopupModal .modal-content{
     height: 55vh;
+}
+#imageLibraryModal .gallery-item  {
+    width: 100%;
 }
 }

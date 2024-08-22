@@ -18,6 +18,9 @@
     integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
 
+    <!-- Toast Message -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+
     <!-- Maths fractions -->
     <script type="text/x-mathjax-config">
       MathJax.Hub.Config({
@@ -48,6 +51,18 @@
           <div class="mainContainer">
             <div class="header-btns">
               <button type="button" onclick="openParentLink()" class="logoBtn">Parent logo</button>
+              <select class="form-select" id="projectsList" aria-label="Default select example">
+                <option value="null">Select Project</option>
+                <option value="1">Project 1</option>
+                <option value="2">Project 2</option>
+                <option value="3">Project 3</option>
+              </select>
+              <select class="form-select" id="programsList" aria-label="Default select example">
+                <option value="null">Select Program</option>
+                <option value="1">Program 1</option>
+                <option value="2">Program 2</option>
+                <option value="3">Program 3</option>
+              </select>
               <button type="button" onclick="openGotoModal()" class="gotoBtn">Go to Section</button>
             </div>
             <div class="cards">
@@ -435,6 +450,7 @@
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.15.1/ckeditor.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 
     <script>
       CKEDITOR.replace('editor');
@@ -624,9 +640,37 @@
         parentDiv.innerHTML = '<h3 id="emptyPage" style="opacity:0.8">Add contents to create page..!</h3>'
       }
 
+            
+      // Toast message function
+      toastClick =()=> {
+        Toastify({
+          text: "Select the project and program",
+          duration: 3000,
+          newWindow: true,
+          close: true,
+          gravity: "top",
+          position: "right",
+          stopOnFocus: true,
+          style: {
+            background: "red"
+          }
+        }).showToast();
+      }
+
       let menuToggles = document.querySelector(".menuToggles");
       menuToggles.onclick = function () {
-        menuToggles.classList.toggle("active");
+        let selectedProject =  $('#projectsList').val();
+        let selectedProgram =  $('#programsList').val();
+        let toggleActive = menuToggles.classList.contains('active');
+        if(toggleActive === false){
+          if(selectedProject !== "null" && selectedProgram !== "null"){
+            menuToggles.classList.toggle("active");
+          }else{
+            toastClick();
+          }
+        }else{
+          menuToggles.classList.toggle("active");
+        }
       };
 
       var inputId = 0
@@ -719,6 +763,8 @@
       let selectedElem;
       let linkChildElem=[];
       let textureImageIndex=0;
+      let imagesFilesList = [];
+      let videoFilesList = "";
 
       //Temp Array
 
@@ -1030,7 +1076,7 @@
           else if (data.type === "4") {
             let imagesView = data.imagesView == undefined ? "normal" : data.imagesView;
             let arrowBgColor = data.arrowBgColor == undefined ? "#828282" : data.arrowBgColor;
-
+            imagesFilesList=[];
             let ParentId;
             var div = document.createElement('div')
             div.className = "imageContainer dragDiv"
@@ -1052,14 +1098,12 @@
 
             clickTag.appendChild(editImg)
 
-            var imgArry = data.images
+            imagesFilesList = data.images
 
             if (updatesElemId) {
-              imagesContainerArrar[`imgContainerDiv${imageContainerId}`] = { images: imgArry, updates: `updates${idCount}` }
-              tempArray[`imgContainerDiv${imageContainerId}`] = { type: "4", images: imgArry, "imagesView": imagesView, arrowBgColor: arrowBgColor, updates: `updates${idCount}` }
+              tempArray[`imgContainerDiv${imageContainerId}`] = { type: "4", images: imagesFilesList, "imagesView": imagesView, arrowBgColor: arrowBgColor, updates: `updates${idCount}` }
             } else {
-              imagesContainerArrar[`imgContainerDiv${imageContainerId}`] = imgArry
-              tempArray[`imgContainerDiv${imageContainerId}`] = { type: "4", images: imgArry, "imagesView": imagesView, arrowBgColor: arrowBgColor }
+              tempArray[`imgContainerDiv${imageContainerId}`] = { type: "4", images: imagesFilesList, "imagesView": imagesView, arrowBgColor: arrowBgColor }
             }
 
             var imgContainer = document.createElement("div")
@@ -1074,7 +1118,7 @@
 
             let images = '';
 
-            imgArry.forEach((e, i) => {
+            imagesFilesList.forEach((e, i) => {
               images += `
                         <img src=${e} alt="img">
                     </div>`
@@ -1083,7 +1127,7 @@
             let imageSlideCount = '';
             let carouselImage = '';
 
-            imgArry.forEach((e, i) => {
+            imagesFilesList.forEach((e, i) => {
               imageSlideCount += `<button type="button" data-bs-target="#carouselwithIndicators${imageContainerId}" data-bs-slide-to="${i}" style="background-color:${arrowBgColor}" aria-current="true" class="${i == 0 ? "active" : ""}" aria-label="Slide ${i}">
 
                                 </button>`
@@ -1091,7 +1135,7 @@
 
             let carouselUrl = '';
 
-            imgArry.forEach((e, i) => {
+            imagesFilesList.forEach((e, i) => {
               if (typeof e === "string") {
                 carouselUrl = e
               } else {
@@ -1152,6 +1196,7 @@
             imageContainerId += 1
           }
           else if (data.type === "5") {
+            videoFilesList="";
 
             var div = document.createElement('div')
             div.className = "videoContainer dragDiv"
@@ -1173,7 +1218,7 @@
 
             clickTag.appendChild(editImg)
 
-            var videoArry = data.video
+            videoFilesList = data.video
             var videoSrc = data.video
             let videoType =  data.videoType ===  undefined ? 'upload':data.videoType;
             let link="";
@@ -1185,16 +1230,14 @@
 
             if (updatesElemId) {
               if(videoType === "upload"){
-                videoContainerArrary[`DivvideoContainer${videoContainerId}`] = { video: videoArry, updates: `updates${idCount}` }
-                tempArray[`DivvideoContainer${videoContainerId}`] = { type: "5", video: videoArry, videoType, updates: `updates${idCount}` }
+                tempArray[`DivvideoContainer${videoContainerId}`] = { type: "5", video: videoFilesList, videoType, updates: `updates${idCount}` }
               }else{
                 tempArray[`DivvideoContainer${videoContainerId}`] = { type: "5", videoType, link, image:thumbnailImage, updates: `updates${idCount}` }
               }
 
             } else {
               if(videoType === "upload"){
-                videoContainerArrary[`DivvideoContainer${videoContainerId}`] = videoArry
-                tempArray[`DivvideoContainer${videoContainerId}`] = { type: "5",videoType, video: videoArry }
+                tempArray[`DivvideoContainer${videoContainerId}`] = { type: "5",videoType, video: videoFilesList }
               }else{
                 tempArray[`DivvideoContainer${videoContainerId}`] = { type: "5",link, videoType,image:thumbnailImage}
               }
@@ -1231,7 +1274,7 @@
             let videos = '';
 
             videos = `<video class="" controls  preload="auto" alt="video">
-                    <source src=${videoSrc} />
+                    <source src=${videoFilesList} />
                 </video>`
             if(videoType === "link"){
               videoContainer.innerHTML= videoPopupElem
@@ -2303,7 +2346,7 @@
                   </div>
                   <fieldset class="row mb-3">
                     <legend class="col-form-label col-sm-4 pt-0">Images View</legend>
-                    <div class="col-sm-8">
+                    <div class="col-sm-8 d-flex gap-3">
                       <div class="form-check">
                         <input class="form-check-input" type="radio" name="imageView" value="normal" id="normal" onchange="imageTypeFn(this)" checked>
                         <label class="form-check-label" for="normal">
@@ -2318,12 +2361,18 @@
                       </div>
                     </div>
                   </fieldset>
-                  <form action="" method="post" class="dragover">
-                      <input name="file" type="file" class="file" id="imgInput" accept="image/png, image/jpeg" onchange="imageonChange(this)" hidden />
-                      <label for="imgInput">Choose Image</label>
-                      <span id="imageChosen">No image chosen</span>
-                  </form>
-                  <div class="imgContainer">
+                  <div id="imageSelectDiv">
+                  <div class="image-select-div">
+                    <form action="" method="post" class="dragover">
+                        <input name="file" type="file" class="file" id="imgInput" accept="image/png, image/jpeg" onchange="imageonChange(this)" hidden />
+                        <label for="imgInput">Choose Image</label>
+                    </form>
+                    <button type="button" onclick="imagesSelectFromDb()">
+                        Project Library
+                      </button>
+                    </div>
+                    <div class="imgContainer">
+                    </div>
                   </div>
                   <div id="bgColorDiv" class="row gap-2" style="display:none">
                     <div class="col-12">
@@ -2337,6 +2386,8 @@
                   </div>`
 
           modalBody.appendChild(cardDiv)
+          imagesFilesList=[];
+          $("#imageLibraryContainer").html();
 
           imageTypeFn = (elem) => {
             let typeVal = $(elem).val();
@@ -2345,6 +2396,26 @@
             } else if (typeVal === "normal") {
               $("#bgColorDiv").css("display", "none");
             }
+          }
+
+          let imagesList = ['../../assets/img/img1.jpg','../../assets/img/img2.jpg','../../assets/img/img3.jpg','../../assets/img/img1.jpg','../../assets/img/img3.jpg']
+
+          imagesSelectFromDb =()=>{
+            let galleryImgElem="";
+            imagesList.forEach((image,i)=>{
+              galleryImgElem += `
+                <div class="gallery-item">
+                    <img src="${image}" alt="Image 1">
+                    <input type="checkbox" name="galleryImage" class="select-checkbox" value="${i}">
+                </div>`
+            })
+
+            let galleryElem = `<div class="gallery">
+                              ${galleryImgElem}
+                            </div>`
+
+            $("#imageLibraryContainer").html(galleryElem);
+            $("#imageLibraryModal").modal("show");
           }
 
           files = [],
@@ -2357,15 +2428,19 @@
           input = document.querySelector('form input');
 
           imageonChange = (elem) => {
+            $(".file-size-error").remove();
             let file = elem.files;
             for (let i = 0; i < file.length; i++) {
-              if (files.every(e => e.name !== file[i].name)) {
-                files.push(file[i])
+              if (imagesFilesList.every(e => e.name !== file[i].name)) {
+                let fileSizeInMB = file[i].size / (1024 * 1024); 
+                if(fileSizeInMB > 5){
+                  $('.imgContainer').after("<p class='error file-size-error'>Image size must be less than 5MB.</p>")
+                }else{
+                  imagesFilesList.push(file[i]);
+                }
+                
               }
             }
-
-            imagesContainerArrar[`imgContainerDiv${imageContainerId}`] = files
-            tempArray[`imgContainerDiv${imageContainerId}`] = { type: "4", images: files }
 
             $("#imgErrorMsg").remove();
             form.reset();
@@ -2375,23 +2450,56 @@
 
           showImages = () => {
             let images = '';
-            files.forEach((e, i) => {
+            imagesFilesList.forEach((e, i) => {
+              let galleryImgUrl = "";
+              if(typeof e === "object"){
+                galleryImgUrl = URL.createObjectURL(e)
+              }else{
+                galleryImgUrl = e
+              }
               images += `<div class="image box" draggable="true"">
-                        <img src=${URL.createObjectURL(e)} alt="img" >
-                       <span onclick="delImages(${i})"> &times;</span>
+                        <img src=${galleryImgUrl} alt="img" >
+                       <span onclick="delLibraryImages(${i})"> &times;</span>
                     </div>`
             })
             container.innerHTML = images
 
           }
 
-          button?.addEventListener('click', () => {
-            let form = new FormData();
-            files.forEach((e, i) => form.append(`file[${i}]`, e))
-          })
-
           imageId += 1
 
+          let libraryContent=`<div class="modal fade image-library" id="imageLibraryModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5>Project Library</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <div id="imageLibraryContainer">
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-primary" onclick="selectImageFromGallery()">Add</button>
+                </div>
+              </div>
+            </div>
+          </div>`
+  
+          $('body').append(libraryContent);
+  
+          selectImageFromGallery = () =>{
+            $('input[name="galleryImage"]:checked').each(function() {
+              imagesFilesList.push(imagesList[this.value])
+           });
+           $('#imageLibraryModal').modal('hide');
+           showImages();
+          }
+  
+          delLibraryImages = (i) =>{ 
+            imagesFilesList.splice(i,1);
+            showImages();
+          }  
 
         }
         else if (element === "quiz") {
@@ -2489,11 +2597,15 @@
                           </div>
                       </fieldset>
                       </div>
-                  <form action="" method="post" class="dragover" id="videoUploadDiv">
-                      <input name="file" type="file" class="file" id="videoInputField" onchange="videoOnChange(this)" accept="video/mp4" hidden />
-                      <label class="file-choose-label" for="videoInputField">Choose Video</label>
-                      <span id="videoChosen">No video chosen</span>
-                  </form>
+                      <div class="video-select-div">
+                      <form action="" method="post" class="dragover" id="videoUploadDiv">
+                          <input name="file" type="file" class="file" id="videoInputField" onchange="videoOnChange(this)" accept="video/mp4" hidden />
+                          <label class="file-choose-label" for="videoInputField">Choose Video</label>
+                      </form>
+                      <button type="button" onclick="videoSelectFromDb()">
+                            Project Library
+                          </button>
+                        </div>
                   <div class="video-link-container" id="videoLinkDiv" style="display:none">
                     <div class="input-div">
                       <label>Video Link:</label>
@@ -2514,6 +2626,8 @@
               <div class="videoModalContainer"></div>`
 
           modalBody.appendChild(cardDiv)
+          videoFilesList = [];
+          $("#videoLibraryContainer").html();
 
           $(".video-link-error").remove();
 
@@ -2530,13 +2644,16 @@
             }
           }
 
+          videoFilesList = [];
+          $("#videoLibraryContainer").html();
+
           videoTypeChange = (elem)=>{
             let videoTypeOption = $(elem).val();
             if(videoTypeOption === "upload"){
-              $("#videoUploadDiv").css("display","flex");
+              $(".video-select-div").css("display","flex");
               $("#videoLinkDiv").css("display","none");
             }else{
-              $("#videoUploadDiv").css("display","none");
+              $(".video-select-div").css("display","none");
               $("#videoLinkDiv").css("display","flex");
               $(".videoModalContainer").html("");
             }
@@ -2568,34 +2685,58 @@
           videoOnChange = (elem) => {
             $(".video-error").remove();
             files = elem.files[0];
-
             if (files.size < maxAllowedSize) {
-              videoContainerArrary[`DivvideoContainer${videoContainerId}`] = files
-              tempArray[`DivvideoContainer${videoContainerId}`] = { type: "5", video: files }
-              form.reset();
+              videoFilesList = files;
+               form.reset();
               showVideos();
-              $("#videoChosen").css("display", "none")
             } else {
-              container.insertAdjacentHTML('afterend', '<p style="color:red" class="video-error">Maximum video size is 10MB</p>');
+              $(".videoModalContainer").after('<p class="error video-error">Maximum video size is 10MB.</p>')
             }
           }
 
-          const showVideos = () => {
-            let videos = `<div class="video" id="videoId" draggable="true">
-                      <video src=${URL.createObjectURL(files)} alt="video" />
-                      <span onclick="delVideos()">&times;</span>
+           showVideos = () => {
+            let galleryVideoUrl = "";
+            if(typeof videoFilesList === "object"){
+              galleryVideoUrl = URL.createObjectURL(videoFilesList)
+            }else{
+              galleryVideoUrl = videoFilesList
+            }
+            let videos = `<div class="video">
+                      <video src=${galleryVideoUrl} alt="video" />
                   </div>`
             container.innerHTML = videos
 
           }
 
-
-          button?.addEventListener('click', () => {
-            let form = new FormData();
-            files.forEach((e, i) => form.append(`file[${i}]`, e))
-          })
-
           videoTempId = videoContainerId;
+
+          let libraryContent=`<div class="modal fade image-library" id="videoLibraryModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5>Project Library</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <div id="videoLibraryContainer">
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-primary" onclick="selectVideoFromGallery()">Add</button>
+                </div>
+              </div>
+            </div>
+          </div>`
+  
+          $('body').append(libraryContent);
+
+          selectVideoFromGallery = () =>{
+            $('input[name="galleryVideo"]:checked').each(function() {
+              videoFilesList = videosList[this.value]
+           });
+           $('#videoLibraryModal').modal('hide');
+           showVideos();
+          }
 
         }
         else if (element === "animation") {
@@ -3892,7 +4033,7 @@
                   </div>
                   <fieldset class="row mb-3">
                     <legend class="col-form-label col-sm-4 pt-0">Images View</legend>
-                    <div class="col-sm-8">
+                    <div class="col-sm-8 d-flex gap-3">
                       <div class="form-check">
                         <input class="form-check-input" type="radio" name="imageView" value="normal" id="normal" checked>
                         <label class="form-check-label" for="normal">
@@ -3907,11 +4048,15 @@
                       </div>
                     </div>
                   </fieldset>
+                  <div class="image-select-div">
                   <form action="" method="post" class="dragover">
                       <input name="file" type="file" class="file" id="imgInput" multiple accept="image/png, image/jpeg" onchange="imageonChange(this)" hidden />
                       <label for="imgInput">Choose Image</label>
-                      <span id="imageChosen">No image chosen</span>
                   </form>
+                  <button type="button" onclick="imagesSelectFromDb()">
+                          Project Library
+                        </button>
+                    </div>
                   <div class="imgContainer">
                   </div>
 
@@ -3927,6 +4072,8 @@
                   </div>`
 
           modalBody.appendChild(cardDiv)
+          imagesFilesList=[];
+          $("#imageLibraryContainer").html();
 
           imageTypeFn = (elem) => {
             let typeVal = $(elem).val();
@@ -3936,6 +4083,27 @@
               $("#bgColorDiv").css("display", "none");
             }
           }
+
+                    
+         let imagesList = ['../../assets/img/img1.jpg','../../assets/img/img2.jpg','../../assets/img/img3.jpg','../../assets/img/img1.jpg','../../assets/img/img3.jpg']
+
+         imagesSelectFromDb =()=>{
+           let galleryImgElem="";
+           imagesList.forEach((image,i)=>{
+             galleryImgElem += `
+               <div class="gallery-item">
+                   <img src="${image}" alt="Image 1">
+                   <input type="checkbox" name="galleryImage" class="select-checkbox" value="${i}">
+               </div>`
+           })
+
+           let galleryElem = `<div class="gallery">
+                             ${galleryImgElem}
+                           </div>`
+
+           $("#imageLibraryContainer").html(galleryElem);
+           $("#imageLibraryModal").modal("show");
+         }
 
           files = [],
             button = document.querySelector('.top button'),
@@ -3949,18 +4117,17 @@
           imageonChange = (elem) => {
             let file = elem.files;
             for (let i = 0; i < file.length; i++) {
-              if (files.every(e => e.name !== file[i].name)) {
-                files.push(file[i])
+              if (imagesFilesList.every(e => e.name !== file[i].name)) {
+                let fileSizeInMB = file[i].size / (1024 * 1024); 
+                if(fileSizeInMB > 5){
+                  $('.imgContainer').after("<p class='error file-size-error'>Image size must be less than 5MB.</p>")
+                }else{
+                  imagesFilesList.push(file[i]);
+                }
               }
 
             }
-
-            imagesContainerArrar[`imgContainerDiv${imageContainerId}`] = { images: files, updates: `updates${updatesIdCount}` }
-
-            tempArray[`imgContainerDiv${imageContainerId}`] = { type: "4", images: files, updates: `updates${updatesIdCount}` }
-
             $("#imgErrorMsg").remove();
-
             form.reset();
             showImages();
             $("#imageChosen").css("display", "none")
@@ -3970,14 +4137,53 @@
           showImages = () => {
 
             let images = '';
-            files.forEach((e, i) => {
+            imagesFilesList.forEach((e, i) => {
+              let galleryImgUrl = "";
+              if(typeof e === "object"){
+                galleryImgUrl = URL.createObjectURL(e)
+              }else{
+                galleryImgUrl = e
+              }
               images += `<div class="image box" draggable="true"">
-                        <img src=${URL.createObjectURL(e)} alt="img" >
-                       <span onclick="delImages(${i})"> &times;</span>
+                        <img src=${galleryImgUrl} alt="img" >
+                       <span onclick="delLibraryImages(${i})"> &times;</span>
                     </div>`
             })
             container.innerHTML = images
 
+          }
+
+          let libraryContent=`<div class="modal fade image-library" id="imageLibraryModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5>Project Library</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <div id="imageLibraryContainer">
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-primary" onclick="selectImageFromGallery()">Add</button>
+                </div>
+              </div>
+            </div>
+          </div>`
+  
+          $('body').append(libraryContent);
+  
+          selectImageFromGallery = () =>{
+            $('input[name="galleryImage"]:checked').each(function() {
+              imagesFilesList.push(imagesList[this.value])
+           });
+           $('#imageLibraryModal').modal('hide');
+           showImages();
+          }
+  
+          delLibraryImages = (i) =>{ 
+            imagesFilesList.splice(i,1);
+            showImages();
           }
 
         }
@@ -4077,11 +4283,15 @@
                             </div>
                         </fieldset>
                         </div>
-                <form action="" method="post" class="dragover" id="videoUploadDiv">
-                  <input name="file" type="file" class="file" id="videoInputField" onchange="videoOnChange(this)" accept="video/mp4" hidden />
-                  <label class="file-choose-label" for="videoInputField">Choose Video</label>
-                  <span id="videoChosen">No video chosen</span>
-                </form>
+                        <div class="video-select-div">
+                        <form action="" method="post" class="dragover" id="videoUploadDiv">
+                          <input name="file" type="file" class="file" id="videoInputField" onchange="videoOnChange(this)" accept="video/mp4" hidden />
+                          <label class="file-choose-label" for="videoInputField">Choose Video</label>
+                        </form>
+                        <button type="button" onclick="videoSelectFromDb()">
+                              Project Library
+                            </button>
+                          </div>
                 <div class="video-link-container" id="videoLinkDiv" style="display:none">
                       <div class="input-div">
                         <label>Video Link:</label>
@@ -4103,6 +4313,8 @@
 
 
           modalBody.appendChild(cardDiv)
+          videoFilesList = [];
+          $("#videoLibraryContainer").html();
           $(".video-link-error").remove();
 
           inputVerify = (e)=>{
@@ -4118,13 +4330,33 @@
             }
           }
 
+          let videosList= ['../../assets/video/video1.mp4','../../assets/video/video2.mp4','../../assets/video/video3.mp4']
+
+          videoSelectFromDb =()=>{
+            let galleryvideoElem="";
+            videosList.forEach((video,i)=>{
+              galleryvideoElem += `
+                <div class="gallery-item">
+                    <video src=${video} alt="video"></video>
+                    <input type="radio" name="galleryVideo" class="select-radio" value="${i}" />
+                </div>`
+            })
+
+            let galleryElem = `<div class="gallery">
+                              ${galleryvideoElem}
+                            </div>`
+
+            $("#videoLibraryContainer").html(galleryElem);
+            $("#videoLibraryModal").modal("show");
+          }
+
           videoTypeChange = (elem)=>{
             let videoTypeOption = $(elem).val();
             if(videoTypeOption === "upload"){
-              $("#videoUploadDiv").css("display","flex");
+              $(".video-select-div").css("display","flex");
               $("#videoLinkDiv").css("display","none");
             }else{
-              $("#videoUploadDiv").css("display","none");
+              $(".video-select-div").css("display","none");
               $("#videoLinkDiv").css("display","flex");
               $(".videoModalContainer").html("");
             }
@@ -4158,33 +4390,57 @@
             files = elem.files[0];
 
             if (files.size < maxAllowedSize) {
-
-              videoContainerArrary[`DivvideoContainer${videoContainerId}`] = { files, updates: `updates${updatesIdCount}` }
-              tempArray[`DivvideoContainer${videoContainerId}`] = { type: "5", video: files, updates: `updates${updatesIdCount}` }
-              form.reset();
+              videoFilesList = files;
+             form.reset();
               showVideos();
-              $("#videoChosen").css("display", "none")
             } else {
-              container.insertAdjacentHTML('afterend', '<p style="color:red" class="video-error">Maximum video size is 10MB</p>');
+              $(".videoModalContainer").after('<p class="error video-error">Maximum video size is 10MB.</p>')
             }
           }
 
-          const showVideos = () => {
+          showVideos = () => {
+            let galleryVideoUrl = "";
+            if(typeof videoFilesList === "object"){
+              galleryVideoUrl = URL.createObjectURL(videoFilesList)
+            }else{
+              galleryVideoUrl = videoFilesList
+            }
             let videos = `<div class="video" id="videoId" draggable="true">
-                      <video src=${URL.createObjectURL(files)} alt="video" />
+                      <video src=${galleryVideoUrl} alt="video" />
                       <span onclick="delVideos()">&times;</span>
                   </div>`
             container.innerHTML = videos
 
           }
 
-
-          button?.addEventListener('click', () => {
-            let form = new FormData();
-            files.forEach((e, i) => form.append(`file[${i}]`, e))
-          })
-
           videoTempId = videoContainerId;
+          let libraryContent=`<div class="modal fade image-library" id="videoLibraryModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5>Project Library</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <div id="videoLibraryContainer">
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-primary" onclick="selectVideoFromGallery()">Add</button>
+                </div>
+              </div>
+            </div>
+          </div>`
+  
+          $('body').append(libraryContent);
+
+          selectVideoFromGallery = () =>{
+            $('input[name="galleryVideo"]:checked').each(function() {
+              videoFilesList = videosList[this.value]
+           });
+           $('#videoLibraryModal').modal('hide');
+           showVideos();
+          }
 
         }
         else if (element === "animation") {
@@ -5528,18 +5784,11 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
           var imgId = modalBody.children[0].id
           var numb = imgId?.match(/\d/g);
           numb = numb?.join("");
-          if (pageTitle == "") {
-            imgArry = imagesContainerArrar[`${imgId}`]
-          } else {
-            imgArry = imagesContainerArrar[`${imgId}`]["images"];
-          }
 
-          if (imgArry === undefined) {
-            if ($("#imgErrorMsg").length === 0) {
-              $("#imgInput").closest('form').after('<p class="error" id="imgErrorMsg">Upload the image..!</P')
-            }
-          } else {
-            $("#imgErrorMsg").remove();
+          $(".image-error").remove();
+
+          if (imagesFilesList.length === 0) {
+            $(".imgContainer").after('<p class="error image-error">Please upload the image.</p>')
           }
 
           var imgSrc = document.getElementsByClassName("image")
@@ -5558,24 +5807,36 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
           clickTag.setAttribute("onclick", `editModal("editImages",this.previousElementSibling.id,this.parentElement.id)`)
 
           let images = '';
-          imgArry.forEach((e, i) => {
+          imagesFilesList.forEach((e, i) => {
+            let imgURL = "";
+            if(typeof e === "object"){
+              imgURL = URL.createObjectURL(e)
+            }else{
+              imgURL = e;
+            }
             images += `
-                    <img src=${URL.createObjectURL(e)} alt="img">
+                    <img src=${imgURL} alt="img">
                 </div>`
           })
 
           let imageSlideCount = '';
           let carouselImage = '';
 
-          imgArry.forEach((e, i) => {
+          imagesFilesList.forEach((e, i) => {
             imageSlideCount += `<button type="button" data-bs-target="#carouselwithIndicators${numb}" style="background-color:${arrowBgColor}" data-bs-slide-to="${i}" aria-current="true" class="${i == 0 ? "active" : ""}" aria-label="Slide ${i}">
 
                                 </button>`
           })
 
-          imgArry.forEach((e, i) => {
+          imagesFilesList.forEach((e, i) => {
+            let imgURL = "";
+            if(typeof e === "object"){
+              imgURL = URL.createObjectURL(e)
+            }else{
+              imgURL = e;
+            }
             carouselImage += `<div class="${i == 0 ? "carousel-item active" : "carousel-item"}">
-              <img src=${URL.createObjectURL(e)} class="d-block w-100" alt="${e.name}" >
+              <img src=${imgURL} class="d-block w-100" >
             </div>`
           })
 
@@ -5617,19 +5878,22 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
           let updatesContent;
           let updatesContentId;
           let parentDivId;
+          let updatedID="";
 
 
           if (pageTitle !== "") {
             updatesContentId = pageTitle.split("_")[0]
             updatesContent = document.getElementById(updatesContentId)
             parentDivId = updatesContentId.split("").pop()
+            var numberVerify = /\d+/g;
+            updatedID = updatesContentId.match(numberVerify);
           }
 
-          if (imgContainer.innerHTML !== "") {
-            tempArray[`${imgId}`] = { ...tempArray[`${imgId}`], "imagesView": imagesView, "arrowBgColor": arrowBgColor }
+          if (imagesFilesList.length !== 0) {
             if (pageTitle !== "") {
               $('#createModal').modal('hide');
               document.getElementById("emptyPage")?.remove()
+              tempArray[`${imgId}`] = { type: "4", images: imagesFilesList, "imagesView": imagesView, "arrowBgColor": arrowBgColor,updates:`updates${updatedID}` }
               div.appendChild(dropImg)
               if (imagesView === "carousel") {
                 div.appendChild(carouselContainer)
@@ -5644,7 +5908,7 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
             } else {
               $('#createModal').modal('hide');
               document.getElementById("emptyPage")?.remove()
-
+              tempArray[`${imgId}`] = { type: "4", images: imagesFilesList, "imagesView": imagesView, "arrowBgColor": arrowBgColor }
               div.appendChild(dropImg)
               if (imagesView === "carousel") {
                 div.appendChild(carouselContainer)
@@ -5658,12 +5922,6 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
               imageContainerId += 1
             }
 
-          } else {
-            let inputElem = document.querySelector(".imgContainer")
-            let errorElem = document.querySelector(".error")
-            if (!errorElem) {
-              inputElem.insertAdjacentHTML('afterend', '<p class="error">Please insert image...!</p>');
-            }
           }
         }
         else if (modalBody.children[0].className === "videoCard") {
@@ -5704,21 +5962,12 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
           let updateName="";
 
           if (pageTitle !== "") {
-            if(videoType === 'upload'){
-              videoLocalSrc = videoContainerArrary[`Div${parentContainerVideo[0].id}`]["files"]
-          }
            let updateClassName = document.querySelector('#createModal .modal-header h5').className;
            updateClassName= updateClassName.split("_")[0]
            var updateNum = updateClassName?.match(/\d/g);
            updateNum = updateNum?.join("");
             updateName = `updates${updateNum}`;
-          } else {
-            if(videoType === 'upload'){
-              videoLocalSrc = videoContainerArrary[`Div${parentContainerVideo[0].id}`]
           }
-          }
-
-          tempArray[`Div${parentContainerVideo[0].id}`]={...tempArray[`Div${parentContainerVideo[0].id}`],videoType}
 
           $(".video-link-error").remove();
           $(".thumbnail-error").remove();
@@ -5743,9 +5992,6 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
             }
           }
 
-
-          var videoName = videoLocalSrc?.name
-
           var videoContainer = document.createElement("div")
           videoContainer.className = "videosDiv"
           videoContainer.id = parentContainerVideo[0].id
@@ -5762,24 +6008,31 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
           deleteImg.src = '/assets/img/close.png'
 
           deleteTag.append(deleteImg)
-
-          // deleteTag.setAttribute("onclick","return this.parentNode.remove()")
-
           var existingElement = document.getElementById(videoTempId)
 
-          let videos = '';
+          let videosElem = '';
 
-          videos = `<video class="video-js vjs-big-play-centered vjs-show-big-play-button-on-pause" controls  preload="auto" alt="video">
-                <source src=${videoSrc} />
-            </video>`
 
             if(videoType === "link"){
               videoContainer.innerHTML= videoPopupElem
             }else{
-              videoContainer.innerHTML = videos
+              if(videoFilesList != ""){
+                  let videoFileUrl = "";
+                  if(typeof videoFilesList === "object"){
+                    videoFileUrl = URL.createObjectURL(videoFilesList)
+                  }else{
+                    videoFileUrl = videoFilesList
+                  }
+        
+                  videosElem = `<video class="video-js vjs-big-play-centered vjs-show-big-play-button-on-pause" controls  preload="auto" alt="video">
+                        <source src=${videoFileUrl} />
+                    </video>`
+                videoContainer.innerHTML = videosElem
+              }else{
+                $(".videoModalContainer").after("<p class='error video-empty-error'>Please upload the video.</p>")
+              }
             }
 
-          //
           videoTempId = parentContainerVideo[0].id;
 
           let updatesContent;
@@ -5804,27 +6057,21 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
 
 
           let inputElem = document.querySelector(".videoModalContainer")
-
           if(videoType === "upload"){
-
-          if (inputElem.innerHTML !== "") {
-
+            if (videoFilesList != "") {
             if (pageTitle !== "") {
               $('#createModal').modal('hide');
               document.getElementById("emptyPage")?.remove()
               updatesContent.appendChild(div)
+              tempArray[`Div${parentContainerVideo[0].id}`]={type: "5", video: videoFilesList ,videoType, updates: updateName}
             } else {
               $('#createModal').modal('hide');
               document.getElementById("emptyPage")?.remove()
+              tempArray[`Div${parentContainerVideo[0].id}`]={type: "5", video: videoFilesList ,videoType}
               contentCards.appendChild(div)
             }
             submitBtnDiv.style.display = "block"
             videoContainerId += 1
-          } else {
-            let errorElem = document.querySelector(".error")
-            if (!errorElem) {
-              inputElem.insertAdjacentHTML('afterend', '<p class="error">Please upload the video.</p>');
-            }
           }
             
         }else{
@@ -7596,7 +7843,8 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
         else if (element === "editVideo") {
           $('#editModal').modal('show');
           var paramId = id
-          let videosList = videoContainerArrary[`${parentId}`]
+          videoFilesList="";
+          videoFilesList = tempArray[`${parentId}`]['video'];
           let videoType = tempArray[`${parentId}`]['videoType']===undefined?"upload":tempArray[`${parentId}`]['videoType'];
           let videoLink="";
           thumbnailImage="";
@@ -7639,11 +7887,15 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
             </div>
         </fieldset>
         </div>
-        <form action="" method="post" class="dragover" id="videoUploadDivEdit">
-          <input name="file" type="file" class="file" id="videoInputEditId" onchange="videoOnChangeEdit(this)" accept="video/mp4" hidden />
-          <label class="file-choose-label" for="videoInputEditId">Choose Video</label>
-          <span id="videoEditChosen">No video chosen</span>
-        </form>
+        <div class="video-select-div-edit">
+            <form action="" method="post" class="dragover" id="videoUploadDivEdit">
+              <input name="file" type="file" class="file" id="videoInputEditId" onchange="videoOnChangeEdit(this)" accept="video/mp4" hidden />
+              <label class="file-choose-label" for="videoInputEditId">Choose Video</label>
+            </form>
+              <button type="button" onclick="videoSelectEditFromDb()">
+                  Project Library
+              </button>
+        </div>
         <div class="video-link-container" id="videoLinkDivEdit" style="display:none">
               <div class="input-div">
                 <label>Video Link:</label>
@@ -7678,14 +7930,34 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
               $(".video-link-error").remove();
             }
           }
+
+          let videosList= ['../../assets/video/video1.mp4','../../assets/video/video2.mp4','../../assets/video/video3.mp4']
+
+          videoSelectEditFromDb =()=>{
+            let galleryvideoElem="";
+            videosList.forEach((video,i)=>{
+              galleryvideoElem += `
+                <div class="gallery-item">
+                    <video src=${video} alt="video"></video>
+                    <input type="radio" name="galleryVideoEdit" class="select-radio" value="${i}" />
+                </div>`
+            })
+
+            let galleryElem = `<div class="gallery">
+                              ${galleryvideoElem}
+                            </div>`
+
+            $("#videoLibraryContainerEdit").html(galleryElem);
+            $("#videoLibraryEditModal").modal("show");
+          }
           
           videoTypeChangeEdit = (elem)=>{
             let videoTypeOption = $(elem).val();
             if(videoTypeOption === "upload"){
-              $("#videoUploadDivEdit").css("display","flex");
+              $(".video-select-div-edit").css("display","flex");
               $("#videoLinkDivEdit").css("display","none");
             }else{
-              $("#videoUploadDivEdit").css("display","none");
+              $(".video-select-div-edit").css("display","none");
               $("#videoLinkDivEdit").css("display","flex");
               $(".videoModalContainerEdit").html("");
             }
@@ -7740,15 +8012,6 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
           browse = document.querySelector('.select')
           var inputFile = document.querySelector('form input')
 
-          var videoFile = []
-          if(videoType == "upload"){
-          if (updatesClass === "updatesItems") {
-            videoFile = videoContainerArrary[`${parentId}`]['video'][0]
-          } else {
-            videoFile = videoContainerArrary[`${parentId}`]
-          }
-        }
-
           let files = []
 
           var inputId = document.getElementById("videoInputEditId")
@@ -7756,50 +8019,29 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
 
           videoOnChangeEdit = (elem) => {
             $(".video-error-edit").remove();
-            videoFile = elem.files[0];
+           let videoFile = elem.files[0];
             if (videoFile.size < maxVideoSize) {
-
-              if (updatesClass === "updatesItems") {
-                videoContainerArrary[`${parentId}`] = { files: videoFile, updates: `updates${updatesId}` }
-                tempArray[`${parentId}`] = { type: "5", video: videoFile, updates: `updates${updatesId}` }
-              } else {
-                videoContainerArrary[`${parentId}`] = videoFile
-                tempArray[`${parentId}`] = { type: "5", video: videoFile }
-              }
-
-
+              videoFilesList = videoFile;
               form.reset();
               container.innerHTML = ""
               showEditVideos()
             } else {
-              container.innerHTML = `<p style="color:red" class="video-error-edit">Maximum video size is 10MP </p>`
+              $(".videoModalContainerEdit").after( `<p style="color:red" class="video-error-edit">Maximum video size is 10MP.</p>`)
             }
-            //
           }
 
-          let showEditVideos = () => {
-            let videoUrl = ""
-            if (typeof videoFile === "object") {
-              videoUrl = URL.createObjectURL(videoFile)
-            } else {
-              videoUrl = videoFile
+           showEditVideos = () => {
+            let galleryVideoUrl = "";
+            if(typeof videoFilesList === "object"){
+              galleryVideoUrl = URL.createObjectURL(videoFilesList)
+            }else{
+              galleryVideoUrl = videoFilesList
             }
 
             let videos = `<div class="video" id="videoEditId" draggable="true">
-                      <video src=${videoUrl} alt="video">
-                      <span onclick="delEditVideos()">&times;</span>
+                      <video src=${galleryVideoUrl} alt="video">
                   </div>`
-
-            var imgDiv = document.createElement("div")
-            imgDiv.innerHTML = videos
-
-            container.appendChild(imgDiv)
-
-          }
-
-          delEditVideos = (index) => {
-            files.splice(index, 1)
-            showEditVideos()
+            container.innerHTML = videos
           }
 
           if(videoType === "upload"){
@@ -7808,6 +8050,34 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
 
           if(videoType === "link"){
             $(".videoModalContainerEdit").html("");
+          }
+
+          let libraryContent=`<div class="modal fade image-library" id="videoLibraryEditModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5>Project Library</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <div id="videoLibraryContainerEdit">
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-primary" onclick="selectVideoFromGallery()">Add</button>
+                </div>
+              </div>
+            </div>
+          </div>`
+  
+          $('body').append(libraryContent);
+
+          selectVideoFromGallery = () =>{
+            $('input[name="galleryVideoEdit"]:checked').each(function() {
+              videoFilesList = videosList[this.value]
+           });
+           $('#videoLibraryEditModal').modal('hide');
+           showEditVideos();
           }
 
         }
@@ -9639,7 +9909,8 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
         }
         else if (element === 'editImages') {
           $('#editModal').modal('show');
-          var imagesList = imagesContainerArrar[`${parentId}`]
+          imagesFilesList=[];
+          imagesFilesList = tempArray[`${parentId}`]['images']
           var imageView = tempArray[`${parentId}`]['imagesView']
           var arrowBgColor = tempArray[`${parentId}`]['arrowBgColor'];
 
@@ -9669,7 +9940,7 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
                   </div>
                   <fieldset class="row mb-3">
                     <legend class="col-form-label col-sm-4 pt-0">Images View</legend>
-                    <div class="col-sm-8">
+                    <div class="col-sm-8 d-flex gap-3">
                       <div class="form-check">
                         <input class="form-check-input" type="radio" name="imageViewEdit" value="normal" onchange="imageTypeEditFn(this)" id="normal">
                         <label class="form-check-label" for="normal">
@@ -9684,14 +9955,19 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
                       </div>
                     </div>
                   </fieldset>
-                  <form action="" method="post" class="dragover">
-                    <input name="file" type="file" class="file" id="imgInputEdit" multiple accept="image/png, image/jpeg" onchange="imageonChangeEdit(this)" hidden />
-                    <label class="file-choose-label" for="imgInputEdit">Choose Image</label>
-                    <span id="imageChosenEdit">No image chosen</span>
-                  </form>
-                  <div class="imgContainerEdit">
+                  <div>
+                    <div class="image-select-div">
+                      <form action="" method="post" class="dragover">
+                        <input name="file" type="file" class="file" id="imgInputEdit" multiple accept="image/png, image/jpeg" onchange="imageonChangeEdit(this)" hidden />
+                        <label class="file-choose-label" for="imgInputEdit">Choose Image</label>
+                      </form>
+                      <button type="button" onclick="imagesSelectEditFromDb()">
+                            Project Library
+                      </button>
+                    </div>
+                    <div class="imgContainerEdit">
+                    </div>
                   </div>
-
                   <div id="bgColorDivEdit" class="row gap-2">
                     <div class="col-12">
                       <div class="row align-items-center">
@@ -9721,12 +9997,32 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
             }
           }
 
+          let imagesList = ['../../assets/img/img1.jpg','../../assets/img/img2.jpg','../../assets/img/img3.jpg','../../assets/img/img1.jpg','../../assets/img/img3.jpg']
+
+          imagesSelectEditFromDb =()=>{
+           let galleryImgElem="";
+           imagesList.forEach((image,i)=>{
+             galleryImgElem += `
+               <div class="gallery-item">
+                   <img src="${image}" alt="Image 1">
+                   <input type="checkbox" name="galleryImageEdit" class="select-checkbox" value="${i}">
+               </div>`
+           })
+ 
+           let galleryElem = `<div class="gallery">
+                             ${galleryImgElem}
+                           </div>`
+ 
+           $("#imageLibraryContainerEdit").html(galleryElem);
+           $("#imageLibraryEditModal").modal("show");
+         }
+
           var container = document.querySelector('.imgContainerEdit')
           container.id = paramId
 
           showEditImages = () => {
             let images = '';
-            imgfiles.forEach((e, i) => {
+            imagesFilesList.forEach((e, i) => {
               let imgUrl = ""
               if (typeof e === "object") {
                 imgUrl = URL.createObjectURL(e)
@@ -9744,9 +10040,37 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
             container.innerHTML = images
           }
 
-          delEditImages = (index) => {
-            imgfiles.splice(index, 1)
-            showEditImages()
+          let libraryContent=`<div class="modal fade image-library" id="imageLibraryEditModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5>Project Library</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <div id="imageLibraryContainerEdit">
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-primary" onclick="selectImageFromGallery()">Add</button>
+                </div>
+              </div>
+            </div>
+          </div>`
+  
+          $('body').append(libraryContent);
+
+          selectImageFromGallery = () =>{
+            $('input[name="galleryImageEdit"]:checked').each(function() {
+              imagesFilesList.push(imagesList[this.value])
+           });
+           $('#imageLibraryEditModal').modal('hide');
+           showEditImages();
+          }
+  
+          delLibraryEditImages = (i) =>{ 
+            imagesFilesList.splice(i,1);
+            showEditImages();
           }
 
           showEditImages()
@@ -9762,20 +10086,18 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
           var inputId = document.getElementById("imgInputEdit")
 
           imageonChangeEdit = (elem) => {
+            $(".file-size-error").remove();
             let file = elem.files;
             for (let i = 0; i < file.length; i++) {
-              if (imgfiles.every(e => e.name !== file[i].name)) {
-                imgfiles.push(file[i])
+              if (imagesFilesList.every(e => e.name !== file[i].name)) {
+                let fileSizeInMB = file[i].size / (1024 * 1024); 
+                if(fileSizeInMB > 5){
+                  $('.imgContainerEdit').after("<p class='error file-size-error'>Image size must be less than 5MB.</p>")
+                }else{
+                  imagesFilesList.push(file[i]);
+                }
               }
 
-            }
-
-            if (updatesClass == "updatesItems") {
-              imagesContainerArrar[`${parentId}`] = { images: imgfiles, updates: `updates${updatesId}` }
-              tempArray[`${parentId}`] = { type: "4", images: imgfiles, updates: `updates${updatesId}` }
-            } else {
-              imagesContainerArrar[`${parentId}`] = imgfiles
-              tempArray[`${parentId}`] = { type: "4", images: imgfiles }
             }
             form.reset();
             showEditImages()
@@ -10113,15 +10435,11 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
 
         }
         else if (modalBody.children[0].className === "videoCard") {
-
           let videoType = $('input[name="videoTypeEdit"]:checked').val();
           let videoLink=$("#videoLinkInputEdit").val();
 
           var updatedElement = modalBody.children[0].id
           var editedElement = document.querySelector(".videoModalContainerEdit")
-
-         
-          tempArray[`${updatedElement}`]={...tempArray[`${updatedElement}`],videoType}
 
           $(".video-link-error").remove();
           $(".thumbnail-error").remove();
@@ -10150,7 +10468,6 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
                   thumbnailEditURL = thumbnailImage[0];
                 }
               }
-              console.log(thumbnailEditURL,"url")
                 videoPopupElem=  `<div class="video-thumbnail" onclick="videoPopupOpenEdit(this)" id="video_${updatedElement}">
                                         <img src="${thumbnailEditURL}" alt="" />
                                         <span><i class="fa-regular fa-circle-play"></i></span>
@@ -10161,29 +10478,32 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
             }
           }
 
-          var videoSrc;
           let updateName = "";
           if (updatesClass === "updatesItems") {
-            if(videoType === 'upload'){
-              videoSrc = videoContainerArrary[updatedElement]['files']
-              }
             let updateClassName = document.querySelector('#createModal .modal-header h5').className;
             updateClassName= updateClassName.split("_")[0];
             var updateNum = updateClassName?.match(/\d/g);
             updateNum = updateNum?.join("");
             updateName = `updates${updateNum}`;
-          } else {
-              if(videoType === 'upload'){
-                videoSrc = videoContainerArrary[updatedElement]                    
-            }
           }
-          let uploadVideoElem;
+          let uploadVideoElem = "";
 
           if(videoType === "link"){
             document.getElementById(editedElement.id).innerHTML = videoPopupElem;
           }else{
-            uploadVideoElem = `<video src="${URL.createObjectURL(videoSrc)}" alt="" controls>`;
+            let videoFileUrl = "";
+            if(typeof videoFilesList === "object"){
+              videoFileUrl = URL.createObjectURL(videoFilesList)
+            }else{
+              videoFileUrl = videoFilesList
+            }
+            uploadVideoElem = `<video src="${videoFileUrl}" alt="" controls>`;
             document.getElementById(editedElement.id).innerHTML = uploadVideoElem;
+            if (updatesClass === "updatesItems") {
+              tempArray[`${updatedElement}`]={type:"5",video: videoFilesList ,videoType, updates: updateName}
+              }else{
+              tempArray[`${updatedElement}`]={type:"5",video: videoFilesList ,videoType}
+            }
           }
          
           if (videoType==="link"){
@@ -10215,7 +10535,6 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
             $("#videoPopupModal .modal-body").html(videoelem)
             $("#videoPopupModal").modal('show')
           }
-          console.log(tempArray)
         }
         else if (modalBody.children[0].className === "animationCard") {
 
@@ -10931,17 +11250,10 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
           var numb = parentDivId?.match(/\d/g);
           numb = numb?.join("");
 
-          let images;
-          if (updatesClass === "updatesItems") {
-            images = imagesContainerArrar[`${parentDivId}`]['images']
-          } else {
-            images = imagesContainerArrar[`${parentDivId}`]
-          }
-
           let updatedElement = document.getElementById(keyId)
           let editedImages = '';
           let url = "";
-          images.forEach((e, i) => {
+          imagesFilesList.forEach((e, i) => {
 
             if (typeof e === "string") {
               url = e
@@ -10958,13 +11270,13 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
           let imageSlideCount = '';
           let carouselImage = '';
 
-          images.forEach((e, i) => {
+          imagesFilesList.forEach((e, i) => {
             imageSlideCount += `<button type="button" data-bs-target="#carouselwithIndicators${numb}" style="background-color:${arrowBgColor}" data-bs-slide-to="${i}" aria-current="true" class="${i == 0 ? "active" : ""}" aria-label="Slide ${i}"></button>`
           })
 
           let carouselUrl = '';
 
-          images.forEach((e, i) => {
+          imagesFilesList.forEach((e, i) => {
             if (typeof e === "string") {
               carouselUrl = e
             } else {
@@ -10972,7 +11284,7 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
             }
 
             carouselImage += `<div class="${i == 0 ? "carousel-item active" : "carousel-item"}">
-              <img src=${carouselUrl} class="d-block w-100" alt="${e.name}" >
+              <img src=${carouselUrl} class="d-block w-100" >
             </div>`
           })
 
@@ -10996,22 +11308,21 @@ let menuBtnsElem = `<div class="menu-btns-conatiner" id="menuBtnsDiv" style="dis
           </div>
         </div>`
 
+        $(".image-error").remove();
+        if (imagesFilesList.length === 0) {
+          $(".imgContainerEdit").after('<p class="error image-error">Please upload the image.</p>')
+        }
+
           //
-          if (images.length > 0) {
-            tempArray[`${parentDivId}`] = { ...tempArray[`${parentDivId}`], "imagesView": imagesView, "arrowBgColor": arrowBgColor }
+          if (imagesFilesList.length > 0) {
+            tempArray[`${parentDivId}`] = { images:imagesFilesList, "imagesView": imagesView, "arrowBgColor": arrowBgColor }
             $('#editModal').modal('hide');
             if (imagesView === "carousel") {
               currentELement.outerHTML = carouselView
             } else {
               currentELement.outerHTML = updatedImages
             }
-          } else {
-            let inputElem = document.querySelector(".imgContainerEdit")
-            let errorElem = document.querySelector(".error")
-            if (!errorElem) {
-              inputElem.insertAdjacentHTML('afterend', '<p class="error">Please insert image...!</p>');
-            }
-          }
+          } 
         }
         else if (modalBody.children[0].className === "hyperLinkEdit") {
           let hyperLinksUpdate = [];
